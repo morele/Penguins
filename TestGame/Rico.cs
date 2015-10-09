@@ -1,9 +1,10 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace TestGame
 {
@@ -13,24 +14,10 @@ namespace TestGame
         private ContentManager _content;
         private GraphicsDeviceManager _graphics;
         public Texture2D Image;
-        private Vector2 _position = new Vector2(20, 20);
-        
-        public Vector2 position
-        {
-            get
-            {
-                return _position;
+        private Vector2 _position;
+        private Vector2 speed;
+        bool jump = true;
 
-            }
-            set
-            {
-                if (value != null)
-                {
-                    _position = value;
-                }
-                throw new ArgumentNullException("Rico`s positon is null!");
-            }
-        }
 
         public Rico(SpriteBatch spriteBatch, ContentManager content, GraphicsDeviceManager graphics)
         {
@@ -44,6 +31,31 @@ namespace TestGame
             _content = content;
             _graphics = graphics;
             Image = _content.Load<Texture2D>("RICO_2");
+            _position =  new Vector2(20, 400);
+        }
+
+        public void UpdatePosition()
+        {
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Right)) speed.X = 3;
+            else if (Keyboard.GetState().IsKeyDown(Keys.Left)) speed.X = -3; else speed.X = 0;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false)
+            {
+                _position.Y -= 10;
+                speed.Y = -5;
+                jump = true;
+            
+            }
+
+            if(jump == true) speed.Y += (float)0.15;
+
+            if(_position.Y + Image.Height >= 650) jump = false;
+
+            if (jump == false) speed.Y = 0;
+
+
+            _position += speed;
         }
 
         public void UpdatePositionLeft()
@@ -89,10 +101,7 @@ namespace TestGame
 
         public void Draw()
         {
-            _spriteBatch.Begin();
             _spriteBatch.Draw(Image, _position, Color.White);
-            _spriteBatch.End();
-
         }
     }
 }

@@ -69,12 +69,14 @@ namespace TestGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            _keyOldState = _keyCurrentState;
-            _keyCurrentState = Keyboard.GetState();
+           // _keyOldState = _keyCurrentState;
+           // _keyCurrentState = Keyboard.GetState();
 
-            if (_keyCurrentState.IsKeyDown(Keys.Down))
+            _rico.UpdatePosition();
+
+           /* if (_keyCurrentState.IsKeyDown(Keys.Down))
             {
-                _rico.UpdatePositionDown();
+               // _rico.UpdatePositionDown();
             }
             if (_keyCurrentState.IsKeyDown(Keys.Left))
             {
@@ -86,10 +88,14 @@ namespace TestGame
             }
             if (_keyCurrentState.IsKeyDown(Keys.Up))
             {
-                _rico.UpdatePositionUP();
+               // _rico.UpdatePositionUP();
+            }
+            if (_keyCurrentState.IsKeyDown(Keys.Space))
+            {
+                 _rico.UpdatePositionJump();
             }
             // TODO: Add your update logic here
-
+            */
             base.Update(gameTime);
         }
 
@@ -101,8 +107,9 @@ namespace TestGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-
+             spriteBatch.Begin();
             _rico.Draw();
+            spriteBatch.End();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
