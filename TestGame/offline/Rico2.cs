@@ -8,7 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace TestGame
 {
-    public class Rico
+    public class Rico2
     {
         private SpriteBatch _spriteBatch;
         private ContentManager _content;
@@ -19,8 +19,9 @@ namespace TestGame
         bool jump = true;
 
 
-        public Rico(SpriteBatch spriteBatch, ContentManager content, GraphicsDeviceManager graphics)
+        public Rico2(SpriteBatch spriteBatch, ContentManager content, GraphicsDeviceManager graphics)
         {
+            
             if (spriteBatch == null)
                 throw new ArgumentNullException("Null spriteBatch in Rico!");
             if (content == null)
@@ -43,7 +44,7 @@ namespace TestGame
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false)
             {
                 _position.Y -= 10;
-                speed.Y = -5;
+                speed.Y = -10;
                 jump = true;
             
             }
