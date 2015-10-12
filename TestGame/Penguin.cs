@@ -31,11 +31,13 @@ namespace TestGame
                 jump = true;         
             }
 
-            //if(jump == true)
             speed.Y += 0.15f;
-           // if(position.Y + Image.Height >= 700) jump = false;
-           // if (jump == false) speed.Y = 0;
-          
+         
+        }
+        public void UpdatePositionRelativePlatform(float positionY)
+        {
+            positionY -= 197; // ponieważ taką ma wysokość pingwin
+            position.Y = positionY;
         }
         public bool isOnTopOf(Rectangle r2)
         {

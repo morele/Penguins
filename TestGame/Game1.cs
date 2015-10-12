@@ -34,8 +34,8 @@ namespace TestGame
 
         protected override void Initialize()
         {
-            penguinSpeed = 3; //szybkość poruszania się pingwinów
-            gravitation = 10f; // wysokość wybicia przy skoku( = 5 ~ 100px)
+            penguinSpeed = 5; //szybkość poruszania się pingwinów
+            gravitation = 5f; // wysokość wybicia przy skoku( = 5 ~ 100px)
             base.Initialize();
         }
 
@@ -46,11 +46,12 @@ namespace TestGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
             rico = new Penguin(Content.Load<Texture2D>("RICO_2"), new Vector2(20, 400), penguinSpeed, gravitation);
 
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(30, 670)));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(400, 600)));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(800, 550)));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(30, 670), false));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(400, 600), true));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(800, 550), true));
 
-            //Font1 = Content.Load<SpriteFont>("Courier New");
+            platforms[1].Properties(3, 100, 600);
+            platforms[2].Properties(7, 300, 560);
             
 
         }
@@ -65,11 +66,21 @@ namespace TestGame
                 Exit();
 
             foreach (Platform platform in platforms)
-                if (rico.isOnTopOf(platform.rectangle))
+            {
+                platform.UpdatePosition(); //aktualizacja pozycji jeśli platforma ma sie poruszać
+
+                if (rico.isOnTopOf(platform.rectangle)) //jak pingwin wskoczy na platofrme zatrzymuje sie spadek wysokości
                 {
                     rico.speed.Y = 0f;
                     rico.jump = false;
+
+                    if (platform.motion) //jak platforma sie porusza to pingwin razem z nią musi
+                    {
+                        rico.UpdatePositionRelativePlatform(platform.rectangle.Y);
+                    }
                 }
+            }
+               
             rico.UpdatePosition();
             base.Update(gameTime);
         }
