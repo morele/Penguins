@@ -19,12 +19,12 @@ namespace TestGame
         /// <param name="Image">Przyjmuje content textury</param>
         /// <param name="position">Początkowa pozycja textury</param>
         /// <param name="speedValue">Szybkość poruszania się textury(optymalna 3-5)</param>
-        public TextureManager(Texture2D Image, Vector2 position, float speedValue)
+        public TextureManager(Texture2D Image, Vector2 position)
         {
-            if(Image == null || position == null || speedValue == null) throw new ArgumentNullException("Null exception, TextureManager");
+            if(Image == null || position == null ) throw new ArgumentNullException("Null exception, TextureManager");
             this.Image = Image;
             this.position = position;
-            this.speedValue = speedValue;
+
         }
 
         /// <summary>
