@@ -59,6 +59,7 @@ namespace TestGame
         override public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Image, rectangle, Color.White);
+            
         }
 
     }
