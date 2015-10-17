@@ -73,6 +73,10 @@
     <Content Include="Content\Scena1\Moneta.png" />
     <Content Include="Content\Scena1\Scena1 krzeslo.png" />
     <Content Include="Content\Scena1\Scena1.png" />
+    <Content Include="Content\Slizg\Kowalski.png" />
+    <Content Include="Content\Slizg\Rico.png" />
+    <Content Include="Content\Slizg\Skipper.png" />
+    <Content Include="Content\Slizg\Szeregowy.png" />
     <Content Include="Content\trawa.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
