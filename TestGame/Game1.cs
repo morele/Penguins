@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace TestGame
@@ -12,13 +13,14 @@ namespace TestGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private Penguin rico;
+        public Penguin rico;
         private Penguin kowalski;
         List<Platform> platforms = new List<Platform>();
         private float penguinSpeed;
         private float gravitation;
-        SpriteFont Font1;
+        SpriteFont JingJing;
         Vector2 FontPos;
+        Camera camera;
 
         public Game1()
         {
@@ -27,15 +29,17 @@ namespace TestGame
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
             graphics.PreferredBackBufferHeight = 768;
-            graphics.PreferredBackBufferWidth = 1360;
+            graphics.PreferredBackBufferWidth = 1200;
+            
             graphics.ApplyChanges();
 
         }
 
         protected override void Initialize()
         {
-            penguinSpeed = 3; //szybkość poruszania się pingwinów
-            gravitation = 10f; // wysokość wybicia przy skoku( = 5 ~ 100px)
+            penguinSpeed = 7; //szybkość poruszania się pingwinów
+            gravitation = 7f; // wysokość wybicia przy skoku( = 5 ~ 100px)
+            camera = new Camera();
             base.Initialize();
         }
 
@@ -46,12 +50,17 @@ namespace TestGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
             rico = new Penguin(Content.Load<Texture2D>("RICO_2"), new Vector2(20, 400), penguinSpeed, gravitation);
 
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(30, 670)));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(400, 600)));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(800, 550)));
 
-            //Font1 = Content.Load<SpriteFont>("Courier New");
-            
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(30, 670), false));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(300, 600), true));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(600, 550), true));
+
+            platforms[1].Properties(3, 100, 600);
+            platforms[2].Properties(7, 300, 560);
+
+            JingJing = Content.Load<SpriteFont>("JingJing");
+
+
 
         }
 
@@ -63,14 +72,26 @@ namespace TestGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            
             foreach (Platform platform in platforms)
-                if (rico.isOnTopOf(platform.rectangle))
+            {
+                platform.UpdatePosition(); //aktualizacja pozycji jeśli platforma ma sie poruszać
+
+                if (rico.isOnTopOf(platform.rectangle)) //jak pingwin wskoczy na platofrme zatrzymuje sie spadek wysokości
                 {
                     rico.speed.Y = 0f;
                     rico.jump = false;
+
+                    if (platform.motion) //jak platforma sie porusza to pingwin razem z nią musi
+                    {
+                        rico.UpdatePositionRelativePlatform(platform.rectangle.Y);
+                    }
                 }
+            }
+               
             rico.UpdatePosition();
+
+            camera.Update(rico);
             base.Update(gameTime);
         }
 
@@ -78,7 +99,7 @@ namespace TestGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null,null,null, camera.transform);
 
 
             foreach (Platform platform in platforms)
@@ -86,7 +107,14 @@ namespace TestGame
 
             rico.Draw(spriteBatch);
 
-           
+           /* var origin = new Vector2()
+            {
+                X = image.Width / 2,
+                Y = image.Height / 2
+            };
+            Vector2 vec = new Vector2(100, 100);
+           // spriteBatch.Draw(image, vec, null, Color.White, 90, origin, 1f, SpriteEffects.None, 0f);*/
+           spriteBatch.DrawString(JingJing,"andrzej",new Vector2(GraphicsDevice.Viewport.Width/2,GraphicsDevice.Viewport.Height/3),Color.Black );
             spriteBatch.End();
 
             base.Draw(gameTime);
