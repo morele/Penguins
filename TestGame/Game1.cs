@@ -18,7 +18,7 @@ namespace TestGame
         List<Platform> platforms = new List<Platform>();
         private float penguinSpeed;
         private float gravitation;
-        SpriteFont Font1;
+        SpriteFont JingJing;
         Vector2 FontPos;
         Camera camera;
 
@@ -48,7 +48,7 @@ namespace TestGame
         {
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            rico = new Penguin(Content.Load<Texture2D>("pingwiny/RICO_2"), Content.Load<Texture2D>("pingwiny/RICO_2_poziomo"), new Vector2(20, 400), penguinSpeed, gravitation);
+            rico = new Penguin(Content.Load<Texture2D>("RICO_2"), Content.Load<Texture2D>("RICO_2_poziomo"), new Vector2(20, 400), penguinSpeed, gravitation);
 
 
             platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(30, 600), false));
@@ -59,6 +59,9 @@ namespace TestGame
             platforms[1].Properties(3, 100, 600);
             platforms[2].Properties(7, 300, 600);
             
+            JingJing = Content.Load<SpriteFont>("JingJing");
+
+
 
         }
 
@@ -112,6 +115,7 @@ namespace TestGame
             };
             Vector2 vec = new Vector2(100, 100);
            // spriteBatch.Draw(image, vec, null, Color.White, 90, origin, 1f, SpriteEffects.None, 0f);*/
+           spriteBatch.DrawString(JingJing,"andrzej",new Vector2(GraphicsDevice.Viewport.Width/2,GraphicsDevice.Viewport.Height/3),Color.Black );
             spriteBatch.End();
 
             base.Draw(gameTime);
