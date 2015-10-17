@@ -18,20 +18,21 @@ namespace TestGame
         List<Platform> platforms = new List<Platform>();
         private float penguinSpeed;
         private float gravitation;
-        SpriteFont JingJing;
+        private TextLabel _textLabel;
         Vector2 FontPos;
         Camera camera;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-         
+
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
             graphics.PreferredBackBufferHeight = 768;
             graphics.PreferredBackBufferWidth = 1200;
-            
+
             graphics.ApplyChanges();
+            _textLabel = new TextLabel(new Rectangle(0, 0, 100, 50), "TextLabel", "TextLabelBackground");
         }
 
         protected override void Initialize()
@@ -57,8 +58,8 @@ namespace TestGame
 
             platforms[1].Properties(3, 100, 600);
             platforms[2].Properties(7, 300, 600);
-            
-            JingJing = Content.Load<SpriteFont>("JingJing");
+
+            _textLabel.LoadContent(Content);
 
 
 
@@ -66,13 +67,13 @@ namespace TestGame
 
 
         protected override void UnloadContent()
-        {        }
+        { }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
+
             foreach (Platform platform in platforms)
             {
                 platform.UpdatePosition(); //aktualizacja pozycji jeśli platforma ma sie poruszać
@@ -88,7 +89,7 @@ namespace TestGame
                     }
                 }
             }
-               
+
             rico.UpdatePosition();
 
             camera.Update(rico);
@@ -99,7 +100,7 @@ namespace TestGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null,null,null, camera.transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
 
 
             foreach (Platform platform in platforms)
@@ -107,14 +108,14 @@ namespace TestGame
 
             rico.Draw(spriteBatch);
 
-           /* var origin = new Vector2()
-            {
-                X = image.Width / 2,
-                Y = image.Height / 2
-            };
-            Vector2 vec = new Vector2(100, 100);
-           // spriteBatch.Draw(image, vec, null, Color.White, 90, origin, 1f, SpriteEffects.None, 0f);*/
-           spriteBatch.DrawString(JingJing,"andrzej",new Vector2(GraphicsDevice.Viewport.Width/2,GraphicsDevice.Viewport.Height/3),Color.Black );
+            /* var origin = new Vector2()
+             {
+                 X = image.Width / 2,
+                 Y = image.Height / 2
+             };
+             Vector2 vec = new Vector2(100, 100);
+            // spriteBatch.Draw(image, vec, null, Color.White, 90, origin, 1f, SpriteEffects.None, 0f);*/
+            _textLabel.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);
