@@ -18,20 +18,21 @@ namespace TestGame
         List<Platform> platforms = new List<Platform>();
         private float penguinSpeed;
         private float gravitation;
-        SpriteFont JingJing;
+        private TextLabel _textLabel;
         Vector2 FontPos;
         Camera camera;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-         
+
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
             graphics.PreferredBackBufferHeight = 768;
             graphics.PreferredBackBufferWidth = 1200;
-            
+
             graphics.ApplyChanges();
+            _textLabel = new TextLabel(new Rectangle(0, 0, 100, 50), "TextLabel", "TextLabelBackground");
         }
 
         protected override void Initialize()
@@ -55,8 +56,15 @@ namespace TestGame
             platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(500, 600), true, 5, 200));
             platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(750, 600)));
 
+<<<<<<< HEAD
             JingJing = Content.Load<SpriteFont>("JingJing");
         }
+=======
+            platforms[1].Properties(3, 100, 600);
+            platforms[2].Properties(7, 300, 600);
+
+            _textLabel.LoadContent(Content);
+>>>>>>> origin/master
 
 
         protected override void UnloadContent()
@@ -65,12 +73,17 @@ namespace TestGame
         }
 
 
+<<<<<<< HEAD
+=======
+        protected override void UnloadContent()
+        { }
+>>>>>>> origin/master
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
+
             foreach (Platform platform in platforms)
             {
                 // sprawdzenie czy na platformie są pingwiny
@@ -92,7 +105,7 @@ namespace TestGame
                 // aktualizacja pozycji jeśli platforma ma sie poruszać
                 platform.UpdatePosition(); 
             }
-               
+
             rico.UpdatePosition();
 
             camera.Update(rico);
@@ -103,7 +116,7 @@ namespace TestGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null,null,null, camera.transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
 
 
             foreach (Platform platform in platforms)
@@ -111,14 +124,14 @@ namespace TestGame
 
             rico.Draw(spriteBatch);
 
-           /* var origin = new Vector2()
-            {
-                X = image.Width / 2,
-                Y = image.Height / 2
-            };
-            Vector2 vec = new Vector2(100, 100);
-           // spriteBatch.Draw(image, vec, null, Color.White, 90, origin, 1f, SpriteEffects.None, 0f);*/
-           spriteBatch.DrawString(JingJing,"andrzej",new Vector2(GraphicsDevice.Viewport.Width/2,GraphicsDevice.Viewport.Height/3),Color.Black );
+            /* var origin = new Vector2()
+             {
+                 X = image.Width / 2,
+                 Y = image.Height / 2
+             };
+             Vector2 vec = new Vector2(100, 100);
+            // spriteBatch.Draw(image, vec, null, Color.White, 90, origin, 1f, SpriteEffects.None, 0f);*/
+            _textLabel.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

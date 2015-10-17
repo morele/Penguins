@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="IDrawable.cs" />
     <Compile Include="offline\Rico2.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="Program.cs" />
@@ -69,6 +70,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\RICO_2.png" />
+    <Content Include="Content\Scena1\Moneta.png" />
+    <Content Include="Content\Scena1\Scena1 krzeslo.png" />
+    <Content Include="Content\Scena1\Scena1.png" />
     <Content Include="Content\trawa.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
