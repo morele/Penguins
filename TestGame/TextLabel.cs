@@ -21,7 +21,7 @@ namespace TestGame
             _position = position;
             _text = text;
             _textureName = textureName;
-            _positionOfText = new Vector2(_position.X/2, _position.Y/2);
+            _positionOfText = new Vector2(_position.X / 2, _position.Y / 2);
 
         }
 
@@ -40,6 +40,14 @@ namespace TestGame
         public void Update(GameTime gameTime, string text)
         {
             _text = text;
+        }
+
+        public void Update(GameTime gameTime, string text, Rectangle newPosition)
+        {
+            _text = text;
+            _position = newPosition;
+            _positionOfText = new Vector2(_position.X / 2, _position.Y / 2);
+
         }
     }
 }
