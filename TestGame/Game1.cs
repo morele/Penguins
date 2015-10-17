@@ -20,6 +20,7 @@ namespace TestGame
         private float gravitation;
         private TextLabel _textLabel;
         Vector2 FontPos;
+        SpriteFont Font;
         Camera camera;
 
         public Game1()
@@ -32,7 +33,9 @@ namespace TestGame
             graphics.PreferredBackBufferWidth = 1200;
 
             graphics.ApplyChanges();
+            // todo: poprawić ostatni parametr
             _textLabel = new TextLabel(new Rectangle(0, 0, 100, 50), "TextLabel", "TextLabelBackground");
+            
         }
 
         protected override void Initialize()
@@ -56,28 +59,14 @@ namespace TestGame
             platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(500, 600), true, 5, 200));
             platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(750, 600)));
 
-<<<<<<< HEAD
-            JingJing = Content.Load<SpriteFont>("JingJing");
-        }
-=======
-            platforms[1].Properties(3, 100, 600);
-            platforms[2].Properties(7, 300, 600);
-
+            Font = Content.Load<SpriteFont>("JingJing");
             _textLabel.LoadContent(Content);
->>>>>>> origin/master
-
+        }
 
         protected override void UnloadContent()
         {
             // todo: zwolnienie zasobów gry
         }
-
-
-<<<<<<< HEAD
-=======
-        protected override void UnloadContent()
-        { }
->>>>>>> origin/master
 
         protected override void Update(GameTime gameTime)
         {
