@@ -18,7 +18,7 @@ namespace TestGame
         List<Platform> platforms = new List<Platform>();
         private float penguinSpeed;
         private float gravitation;
-        SpriteFont Font1;
+        SpriteFont JingJing;
         Vector2 FontPos;
         Camera camera;
 
@@ -57,7 +57,10 @@ namespace TestGame
 
             platforms[1].Properties(3, 100, 600);
             platforms[2].Properties(7, 300, 560);
-            
+
+            JingJing = Content.Load<SpriteFont>("JingJing");
+
+
 
         }
 
@@ -111,6 +114,7 @@ namespace TestGame
             };
             Vector2 vec = new Vector2(100, 100);
            // spriteBatch.Draw(image, vec, null, Color.White, 90, origin, 1f, SpriteEffects.None, 0f);*/
+           spriteBatch.DrawString(JingJing,"andrzej",new Vector2(GraphicsDevice.Viewport.Width/2,GraphicsDevice.Viewport.Height/3),Color.Black );
             spriteBatch.End();
 
             base.Draw(gameTime);
