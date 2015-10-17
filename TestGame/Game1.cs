@@ -32,7 +32,8 @@ namespace TestGame
             graphics.PreferredBackBufferWidth = 1200;
             
             graphics.ApplyChanges();
-
+            
+            // :)
         }
 
         protected override void Initialize()
