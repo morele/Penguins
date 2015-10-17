@@ -68,13 +68,21 @@ namespace TestGame
             positionY -= 197; // ponieważ taką ma wysokość pingwin
             position.Y = positionY;
         }
-        public bool isOnTopOf(Rectangle r2)
+
+        public bool IsOnTopOf(Platform platform)
         {
+            Rectangle r2 = platform.PlatformRectangle;
             return (rectangle.Bottom >= r2.Top &&
                     rectangle.Bottom < r2.Top + r2.Height &&
                     rectangle.Right  >= r2.Left &&
                     rectangle.Left   <= r2.Right);
         }
+
+        public void PutMeOn(Platform platform)
+        {
+            position.Y = platform.PlatformRectangle.Y - 197;
+        }
+
         override public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Image, rectangle, Color.White);

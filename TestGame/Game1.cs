@@ -50,23 +50,21 @@ namespace TestGame
             rico = new Penguin(Content.Load<Texture2D>("RICO_2"), Content.Load<Texture2D>("RICO_2_poziomo"), new Vector2(20, 400), penguinSpeed, gravitation);
 
 
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(30, 600), false));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(250, 600), true));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(500, 600), true));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(750, 600), false));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(30, 600)));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(250, 600), true, 2, 100));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(500, 600), true, 5, 200));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(750, 600)));
 
-            platforms[1].Properties(3, 100, 600);
-            platforms[2].Properties(7, 300, 600);
-            
             JingJing = Content.Load<SpriteFont>("JingJing");
-
-
-
         }
 
 
         protected override void UnloadContent()
-        {        }
+        {
+            // todo: zwolnienie zasobów gry
+        }
+
+
 
         protected override void Update(GameTime gameTime)
         {
@@ -75,18 +73,24 @@ namespace TestGame
             
             foreach (Platform platform in platforms)
             {
-                platform.UpdatePosition(); //aktualizacja pozycji jeśli platforma ma sie poruszać
-
-                if (rico.isOnTopOf(platform.rectangle)) //jak pingwin wskoczy na platofrme zatrzymuje sie spadek wysokości
+                // sprawdzenie czy na platformie są pingwiny
+                if (rico.IsOnTopOf(platform))
                 {
                     rico.speed.Y = 0f;
                     rico.jump = false;
 
-                    if (platform.motion) //jak platforma sie porusza to pingwin razem z nią musi
+                    // jak platforma sie porusza to pingwin razem z nią musi
+                    if (platform.IsMotion) 
                     {
-                        rico.UpdatePositionRelativePlatform(platform.rectangle.Y);
+                        rico.PutMeOn(platform);
+                        
+                        platform.Slowdown();
                     }
+                     
                 }
+                
+                // aktualizacja pozycji jeśli platforma ma sie poruszać
+                platform.UpdatePosition(); 
             }
                
             rico.UpdatePosition();
