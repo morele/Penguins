@@ -37,8 +37,8 @@ namespace TestGame
 
         protected override void Initialize()
         {
-            penguinSpeed = 7; //szybkość poruszania się pingwinów
-            gravitation = 7f; // wysokość wybicia przy skoku( = 5 ~ 100px)
+            penguinSpeed = 5; //szybkość poruszania się pingwinów
+            gravitation = 5f; // wysokość wybicia przy skoku( = 5 ~ 100px)
             camera = new Camera();
             base.Initialize();
         }
@@ -48,15 +48,16 @@ namespace TestGame
         {
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            rico = new Penguin(Content.Load<Texture2D>("RICO_2"), new Vector2(20, 400), penguinSpeed, gravitation);
+            rico = new Penguin(Content.Load<Texture2D>("pingwiny/RICO_2"), Content.Load<Texture2D>("pingwiny/RICO_2_poziomo"), new Vector2(20, 400), penguinSpeed, gravitation);
 
 
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(30, 670), false));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(300, 600), true));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(600, 550), true));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(30, 600), false));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(250, 600), true));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(500, 600), true));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(750, 600), false));
 
             platforms[1].Properties(3, 100, 600);
-            platforms[2].Properties(7, 300, 560);
+            platforms[2].Properties(7, 300, 600);
             
 
         }
