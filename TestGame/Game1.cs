@@ -55,8 +55,8 @@ namespace TestGame
 
 
             platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(30, 600)));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(250, 600), true, 2, 300));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(500, 600), true, 5, 400));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(250, 600), true, 2, 100));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(500, 600), true, 5, 200));
             platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(750, 600)));
 
             Font = Content.Load<SpriteFont>("JingJing");
@@ -83,9 +83,10 @@ namespace TestGame
 
                     // jak platforma sie porusza to pingwin razem z nią musi
                     if (platform.IsMotion) 
-                    {       
-                        platform.Slowdown();
+                    {
                         rico.PutMeOn(platform);
+                        
+                        platform.Slowdown();
                     }
                      
                 }
@@ -112,6 +113,13 @@ namespace TestGame
 
             rico.Draw(spriteBatch);
 
+            /* var origin = new Vector2()
+             {
+                 X = image.Width / 2,
+                 Y = image.Height / 2
+             };
+             Vector2 vec = new Vector2(100, 100);
+            // spriteBatch.Draw(image, vec, null, Color.White, 90, origin, 1f, SpriteEffects.None, 0f);*/
             _textLabel.Draw(spriteBatch);
             spriteBatch.End();
 

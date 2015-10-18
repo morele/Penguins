@@ -36,13 +36,12 @@ namespace TestGame
             }else
             {
                 Image = imageVertical;
-                if (change)
-                {
-                    rectangle = new Rectangle((int)position.X, (int)position.Y - 198, this.Image.Width, this.Image.Height);
+               // if (change)
+               // {
+                    rectangle = new Rectangle((int)position.X, (int)position.Y - 90, this.Image.Width, this.Image.Height);
                     change = false;
-                } else
-          
-                   rectangle = new Rectangle((int)position.X, (int)position.Y - 198, this.Image.Width, this.Image.Height);
+              //  } else
+               //     rectangle = new Rectangle((int)position.X, (int)position.Y, this.Image.Width, this.Image.Height);
 
             }
 
@@ -73,8 +72,7 @@ namespace TestGame
         public void PutMeOn(Platform platform)
         {
             // związanie pozycji pingwina z poruszającą się platformą
-             position.Y = platform.PlatformRectangle.Y - Image.Height;
-           
+            position.Y = platform.PlatformRectangle.Y - Const.PENGUIN_HEIGHT;
         }
 
         override public void Draw(SpriteBatch spriteBatch)
