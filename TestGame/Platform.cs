@@ -6,19 +6,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TestGame
 {
-    public enum Direction
-    {
-        Up = 1,
-        Down = 2,
-        Left = 3,
-        Right = 4
-    }
-
-    public static class CONST
-    {
-        public static int PLATFORM_MAX_HEIGHT = 100;
-    }
-
     /// <summary>
     /// Klasa reprezentująca platformę, która porusza się w górę i w dół
     /// </summary>
@@ -35,9 +22,11 @@ namespace TestGame
         // prędkość poruszania się platformy
         public float PlatformSpeed { get; private set; }
 
-        private float _maxPlatformSpeed;
+        // maksymalna prędkość poruszania się platformy
+        private readonly float _maxPlatformSpeed;
 
-        private float _maxPlatformScope;
+        // maksymalny zasięg platformy
+        private readonly float _maxPlatformScope;
 
         // aktualna pozycja platformy
         private int _currentPlatformPosition;
@@ -116,31 +105,23 @@ namespace TestGame
         }
 
 
+        /// <summary>
+        /// Metoda powoduje spowolnienie poruszania się platformy
+        /// </summary>
         public void Slowdown()
         {
             if(PlatformSpeed > 1)
                 PlatformSpeed--;
         }
 
+        /// <summary>
+        /// Metoda powoduje zwiększenie prędkości poruszania się platformy
+        /// </summary>
         public void SpeedUp()
         {
             if(PlatformSpeed <= _maxPlatformSpeed)
                 PlatformSpeed++;
         }
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="speed"> szybkośc poruszania się w góre i dół</param>
-        /// <param name="maxTop"> maksymalny półap platformy (zależny od początkowego ustawienia)</param>
-        /// <param name="maxBottom"> minimalny półap platformy(zależny od początkowego ustawienia)</param>
-        public void Properties(int speed, int maxTop, int maxBottom)
-        {
-            PlatformSpeed = speed;
-        }
-
-
-        
+                
     }
 }

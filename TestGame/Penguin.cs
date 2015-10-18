@@ -63,24 +63,16 @@ namespace TestGame
 
             
         }
-        public void UpdatePositionRelativePlatform(float positionY)
-        {
-            positionY -= 197; // ponieważ taką ma wysokość pingwin
-            position.Y = positionY;
-        }
 
         public bool IsOnTopOf(Platform platform)
         {
-            Rectangle r2 = platform.PlatformRectangle;
-            return (rectangle.Bottom >= r2.Top &&
-                    rectangle.Bottom < r2.Top + r2.Height &&
-                    rectangle.Right  >= r2.Left &&
-                    rectangle.Left   <= r2.Right);
+            return rectangle.Intersects(platform.PlatformRectangle);
         }
 
         public void PutMeOn(Platform platform)
         {
-            position.Y = platform.PlatformRectangle.Y - 197;
+            // związanie pozycji pingwina z poruszającą się platformą
+            position.Y = platform.PlatformRectangle.Y - Const.PENGUIN_HEIGHT;
         }
 
         override public void Draw(SpriteBatch spriteBatch)
