@@ -42,7 +42,7 @@ namespace TestGame
                     change = false;
                 } else
           
-                   rectangle = new Rectangle((int)position.X, (int)position.Y , this.Image.Width, this.Image.Height);
+                   rectangle = new Rectangle((int)position.X, (int)position.Y - 198, this.Image.Width, this.Image.Height);
 
             }
 
