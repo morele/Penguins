@@ -70,6 +70,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Pingwin70x70.png" />
+    <Content Include="Content\Platformy\Trawa\Platformy1000x48.png" />
+    <Content Include="Content\Platformy\Trawa\Platformy100x48.png" />
+    <Content Include="Content\Platformy\Trawa\Platformy500x48.png" />
     <Content Include="Content\Postacie\Kowalski.png" />
     <Content Include="Content\Postacie\Rico.png" />
     <Content Include="Content\Postacie\Skipper.png" />
