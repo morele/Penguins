@@ -26,10 +26,10 @@ namespace TestGame
                 new MenuItem("Exit", null)
             };
 
-            using (var menu = new GameMenu(menuItems))
-            {
-                menu.Run();
-            }
+            // stworzenie instancji menu
+            GameMenu menu = new GameMenu(menuItems);
+
+            GameFlow.Run(menu);
         }
     }
 #endif

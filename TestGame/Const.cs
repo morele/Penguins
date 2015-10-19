@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace TestGame
 {
@@ -12,6 +13,10 @@ namespace TestGame
 
         // grawitacja - czyli prędkość spadania pingwina
         public static int GRAVITY = 1;
+
+        public static Color SELECTED_MENU_ITEM_COLOR = Color.Orange;
+
+        public static Color DEFAULT_MENU_ITEM_COLOR = Color.Black;
 
     }
 }

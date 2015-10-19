@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using TestGame.Menu;
 
 namespace TestGame
 {
@@ -25,6 +26,7 @@ namespace TestGame
 
         public Game1()
         {
+
             graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";

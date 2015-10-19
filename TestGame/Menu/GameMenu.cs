@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -43,8 +44,8 @@ namespace TestGame.Menu
             _backgroundRectangle = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
             // inicjalizacja czcionek 
-            int rightBorder = GraphicsDevice.Viewport.Width-200 ;
-            int verticalCenter = GraphicsDevice.Viewport.Height/2;
+            int rightBorder = GraphicsDevice.Viewport.Width - 300;
+            int verticalCenter = GraphicsDevice.Viewport.Height/2 - 200;
 
             for (int i = 0; i < _menuItems.Count; i++)
             {
@@ -73,25 +74,31 @@ namespace TestGame.Menu
             base.UnloadContent();
         }
 
-        protected override void Update(GameTime gameTime)
+        private void ChangeSelectedItemColor(int selectedItem)
         {
-            Window.Title = string.Format("Selected: {0}", _menuItems[_selectedMenuItemIndex].Title);
-            
+            for (int i = 0; i < _menuItems.Count; i++)
+            {
+                _menuItems[i].Label.color = i == selectedItem
+                    ? Const.SELECTED_MENU_ITEM_COLOR
+                    : Const.DEFAULT_MENU_ITEM_COLOR;
+            }
+        }
+
+        protected override void Update(GameTime gameTime)
+        { 
             if (Keyboard.GetState().IsKeyDown(Keys.Up) && !_blockUpKey)
             {
                 _blockUpKey = true;
                 // zabezpieczenie przed przekroczeniem zakresu listy
                 if (_selectedMenuItemIndex > 0)
-                {
                     _selectedMenuItemIndex--;
-                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Down) && !_blockDownKey)
             {
                 _blockDownKey = true;
                 // zabezpieczenie przed przekroczeniem zakresu listy
-                if (_selectedMenuItemIndex < _menuItems.Count-1)
+                if (_selectedMenuItemIndex < _menuItems.Count - 1)
                     _selectedMenuItemIndex++;
             }
 
@@ -104,9 +111,8 @@ namespace TestGame.Menu
                     Exit();
                 }
                 else
-                {
-                    _menuItems[_selectedMenuItemIndex].Link.Run();
-                    Exit();
+                { 
+                    GameFlow.Run(_menuItems[_selectedMenuItemIndex].Link);
                 }
             }
 
@@ -115,6 +121,9 @@ namespace TestGame.Menu
 
             if (Keyboard.GetState().IsKeyUp(Keys.Up))
                 _blockUpKey = false;
+
+            // zmiana koloru wybranego elementu
+            ChangeSelectedItemColor(_selectedMenuItemIndex);
 
             base.Update(gameTime);
         }
