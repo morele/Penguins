@@ -123,6 +123,7 @@ namespace TestGame
             _texture = contentManager.Load<Texture2D>(_textureName);
         }
 
+      
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, _position, Color.White);
