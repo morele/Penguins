@@ -15,8 +15,12 @@ namespace TestGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public Penguin rico;
-        private Penguin kowalski;
-        List<Platform> platforms = new List<Platform>();
+        public Penguin kowalski;
+        public Penguin skipper;
+        public Penguin szeregowy;
+        private List<Platform> platforms = new List<Platform>();
+        private List<TextLabel> playersLabel = new List<TextLabel>();
+
         private float penguinSpeed;
         private float gravitation;
         private TextLabel _textLabel;
@@ -53,16 +57,26 @@ namespace TestGame
         {
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            rico = new Penguin(Content.Load<Texture2D>("RICO_2"), Content.Load<Texture2D>("RICO_2_poziomo"), new Vector2(20, 400), penguinSpeed, gravitation);
+            rico = new Penguin(Content.Load<Texture2D>("Postacie/Rico"), Content.Load<Texture2D>("Slizg/Rico"), new Vector2(20, 400), penguinSpeed, gravitation, PenguinType.RICO);
+            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Kowalski"), Content.Load<Texture2D>("Slizg/Kowalski"), new Vector2(20, 400), penguinSpeed, gravitation, PenguinType.KOWALSKI);
+            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Skipper"), Content.Load<Texture2D>("Slizg/skipper"), new Vector2(20, 400), penguinSpeed, gravitation, PenguinType.SKIPPER);
+            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Szeregowy"), Content.Load<Texture2D>("Slizg/Szeregowy"), new Vector2(20, 400), penguinSpeed, gravitation, PenguinType.SZEREGOWY);
 
 
             platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(30, 600)));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(250, 600), true, 2, 100));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(500, 600), true, 5, 200));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(750, 600)));
+            
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(250, 600), true, 1, 100));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(500, 600), true, 2, 100));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(750, 600), true, 3, 100));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(1000, 600), true, 4, 100));
+
+           playersLabel.Add(new TextLabel(new Rectangle(0, 0, 100, 50), "Rico - 1", "WyborPostaci/Rico"));
+            playersLabel[0].LoadContent(Content);
+
 
             Font = Content.Load<SpriteFont>("JingJing");
-            _textLabel.LoadContent(Content);
+            
+              _textLabel.LoadContent(Content);
         }
 
         protected override void UnloadContent()
@@ -82,13 +96,15 @@ namespace TestGame
                 {
                     rico.speed.Y = 0f;
                     rico.jump = false;
-
+                    rico.platformSpeed = (int)platform.PlatformSpeed;
                     // jak platforma sie porusza to pingwin razem z nią musi
                     if (platform.IsMotion) 
                     {
                         rico.PutMeOn(platform);
                         
                         platform.Slowdown();
+                        rico.platformSpeed = (int)platform.PlatformSpeed;
+
                     }
                      
                 }
@@ -98,7 +114,8 @@ namespace TestGame
                 }
                 
                 // aktualizacja pozycji jeśli platforma ma sie poruszać
-                platform.UpdatePosition(); 
+                platform.UpdatePosition();
+               
             }
 
             rico.UpdatePosition();
@@ -119,13 +136,7 @@ namespace TestGame
 
             rico.Draw(spriteBatch);
 
-            /* var origin = new Vector2()
-             {
-                 X = image.Width / 2,
-                 Y = image.Height / 2
-             };
-             Vector2 vec = new Vector2(100, 100);
-            // spriteBatch.Draw(image, vec, null, Color.White, 90, origin, 1f, SpriteEffects.None, 0f);*/
+            playersLabel[0].Draw(spriteBatch);
             _textLabel.Draw(spriteBatch);
             spriteBatch.End();
 
