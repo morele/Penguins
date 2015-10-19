@@ -110,8 +110,8 @@ namespace TestGame
         /// </summary>
         public void Slowdown()
         {
-            if(PlatformSpeed > 1)
-                PlatformSpeed--;
+            /*if(PlatformSpeed > 1)
+                PlatformSpeed--;*/
         }
 
         /// <summary>

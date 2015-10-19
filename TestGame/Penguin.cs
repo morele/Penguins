@@ -17,8 +17,8 @@ namespace TestGame
         private Vector2 positionHorizontal;
         private Vector2 positionVertical;
         private bool change = false;
-
         public bool jump = true;
+        public int scale = 8; //w przypadku zmiany skalowania przeliczyć wartości w UpdatePosiotion() -> new Rectangle.... (scale 7, +95 ; -45)
 
         public Penguin(Texture2D Image, Texture2D imageHorizontal, Vector2 position, float speedValue, float gravity) : base(Image, position, speedValue, gravity)
         {
@@ -29,15 +29,11 @@ namespace TestGame
         override public void UpdatePosition()
         {
             position += speed;
- 
-
 
              if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = speedValue * 2;  else
              if (Keyboard.GetState().IsKeyDown(Keys.Left)  && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = -speedValue * 2; else
              if (Keyboard.GetState().IsKeyDown(Keys.Right)) speed.X = speedValue;  else 
              if (Keyboard.GetState().IsKeyDown(Keys.Left))  speed.X = -speedValue; else speed.X = 0;               
-
-
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false)
             {
@@ -52,13 +48,13 @@ namespace TestGame
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
                 Image = imageHorizontal;
-                rectangle = new Rectangle((int)positionHorizontal.X, (int)positionHorizontal.Y - 111, this.Image.Width, this.Image.Height); //NIE TYKA WARTOŚCI!!!
+                rectangle = new Rectangle((int)positionHorizontal.X, (int)positionHorizontal.Y - (this.Image.Width / scale) + 85, this.Image.Width/scale, this.Image.Height/scale); //NIE TYKAC WARTOŚCI!!!
                 change = true;
             }
             else
             {
                 Image = imageVertical;
-                rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y-197, this.Image.Width, this.Image.Height); // NIE TYKA WARTOŚCI!!!
+                rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y- (this.Image.Width / scale) - 40, this.Image.Width/scale, this.Image.Height/scale); // NIE TYKAC WARTOŚCI!!!
                 change = false;
             }
 

@@ -14,7 +14,9 @@ namespace TestGame
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public Penguin rico;
-        private Penguin kowalski;
+        public Penguin kowalski;
+        public Penguin skipper;
+        public Penguin szeregowy;
         List<Platform> platforms = new List<Platform>();
         private float penguinSpeed;
         private float gravitation;
@@ -51,13 +53,19 @@ namespace TestGame
         {
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            rico = new Penguin(Content.Load<Texture2D>("RICO_2"), Content.Load<Texture2D>("RICO_2_poziomo"), new Vector2(20, 400), penguinSpeed, gravitation);
+            rico = new Penguin(Content.Load<Texture2D>("Postacie/Rico"), Content.Load<Texture2D>("Slizg/Rico"), new Vector2(20, 400), penguinSpeed, gravitation);
+           // rico = new Penguin(Content.Load<Texture2D>("Postacie/Kowalski"), Content.Load<Texture2D>("Slizg/Kowalski"), new Vector2(20, 400), penguinSpeed, gravitation);
+            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Skipper"), Content.Load<Texture2D>("Slizg/skipper"), new Vector2(20, 400), penguinSpeed, gravitation);
+            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Szeregowy"), Content.Load<Texture2D>("Slizg/Szeregowy"), new Vector2(20, 400), penguinSpeed, gravitation);
 
 
             platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(30, 600)));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(250, 600), true, 2, 100));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(500, 600), true, 5, 200));
-            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(750, 600)));
+            
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(250, 600), true, 1, 100));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(500, 600), true, 2, 100));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(750, 600), true, 3, 100));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(1000, 600), true, 4, 100));
+            platforms.Add(new Platform(Content.Load<Texture2D>("trawa"), new Vector2(1250, 600), true, 5, 100));
 
             Font = Content.Load<SpriteFont>("JingJing");
             _textLabel.LoadContent(Content);
