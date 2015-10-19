@@ -119,7 +119,7 @@ namespace TestGame
         public void LoadContent(ContentManager contentManager)
         {
             _content = contentManager;
-            _spriteFont = contentManager.Load<SpriteFont>(fontName);
+            _spriteFont = contentManager.Load<SpriteFont>("JingJing");
             _texture = contentManager.Load<Texture2D>(_textureName);
         }
 
