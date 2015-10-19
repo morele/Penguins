@@ -18,6 +18,7 @@ namespace TestGame
         private Vector2 positionVertical;
 
         public bool jump = true;
+        public bool firstStart = true;
         public int scale = 8; 
         public int platformSpeed = 0;
         private PenguinType penguinType;
@@ -31,6 +32,7 @@ namespace TestGame
             this.imageVertical = Image;
             this.penguinType = penguinType;
 
+            //każdy typ pingwina ma róźną wysokość, wartości odpowiednio przeskalowane 
             switch(penguinType)
             {
                 case PenguinType.KOWALSKI:

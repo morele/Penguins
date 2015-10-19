@@ -7,8 +7,8 @@ namespace TestGame
 {
     public class TextLabel : IDrawableTextLabel
     {
-        private Rectangle _position;
-        private Vector2 _positionOfText;
+        public Rectangle _position;
+        public Vector2 _positionOfText;
         private string _text;
         private Texture2D _texture;
         private string _textureName;
