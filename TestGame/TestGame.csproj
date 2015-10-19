@@ -65,6 +65,7 @@
   <ItemGroup>
     <Content Include="Content\Image1.png" />
     <Content Include="Content\menu_background.png" />
+    <Content Include="Content\NapisPingwingi.png" />
     <Content Include="Content\Pingwin1.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
