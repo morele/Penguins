@@ -16,14 +16,41 @@ namespace TestGame
         private Texture2D imageVertical;
         private Vector2 positionHorizontal;
         private Vector2 positionVertical;
-        private bool change = false;
-        public bool jump = true;
-        public int scale = 8; //w przypadku zmiany skalowania przeliczyć wartości w UpdatePosiotion() -> new Rectangle.... (scale 7, +95 ; -45)
 
-        public Penguin(Texture2D Image, Texture2D imageHorizontal, Vector2 position, float speedValue, float gravity) : base(Image, position, speedValue, gravity)
+        public bool jump = true;
+        public int scale = 8; 
+        public int platformSpeed = 0;
+        private PenguinType penguinType;
+
+        public int pinguinVertical = 0;
+        public int pinguinHorizontal = 0;
+
+        public Penguin(Texture2D Image, Texture2D imageHorizontal, Vector2 position, float speedValue, float gravity, PenguinType penguinType) : base(Image, position, speedValue, gravity)
         {
             this.imageHorizontal = imageHorizontal;
             this.imageVertical = Image;
+            this.penguinType = penguinType;
+
+            switch(penguinType)
+            {
+                case PenguinType.KOWALSKI:
+                    pinguinVertical = Const.PINGUIN_KOWALSKI_VERTICAL;
+                    pinguinHorizontal = Const.PINGUIN_KOWALSKI_HORIZONTAL;
+                break;
+                case PenguinType.RICO:
+                    pinguinVertical = Const.PINGUIN_RICO_VERTICAL;
+                    pinguinHorizontal = Const.PINGUIN_RICO_HORIZONTAL;
+                    break;
+                case PenguinType.SZEREGOWY:
+                    pinguinVertical = Const.PINGUIN_SZEREGOWY_VERTICAL;
+                    pinguinHorizontal = Const.PINGUIN_SZEREGOWY_HORIZONTAL;
+                    break;
+                case PenguinType.SKIPPER:
+                    pinguinHorizontal = Const.PINGUIN_SKIPPER_HORIZONTAL;
+                    pinguinVertical = Const.PINGUIN_SKIPPER_VERTICAL;
+                    break;
+
+            }
         }
 
         override public void UpdatePosition()
@@ -48,15 +75,13 @@ namespace TestGame
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
                 Image = imageHorizontal;
-                rectangle = new Rectangle((int)positionHorizontal.X, (int)positionHorizontal.Y - (this.Image.Width / scale) + 85, this.Image.Width/scale, this.Image.Height/scale); //NIE TYKAC WARTOŚCI!!!
-                change = true;
+                rectangle = new Rectangle((int)positionHorizontal.X, (int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed), this.Image.Width/scale, this.Image.Height/scale); // na slizgu
             }
             else
             {
                 Image = imageVertical;
-                rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y- (this.Image.Width / scale) - 40, this.Image.Width/scale, this.Image.Height/scale); // NIE TYKAC WARTOŚCI!!!
-                change = false;
-            }
+                rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width/scale, this.Image.Height/scale); //jak stoi
+             }
 
         }
 
@@ -69,7 +94,6 @@ namespace TestGame
         {
             position.Y = platform.PlatformRectangle.Y;
         }
-
         override public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Image, rectangle, Color.White);

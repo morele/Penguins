@@ -13,4 +13,11 @@ namespace TestGame
         Left = 3,
         Right = 4
     }
+    public enum PenguinType
+    {
+        RICO = 1,
+        SKIPPER = 2,
+        KOWALSKI = 3,
+        SZEREGOWY = 4
+    }
 }
