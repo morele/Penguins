@@ -43,12 +43,12 @@ namespace TestGame.Menu
             _backgroundRectangle = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
             // inicjalizacja czcionek 
-            int rightBorder = GraphicsDevice.Viewport.Width + 400;
-            int verticalCenter = GraphicsDevice.Viewport.Height/2 + 100;
+            int rightBorder = GraphicsDevice.Viewport.Width-200 ;
+            int verticalCenter = GraphicsDevice.Viewport.Height/2;
 
             for (int i = 0; i < _menuItems.Count; i++)
             {
-                _menuItems[i].SetLabel(new TextLabel(new Rectangle(rightBorder, verticalCenter + ((i + 1) * 50), 100, 50), _menuItems[i].Title, "TextLabelBackground"));
+                _menuItems[i].SetLabel(new TextLabel(new Rectangle(rightBorder, verticalCenter + ((i + 1) * 50), 100, 50), _menuItems[i].Title, "TextLabelBackgroundTransparent"));
             }
 
             base.Initialize();

@@ -68,7 +68,8 @@ namespace TestGame
             _position = position;
             _text = text;
             _textureName = textureName;
-            _positionOfText = new Vector2(_position.X / 2, _position.Y / 2);
+            _positionOfText = new Vector2(_position.X, _position.Y);
+            _color = Color.Black;
 
         }
         public TextLabel(Rectangle position, string text, string textureName, Color color)
@@ -93,7 +94,7 @@ namespace TestGame
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, _position, Color.White);
-            spriteBatch.DrawString(_spriteFont, _text, _positionOfText, Color.Black);
+            spriteBatch.DrawString(_spriteFont, _text, _positionOfText, _color);
         }
 
         public void Update(GameTime gameTime, string text)
