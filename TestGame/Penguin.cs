@@ -14,6 +14,8 @@ namespace TestGame
         public Vector2 speed;
         private Texture2D imageHorizontal;
         private Texture2D imageVertical;
+        private Vector2 positionHorizontal;
+        private Vector2 positionVertical;
         private bool change = false;
 
         public bool jump = true;
@@ -27,23 +29,7 @@ namespace TestGame
         override public void UpdatePosition()
         {
             position += speed;
-            
-            if(Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                Image = imageHorizontal;
-                rectangle = new Rectangle((int)position.X, (int)position.Y, this.Image.Width, this.Image.Height);
-                change = true;
-            }else
-            {
-                Image = imageVertical;
-               // if (change)
-               // {
-                    rectangle = new Rectangle((int)position.X, (int)position.Y - 90, this.Image.Width, this.Image.Height);
-                    change = false;
-              //  } else
-               //     rectangle = new Rectangle((int)position.X, (int)position.Y, this.Image.Width, this.Image.Height);
-
-            }
+ 
 
 
              if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = speedValue * 2;  else
@@ -61,7 +47,21 @@ namespace TestGame
             }
             speed.Y += 0.15f;
 
-            
+
+            positionHorizontal = positionVertical = position;
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                Image = imageHorizontal;
+                rectangle = new Rectangle((int)positionHorizontal.X, (int)positionHorizontal.Y - 111, this.Image.Width, this.Image.Height); //NIE TYKA WARTOŚCI!!!
+                change = true;
+            }
+            else
+            {
+                Image = imageVertical;
+                rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y-197, this.Image.Width, this.Image.Height); // NIE TYKA WARTOŚCI!!!
+                change = false;
+            }
+
         }
 
         public bool IsOnTopOf(Platform platform)
@@ -71,8 +71,7 @@ namespace TestGame
 
         public void PutMeOn(Platform platform)
         {
-            // związanie pozycji pingwina z poruszającą się platformą
-            position.Y = platform.PlatformRectangle.Y - Const.PENGUIN_HEIGHT;
+            position.Y = platform.PlatformRectangle.Y;
         }
 
         override public void Draw(SpriteBatch spriteBatch)
