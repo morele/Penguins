@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using TestGame.Menu;
 
 namespace TestGame
 {
@@ -14,8 +17,19 @@ namespace TestGame
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
-                game.Run();
+            // stworzenie elementów menu
+            List<MenuItem> menuItems = new List<MenuItem>()
+            {
+                new MenuItem("New Game", new Game1()),
+                new MenuItem("How to play?", null),
+                new MenuItem("Authors", null),
+                new MenuItem("Exit", null)
+            };
+
+            using (var menu = new GameMenu(menuItems))
+            {
+                menu.Run();
+            }
         }
     }
 #endif

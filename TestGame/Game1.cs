@@ -90,6 +90,10 @@ namespace TestGame
                     }
                      
                 }
+                else
+                {
+                    platform.SpeedUp();
+                }
                 
                 // aktualizacja pozycji jeśli platforma ma sie poruszać
                 platform.UpdatePosition(); 
