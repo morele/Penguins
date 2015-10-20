@@ -5,47 +5,48 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TestGame
 {
-    public class TextLabel : IDrawableTextLabel
+    public class TextLabel
     {
-        public Rectangle _position;
-        public Vector2 _positionOfText;
+        #region private area
+        private Vector2 _position;
+        private Rectangle _rectangle;
+        private int _scale = 1;
         private string _text;
-        private Texture2D _texture;
-        private string _textureName;
-        private SpriteFont _spriteFont;
+        private SpriteFont _font;
+        private Texture2D _background;
         private Color _color;
-        private ContentManager _content;
-        private SpriteBatch _spriteBatch;
-        private string _fontName;
-        public string fontName
+        #endregion
+
+        #region public area property
+        public Texture2D Background
         {
             get
             {
-                return _fontName;
-                
-            }
-            set
-            {
-                _fontName = value;
-                
-            }
-        }
-        public Color color
-        {
-            get
-            {
-                return _color;
+                return _background;
 
             }
             set
             {
-
-                _color = value;
+                _background = value;
 
             }
         }
 
-        public string text
+        public SpriteFont Font
+        {
+            get
+            {
+                return _font;
+
+            }
+            set
+            {
+                _font = value;
+
+            }
+        }
+
+        public string Text
         {
             get
             {
@@ -57,89 +58,180 @@ namespace TestGame
                 _text = value;
 
             }
-
-
         }
 
-        public Texture2D texture
+        public int Scale
         {
             get
             {
-                return _texture;
+                return _scale / 100;
 
             }
             set
             {
-                _texture = value;
+                _scale = (value / 100);
 
+            }
+        }
+
+        public Vector2 Position
+        {
+            get
+            {
+                return _position;
+
+            }
+            set
+            {
+                _position = value;
+
+            }
+        }
+
+        public Color color
+        {
+            get
+            {
+                return _color;
+
+            }
+            set
+            {
+                _color = value;
+
+            }
+        }
+#endregion
+        /// <summary>
+        /// Konsktruktor TextLabel wersja z tłem
+        /// </summary>
+        /// <param name="position">pozycja textlabel</param>
+        /// <param name="scaleInProcent">skala backgrounda textlabel</param>
+        /// <param name="text">tekst ktory bedzie wyswietlany </param>
+        /// <param name="font">spriteFont który bedzie uzyty w textlabel</param>
+        /// <param name="background">Textura ktora bedzie za napisem</param>
+        public TextLabel(Vector2 position, int scaleInProcent, string text, SpriteFont font, Texture2D background)
+        {
+            _position = position;
+            _scale = scaleInProcent / 100;
+            _text = text;
+            _font = font;
+            _background = background;
+        }
+        /// <summary>
+        /// konstruktor TextLabel wersja bez tła
+        /// </summary>
+        /// <param name="position">pozycja TextLabel</param>
+        /// <param name="text">Tekst wyswietlany w TextLabel</param>
+        /// <param name="font">Font uzyty w TextLabel</param>
+        public TextLabel(Vector2 position, string text, SpriteFont font)
+        {
+            _position = position;
+            _text = text;
+            _font = font;
+
+        }
+
+        /// <summary>
+        /// Draw z mozliwoscia wyboru z tłem lub bez
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="background"></param>
+        public void Draw(SpriteBatch spriteBatch, bool background = false)
+        {
+            if (background)
+            {
+                spriteBatch.Draw(_background, new Rectangle((int)_position.X * _scale, (int)_position.Y * _scale, _background.Width, _background.Height), Color.White);
+                spriteBatch.DrawString(_font, _text, _position, _color);
+            }
+            else
+            {
+                spriteBatch.DrawString(_font, _text, _position, _color);
             }
 
         }
-        public TextLabel(Rectangle position, string text, string textureName)
+        /// <summary>
+        /// update metoda na zmiane pozycji
+        /// </summary>
+        /// <param name="position"></param>
+        public void Update(Vector2 position)
         {
-            if (position == null || text == null || textureName == null)
-                throw new ArgumentNullException("Null Argument | TextLabel");
             _position = position;
-            _text = text;
-            _textureName = textureName;
-            _positionOfText = new Vector2(_position.X, _position.Y);
-            _color = Color.Black;
-
         }
-        public TextLabel(Rectangle position, string text, string textureName,string fontName)
+        /// <summary>
+        /// zmiana pozycji i tekstu
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="text"></param>
+        public void Update(Vector2 position, string text)
         {
-            if (position == null || text == null || textureName == null)
-                throw new ArgumentNullException("Null Argument | TextLabel");
             _position = position;
             _text = text;
-            _textureName = textureName;
-            _positionOfText = new Vector2(_position.X, _position.Y);
-            _color = Color.Black;
-            _fontName = fontName;
         }
-        public TextLabel(Rectangle position, string text, string textureName, Color color)
+        /// <summary>
+        /// zmiana pozycji tekstu i tła
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="background"></param>
+        /// <param name="text"></param>
+        public void Update(Vector2 position, Texture2D background, string text)
         {
-            if (position == null || text == null || textureName == null)
-                throw new ArgumentNullException("Null Argument | TextLabel");
             _position = position;
+            _background = background;
             _text = text;
-            _textureName = textureName;
-            _positionOfText = new Vector2(_position.X / 2, _position.Y / 2);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="background"></param>
+        /// <param name="font"></param>
+        /// <param name="text"></param>
+        public void Update(Vector2 position, Texture2D background, SpriteFont font, string text)
+        {
+            _position = position;
+            _background = background;
+            _font = font;
+            _text = text;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="background"></param>
+        /// <param name="font"></param>
+        public void Update(Vector2 position, Texture2D background, SpriteFont font)
+        {
+            _position = position;
+            _background = background;
+            _font = font;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="font"></param>
+        /// <param name="text"></param>
+        public void Update(Vector2 position, SpriteFont font, string text)
+        {
+            _position = position;
+            _font = font;
+            _text = text;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="font"></param>
+        /// <param name="text"></param>
+        /// <param name="color"></param>
+        public void Update(Vector2 position, SpriteFont font, string text,Color color)
+        {
+            _position = position;
+            _font = font;
+            _text = text;
             _color = color;
         }
 
-
-        public void LoadContent(ContentManager contentManager,string fontName)
-        {
-            _fontName = fontName;
-            _content = contentManager;
-            _spriteFont = contentManager.Load<SpriteFont>(fontName);
-            _texture = contentManager.Load<Texture2D>(_textureName);
-        }
-        public void LoadContent(ContentManager contentManager)
-        {
-            _content = contentManager;
-            _spriteFont = contentManager.Load<SpriteFont>("JingJing");
-            _texture = contentManager.Load<Texture2D>(_textureName);
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(_texture, _position, Color.White);
-            spriteBatch.DrawString(_spriteFont, _text, _positionOfText, _color);
-        }
-
-        public void Update(GameTime gameTime, string text)
-        {
-            _text = text;
-        }
-
-        public void Update(GameTime gameTime, string text, Rectangle newPosition)
-        {
-            _text = text;
-            _position = newPosition;
-            _positionOfText = new Vector2(_position.X / 2, _position.Y / 2);
-
-        }
     }
 }
