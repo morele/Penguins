@@ -27,6 +27,7 @@ namespace TestGame
         private float gravitation;
         private TextLabel _textLabel;
         Vector2 FontPos;
+        Vector2 labelPosition = new Vector2();
         SpriteFont Font;
         Camera camera;
 
@@ -72,23 +73,14 @@ namespace TestGame
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(50, 600), true, 1, 100));
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(300, 600), true, 2, 200));
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(500, 600), true, 3, 100));
-            platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(700, 600), true, 4, 400));
+            platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(700, 600), true, 4, 400));          
 
-            textLabel = new TextLabel(new Vector2(200, 200), 50, "TEST", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Rico"));
+           playersLabel.Add(new TextLabel(new Vector2(-550, 30), 25, "Skipper - 1", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Skipper")));         
+           playersLabel.Add(new TextLabel(new Vector2(-480, 30), 25, "Kowalski - 2", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Kowalski")));        
+           playersLabel.Add(new TextLabel(new Vector2(-410, 30), 25, "Rico - 3", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Rico")));
+           playersLabel.Add(new TextLabel(new Vector2(-340, 30), 25, "Szeregowy - 4", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Szeregowy")));
+         
 
-          /* playersLabel.Add(new TextLabel(new Rectangle(-500, 20, 60, 60), "Rico - 1", "WyborPostaci/Rico"));
-           playersLabel[0].LoadContent(Content);
-           playersLabel.Add(new TextLabel(new Rectangle(-430, 20, 60, 60), "Kowalski - 2", "WyborPostaci/Kowalski"));
-           playersLabel[1].LoadContent(Content);
-           playersLabel.Add(new TextLabel(new Rectangle(-360, 20, 60, 60), "Skipper - 3", "WyborPostaci/Skipper"));
-           playersLabel[2].LoadContent(Content);
-           playersLabel.Add(new TextLabel(new Rectangle(-290, 20, 60, 60), "Szeregowy - 4", "WyborPostaci/Szeregowy"));
-           playersLabel[3].LoadContent(Content);
-           */
-
-       //     Font = Content.Load<SpriteFont>("JingJing");
-            
-          //    _textLabel.LoadContent(Content);
         }
 
         protected override void UnloadContent()
@@ -153,10 +145,15 @@ namespace TestGame
 
             player.UpdatePosition();
 
-            /*foreach (TextLabel playerLabel in playersLabel)
-                playerLabel.Update(gameTime,"ja Jebie", new Rectangle(rico.rectangle.X + (int)playerLabel._positionOfText.X, 20, 60, 60));*/
+           for(int i = 0;i < 4; i++)
+            {
+                labelPosition.X = player.rectangle.X - 550 + (i * 90);
+                labelPosition.Y = 30;
+                playersLabel[i].Update(labelPosition);
+            }
+                
 
-            textLabel.Update(new Vector2(50, 50));
+           // textLabel.Update(new Vector2(player.rectangle.X - 300, 50));
             camera.Update(player);
             base.Update(gameTime);
         }
@@ -177,7 +174,10 @@ namespace TestGame
             kowalski.Draw(spriteBatch);
             player.Draw(spriteBatch);
 
-            textLabel.Draw(spriteBatch, true);
+
+            foreach (TextLabel textLabel in playersLabel)
+                textLabel.Draw(spriteBatch,true);
+       
           
             spriteBatch.End();
 
