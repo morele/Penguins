@@ -41,7 +41,7 @@ namespace TestGame
 
             graphics.ApplyChanges();
             // todo: poprawić ostatni parametr
-            _textLabel = new TextLabel(new Rectangle(0, 0, 100, 50), "TextLabel", "TextLabelBackground");
+         //   _textLabel = new TextLabel(new Vector2(0, 0), "TextLabel", "TextLabelBackground");
             
         }
 
@@ -83,9 +83,9 @@ namespace TestGame
            playersLabel[3].LoadContent(Content);
            */
 
-            Font = Content.Load<SpriteFont>("JingJing");
+       //     Font = Content.Load<SpriteFont>("JingJing");
             
-              _textLabel.LoadContent(Content);
+          //    _textLabel.LoadContent(Content);
         }
 
         protected override void UnloadContent()
@@ -174,10 +174,7 @@ namespace TestGame
             kowalski.Draw(spriteBatch);
             player.Draw(spriteBatch);
 
-            /* foreach (TextLabel playerLabel in playersLabel)
-                 playerLabel.Draw(spriteBatch);*/
-
-            _textLabel.Draw(spriteBatch);
+          
             spriteBatch.End();
 
             base.Draw(gameTime);
