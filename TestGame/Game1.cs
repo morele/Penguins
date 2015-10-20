@@ -62,7 +62,7 @@ namespace TestGame
             kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Kowalski"), Content.Load<Texture2D>("Slizg/Kowalski"), new Vector2(-450, 400), penguinSpeed, gravitation, PenguinType.KOWALSKI);
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Rico"), Content.Load<Texture2D>("Slizg/Rico"), new Vector2(-350, 400), penguinSpeed, gravitation, PenguinType.RICO);
             szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Szeregowy"), Content.Load<Texture2D>("Slizg/Szeregowy"), new Vector2(-250, 400), penguinSpeed, gravitation, PenguinType.SZEREGOWY);
-
+            
             //Podstawowy gracz - skipper
             player = skipper;
 
@@ -90,7 +90,7 @@ namespace TestGame
 
         protected override void UnloadContent()
         {
-            // todo: zwolnienie zasobów gry
+            
         }
 
 
