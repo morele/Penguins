@@ -21,6 +21,7 @@ namespace TestGame
         public Penguin player;
         private List<Platform> platforms = new List<Platform>();
         private List<TextLabel> playersLabel = new List<TextLabel>();
+        private TextLabel textLabel;
         private bool firstStart = true;
         private float penguinSpeed;
         private float gravitation;
@@ -72,6 +73,8 @@ namespace TestGame
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(300, 600), true, 2, 200));
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(500, 600), true, 3, 100));
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(700, 600), true, 4, 400));
+
+            textLabel = new TextLabel(new Vector2(200, 200), 50, "TEST", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Rico"));
 
           /* playersLabel.Add(new TextLabel(new Rectangle(-500, 20, 60, 60), "Rico - 1", "WyborPostaci/Rico"));
            playersLabel[0].LoadContent(Content);
@@ -149,11 +152,11 @@ namespace TestGame
             }
 
             player.UpdatePosition();
-            
+
             /*foreach (TextLabel playerLabel in playersLabel)
                 playerLabel.Update(gameTime,"ja Jebie", new Rectangle(rico.rectangle.X + (int)playerLabel._positionOfText.X, 20, 60, 60));*/
 
-
+            textLabel.Update(new Vector2(50, 50));
             camera.Update(player);
             base.Update(gameTime);
         }
@@ -174,6 +177,7 @@ namespace TestGame
             kowalski.Draw(spriteBatch);
             player.Draw(spriteBatch);
 
+            textLabel.Draw(spriteBatch, true);
           
             spriteBatch.End();
 
