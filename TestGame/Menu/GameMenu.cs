@@ -49,7 +49,8 @@ namespace TestGame.Menu
 
             for (int i = 0; i < _menuItems.Count; i++)
             {
-                _menuItems[i].SetLabel(new TextLabel(new Rectangle(rightBorder, verticalCenter + ((i + 1) * 50), 100, 50), _menuItems[i].Title, "TextLabelBackgroundTransparent"));
+                
+                _menuItems[i].SetLabel(new TextLabel(new Vector2(rightBorder, verticalCenter + ((i + 1) * 50)),100, _menuItems[i].Title,Content.Load<SpriteFont>("JingJing"),Content.Load<Texture2D>("TextLabelBackgroundTransparent")));
             }
 
             base.Initialize();
@@ -61,11 +62,7 @@ namespace TestGame.Menu
 
             _backgroundTexture = Content.Load<Texture2D>("menu_background");
 
-            foreach (var menuItem in _menuItems)
-            {
-                menuItem.Label.LoadContent(Content);
-            }
-
+          
             base.LoadContent();
         }
 
