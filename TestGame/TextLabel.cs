@@ -10,11 +10,11 @@ namespace TestGame
         #region private area
         private Vector2 _position;
         private Rectangle _rectangle;
-        private int _scale = 1;
+        private double _scale = 1;
         private string _text;
         private SpriteFont _font;
         private Texture2D _background;
-        private Color _color;
+        private Color _color = Color.Black;
         #endregion
 
         #region public area property
@@ -60,7 +60,7 @@ namespace TestGame
             }
         }
 
-        public int Scale
+        public double Scale
         {
             get
             {
@@ -110,10 +110,10 @@ namespace TestGame
         /// <param name="text">tekst ktory bedzie wyswietlany </param>
         /// <param name="font">spriteFont który bedzie uzyty w textlabel</param>
         /// <param name="background">Textura ktora bedzie za napisem</param>
-        public TextLabel(Vector2 position, int scaleInProcent, string text, SpriteFont font, Texture2D background)
+        public TextLabel(Vector2 position, double scaleInProcent, string text, SpriteFont font, Texture2D background)
         {
             _position = position;
-            _scale = scaleInProcent / 100;
+            _scale = (scaleInProcent / 100);
             _text = text;
             _font = font;
             _background = background;
@@ -141,7 +141,8 @@ namespace TestGame
         {
             if (background)
             {
-                spriteBatch.Draw(_background, new Rectangle((int)_position.X * _scale, (int)_position.Y * _scale, _background.Width, _background.Height), Color.White);
+              
+                spriteBatch.Draw(_background, new Rectangle((int)(_position.X), (int)(_position.Y ),(int)(_background.Width * _scale), (int)(_background.Height * _scale)), Color.White);
                 spriteBatch.DrawString(_font, _text, _position, _color);
             }
             else
