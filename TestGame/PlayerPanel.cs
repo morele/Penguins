@@ -30,7 +30,7 @@ namespace TestGame
             _panelRectangle = new Rectangle((int)position.X, (int)position.Y, _panelWidth, 150);
 
             Text = new TextLabel(new Vector2(130, 60), 20, string.Empty, font, defalutAvatar);
-            Text.alignment = TextLabel.Alignment.Right;
+            Text.alignment = TextLabel.Alignment.Left;
         }
 
         public PlayerPanel(Texture2D Image, Vector2 position) : base(Image, position)

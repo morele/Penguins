@@ -26,8 +26,9 @@ namespace TestGame
             }
             set
             {
-                _alignment = value; 
-                
+                _alignment = value;
+                SetPosition();
+
             }
         }
 
@@ -193,25 +194,25 @@ namespace TestGame
             if (alignment.HasFlag(Alignment.Left))
             {
                 _textPosition.X = (_position.X - textSize.X - 2);
-                _textPosition.Y = ((_position.Y + (_background.Height * _scale)));
+                _textPosition.Y = ((_position.Y + (_background.Height * _scale)/4));
             }
 
             if (alignment.HasFlag(Alignment.Right))
             {
                 _textPosition.X = (_position.X + textSize.X + 2);
-                _textPosition.Y = ((_position.Y + (_background.Height * _scale)));
+                _textPosition.Y = ((_position.Y + (_background.Height * _scale)/4));
             }
 
             if (alignment.HasFlag(Alignment.Top))
             {
-                _textPosition.X = ((_position.X + (_background.Width * _scale)));
+                _textPosition.X = ((_position.X + (_background.Width * _scale)/4));
                 _textPosition.Y = (_position.Y - (_background.Height * _scale) - 2);
             }
 
 
             if (alignment.HasFlag(Alignment.Bottom))
             {
-                _textPosition.X = ((_position.X + (_background.Width * _scale)));
+                _textPosition.X = ((_position.X + (_background.Width * _scale)/4));
                 _textPosition.Y = (_position.Y + (_background.Height * _scale) + 2);
 
             }
