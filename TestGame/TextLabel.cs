@@ -150,7 +150,7 @@ namespace TestGame
             _position = position;
             _text = text;
             _font = font;
-            _textPosition = SetPosition();
+            //_textPosition = SetPosition();
             
             
 
@@ -193,13 +193,13 @@ namespace TestGame
             if (alignment.HasFlag(Alignment.Left))
             {
                 _textPosition.X = (_position.X - textSize.X - 2);
-                _textPosition.Y = ((_position.Y + (_background.Height * _scale)) - textSize.Y) / 2;
+                _textPosition.Y = ((_position.Y + (_background.Height * _scale)));
             }
 
             if (alignment.HasFlag(Alignment.Right))
             {
                 _textPosition.X = (_position.X + textSize.X + 2);
-                _textPosition.Y = ((_position.Y + (_background.Height * _scale)) - textSize.Y) / 2;
+                _textPosition.Y = ((_position.Y + (_background.Height * _scale)));
             }
 
             if (alignment.HasFlag(Alignment.Top))

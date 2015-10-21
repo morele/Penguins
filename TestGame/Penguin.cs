@@ -21,7 +21,7 @@ namespace TestGame
         public bool firstStart = true;
         public int scale = 8; 
         public int platformSpeed = 0;
-        private PenguinType penguinType;
+        public PenguinType penguinType;
 
         public int pinguinVertical = 0;
         public int pinguinHorizontal = 0;
@@ -87,9 +87,30 @@ namespace TestGame
 
         }
 
+        /// <summary>
+        /// Metoda sprawdza czy pingwin znajduje się platformie
+        /// </summary>
+        /// <param name="platform">Platforma do sprawdzenia</param>
+        /// <returns>True - gdy pingwin znajduje się na platformie
+        ///          False - gdy pingwin nie znajduje się na platformie</returns>
         public bool IsOnTopOf(Platform platform)
         {
-            return rectangle.Intersects(platform.PlatformRectangle);
+            int penguinWidth = rectangle.Width;
+            int penguinHeight = rectangle.Height;
+            int penguinX = rectangle.X;
+            int penguinY = rectangle.Y;
+
+            // sprawdzenie czy pingwin mieści się na platformie (w orientacji osi X)
+            if (penguinX > (platform.PlatformRectangle.X - penguinWidth) && 
+                 penguinX < (platform.PlatformRectangle.X + platform.PlatformRectangle.Width))
+
+                if((penguinY + penguinHeight) > (platform.PlatformRectangle.Y) &&
+                    (penguinY + penguinHeight) < (platform.PlatformRectangle.Y + platform.PlatformRectangle.Height/3))
+            {
+
+                    return true;
+            }
+            return false;
         }
 
         public void PutMeOn(Platform platform)
