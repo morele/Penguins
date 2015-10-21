@@ -14,7 +14,7 @@ namespace TestGame
     /// </summary>
     public class PlayerPanel : TextureManager
     {
-        public Texture2D Avatar { get; private set; }
+       
 
         public TextLabel Text { get; }
         
@@ -27,8 +27,9 @@ namespace TestGame
             _panelTexture = Image;
             _panelRectangle = new Rectangle((int)position.X, (int)position.Y, screenWidth, Const.PLAYER_PANEL_HEIGHT);
 
-            Text = new TextLabel(Vector2.Zero, 20, string.Empty, font, defalutAvatar);
+            Text = new TextLabel(new Vector2(10,15), 50, string.Empty, font, defalutAvatar);
             Text.alignment = TextLabel.Alignment.Right;
+
         }
 
         public PlayerPanel(Texture2D Image, Vector2 position) : base(Image, position)
@@ -51,8 +52,7 @@ namespace TestGame
         {
             Vector2 avatarMargin = new Vector2(10, 15);
             spriteBatch.Draw(Image, _panelRectangle, Color.White);
-            spriteBatch.Draw(Avatar, avatarMargin, new Rectangle(new Point(0), new Point(Const.PENGUIN_AVATAR_SIZE)), Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
-            Text.Draw(spriteBatch);
+            Text.Draw(spriteBatch,true);
         }
 
         /// <summary>
@@ -62,8 +62,7 @@ namespace TestGame
         public void Update(Penguin currentPenguin)
         {
             // ustawiam avatar aktywnego pingwina
-            Avatar = currentPenguin.Avatar;
-
+            Text.Background = currentPenguin.Avatar;
             switch (currentPenguin.penguinType)
             {
                 case PenguinType.RICO:
