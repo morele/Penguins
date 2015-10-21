@@ -21,7 +21,7 @@ namespace TestGame
         public bool firstStart = true;
         public int scale = 8; 
         public int platformSpeed = 0;
-        private PenguinType penguinType;
+        public PenguinType penguinType;
 
         public int pinguinVertical = 0;
         public int pinguinHorizontal = 0;
@@ -89,6 +89,11 @@ namespace TestGame
 
         public bool IsOnTopOf(Platform platform)
         {
+            int width = rectangle.Width;
+            int height = rectangle.Height;
+
+            
+
             return rectangle.Intersects(platform.PlatformRectangle);
         }
 

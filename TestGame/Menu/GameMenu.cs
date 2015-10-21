@@ -32,7 +32,7 @@ namespace TestGame.Menu
 
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
-            //graphics.IsFullScreen = true;
+
             graphics.PreferredBackBufferHeight = 768;
             graphics.PreferredBackBufferWidth = 1200;
 
