@@ -46,7 +46,7 @@ namespace TestGame
             graphics.PreferredBackBufferWidth = 1200;
 
             graphics.ApplyChanges();
-            
+
         }
 
         protected override void Initialize()
@@ -55,12 +55,14 @@ namespace TestGame
             gravitation = 5f; // wysokość wybicia przy skoku( = 5 ~ 100px)
             camera = new Camera();
 
-            // inicjalizacja panelu gracza
+            // inicjalizacja panelu gracza - podstawowy gracz - skipper
             
             _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"), 
                                            new Vector2(0, 0), 
                                            new Vector2(GraphicsDevice.Viewport.Width, 150),
-                                           Content.Load<SpriteFont>("JingJing"));
+                                           Content.Load<SpriteFont>("JingJing"),
+                                           Content.Load<Texture2D>("WyborPostaci/Skipper"));
+
 
             base.Initialize();
         }
@@ -70,11 +72,12 @@ namespace TestGame
         {
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Skipper"), Content.Load<Texture2D>("Slizg/skipper"), new Vector2(-550, 400), penguinSpeed, gravitation, PenguinType.SKIPPER);      
+            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Skipper"), Content.Load<Texture2D>("Slizg/skipper"), new Vector2(-550, 400), penguinSpeed, gravitation, PenguinType.SKIPPER);
             kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Kowalski"), Content.Load<Texture2D>("Slizg/Kowalski"), new Vector2(-450, 400), penguinSpeed, gravitation, PenguinType.KOWALSKI);
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Rico"), Content.Load<Texture2D>("Slizg/Rico"), new Vector2(-350, 400), penguinSpeed, gravitation, PenguinType.RICO);
             szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Szeregowy"), Content.Load<Texture2D>("Slizg/Szeregowy"), new Vector2(-250, 400), penguinSpeed, gravitation, PenguinType.SZEREGOWY);
-            
+
+
             //Podstawowy gracz - skipper
             player = skipper;
 
@@ -87,19 +90,19 @@ namespace TestGame
             _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Skipper"), player);
 
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy500x48"), new Vector2(-600, 600)));
-            
+
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(50, 600), true, 1, 100));
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(300, 600), true, 2, 200));
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(500, 600), true, 3, 100));
-            platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(700, 600), true, 4, 400));          
+            platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(700, 600), true, 4, 400));
 
-         
 
+            
         }
 
         protected override void UnloadContent()
         {
-            
+
         }
 
 
@@ -133,34 +136,33 @@ namespace TestGame
                 _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Szeregowy"), player);
             }
 
-         if (firstStart) FirstStart(); //metoda ustawia wszystkich graczy na pozycji początkowej
-
+            if (firstStart) FirstStart(); //metoda ustawia wszystkich graczy na pozycji początkowej
 
             foreach (Platform platform in platforms)
                 /// foreach (Penguin penguin in penguins)
-                {
+            {
                     if (player.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
-                    {
+                {
                         player.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
 
                     
                         if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
-                        {
-                            player.PutMeOn(platform);
-                        
-                            platform.Slowdown();
-                            player.platformSpeed = (int)platform.PlatformSpeed;
-                        }             
-                    }
-                    else
                     {
-                        platform.SpeedUp();
+                        player.PutMeOn(platform);
+
+                        platform.Slowdown();
+                        player.platformSpeed = (int)platform.PlatformSpeed;
                     }
-                
-                    // aktualizacja pozycji jeśli platforma ma sie poruszać
-                    platform.UpdatePosition();
-               
-               }
+                }
+                else
+                {
+                    platform.SpeedUp();
+                }
+
+                // aktualizacja pozycji jeśli platforma ma sie poruszać
+                platform.UpdatePosition();
+
+            }
 
            /* foreach (Penguin penguin in penguins)
                 penguin.UpdatePosition();*/
@@ -192,9 +194,10 @@ namespace TestGame
             #region PANEL GRACZA
 
             spriteBatch.Begin();
-       
+
             _playerPanel.Draw(spriteBatch);
-          
+
+
             spriteBatch.End();
 
             #endregion
