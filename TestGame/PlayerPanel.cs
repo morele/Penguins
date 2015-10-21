@@ -16,41 +16,54 @@ namespace TestGame
     {
         public Texture2D Avatar { get; private set; }
 
-        public TextLabel Text { get; private set; }
+        public TextLabel Text { get; }
         
         private Texture2D _panelTexture;
-        private Rectangle _panelRectangle;
+        private readonly Rectangle _panelRectangle;
 
         public PlayerPanel(Texture2D Image, Vector2 position, Vector2 size, SpriteFont font, Texture2D defalutAvatar) : base(Image, position)
         {
-            var panelWidth = (int)size.X;
+            var screenWidth = (int)size.X;
             _panelTexture = Image;
-            _panelRectangle = new Rectangle((int)position.X, (int)position.Y, panelWidth, 150);
+            _panelRectangle = new Rectangle((int)position.X, (int)position.Y, screenWidth, Const.PLAYER_PANEL_HEIGHT);
 
-            Text = new TextLabel(new Vector2(130, 60), 20, string.Empty, font, defalutAvatar);
+            Text = new TextLabel(Vector2.Zero, 20, string.Empty, font, defalutAvatar);
             Text.alignment = TextLabel.Alignment.Right;
         }
 
         public PlayerPanel(Texture2D Image, Vector2 position) : base(Image, position)
         {
             _panelTexture = Image;
-            _panelRectangle = new Rectangle((int)position.X, (int)position.Y, 1000, 150);
+            _panelRectangle = new Rectangle((int)position.X, (int)position.Y, 1000, Const.PLAYER_PANEL_HEIGHT);
         }
 
         public PlayerPanel(Texture2D Image, Vector2 position, float speedValue, float gravitation) : base(Image, position, speedValue, gravitation)
         {
+            _panelTexture = Image;
+            _panelRectangle = new Rectangle((int)position.X, (int)position.Y, 1000, Const.PLAYER_PANEL_HEIGHT);
         }
 
+        /// <summary>
+        /// Metoda wyświetla avatar aktywnego pingwina oraz jego nazwę
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch do rysowania</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
+            Vector2 avatarMargin = new Vector2(10, 15);
             spriteBatch.Draw(Image, _panelRectangle, Color.White);
-            spriteBatch.Draw(Avatar, new Vector2(10,15), new Rectangle(0,0,224,224), Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
-
+            spriteBatch.Draw(Avatar, avatarMargin, new Rectangle(new Point(0), new Point(Const.PENGUIN_AVATAR_SIZE)), Color.White, 0, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
             Text.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Metoda aktualizuje pasek gracza
+        /// </summary>
+        /// <param name="currentPenguin">Aktywny pingwin</param>
         public void Update(Penguin currentPenguin)
         {
+            // ustawiam avatar aktywnego pingwina
+            Avatar = currentPenguin.Avatar;
+
             switch (currentPenguin.penguinType)
             {
                 case PenguinType.RICO:
