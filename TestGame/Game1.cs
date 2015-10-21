@@ -57,12 +57,14 @@ namespace TestGame
             gravitation = 5f; // wysokość wybicia przy skoku( = 5 ~ 100px)
             camera = new Camera();
 
-            // inicjalizacja panelu gracza
+            // inicjalizacja panelu gracza - podstawowy gracz - skipper
             
             _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"), 
                                            new Vector2(0, 0), 
                                            new Vector2(GraphicsDevice.Viewport.Width, 150),
-                                           Content.Load<SpriteFont>("JingJing"));
+                                           Content.Load<SpriteFont>("JingJing"),
+                                           Content.Load<Texture2D>("WyborPostaci/Skipper"));
+
 
             base.Initialize();
         }
@@ -77,8 +79,6 @@ namespace TestGame
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Rico"), Content.Load<Texture2D>("Slizg/Rico"), new Vector2(-350, 400), penguinSpeed, gravitation, PenguinType.RICO);
             szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Szeregowy"), Content.Load<Texture2D>("Slizg/Szeregowy"), new Vector2(-250, 400), penguinSpeed, gravitation, PenguinType.SZEREGOWY);
 
-
-            //Podstawowy gracz - skipper
             player = skipper;
             _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Skipper"), player);
 

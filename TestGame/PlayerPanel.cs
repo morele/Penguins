@@ -23,13 +23,13 @@ namespace TestGame
 
         private int _panelWidth;
 
-        public PlayerPanel(Texture2D Image, Vector2 position, Vector2 size, SpriteFont font) : base(Image, position)
+        public PlayerPanel(Texture2D Image, Vector2 position, Vector2 size, SpriteFont font, Texture2D defalutAvatar) : base(Image, position)
         {
             _panelWidth = (int)size.X;
             _panelTexture = Image;
             _panelRectangle = new Rectangle((int)position.X, (int)position.Y, _panelWidth, 150);
 
-            Text = new TextLabel(new Vector2(130, 60), string.Empty, font);
+            Text = new TextLabel(new Vector2(130, 60), 20, string.Empty, font, defalutAvatar);
             Text.alignment = TextLabel.Alignment.Right;
         }
 
