@@ -21,13 +21,11 @@ namespace TestGame
         private Texture2D _panelTexture;
         private Rectangle _panelRectangle;
 
-        private int _panelWidth;
-
         public PlayerPanel(Texture2D Image, Vector2 position, Vector2 size, SpriteFont font, Texture2D defalutAvatar) : base(Image, position)
         {
-            _panelWidth = (int)size.X;
+            var panelWidth = (int)size.X;
             _panelTexture = Image;
-            _panelRectangle = new Rectangle((int)position.X, (int)position.Y, _panelWidth, 150);
+            _panelRectangle = new Rectangle((int)position.X, (int)position.Y, panelWidth, 150);
 
             Text = new TextLabel(new Vector2(130, 60), 20, string.Empty, font, defalutAvatar);
             Text.alignment = TextLabel.Alignment.Right;
@@ -51,10 +49,8 @@ namespace TestGame
             Text.Draw(spriteBatch);
         }
 
-        public void Update(Texture2D avatar, Penguin currentPenguin)
+        public void Update(Penguin currentPenguin)
         {
-            Avatar = avatar;
-
             switch (currentPenguin.penguinType)
             {
                 case PenguinType.RICO:

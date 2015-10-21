@@ -106,30 +106,15 @@ namespace TestGame
 
  
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D1))
-            {
-                player = skipper;
-                _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Skipper"), player);
-            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D1)) player = skipper;
+                
+            if (Keyboard.GetState().IsKeyDown(Keys.D2)) player = kowalski;
+            
+            if (Keyboard.GetState().IsKeyDown(Keys.D3)) player = rico;
+        
+            if (Keyboard.GetState().IsKeyDown(Keys.D4)) player = szeregowy;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D2))
-            {
-                player = kowalski;
-                _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Kowalski"), player);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D3))
-            {
-                player = rico;
-                _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Rico"), player);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D4))
-            {
-                player = szeregowy;
-                _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Szeregowy"), player);
-            }
-
+            _playerPanel.Update(player);
 
             while (firstStart)//pętla ustawia wszystkich graczy na pozycji początkowej
             {
