@@ -102,7 +102,7 @@ namespace TestGame
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+                GameFlow.CurrentInstance.Exit();
 
  
 
@@ -196,9 +196,9 @@ namespace TestGame
             kowalski.Draw(spriteBatch);
             player.Draw(spriteBatch);
 
-            #region PANEL GRACZA
-
             spriteBatch.End();
+
+            #region PANEL GRACZA
 
             spriteBatch.Begin();
 
