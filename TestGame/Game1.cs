@@ -26,6 +26,10 @@ namespace TestGame
         private float penguinSpeed;
         private float gravitation;
         private TextLabel _textLabel;
+
+        // panel gracza
+        private PlayerPanel _playerPanel;
+
         Vector2 FontPos;
         Vector2 labelPosition = new Vector2();
         SpriteFont Font;
@@ -50,6 +54,14 @@ namespace TestGame
             penguinSpeed = 5; //szybkość poruszania się pingwinów
             gravitation = 5f; // wysokość wybicia przy skoku( = 5 ~ 100px)
             camera = new Camera();
+
+            // inicjalizacja panelu gracza
+            
+            _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"), 
+                                           new Vector2(0, 0), 
+                                           new Vector2(GraphicsDevice.Viewport.Width, 150),
+                                           Content.Load<SpriteFont>("JingJing"));
+
             base.Initialize();
         }
 
@@ -62,14 +74,17 @@ namespace TestGame
             kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Kowalski"), Content.Load<Texture2D>("Slizg/Kowalski"), new Vector2(-450, 400), penguinSpeed, gravitation, PenguinType.KOWALSKI);
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Rico"), Content.Load<Texture2D>("Slizg/Rico"), new Vector2(-350, 400), penguinSpeed, gravitation, PenguinType.RICO);
             szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Szeregowy"), Content.Load<Texture2D>("Slizg/Szeregowy"), new Vector2(-250, 400), penguinSpeed, gravitation, PenguinType.SZEREGOWY);
+            
+            //Podstawowy gracz - skipper
+            player = skipper;
 
             penguins.Add(skipper);
             penguins.Add(kowalski);
             penguins.Add(rico);
             penguins.Add(szeregowy);
+            //penguins.Add(player);
 
-            //Podstawowy gracz - skipper
-            player = skipper;
+            _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Skipper"), player);
 
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy500x48"), new Vector2(-600, 600)));
             
@@ -78,10 +93,6 @@ namespace TestGame
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(500, 600), true, 3, 100));
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(700, 600), true, 4, 400));          
 
-           playersLabel.Add(new TextLabel(new Vector2(-550, 30), 25, "Skipper - 1", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Skipper")));         
-           playersLabel.Add(new TextLabel(new Vector2(-480, 30), 25, "Kowalski - 2", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Kowalski")));        
-           playersLabel.Add(new TextLabel(new Vector2(-410, 30), 25, "Rico - 3", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Rico")));
-           playersLabel.Add(new TextLabel(new Vector2(-340, 30), 25, "Szeregowy - 4", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Szeregowy")));
          
 
         }
@@ -95,57 +106,67 @@ namespace TestGame
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+                GameFlow.CurrentInstance.Exit();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D1)) player = ActiveAndDeactivationPlayer(true, false, false, false);
-            if (Keyboard.GetState().IsKeyDown(Keys.D2)) player = ActiveAndDeactivationPlayer(false, true, false, false);
-            if (Keyboard.GetState().IsKeyDown(Keys.D3)) player = ActiveAndDeactivationPlayer(false, false, true, false);
-            if (Keyboard.GetState().IsKeyDown(Keys.D4)) player = ActiveAndDeactivationPlayer(false, false, false, true);
+ 
 
-           
-            if (firstStart) FirstStart(); //metoda ustawia wszystkich graczy na pozycji początkowej
+            if (Keyboard.GetState().IsKeyDown(Keys.D1))
+            {
+                player = ActiveAndDeactivationPlayer(true, false, false, false);
+                _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Skipper"), player);
+            }
 
-           
-                foreach (Platform platform in platforms)
-                   // foreach (Penguin penguin in penguins)
-                    {            
-                        if (player.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
-                        {
-                            player.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
+            if (Keyboard.GetState().IsKeyDown(Keys.D2))
+            {
+                player = ActiveAndDeactivationPlayer(false, true, false, false);
+                _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Kowalski"), player);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D3))
+            {
+                player = ActiveAndDeactivationPlayer(false, false, true, false);
+                _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Rico"), player);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D4))
+            {
+                player = ActiveAndDeactivationPlayer(false, false, false, true);
+                _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Szeregowy"), player);
+            }
+
+         if (firstStart) FirstStart(); //metoda ustawia wszystkich graczy na pozycji początkowej
+
+
+            foreach (Platform platform in platforms)
+                /// foreach (Penguin penguin in penguins)
+                {
+                    if (player.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
+                    {
+                        player.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
 
                     
-                            if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
-                            {
-                                player.PutMeOn(platform);
-                        
-                                platform.Slowdown();
-                                player.platformSpeed = (int)platform.PlatformSpeed;
-                            }             
-                        }
-                        else
+                        if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
                         {
-                            platform.SpeedUp();
-                        }
-                
-                        // aktualizacja pozycji jeśli platforma ma sie poruszać
-                        platform.UpdatePosition();
-               
+                            player.PutMeOn(platform);
+                        
+                            platform.Slowdown();
+                            player.platformSpeed = (int)platform.PlatformSpeed;
+                        }             
                     }
+                    else
+                    {
+                        platform.SpeedUp();
+                    }
+                
+                    // aktualizacja pozycji jeśli platforma ma sie poruszać
+                    platform.UpdatePosition();
+               
+               }
 
            /* foreach (Penguin penguin in penguins)
                 penguin.UpdatePosition();*/
 
             player.UpdatePosition();
 
-           for(int i = 0;i < 4; i++)
-            {
-                labelPosition.X = player.rectangle.X - 550 + (i * 90);
-                labelPosition.Y = 30;
-                playersLabel[i].Update(labelPosition);
-            }
-                
-
-           // textLabel.Update(new Vector2(player.rectangle.X - 300, 50));
             camera.Update(player);
             base.Update(gameTime);
         }
@@ -166,12 +187,17 @@ namespace TestGame
             kowalski.Draw(spriteBatch);
             player.Draw(spriteBatch);
 
+            spriteBatch.End();
 
-            foreach (TextLabel textLabel in playersLabel)
-                textLabel.Draw(spriteBatch,true);
+            #region PANEL GRACZA
+
+            spriteBatch.Begin();
        
+            _playerPanel.Draw(spriteBatch);
           
             spriteBatch.End();
+
+            #endregion
 
             base.Draw(gameTime);
         }
