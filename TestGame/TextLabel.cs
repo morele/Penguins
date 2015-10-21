@@ -16,13 +16,15 @@ namespace TestGame
         private SpriteFont _font;
         private Texture2D _background;
         private Color _color = Color.Black;
-        private Alignment _alignment=Alignment.Bottom;
+        private Alignment _alignment = Alignment.Right;
+        public float Margin { get; set; } = 0;
+
         public Alignment alignment
         {
             get
             {
                 return _alignment;
-                
+
             }
             set
             {
@@ -82,12 +84,12 @@ namespace TestGame
         {
             get
             {
-                return _scale / 100;
+                return _scale;
 
             }
             set
             {
-                _scale = (value / 100);
+                _scale = (value);
 
             }
         }
@@ -119,7 +121,7 @@ namespace TestGame
 
             }
         }
-#endregion
+        #endregion
         /// <summary>
         /// Konsktruktor TextLabel wersja z tłem
         /// </summary>
@@ -136,9 +138,9 @@ namespace TestGame
             _background = background;
             _scale = (scaleInProcent / 100);
             _textPosition = SetPosition();
-            
-            
-            
+
+
+
         }
         /// <summary>
         /// konstruktor TextLabel wersja bez tła
@@ -152,8 +154,8 @@ namespace TestGame
             _text = text;
             _font = font;
             //_textPosition = SetPosition();
-            
-            
+
+
 
         }
 
@@ -166,14 +168,14 @@ namespace TestGame
         {
             if (background)
             {
-              
-                spriteBatch.Draw(_background, new Rectangle((int)(_position.X), (int)(_position.Y ),(int)(_background.Width * _scale), (int)(_background.Height * _scale)), Color.White);
+
+                spriteBatch.Draw(_background, new Rectangle((int)(_position.X), (int)(_position.Y), (int)(_background.Width * _scale), (int)(_background.Height * _scale)), Color.White);
                 spriteBatch.DrawString(_font, _text, _textPosition, _color);
             }
             else
             {
                 spriteBatch.DrawString(_font, _text, _textPosition, _color);
-               
+
             }
 
         }
@@ -193,31 +195,38 @@ namespace TestGame
 
             if (alignment.HasFlag(Alignment.Left))
             {
-                _textPosition.X = (_position.X - textSize.X - 2);
-                _textPosition.Y = ((_position.Y + (_background.Height * _scale)/4));
+                _textPosition.X = _position.X - (_background.Width * Scale) - Margin;
+                _textPosition.Y = ((_background.Height * Scale) / 2 + _position.Y);
             }
 
             if (alignment.HasFlag(Alignment.Right))
             {
-                _textPosition.X = (_position.X + textSize.X + 2);
-                _textPosition.Y = ((_position.Y + (_background.Height * _scale)/4));
+                _textPosition.X = _position.X + (_background.Width * Scale) + Margin;
+                _textPosition.Y = ((_background.Height * Scale)/2 + _position.Y);
             }
 
             if (alignment.HasFlag(Alignment.Top))
             {
-                _textPosition.X = ((_position.X + (_background.Width * _scale)/4));
-                _textPosition.Y = (_position.Y - (_background.Height * _scale) - 2);
+                _textPosition.X = ((((_background.Width * Scale)/ 2) + _position.X))-30;
+                _textPosition.Y =(( _position.Y -_background.Height*Scale))+_background.Height*Scale-15- Margin;
             }
 
 
             if (alignment.HasFlag(Alignment.Bottom))
             {
-                _textPosition.X = ((_position.X + (_background.Width * _scale)/4));
-                _textPosition.Y = (_position.Y + (_background.Height * _scale) + 2);
+                _textPosition.X = ((((_background.Width * Scale) / 2) + _position.X)) - 30;
+                _textPosition.Y = ((_position.Y + _background.Height * Scale))  + Margin;
 
             }
+            if (alignment.HasFlag(Alignment.Center))
+            {
+                _textPosition.X = ((((_background.Width * Scale) / 2) + _position.X)) - 30;
+                _textPosition.Y = ((_background.Height * Scale) / 2 + _position.Y);
+
+            }
+
             return new Vector2(_textPosition.X, _textPosition.Y);
-               
+
         }
         /// <summary>
         /// update metoda na zmiane pozycji
@@ -300,7 +309,7 @@ namespace TestGame
         /// <param name="font"></param>
         /// <param name="text"></param>
         /// <param name="color"></param>
-        public void Update(Vector2 position, SpriteFont font, string text,Color color)
+        public void Update(Vector2 position, SpriteFont font, string text, Color color)
         {
             _position = position;
             _textPosition = SetPosition();

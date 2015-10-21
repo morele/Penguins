@@ -27,8 +27,7 @@ namespace TestGame
             _panelTexture = Image;
             _panelRectangle = new Rectangle((int)position.X, (int)position.Y, screenWidth, Const.PLAYER_PANEL_HEIGHT);
 
-            //   Text = new TextLabel(Vector2.Zero, 20, string.Empty, font, defalutAvatar);
-              Text = new TextLabel(new Vector2(10,15), 50, string.Empty, font, defalutAvatar);
+            Text = new TextLabel(new Vector2(10,15), 50, string.Empty, font, defalutAvatar);
             Text.alignment = TextLabel.Alignment.Right;
 
         }
