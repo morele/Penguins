@@ -70,12 +70,31 @@ namespace TestGame
 
         protected override void LoadContent()
         {
-
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Skipper"), Content.Load<Texture2D>("Slizg/skipper"), new Vector2(-550, 400), penguinSpeed, gravitation, PenguinType.SKIPPER);
-            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Kowalski"), Content.Load<Texture2D>("Slizg/Kowalski"), new Vector2(-450, 400), penguinSpeed, gravitation, PenguinType.KOWALSKI);
-            rico = new Penguin(Content.Load<Texture2D>("Postacie/Rico"), Content.Load<Texture2D>("Slizg/Rico"), new Vector2(-350, 400), penguinSpeed, gravitation, PenguinType.RICO);
-            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Szeregowy"), Content.Load<Texture2D>("Slizg/Szeregowy"), new Vector2(-250, 400), penguinSpeed, gravitation, PenguinType.SZEREGOWY);
+
+            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Skipper"), 
+                                  Content.Load<Texture2D>("Slizg/skipper"),
+                                  Content.Load<Texture2D>("WyborPostaci/Skipper"),
+                                  new Vector2(-550, 400), penguinSpeed, 
+                                  gravitation, PenguinType.SKIPPER);
+
+            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Kowalski"), 
+                                   Content.Load<Texture2D>("Slizg/Kowalski"),
+                                   Content.Load<Texture2D>("WyborPostaci/Kowalski"),
+                                   new Vector2(-450, 400), penguinSpeed, 
+                                   gravitation, PenguinType.KOWALSKI);
+
+            rico = new Penguin(Content.Load<Texture2D>("Postacie/Rico"), 
+                               Content.Load<Texture2D>("Slizg/Rico"),
+                               Content.Load<Texture2D>("WyborPostaci/Rico"),
+                               new Vector2(-350, 400), penguinSpeed, 
+                               gravitation, PenguinType.RICO);
+
+            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Szeregowy"), 
+                                    Content.Load<Texture2D>("Slizg/Szeregowy"),
+                                    Content.Load<Texture2D>("WyborPostaci/Szeregowy"),
+                                    new Vector2(-250, 400), penguinSpeed,
+                                    gravitation, PenguinType.SZEREGOWY);
 
 
             //Podstawowy gracz - skipper
@@ -85,61 +104,53 @@ namespace TestGame
             penguins.Add(kowalski);
             penguins.Add(rico);
             penguins.Add(szeregowy);
-            //penguins.Add(player);
+            
 
-            _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Skipper"), player);
-
+            // załadowanie i ustawienie platform
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy500x48"), new Vector2(-600, 600)));
-
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(50, 600), true, 1, 100));
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(300, 600), true, 2, 200));
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(500, 600), true, 3, 100));
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(700, 600), true, 4, 400));
-
-
-            
         }
 
         protected override void UnloadContent()
         {
-
         }
-
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 GameFlow.CurrentInstance.Exit();
 
- 
-
             if (Keyboard.GetState().IsKeyDown(Keys.D1))
             {
                 player = ActiveAndDeactivationPlayer(true, false, false, false);
-                _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Skipper"), player);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D2))
             {
                 player = ActiveAndDeactivationPlayer(false, true, false, false);
-                _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Kowalski"), player);
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D3))
             {
                 player = ActiveAndDeactivationPlayer(false, false, true, false);
-                _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Rico"), player);
             }
+
             if (Keyboard.GetState().IsKeyDown(Keys.D4))
             {
                 player = ActiveAndDeactivationPlayer(false, false, false, true);
-                _playerPanel.Update(Content.Load<Texture2D>("WyborPostaci/Szeregowy"), player);
             }
 
-            if (firstStart) FirstStart(); //metoda ustawia wszystkich graczy na pozycji początkowej
+            // odświeżenie paska gracza
+            _playerPanel.Update(player);
+
+            // metoda ustawia wszystkich graczy na pozycji początkowej
+            if (firstStart) FirstStart(); 
 
             foreach (Platform platform in platforms)
-                /// foreach (Penguin penguin in penguins)
+                // foreach (Penguin penguin in penguins)
             {
                     if (player.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
                 {

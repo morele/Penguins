@@ -27,5 +27,11 @@ namespace TestGame
 
         public static int PINGUIN_SKIPPER_VERTICAL = -29;
         public static int PINGUIN_SKIPPER_HORIZONTAL = 62;
+
+        public static int PENGUIN_AVATAR_SIZE = 224;
+
+        public static int PLAYER_PANEL_HEIGHT = 150;
+
+
     }
 }

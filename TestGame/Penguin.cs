@@ -12,8 +12,11 @@ namespace TestGame
     {
         public Rectangle rectangle;
         public Vector2 speed;
+
+        public Texture2D Avatar { get; private set; }
         private Texture2D imageHorizontal;
         private Texture2D imageVertical;
+
         private Vector2 positionHorizontal;
         private Vector2 positionVertical;
 
@@ -27,10 +30,11 @@ namespace TestGame
         public int pinguinVertical = 0;
         public int pinguinHorizontal = 0;
 
-        public Penguin(Texture2D Image, Texture2D imageHorizontal, Vector2 position, float speedValue, float gravity, PenguinType penguinType) : base(Image, position, speedValue, gravity)
+        public Penguin(Texture2D Image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType) : base(Image, position, speedValue, gravity)
         {
             this.imageHorizontal = imageHorizontal;
             this.imageVertical = Image;
+            Avatar = avatar;
             this.penguinType = penguinType;
 
             //każdy typ pingwina ma róźną wysokość, wartości odpowiednio przeskalowane 
