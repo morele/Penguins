@@ -43,8 +43,8 @@ namespace TestGame
 
             graphics.ApplyChanges();
             // todo: poprawić ostatni parametr
-         //   _textLabel = new TextLabel(new Vector2(0, 0), "TextLabel", "TextLabelBackground");
-            
+            //   _textLabel = new TextLabel(new Vector2(0, 0), "TextLabel", "TextLabelBackground");
+
         }
 
         protected override void Initialize()
@@ -60,32 +60,32 @@ namespace TestGame
         {
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Skipper"), Content.Load<Texture2D>("Slizg/skipper"), new Vector2(-550, 400), penguinSpeed, gravitation, PenguinType.SKIPPER);      
+            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Skipper"), Content.Load<Texture2D>("Slizg/skipper"), new Vector2(-550, 400), penguinSpeed, gravitation, PenguinType.SKIPPER);
             kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Kowalski"), Content.Load<Texture2D>("Slizg/Kowalski"), new Vector2(-450, 400), penguinSpeed, gravitation, PenguinType.KOWALSKI);
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Rico"), Content.Load<Texture2D>("Slizg/Rico"), new Vector2(-350, 400), penguinSpeed, gravitation, PenguinType.RICO);
             szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Szeregowy"), Content.Load<Texture2D>("Slizg/Szeregowy"), new Vector2(-250, 400), penguinSpeed, gravitation, PenguinType.SZEREGOWY);
-            
+
             //Podstawowy gracz - skipper
             player = skipper;
 
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy500x48"), new Vector2(-600, 600)));
-            
+
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(50, 600), true, 1, 100));
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(300, 600), true, 2, 200));
             platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(500, 600), true, 3, 100));
-            platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(700, 600), true, 4, 400));          
+            platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(700, 600), true, 4, 400));
 
-           playersLabel.Add(new TextLabel(new Vector2(-550, 30), 25, "Skipper - 1", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Skipper")));         
-           playersLabel.Add(new TextLabel(new Vector2(-480, 30), 25, "Kowalski - 2", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Kowalski")));        
-           playersLabel.Add(new TextLabel(new Vector2(-410, 30), 25, "Rico - 3", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Rico")));
-           playersLabel.Add(new TextLabel(new Vector2(-340, 30), 25, "Szeregowy - 4", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Szeregowy")));
-         
+            playersLabel.Add(new TextLabel(new Vector2(-550, 30), 25, "Skipper - 1", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Skipper")));
+            playersLabel.Add(new TextLabel(new Vector2(-480, 30), 25, "Kowalski - 2", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Kowalski")));
+            playersLabel.Add(new TextLabel(new Vector2(-410, 30), 25, "Rico - 3", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Rico")));
+            playersLabel.Add(new TextLabel(new Vector2(-340, 30), 25, "Szeregowy - 4", Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Szeregowy")));
+
 
         }
 
         protected override void UnloadContent()
         {
-            
+
         }
 
 
@@ -99,7 +99,7 @@ namespace TestGame
             if (Keyboard.GetState().IsKeyDown(Keys.D3)) player = rico;
             if (Keyboard.GetState().IsKeyDown(Keys.D4)) player = szeregowy;
 
-            while(firstStart)//pętla ustawia wszystkich graczy na pozycji początkowej
+            while (firstStart)//pętla ustawia wszystkich graczy na pozycji początkowej
             {
                 rico.UpdatePosition();
                 kowalski.UpdatePosition();
@@ -109,9 +109,9 @@ namespace TestGame
                 foreach (Platform platform in platforms)
                 {
                     if (IsOnTopOf(rico, platform)) rico.firstStart = false;
-                    if(IsOnTopOf(kowalski, platform)) kowalski.firstStart = false;
-                    if(IsOnTopOf(skipper, platform)) skipper.firstStart = false;
-                    if( IsOnTopOf(szeregowy, platform)) szeregowy.firstStart = false;
+                    if (IsOnTopOf(kowalski, platform)) kowalski.firstStart = false;
+                    if (IsOnTopOf(skipper, platform)) skipper.firstStart = false;
+                    if (IsOnTopOf(szeregowy, platform)) szeregowy.firstStart = false;
                 }
                 if (!rico.firstStart && !kowalski.firstStart && !skipper.firstStart && !szeregowy.firstStart) firstStart = false;
             }
@@ -125,35 +125,35 @@ namespace TestGame
                     player.jump = false;
                     player.platformSpeed = (int)platform.PlatformSpeed;
                     // jak platforma sie porusza to pingwin razem z nią musi
-                    if (platform.IsMotion) 
+                    if (platform.IsMotion)
                     {
                         player.PutMeOn(platform);
-                        
+
                         platform.Slowdown();
                         player.platformSpeed = (int)platform.PlatformSpeed;
-                    }             
+                    }
                 }
                 else
                 {
                     platform.SpeedUp();
                 }
-                
+
                 // aktualizacja pozycji jeśli platforma ma sie poruszać
                 platform.UpdatePosition();
-               
+
             }
 
             player.UpdatePosition();
 
-           for(int i = 0;i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 labelPosition.X = player.rectangle.X - 550 + (i * 90);
                 labelPosition.Y = 30;
                 playersLabel[i].Update(labelPosition);
             }
-                
 
-           // textLabel.Update(new Vector2(player.rectangle.X - 300, 50));
+
+            // textLabel.Update(new Vector2(player.rectangle.X - 300, 50));
             camera.Update(player);
             base.Update(gameTime);
         }
@@ -176,9 +176,9 @@ namespace TestGame
 
 
             foreach (TextLabel textLabel in playersLabel)
-                textLabel.Draw(spriteBatch,true);
-       
-          
+                textLabel.Draw(spriteBatch, true);
+
+           // playersLabel[1].alignment = TextLabel.Alignment.Bottom;
             spriteBatch.End();
 
             base.Draw(gameTime);

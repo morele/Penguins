@@ -45,12 +45,12 @@ namespace TestGame.Menu
 
             // inicjalizacja czcionek 
             int rightBorder = GraphicsDevice.Viewport.Width - 300;
-            int verticalCenter = GraphicsDevice.Viewport.Height/2 - 200;
+            int verticalCenter = GraphicsDevice.Viewport.Height / 2 - 200;
 
             for (int i = 0; i < _menuItems.Count; i++)
             {
-                
-                _menuItems[i].SetLabel(new TextLabel(new Vector2(rightBorder, verticalCenter + ((i + 1) * 50)),100, _menuItems[i].Title,Content.Load<SpriteFont>("JingJing"),Content.Load<Texture2D>("TextLabelBackgroundTransparent")));
+
+                _menuItems[i].SetLabel(new TextLabel(new Vector2(rightBorder, verticalCenter + ((i + 1) * 50)), 100, _menuItems[i].Title, Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("TextLabelBackgroundTransparent")));
             }
 
             base.Initialize();
@@ -62,7 +62,7 @@ namespace TestGame.Menu
 
             _backgroundTexture = Content.Load<Texture2D>("menu_background");
 
-          
+
             base.LoadContent();
         }
 
@@ -82,7 +82,7 @@ namespace TestGame.Menu
         }
 
         protected override void Update(GameTime gameTime)
-        { 
+        {
             if (Keyboard.GetState().IsKeyDown(Keys.Up) && !_blockUpKey)
             {
                 _blockUpKey = true;
@@ -108,7 +108,7 @@ namespace TestGame.Menu
                     Exit();
                 }
                 else
-                { 
+                {
                     GameFlow.Run(_menuItems[_selectedMenuItemIndex].Link);
                 }
             }
@@ -131,7 +131,7 @@ namespace TestGame.Menu
 
             spriteBatch.Begin();
 
-            spriteBatch.Draw(_backgroundTexture, new Vector2(0,0), _backgroundRectangle, Color.White);
+            spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), _backgroundRectangle, Color.White);
 
             foreach (var menuItem in _menuItems)
             {
