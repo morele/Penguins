@@ -138,15 +138,18 @@ namespace TestGame
 
             if (firstStart) FirstStart(); //metoda ustawia wszystkich graczy na pozycji początkowej
 
-            foreach (Platform platform in platforms)
+
+                
+
+             foreach (Platform platform in platforms)
                 /// foreach (Penguin penguin in penguins)
             {
-                    if (player.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
+                if (player.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
                 {
-                        player.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
+                     player.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
 
                     
-                        if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
+                    if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
                     {
                         player.PutMeOn(platform);
 
@@ -164,8 +167,35 @@ namespace TestGame
 
             }
 
-           /* foreach (Penguin penguin in penguins)
-                penguin.UpdatePosition();*/
+            
+             foreach (Platform platform in platforms)
+             {
+                foreach (Penguin penguin in penguins)
+                {
+                    if (penguin.active == false)
+                    {
+                        penguin.UpdatePosition();
+                        if (penguin.IsOnTopOf(platform))
+                        {
+                            penguin.JumpStop((int)platform.PlatformSpeed);
+
+                            if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
+                            {
+                                penguin.PutMeOn(platform);
+
+                                platform.Slowdown();
+                                penguin.platformSpeed = (int)platform.PlatformSpeed;
+                            }
+                        }
+                    }
+                    
+                }
+               
+            }
+
+
+            foreach (Penguin penguin in penguins)
+                if (penguin.active == false)
 
             player.UpdatePosition();
 
@@ -245,7 +275,11 @@ namespace TestGame
                     foreach (Penguin penguin in penguins)
                         if (IsOnTopOf(penguin, platform)) penguin.firstStart = false;
 
-                if (!rico.firstStart && !kowalski.firstStart && !skipper.firstStart && !szeregowy.firstStart) firstStart = false;
+                if (!rico.firstStart && !kowalski.firstStart && !skipper.firstStart && !szeregowy.firstStart)
+                {
+                    ActiveAndDeactivationPlayer(true, false, false, false);
+                    firstStart = false;
+                }
             }
         }
     }

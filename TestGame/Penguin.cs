@@ -58,9 +58,10 @@ namespace TestGame
 
         override public void UpdatePosition()
         {
-            position += speed;
+           
             if(active)
             {
+                position += speed;
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = speedValue * 2; else
                 if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = -speedValue * 2; else
                 if (Keyboard.GetState().IsKeyDown(Keys.Right)) speed.X = speedValue; else
@@ -72,12 +73,9 @@ namespace TestGame
                     speed.Y = -gravitation;
                     jump = true;
                 }
-            }
 
-            speed.Y += 0.15f;
-
-            if(active)
-            {
+                speed.Y += 0.15f;
+            
                 positionHorizontal = positionVertical = position;
                 if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
@@ -89,6 +87,12 @@ namespace TestGame
                     Image = imageVertical;
                     rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
                 }
+            }
+            else
+            {
+                position += speed;
+                speed.Y += 0.01f;
+
             }
 
 
