@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGame", "TestGame\TestGa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberMiniGame", "..\..\Visual Studio 2015\Projects\NumberMiniGame\NumberMiniGame\NumberMiniGame.csproj", "{5DAC4244-4096-4DDB-80F6-9F82B5D9DCAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab2", "Memory\Lab2\Lab2.csproj", "{8DCFFBF6-EF11-4810-83B8-4B5B8E8145F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -21,6 +23,10 @@ Global
 		{5DAC4244-4096-4DDB-80F6-9F82B5D9DCAD}.Debug|x86.Build.0 = Debug|x86
 		{5DAC4244-4096-4DDB-80F6-9F82B5D9DCAD}.Release|x86.ActiveCfg = Release|x86
 		{5DAC4244-4096-4DDB-80F6-9F82B5D9DCAD}.Release|x86.Build.0 = Release|x86
+		{8DCFFBF6-EF11-4810-83B8-4B5B8E8145F5}.Debug|x86.ActiveCfg = Debug|x86
+		{8DCFFBF6-EF11-4810-83B8-4B5B8E8145F5}.Debug|x86.Build.0 = Debug|x86
+		{8DCFFBF6-EF11-4810-83B8-4B5B8E8145F5}.Release|x86.ActiveCfg = Release|x86
+		{8DCFFBF6-EF11-4810-83B8-4B5B8E8145F5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
