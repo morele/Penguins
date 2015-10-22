@@ -97,7 +97,7 @@ namespace TestGame
                 position += speed;
                 speed.Y += 0.15f;
 
-                positionHorizontal = positionVertical = position;
+                positionVertical = position;
                 Image = imageVertical;
                 rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
 
@@ -130,6 +130,16 @@ namespace TestGame
                     return true;
             }
             return false;
+        }
+        /// <summary>
+        /// Wykrywa kolizje z innym przedmiotem(np pingwinem)
+        /// </summary>
+        /// <param name="r1">Obszar w którym znajduje się przedmiot</param>
+        /// <returns>True - gdy pingwin zderzył się z przedmiotem 
+        ///          False - gdy pingwin nie zderzył się z przedmiotem</returns>
+        public bool Collision(Rectangle r1)
+        {
+           return rectangle.Intersects(r1);
         }
 
         public void PutMeOn(Platform platform)

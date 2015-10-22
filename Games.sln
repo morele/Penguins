@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGame", "TestGame\TestGame.csproj", "{EC8686E0-C67C-483F-BE11-CFD98B6B0DDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberMiniGame", "..\..\Visual Studio 2015\Projects\NumberMiniGame\NumberMiniGame\NumberMiniGame.csproj", "{5DAC4244-4096-4DDB-80F6-9F82B5D9DCAD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -17,10 +15,6 @@ Global
 		{EC8686E0-C67C-483F-BE11-CFD98B6B0DDF}.Debug|x86.Build.0 = Debug|x86
 		{EC8686E0-C67C-483F-BE11-CFD98B6B0DDF}.Release|x86.ActiveCfg = Release|x86
 		{EC8686E0-C67C-483F-BE11-CFD98B6B0DDF}.Release|x86.Build.0 = Release|x86
-		{5DAC4244-4096-4DDB-80F6-9F82B5D9DCAD}.Debug|x86.ActiveCfg = Debug|x86
-		{5DAC4244-4096-4DDB-80F6-9F82B5D9DCAD}.Debug|x86.Build.0 = Debug|x86
-		{5DAC4244-4096-4DDB-80F6-9F82B5D9DCAD}.Release|x86.ActiveCfg = Release|x86
-		{5DAC4244-4096-4DDB-80F6-9F82B5D9DCAD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

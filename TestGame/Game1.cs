@@ -136,11 +136,25 @@ namespace TestGame
             // odświeżenie paska gracza
             _playerPanel.Update(player);
 
+            if (skipper.Collision(kowalski.rectangle))
+            {
+                Window.Title = "KOLIZJA";
+            }
+            
 
             foreach (Platform platform in platforms)
             {
                 foreach (Penguin penguin in penguins)
                 {
+                    
+                    for(int i = 0; i < penguins.Count;i++)
+                    {
+                        if(penguin.penguinType != penguins[i].penguinType)
+                        {
+                           if(penguin.Collision(penguins[i].rectangle))  Window.Title = "KOLIZJA";
+                        }
+                    }
+
                     if (penguin.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
                     {
                         penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
