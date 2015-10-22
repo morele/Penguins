@@ -96,14 +96,15 @@ namespace TestGame
                                     new Vector2(-250, 400), penguinSpeed,
                                     gravitation, PenguinType.SZEREGOWY);
 
-
-            //Podstawowy gracz - skipper
-            player = skipper;
-
             penguins.Add(skipper);
             penguins.Add(kowalski);
             penguins.Add(rico);
             penguins.Add(szeregowy);
+
+            //Podstawowy gracz - skipper
+            player = ActiveAndDeactivationPlayer(true, false, false, false);
+
+            
 
 
             // załadowanie i ustawienie platform
@@ -123,92 +124,50 @@ namespace TestGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 GameFlow.CurrentInstance.Exit();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D1))
-            {
-                player = ActiveAndDeactivationPlayer(true, false, false, false);
-            }
+            // metoda ustawia wszystkich graczy na pozycji początkowej
+            if (firstStart) FirstStart();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D2))
-            {
-                player = ActiveAndDeactivationPlayer(false, true, false, false);
-            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D1)) player = ActiveAndDeactivationPlayer(true, false, false, false);
+            if (Keyboard.GetState().IsKeyDown(Keys.D2)) player = ActiveAndDeactivationPlayer(false, true, false, false);
+            if (Keyboard.GetState().IsKeyDown(Keys.D3)) player = ActiveAndDeactivationPlayer(false, false, true, false);
+            if (Keyboard.GetState().IsKeyDown(Keys.D4)) player = ActiveAndDeactivationPlayer(false, false, false, true);
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D3))
-            {
-                player = ActiveAndDeactivationPlayer(false, false, true, false);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.D4))
-            {
-                player = ActiveAndDeactivationPlayer(false, false, false, true);
-            }
 
             // odświeżenie paska gracza
             _playerPanel.Update(player);
 
-            // metoda ustawia wszystkich graczy na pozycji początkowej
-            if (firstStart) FirstStart(); 
-
-
-                
 
             foreach (Platform platform in platforms)
-                // foreach (Penguin penguin in penguins)
             {
-                    if (player.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
-                {
-                        player.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
-
-                    
-                        if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
-                    {
-                        player.PutMeOn(platform);
-
-                        platform.Slowdown();
-                        player.platformSpeed = (int)platform.PlatformSpeed;
-                    }
-                }
-                else
-                {
-                    platform.SpeedUp();
-                }
-
-                // aktualizacja pozycji jeśli platforma ma sie poruszać
-                platform.UpdatePosition();
-
-            }
-
-            
-         /*    foreach (Platform platform in platforms)
-             {
                 foreach (Penguin penguin in penguins)
                 {
-                    if (penguin.active == false)
+                    if (penguin.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
                     {
-                       // penguin.UpdatePosition();
-                        if (penguin.IsOnTopOf(platform))
+                        penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
+
+                        if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
                         {
-                            penguin.JumpStop((int)platform.PlatformSpeed);
+                            penguin.PutMeOn(platform);
 
-                            if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
-                            {
-                                penguin.PutMeOn(platform);
-
-                                platform.Slowdown();
-                                penguin.platformSpeed = (int)platform.PlatformSpeed;
-            }
+                            if (penguin.active) platform.Slowdown();
+                            penguin.platformSpeed = (int)platform.PlatformSpeed;
                         }
+                    }
+                    else
+                    {
+                        if (penguin.active) platform.SpeedUp();
                     }
 
                 }
-               
+                // aktualizacja pozycji jeśli platforma ma sie poruszać
+                platform.UpdatePosition();
             }
+           
 
+           
+              foreach (Penguin penguin in penguins)
+                  penguin.UpdatePosition();
 
-            foreach (Penguin penguin in penguins)
-                if (penguin.active == false)*/
-
-            player.UpdatePosition();
 
             camera.Update(player);
             base.Update(gameTime);
@@ -228,7 +187,6 @@ namespace TestGame
             szeregowy.Draw(spriteBatch);
             skipper.Draw(spriteBatch);
             kowalski.Draw(spriteBatch);
-            player.Draw(spriteBatch);
 
             spriteBatch.End();
 
@@ -288,7 +246,6 @@ namespace TestGame
 
                 if (!rico.firstStart && !kowalski.firstStart && !skipper.firstStart && !szeregowy.firstStart)
                 {
-                  //  ActiveAndDeactivationPlayer(true, false, false, false);
                     firstStart = false;
                 }
             }

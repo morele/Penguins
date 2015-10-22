@@ -95,7 +95,11 @@ namespace TestGame
             else
             {
                 position += speed;
-                speed.Y += 0.01f;
+                speed.Y += 0.15f;
+
+                positionHorizontal = positionVertical = position;
+                Image = imageVertical;
+                rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
 
             }
 
