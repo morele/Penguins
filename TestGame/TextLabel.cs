@@ -17,7 +17,7 @@ namespace TestGame
         private Texture2D _background;
         private Color _color = Color.Black;
         private Alignment _alignment = Alignment.Right;
-        public float Margin { get; set; } = 0;
+        public float Margin { get; set; }
 
         public Alignment alignment
         {
@@ -138,7 +138,7 @@ namespace TestGame
             _background = background;
             _scale = (scaleInProcent / 100);
             _textPosition = SetPosition();
-
+            Margin = 0;
 
 
         }
@@ -154,7 +154,7 @@ namespace TestGame
             _text = text;
             _font = font;
             //_textPosition = SetPosition();
-
+            Margin = 0;
 
 
         }
