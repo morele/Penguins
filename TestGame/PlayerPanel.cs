@@ -14,9 +14,9 @@ namespace TestGame
     /// </summary>
     public class PlayerPanel : TextureManager
     {
-       
 
-        public TextLabel Text { get; }
+
+        public TextLabel Text { get; set; }
         
         private Texture2D _panelTexture;
         private readonly Rectangle _panelRectangle;
