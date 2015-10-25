@@ -26,7 +26,7 @@ namespace TestGame
         private float penguinSpeed;
         private float gravitation;
         private TextLabel _textLabel;
-
+        private int CollisionCount = -1;
         // panel gracza
         private PlayerPanel _playerPanel;
 
@@ -136,24 +136,35 @@ namespace TestGame
             // odświeżenie paska gracza
             _playerPanel.Update(player);
 
-            if (skipper.Collision(kowalski.rectangle))
+          /*  if (skipper.Collision(kowalski.rectangle))
             {
                 Window.Title = "KOLIZJA";
-            }
-            
+            }*/
 
+            int i;
             foreach (Platform platform in platforms)
             {
                 foreach (Penguin penguin in penguins)
                 {
-                    
-                    for(int i = 0; i < penguins.Count;i++)
+                                       
+                  /*  for(i = 0; i < penguins.Count;i++)
                     {
                         if(penguin.penguinType != penguins[i].penguinType)
                         {
-                           if(penguin.Collision(penguins[i].rectangle))  Window.Title = "KOLIZJA";
+                            if (penguin.Collision(penguins[i].rectangle))
+                            {
+                                Window.Title = "KOLIZJA";
+                                CollisionCount = i;
+                                break;
+                            }
+                           
                         }
                     }
+
+                    if(CollisionCount != -1)
+                    {
+
+                    }*/
 
                     if (penguin.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
                     {

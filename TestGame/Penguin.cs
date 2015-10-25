@@ -139,7 +139,13 @@ namespace TestGame
         ///          False - gdy pingwin nie zderzył się z przedmiotem</returns>
         public bool Collision(Rectangle r1)
         {
-           return rectangle.Intersects(r1);
+
+            if(rectangle.Y >= r1.Y && (rectangle.Y + rectangle.Height) <= (r1.Y + r1.Height))
+            { }
+            if ((rectangle.X + rectangle.Width) >= (r1.X) && (rectangle.X + rectangle.Width) < r1.X + r1.Width)
+            { return true; }
+            return false;
+           // return rectangle.Intersects(r1);
         }
 
         public void PutMeOn(Platform platform)
