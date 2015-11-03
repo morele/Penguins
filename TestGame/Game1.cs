@@ -52,7 +52,7 @@ namespace TestGame
         protected override void Initialize()
         {
             penguinSpeed = 5; //szybkość poruszania się pingwinów
-            gravitation = 5f; // wysokość wybicia przy skoku( = 5 ~ 100px)
+            gravitation = 8f; // wysokość wybicia przy skoku( = 5 ~ 100px)
             camera = new Camera();
 
             // inicjalizacja panelu gracza - podstawowy gracz - skipper
@@ -136,35 +136,17 @@ namespace TestGame
             // odświeżenie paska gracza
             _playerPanel.Update(player);
 
-          /*  if (skipper.Collision(kowalski.rectangle))
-            {
-                Window.Title = "KOLIZJA";
-            }*/
+
 
             int i;
             foreach (Platform platform in platforms)
             {
                 foreach (Penguin penguin in penguins)
                 {
-                                       
-                  /*  for(i = 0; i < penguins.Count;i++)
-                    {
-                        if(penguin.penguinType != penguins[i].penguinType)
-                        {
-                            if (penguin.Collision(penguins[i].rectangle))
-                            {
-                                Window.Title = "KOLIZJA";
-                                CollisionCount = i;
-                                break;
-                            }
-                           
-                        }
-                    }
 
-                    if(CollisionCount != -1)
-                    {
-
-                    }*/
+                    for(i = 0; i < penguins.Count; i++)//sprawdza kolizje z innymi pingwinami i blokuje w przypadku wykrycia
+                        if (penguins[i].penguinType != penguin.penguinType) penguins[i].CollisionPenguin(penguin.rectangle);
+                    
 
                     if (penguin.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
                     {
@@ -172,7 +154,7 @@ namespace TestGame
 
                         if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
                         {
-                            penguin.PutMeOn(platform);
+                            penguin.PutMeOn(platform.PlatformRectangle);
 
                             if (penguin.active) platform.Slowdown();
                             penguin.platformSpeed = (int)platform.PlatformSpeed;

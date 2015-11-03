@@ -12,6 +12,7 @@ namespace TestGame
     {
         public Rectangle rectangle;
         public Vector2 speed;
+        private float collision = 1;
 
         public Texture2D Avatar { get; private set; }
         private Texture2D imageHorizontal;
@@ -19,10 +20,16 @@ namespace TestGame
 
         private Vector2 positionHorizontal;
         private Vector2 positionVertical;
+        private Vector2 tmpPosition = new Vector2();
 
         public bool jump = true;
         public bool firstStart = true;
         public bool active = true;
+        private bool activeDirection = true; // true = prawo, false = lewo
+        private bool jumpDirection = false;
+        public bool blockDircetionLEFT = false;
+        public bool blockDirectionRIGHT = false;
+        private bool block = false;
         public int scale = 8; 
         public int platformSpeed = 0;
         public PenguinType penguinType;
@@ -66,16 +73,29 @@ namespace TestGame
             if(active)
             {
                 position += speed;
-                if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = speedValue * 2; else
-                if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = -speedValue * 2; else
-                if (Keyboard.GetState().IsKeyDown(Keys.Right)) speed.X = speedValue; else
-                if (Keyboard.GetState().IsKeyDown(Keys.Left)) speed.X = -speedValue; else speed.X = 0;
+                if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = speedValue * 2;
+                else
+                if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = -speedValue * 2;
+                else
+                if (Keyboard.GetState().IsKeyDown(Keys.Right) && !blockDirectionRIGHT)
+                {
+                    speed.X = speedValue;
+                    activeDirection = true;
+                }
+                else
+                if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDircetionLEFT)
+                {
+                    speed.X = -speedValue;
+                    activeDirection = false;
+                }
+                else speed.X = 0;
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false)
                 {
                     position.Y -= 10;
                     speed.Y = -gravitation;
                     jump = true;
+                    jumpDirection = true;
                 }
 
                 speed.Y += 0.15f;
@@ -94,6 +114,7 @@ namespace TestGame
             }
             else
             {
+                speed.X = 0;
                 position += speed;
                 speed.Y += 0.15f;
 
@@ -102,7 +123,7 @@ namespace TestGame
                 rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
 
             }
-
+            
 
         }
 
@@ -131,36 +152,125 @@ namespace TestGame
             }
             return false;
         }
-        /// <summary>
-        /// Wykrywa kolizje z innym przedmiotem(np pingwinem)
-        /// </summary>
-        /// <param name="r1">Obszar w którym znajduje się przedmiot</param>
-        /// <returns>True - gdy pingwin zderzył się z przedmiotem 
-        ///          False - gdy pingwin nie zderzył się z przedmiotem</returns>
-        public bool Collision(Rectangle r1)
+       /// <summary>
+       /// Wykrywa kolizje po prawej i lewej stronie pingwina
+       /// </summary>
+       /// <param name="r1"></param>
+       /// <returns></returns>
+        private bool CollisionRL(Rectangle r1)
         {
 
-            if(rectangle.Y >= r1.Y && (rectangle.Y + rectangle.Height) <= (r1.Y + r1.Height))
-            { }
-            if ((rectangle.X + rectangle.Width) >= (r1.X) && (rectangle.X + rectangle.Width) < r1.X + r1.Width)
-            { return true; }
+            if ((rectangle.X + rectangle.Width) >= r1.X && 
+                (rectangle.X + rectangle.Width) <= (r1.X + r1.Width) &&
+                (rectangle.Y + rectangle.Height) >= r1.Y && 
+                (rectangle.Y + rectangle.Height) <= (r1.Y + r1.Height)) return true;
+
+            if (rectangle.X <= (r1.X + r1.Width) && 
+                rectangle.X >= r1.X &&
+               (rectangle.Y + rectangle.Height) >= r1.Y && 
+               (rectangle.Y + rectangle.Height) <= (r1.Y + r1.Height)) return true;
+
             return false;
-           // return rectangle.Intersects(r1);
         }
 
-        public void PutMeOn(Platform platform)
+        /// <summary>
+        /// Wykrywa kolizcje z dołu pingwina (w momencie kiedy jeden na drugiego wskoczy)
+        /// </summary>
+        /// <param name="r1"></param>
+        /// <returns></returns>
+        private bool CollisionUD(Rectangle r1)
         {
-            position.Y = platform.PlatformRectangle.Y;
+            if (CollisionRL(r1) && (rectangle.Y + rectangle.Height) >= r1.Y && (rectangle.Y + rectangle.Height) <= r1.Y + 10) return true;
+            
+            return false;
+        }
+        ///
+        /// <summary>
+        /// Wykrywa kolizje z innym pingwinem i blokuje w przypadku wykrycia
+        /// </summary>
+        /// <param name="r1">Obszar w którym znajduje się pingwin</param>
+        /// <returns>True - gdy pingwin zderzył się z pingwinem
+        ///          False - gdy pingwin nie zderzył się z pingwinem</returns>
+        public bool CollisionPenguin(Rectangle r1)
+        {
+            bool colRL, colUD;
+
+            
+            colRL = CollisionRL(r1); //wykrywa kolizje po lewej i prawej stronie pingwina
+            colUD = CollisionUD(r1); //wykrywa kolizje pod pingwinem 
+
+            if(colUD) colRL = false; //jeśli pingwin lata to nie ma kolizji na lewo i prawo
+            if(colRL && block == false) 
+            {
+                tmpPosition.X = rectangle.X; //zapamietaj aktualna pozycje 
+                block = true;
+
+                if (activeDirection == true) //prawo
+                {
+                    blockDirectionRIGHT = true;
+                    blockDircetionLEFT = false;
+                }
+                if (activeDirection == false) //lewo
+                {
+                    blockDircetionLEFT = true;
+                    blockDirectionRIGHT = false;
+                }
+
+            }
+
+            if (colUD) //jak lata i ma kolizje to zatrzymaj
+            {
+                JumpStop(0);
+                PutMeOn(r1.Y - 1);
+            }
+            
+            if (activeDirection == true && block)//jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie 
+            {
+                if((rectangle.X) > tmpPosition.X + speedValue)
+                {
+                    block = false;
+                }
+            }
+            if (activeDirection == false && block)//jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie 
+            {
+                if ((rectangle.X) < tmpPosition.X - speedValue)
+                {
+                    block = false;
+                }
+            }
+            if(!block)//jak nie zablokowane to odblokuj oba kierunki 
+            {
+                blockDircetionLEFT = blockDirectionRIGHT = false;
+            }
+
+            if (colRL || colUD) return true;
+
+            return false;
+        }
+
+        public void PutMeOn(Rectangle platform)
+        {
+            position.Y = platform.Y;
+        }
+        public void PutMeOn(float newPosition)
+        {
+            position.Y = newPosition;
         }
         public void JumpStop(int platformSpeed)
         {
             speed.Y = 0f;
             jump = false;
             this.platformSpeed = platformSpeed;
+            
         }
         override public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Image, rectangle, Color.White);
+        }
+
+        public override string ToString()
+        {
+            return penguinType.ToString();
         }
     }
 }
