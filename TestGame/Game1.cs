@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using TestGame.Menu;
+using TestGame.Scene;
 
 namespace TestGame
 {
@@ -22,19 +23,16 @@ namespace TestGame
         private List<Platform> platforms = new List<Platform>();
         private List<TextLabel> playersLabel = new List<TextLabel>();
         private List<Penguin> penguins = new List<Penguin>();
-        private TextLabel textLabel;
         private float penguinSpeed;
         private float gravitation;
         private TextLabel _textLabel;
-        private int CollisionCount = -1;
         // panel gracza
         private PlayerPanel _playerPanel;
-
-        Vector2 FontPos;
-        Vector2 labelPosition = new Vector2();
-        SpriteFont Font;
         Camera camera;
         private bool firstStart = true;
+
+        Scene1 scene1;
+
         public Game1()
         {
 
@@ -46,23 +44,27 @@ namespace TestGame
             graphics.PreferredBackBufferWidth = 1200;
 
             graphics.ApplyChanges();
+           // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
 
         }
 
         protected override void Initialize()
         {
             penguinSpeed = 5; //szybkość poruszania się pingwinów
-            gravitation = 8f; // wysokość wybicia przy skoku( = 5 ~ 100px)
+            gravitation = 7f; // wysokość wybicia przy skoku( = 5 ~ 100px)
             camera = new Camera();
 
-            // inicjalizacja panelu gracza - podstawowy gracz - skipper
-            
+            scene1 = new Scene1(Content, camera);
+
+
+            // inicjalizacja panelu gracza - podstawowy gracz - skipper           
             _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"), 
                                            new Vector2(0, 0), 
                                            new Vector2(GraphicsDevice.Viewport.Width, 150),
                                            Content.Load<SpriteFont>("JingJing"),
                                            Content.Load<Texture2D>("WyborPostaci/Skipper"));
 
+            
 
             base.Initialize();
         }
@@ -104,7 +106,7 @@ namespace TestGame
             //Podstawowy gracz - skipper
             player = ActiveAndDeactivationPlayer(true, false, false, false);
 
-            
+            scene1.LoadContent(penguins, _playerPanel, player);
 
 
             // załadowanie i ustawienie platform
@@ -123,60 +125,64 @@ namespace TestGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 GameFlow.CurrentInstance.Exit();
+            var deltaTime = 1/gameTime.ElapsedGameTime.TotalSeconds;
 
             // metoda ustawia wszystkich graczy na pozycji początkowej
-            if (firstStart) FirstStart();
+            /*  if (firstStart) FirstStart();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.D1)) player = ActiveAndDeactivationPlayer(true, false, false, false);
-            if (Keyboard.GetState().IsKeyDown(Keys.D2)) player = ActiveAndDeactivationPlayer(false, true, false, false);
-            if (Keyboard.GetState().IsKeyDown(Keys.D3)) player = ActiveAndDeactivationPlayer(false, false, true, false);
-            if (Keyboard.GetState().IsKeyDown(Keys.D4)) player = ActiveAndDeactivationPlayer(false, false, false, true);
-
-
-            // odświeżenie paska gracza
-            _playerPanel.Update(player);
+              if (Keyboard.GetState().IsKeyDown(Keys.D1)) player = ActiveAndDeactivationPlayer(true, false, false, false);
+              if (Keyboard.GetState().IsKeyDown(Keys.D2)) player = ActiveAndDeactivationPlayer(false, true, false, false);
+              if (Keyboard.GetState().IsKeyDown(Keys.D3)) player = ActiveAndDeactivationPlayer(false, false, true, false);
+              if (Keyboard.GetState().IsKeyDown(Keys.D4)) player = ActiveAndDeactivationPlayer(false, false, false, true);
 
 
+              // odświeżenie paska gracza
+              _playerPanel.Update(player);
 
-            int i;
-            foreach (Platform platform in platforms)
-            {
+
+
+              int i;
+              foreach (Platform platform in platforms)
+              {
+                  foreach (Penguin penguin in penguins)
+                  {
+
+                      for(i = 0; i < penguins.Count; i++)//sprawdza kolizje z innymi pingwinami i blokuje w przypadku wykrycia
+                          if (penguins[i].penguinType != penguin.penguinType) penguins[i].CollisionPenguin(penguin.rectangle);
+
+
+                      if (penguin.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
+                      {
+                          penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
+
+                          if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
+                          {
+                              penguin.PutMeOn(platform.PlatformRectangle);
+
+                              if (penguin.active) platform.Slowdown();
+                              penguin.platformSpeed = (int)platform.PlatformSpeed;
+                          }
+                      }
+                      else
+                      {
+                          if (penguin.active) platform.SpeedUp();
+                      }
+
+                  }
+                  // aktualizacja pozycji jeśli platforma ma sie poruszać
+                  platform.UpdatePosition();
+              }
+
+
+
                 foreach (Penguin penguin in penguins)
-                {
-
-                    for(i = 0; i < penguins.Count; i++)//sprawdza kolizje z innymi pingwinami i blokuje w przypadku wykrycia
-                        if (penguins[i].penguinType != penguin.penguinType) penguins[i].CollisionPenguin(penguin.rectangle);
-                    
-
-                    if (penguin.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
-                    {
-                        penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
-
-                        if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
-                        {
-                            penguin.PutMeOn(platform.PlatformRectangle);
-
-                            if (penguin.active) platform.Slowdown();
-                            penguin.platformSpeed = (int)platform.PlatformSpeed;
-                        }
-                    }
-                    else
-                    {
-                        if (penguin.active) platform.SpeedUp();
-                    }
-
-                }
-                // aktualizacja pozycji jeśli platforma ma sie poruszać
-                platform.UpdatePosition();
-            }
-           
-
-           
-              foreach (Penguin penguin in penguins)
-                  penguin.UpdatePosition();
+                    penguin.UpdatePosition();
 
 
-            camera.Update(player);
+              camera.Update(player);*/
+
+            scene1.UpdatePosition();
+
             base.Update(gameTime);
         }
 
@@ -187,13 +193,15 @@ namespace TestGame
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
 
 
-            foreach (Platform platform in platforms)
-                platform.Draw(spriteBatch);
+            /* foreach (Platform platform in platforms)
+                 platform.Draw(spriteBatch);
 
-            rico.Draw(spriteBatch);
-            szeregowy.Draw(spriteBatch);
-            skipper.Draw(spriteBatch);
-            kowalski.Draw(spriteBatch);
+             rico.Draw(spriteBatch);
+             szeregowy.Draw(spriteBatch);
+             skipper.Draw(spriteBatch);
+             kowalski.Draw(spriteBatch);*/
+
+            scene1.Draw(spriteBatch);
 
             spriteBatch.End();
 

@@ -20,4 +20,10 @@ namespace TestGame
         KOWALSKI = 3,
         SZEREGOWY = 4
     }
+    public enum PlatformType
+    {
+        FLOOR = 1,
+        MONEY = 2,
+
+    }
 }

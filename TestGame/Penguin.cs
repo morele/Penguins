@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
@@ -26,13 +27,13 @@ namespace TestGame
         public bool firstStart = true;
         public bool active = true;
         private bool activeDirection = true; // true = prawo, false = lewo
-        private bool jumpDirection = false;
-        public bool blockDircetionLEFT = false;
-        public bool blockDirectionRIGHT = false;
+        private bool blockDircetionLEFT = false;
+        private bool blockDirectionRIGHT = false;
         private bool block = false;
         public int scale = 8; 
         public int platformSpeed = 0;
         public PenguinType penguinType;
+        public List<Platform> platforms = new List<Platform>();
 
         public int pinguinVertical = 0;
         public int pinguinHorizontal = 0;
@@ -72,6 +73,18 @@ namespace TestGame
            
             if(active)
             {
+
+                if (Keyboard.GetState().IsKeyDown(Keys.D5) && penguinType == PenguinType.RICO)
+                {
+                    if(platforms.Count > 0)
+                    {
+                        platforms[0].ResetMoney(rectangle); //ustawia monete względem pingwina i resetuje parametry lotu monety
+                        platforms[0].initJump = true;//inicjalizuje lot monety 
+                        platforms[0].active = true; //aktywuje monete by mogla być rysowana
+                        platforms.RemoveAt(0); //usuwa monete z pingwina
+                    }
+                }
+
                 position += speed;
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = speedValue * 2;
                 else
@@ -95,7 +108,6 @@ namespace TestGame
                     position.Y -= 10;
                     speed.Y = -gravitation;
                     jump = true;
-                    jumpDirection = true;
                 }
 
                 speed.Y += 0.15f;
@@ -111,6 +123,8 @@ namespace TestGame
                     Image = imageVertical;
                     rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
                 }
+
+
             }
             else
             {
@@ -123,8 +137,34 @@ namespace TestGame
                 rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
 
             }
-            
 
+            if(platforms.Count > 0)
+            if (platforms[0].platformType == PlatformType.MONEY )
+            {
+                    if (platforms[0].jump == false && platforms[0].initJump == false)
+                    {
+                        platforms[0].position.X = rectangle.X;
+                        platforms[0].position.Y = rectangle.Y;
+                    }
+                    
+            }
+
+        }
+
+        /// <summary>
+        /// Wykrywa kolizje z podana platforma
+        /// </summary>
+        /// <param name="r1"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public bool CollisionPlatform(Platform r1, PlatformType type)
+        {
+            if (rectangle.Intersects(r1.PlatformRectangle) && r1.platformType == type && penguinType == PenguinType.RICO)
+            {
+                platforms.Add(r1);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -145,11 +185,11 @@ namespace TestGame
                  penguinX < (platform.PlatformRectangle.X + platform.PlatformRectangle.Width))
 
                 if((penguinY + penguinHeight) > (platform.PlatformRectangle.Y) &&
-                    (penguinY + penguinHeight) < (platform.PlatformRectangle.Y + platform.PlatformRectangle.Height/3))
-            {
+                   (penguinY + penguinHeight) < (platform.PlatformRectangle.Y + platform.PlatformRectangle.Height))
+                {
 
-                    return true;
-            }
+                        return true;
+                }
             return false;
         }
        /// <summary>

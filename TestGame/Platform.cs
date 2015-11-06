@@ -11,7 +11,7 @@ namespace TestGame
     /// </summary>
     public class Platform : TextureManager
     {
-        public Rectangle PlatformRectangle { get; private set; }
+        public Rectangle PlatformRectangle;
 
         // flaga informująca o tym czy platforma jest w ruchu
         public bool IsMotion { get; private set; }
@@ -31,6 +31,15 @@ namespace TestGame
         // aktualna pozycja platformy
         private int _currentPlatformPosition;
 
+        //typ platformy
+        public PlatformType platformType;
+
+        //Czy platforma jest aktywna
+        public bool active = true;
+        public bool initJump = false;
+        public bool jump = false;
+        public Vector2 speed = new Vector2(0);
+        public float angleFall = 10f;
         /// <summary>
         /// Tworzy obiekt platformy
         /// </summary>
@@ -39,7 +48,7 @@ namespace TestGame
         /// <param name="isMotion">Flaga ustawiająca poruszanie się platformy</param>
         /// <param name="maxSpeed">Maksymalna prędkość platformy</param>
         /// <param name="maxScope">Maksymalny zasięg platformy (względem początkowego położenia)</param>
-        public Platform(Texture2D Image, Vector2 position, bool isMotion = false, float maxSpeed = 0, float maxScope = 0) : base(Image, position)
+        public Platform(Texture2D Image, Vector2 position, bool isMotion = false, float maxSpeed = 0, float maxScope = 0, PlatformType platformType = PlatformType.FLOOR) : base(Image, position)
         {
             // domyślnie platforma będzie na dole, czyli ruch będzie w górę
             Direction = Direction.Up;
@@ -51,7 +60,9 @@ namespace TestGame
             _maxPlatformScope = maxScope;
 
             IsMotion = isMotion;
-  
+
+            this.platformType = platformType;
+
             PlatformRectangle = new Rectangle((int)position.X, (int)position.Y, this.Image.Width, this.Image.Height);
         }
 
@@ -96,12 +107,41 @@ namespace TestGame
 
                 // aktualizacja sprite'a
                 PlatformRectangle = new Rectangle((int)position.X, (int)position.Y, Image.Width, Image.Height);
-            }            
+            }
+            if (platformType == PlatformType.MONEY)
+            {
+                if (jump)
+                {
+
+                    speed.Y += 0.15f;
+                    speed.X += angleFall;
+                    if (angleFall > 0.01) angleFall -= 0.2f;
+                    position += speed;
+
+                }
+                if (initJump)
+                {
+                    position.Y -= 30;
+                    position.X += 60;
+                    initJump = false;
+                    jump = true;
+                }
+
+                PlatformRectangle = new Rectangle((int)position.X, (int)position.Y, Image.Width, Image.Height);
+            }
+            
+
+            
+
         }
 
+        public bool CollisionPlatform(Rectangle r1)
+        {
+            return PlatformRectangle.Intersects(r1);
+        }
         override public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Image, PlatformRectangle, Color.White);
+            if(active) spriteBatch.Draw(Image, PlatformRectangle, Color.White);
         }
 
 
@@ -121,6 +161,14 @@ namespace TestGame
         {
             if(PlatformSpeed <= _maxPlatformSpeed)
                 PlatformSpeed++;
+        }
+        public void ResetMoney(Rectangle rectangle)
+        {
+            position.X = rectangle.X;
+            position.Y = rectangle.Y;
+            speed.X = 0;
+            speed.Y = 0;
+            angleFall = 1f;
         }
                 
     }

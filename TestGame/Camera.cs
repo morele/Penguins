@@ -7,7 +7,7 @@ using System.Text;
 
 namespace TestGame
 {
-    class Camera
+    public class Camera
     {
         public Matrix transform;
         public Vector2 centre;

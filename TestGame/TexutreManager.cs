@@ -8,7 +8,7 @@ namespace TestGame
 {
     abstract public class TextureManager
     {
-        protected Vector2 position; // aktualna pozycja textury
+        public Vector2 position; // aktualna pozycja textury
         protected Texture2D Image; //tekstrua 
         protected float speedValue; //szybkość poruszania się 
         protected float gravitation; //wysokość wybicia przy skoku
