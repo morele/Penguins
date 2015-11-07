@@ -91,7 +91,10 @@ namespace NumberMiniGame.Minigame
             _oldstate = _currentState;
             _currentState = Mouse.GetState();
 
-
+            if(GamePass)
+            {
+                return;
+            }
             if (_couter < 4)
             {
                 if (duration <= delay)

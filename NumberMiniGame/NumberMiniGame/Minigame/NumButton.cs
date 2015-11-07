@@ -21,7 +21,7 @@ namespace NumberMiniGame.Minigame
         public string _number { get; set; }
 
         private readonly SpriteFont _font;
-        public bool visibility { get; set; } = false;
+        public bool visibility { get; set; }
 
         private bool _mark = false;
         public bool mark
@@ -30,11 +30,11 @@ namespace NumberMiniGame.Minigame
             set { _mark = value; }
         }
 
-        public Color color { get; set; } = Color.White;
+        public Color color { get; set; } 
 
-        public float duration { get; set; } = 0;
+        public float duration { get; set; } 
 
-        public float delay { get; set; } = 200;
+        public float delay { get; set; } 
 
 
         public NumButton(Texture2D texture, SpriteFont font, Vector2 position, string number)
@@ -44,6 +44,10 @@ namespace NumberMiniGame.Minigame
             Rectangle = new Rectangle((int)_position.X, (int)_position.Y, _texture.Width, _texture.Height);
             _number = number;
             _font = font;
+            color=Color.White;
+            duration=0;
+            delay=200;
+            visibility=false;
         }
 
         public void Update(GameTime gameTime)
