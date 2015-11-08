@@ -19,7 +19,7 @@ namespace NumberMiniGame.Minigame
         private float duration = 0;
         private float delay = 1000;
 
-      
+
 
         private MouseState _oldstate;
         private MouseState _currentState;
@@ -33,12 +33,12 @@ namespace NumberMiniGame.Minigame
         private TextLabel _NumPanel;
 
         /// <summary>
-        /// jezelu gamePass jest na true to koncz gre
+        /// jezelu gamePass jest na true to koncz gre tylko get
         /// </summary>
         public bool GamePass
         {
             get;
-            set;
+            private set;
         }
 
 
@@ -53,14 +53,14 @@ namespace NumberMiniGame.Minigame
             GamePass = false;
 
         }
-        
+
         private void LoadContent()
         {
 
-            _NumPanel=new TextLabel(new Vector2(100, 50),50,String.Empty,_content.Load<SpriteFont>("Digit"), _content.Load<Texture2D>("PinPanel"));
-            _NumPanel.alignment=TextLabel.Alignment.Center;
+            _NumPanel = new TextLabel(new Vector2(100, 50), 50, String.Empty, _content.Load<SpriteFont>("Digit"), _content.Load<Texture2D>("PinPanel"));
+            _NumPanel.alignment = TextLabel.Alignment.Center;
 
-            _arrayOfNumButtons[0] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 2, (64 * 4)+50), "0");
+            _arrayOfNumButtons[0] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 2, (64 * 4) + 50), "0");
             _arrayOfNumButtons[1] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64, 64 + 50), "1");
             _arrayOfNumButtons[2] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 2, 64 + 50), "2");
             _arrayOfNumButtons[3] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 3, 64 + 50), "3");
@@ -84,6 +84,10 @@ namespace NumberMiniGame.Minigame
         }
         private void Update(GameTime gameTime)
         {
+            if (GamePass)
+            {
+                return;
+            }
             _oldstate = _currentState;
             _currentState = Mouse.GetState();
 
@@ -113,8 +117,8 @@ namespace NumberMiniGame.Minigame
                     {
                         if (buttons.Rectangle.Contains(_currentState.X, _currentState.Y))
                         {
-                            _NumPanel.color=Color.Black;
-                            
+                            _NumPanel.color = Color.Black;
+
                             _answer += buttons._number;
                             _NumPanel.Text = _answer;
                         }
@@ -132,7 +136,7 @@ namespace NumberMiniGame.Minigame
                 if (Equals(_answer, _question))
                 {
                     Debug.WriteLine("Wygrales!");
-                    _NumPanel.color=Color.Green;
+                    _NumPanel.color = Color.Green;
                     GamePass = true;
 
                 }
@@ -151,14 +155,14 @@ namespace NumberMiniGame.Minigame
 
         private void Draw()
         {
-           
+
             _spriteBatch.Draw(_texture, new Rectangle((int)_position.X, (int)_position.Y, 400, 640), Color.White);
             foreach (var item in _arrayOfNumButtons)
             {
                 item.Draw(_spriteBatch);
             }
-            _NumPanel.Draw(_spriteBatch,true);
-         
+            _NumPanel.Draw(_spriteBatch, true);
+
         }
     }
 }
