@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,10 +11,10 @@ namespace TestGame
     /// </summary>
     public class PlayerPanel : TextureManager
     {
-
-
         public TextLabel Text { get; set; }
-        
+
+        private Equipment _panelEquipment;
+
         private Texture2D _panelTexture;
         private readonly Rectangle _panelRectangle;
 
@@ -29,19 +26,21 @@ namespace TestGame
 
             Text = new TextLabel(new Vector2(10,15), 50, string.Empty, font, defalutAvatar);
             Text.alignment = TextLabel.Alignment.Right;
-
+            _panelEquipment = new Equipment();
         }
 
         public PlayerPanel(Texture2D Image, Vector2 position) : base(Image, position)
         {
             _panelTexture = Image;
             _panelRectangle = new Rectangle((int)position.X, (int)position.Y, 1000, Const.PLAYER_PANEL_HEIGHT);
+            _panelEquipment = new Equipment();
         }
 
         public PlayerPanel(Texture2D Image, Vector2 position, float speedValue, float gravitation) : base(Image, position, speedValue, gravitation)
         {
             _panelTexture = Image;
             _panelRectangle = new Rectangle((int)position.X, (int)position.Y, 1000, Const.PLAYER_PANEL_HEIGHT);
+            _panelEquipment = new Equipment();
         }
 
         /// <summary>
@@ -50,9 +49,14 @@ namespace TestGame
         /// <param name="spriteBatch">SpriteBatch do rysowania</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Vector2 avatarMargin = new Vector2(10, 15);
             spriteBatch.Draw(Image, _panelRectangle, Color.White);
             Text.Draw(spriteBatch,true);
+
+            // wyświetlenie ekwipunku
+            foreach (var item in _panelEquipment.Items)
+            {
+                spriteBatch.Draw(item.Texture, item.Position, Color.White);
+            }
         }
 
         /// <summary>
@@ -77,7 +81,10 @@ namespace TestGame
                 case PenguinType.SZEREGOWY:
                     Text.Text = "SZEREGOWY";
                     break;
-            }
+            }      
+
+            // aktualizacja ekwipunku
+            _panelEquipment = currentPenguin.Equipment;
         }
 
     }

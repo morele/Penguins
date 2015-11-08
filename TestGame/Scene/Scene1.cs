@@ -62,6 +62,7 @@ namespace TestGame.Scene
 
                         if (penguin.CollisionPlatform(platform, PlatformType.MONEY))
                         {
+                            penguin.Equipment.AddItem(new Item(content.Load<Texture2D>("Scena1/Moneta")));
                             platform.active = false;
                         }
 

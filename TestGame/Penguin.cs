@@ -15,6 +15,8 @@ namespace TestGame
         public Vector2 speed;
         private float collision = 1;
 
+        public Equipment Equipment { get; private set; }    
+
         public Texture2D Avatar { get; private set; }
         private Texture2D imageHorizontal;
         private Texture2D imageVertical;
@@ -44,6 +46,7 @@ namespace TestGame
             this.imageVertical = Image;
             Avatar = avatar;
             this.penguinType = penguinType;
+            Equipment = new Equipment();
 
             //każdy typ pingwina ma róźną wysokość, wartości odpowiednio przeskalowane 
             switch(penguinType)
@@ -82,6 +85,7 @@ namespace TestGame
                         platforms[0].initJump = true;//inicjalizuje lot monety 
                         platforms[0].active = true; //aktywuje monete by mogla być rysowana
                         platforms.RemoveAt(0); //usuwa monete z pingwina
+                        Equipment.Items.Clear();
                     }
                 }
 
