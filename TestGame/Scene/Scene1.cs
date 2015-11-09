@@ -11,7 +11,11 @@ namespace TestGame.Scene
 {
     public class Scene1 : Scene
     {
-        public ActionElement SlotMachine { get; private set; }
+        // automat
+        private ActionElement _slotMachine;
+
+        // Moneta
+        private Bonus _coin;
 
         public Scene1(ContentManager content, Camera camera) : base(content, camera) { }
 
@@ -21,12 +25,29 @@ namespace TestGame.Scene
 
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(-1000, 600)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(500, 600)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/automat"), new Vector2(1000, 242)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(-50, 450)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/Moneta"), new Vector2(50, 300), false, 0, 0, PlatformType.MONEY));
             
+            // stworzenie obiektu monety
+            _coin = new Bonus(content.Load<Texture2D>("Scena1/Moneta"), new Point(50, 300), new Point(50));
+
+            // stworzenie obiektu automatu
             Point slotMachineSize = new Point(content.Load<Texture2D>("Scena1/automat").Width, content.Load<Texture2D>("Scena1/automat").Height);
-            SlotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1000, 242), slotMachineSize);
+            _slotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1000, 242), slotMachineSize);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            // narysowanie monety
+            _coin.Draw(spriteBatch);
+
+            // narysowanie automatu
+            _slotMachine.Draw(spriteBatch);
+
+            foreach (Platform platform in platforms)
+                platform.Draw(spriteBatch);
+
+            foreach (Penguin penguin in penguins)
+                penguin.Draw(spriteBatch);
         }
 
         public override void UpdatePosition()
@@ -63,16 +84,17 @@ namespace TestGame.Scene
                         }
 
                         // sprawdzenie kolizji między pingwinem a automatem
-                        if (SlotMachine.IsCollisionDetect(penguin))
+                        if (_slotMachine.IsCollisionDetect(penguin))
                         {
-                            penguin.Position.X -= 1;
+                            penguin.Position.X -= 2;
                             //penguin.CanMove = false;
                         }  
 
-                        if (penguin.CollisionPlatform(platform, PlatformType.MONEY))
+                        // sprawdzenie czy pingwin (RICO) nie zabrał monety
+                        if (penguin.penguinType == PenguinType.RICO && _coin.IsChecked(penguin))
                         {
-                            penguin.Equipment.AddItem(new EquipmentItem(content.Load<Texture2D>("Scena1/Moneta")));
-                            platform.active = false;
+                            penguin.Equipment.AddItem(new EquipmentItem(_coin));
+                            _coin.OnChecked();
                         }
 
 

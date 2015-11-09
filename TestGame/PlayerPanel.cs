@@ -55,7 +55,7 @@ namespace TestGame
             // wyświetlenie ekwipunku
             foreach (var item in _panelEquipment.Items)
             {
-                spriteBatch.Draw(item.Texture, item.Position, Color.White);
+                spriteBatch.Draw(item.Item.Texture, new Rectangle(item.Item.Position, item.Item.Size), Color.White);
             }
         }
 

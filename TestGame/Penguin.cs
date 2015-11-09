@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
@@ -85,13 +86,12 @@ namespace TestGame
 
                 if (Keyboard.GetState().IsKeyDown(Keys.D5) && penguinType == PenguinType.RICO)
                 {
-                    if(platforms.Count > 0)
+                    if (Equipment.Items.Count > 0)
                     {
-                        platforms[0].ResetMoney(rectangle); //ustawia monete względem pingwina i resetuje parametry lotu monety
-                        platforms[0].initJump = true;//inicjalizuje lot monety 
-                        platforms[0].active = true; //aktywuje monete by mogla być rysowana
-                        platforms.RemoveAt(0); //usuwa monete z pingwina
-                        Equipment.Items.Clear();
+                        var lastItem =  Equipment.Items.Last();
+                        lastItem.Item.IsActive = true;
+                        lastItem.Item.Position = new Point(Position.X + 100, Position.Y - 50);
+                        Equipment.RemoveItem(lastItem);
                     }
                 }
                 Position += speed.ToPoint();

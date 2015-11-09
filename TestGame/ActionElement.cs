@@ -16,12 +16,9 @@ namespace TestGame
 
         public bool IsCollisionDetect(GameObject collisionObject)
         {
-            Rectangle rectangle1 = new Rectangle(Position, Size);
-
-            Rectangle rectangle2 = new Rectangle(collisionObject.Position, collisionObject.Size);
-
-            // sprawdzenie czy nastąpiła kolizja
-            if (rectangle1.Intersects(rectangle2))
+            if(collisionObject.Position.X + collisionObject.Size.X > Position.X &&
+               collisionObject.Position.X + collisionObject.Size.X < Position.X + Size.X)
+                if(collisionObject.Position.Y > Position.Y)
                 return true;
 
             return false;
