@@ -15,8 +15,8 @@ namespace TestGame
         public Vector2 speed;
         private float collision = 1;
 
-        public Equipment Equipment { get; private set; }    
-
+        public Equipment Equipment { get; }
+        public bool CanMove { get; set; }
         public Texture2D Avatar { get; private set; }
         private Texture2D imageHorizontal;
         private Texture2D imageVertical;
@@ -47,6 +47,12 @@ namespace TestGame
             Avatar = avatar;
             this.penguinType = penguinType;
             Equipment = new Equipment();
+
+            Texture = Image;
+            Position = position.ToPoint();
+            Size = new Point(Image.Width/scale, Image.Height/scale);
+
+            CanMove = true;
 
             //każdy typ pingwina ma róźną wysokość, wartości odpowiednio przeskalowane 
             switch(penguinType)
@@ -88,8 +94,8 @@ namespace TestGame
                         Equipment.Items.Clear();
                     }
                 }
+                Position += speed.ToPoint();
 
-                position += speed;
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = speedValue * 2;
                 else
                 if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = -speedValue * 2;
@@ -109,14 +115,14 @@ namespace TestGame
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false)
                 {
-                    position.Y -= 10;
+                    Position.Y -= 10;
                     speed.Y = -gravitation;
                     jump = true;
                 }
 
                 speed.Y += 0.15f;
             
-                positionHorizontal = positionVertical = position;
+                positionHorizontal = positionVertical = Position.ToVector2();
                 if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     Image = imageHorizontal;
@@ -133,10 +139,10 @@ namespace TestGame
             else
             {
                 speed.X = 0;
-                position += speed;
+                Position += speed.ToPoint();
                 speed.Y += 0.15f;
 
-                positionVertical = position;
+                positionVertical = Position.ToVector2();
                 Image = imageVertical;
                 rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
 
@@ -147,8 +153,8 @@ namespace TestGame
             {
                     if (platforms[0].jump == false && platforms[0].initJump == false)
                     {
-                        platforms[0].position.X = rectangle.X;
-                        platforms[0].position.Y = rectangle.Y;
+                        platforms[0].Position.X = rectangle.X;
+                        platforms[0].Position.Y = rectangle.Y;
                     }
                     
             }
@@ -294,11 +300,11 @@ namespace TestGame
 
         public void PutMeOn(Rectangle platform)
         {
-            position.Y = platform.Y;
+            Position.Y = platform.Y;
         }
         public void PutMeOn(float newPosition)
         {
-            position.Y = newPosition;
+            Position.Y = (int) newPosition;
         }
         public void JumpStop(int platformSpeed)
         {

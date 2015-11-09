@@ -9,8 +9,9 @@ using System.Text;
 
 namespace TestGame.Scene
 {
-    class Scene1 : Scene
+    public class Scene1 : Scene
     {
+        public ActionElement SlotMachine { get; private set; }
 
         public Scene1(ContentManager content, Camera camera) : base(content, camera) { }
 
@@ -23,8 +24,9 @@ namespace TestGame.Scene
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/automat"), new Vector2(1000, 242)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(-50, 450)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/Moneta"), new Vector2(50, 300), false, 0, 0, PlatformType.MONEY));
-            //Podstawowy gracz - skipper
-
+            
+            Point slotMachineSize = new Point(content.Load<Texture2D>("Scena1/automat").Width, content.Load<Texture2D>("Scena1/automat").Height);
+            SlotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1000, 242), slotMachineSize);
         }
 
         public override void UpdatePosition()
@@ -60,9 +62,16 @@ namespace TestGame.Scene
                             }
                         }
 
+                        // sprawdzenie kolizji między pingwinem a automatem
+                        if (SlotMachine.IsCollisionDetect(penguin))
+                        {
+                            penguin.Position.X -= 1;
+                            //penguin.CanMove = false;
+                        }  
+
                         if (penguin.CollisionPlatform(platform, PlatformType.MONEY))
                         {
-                            penguin.Equipment.AddItem(new Item(content.Load<Texture2D>("Scena1/Moneta")));
+                            penguin.Equipment.AddItem(new EquipmentItem(content.Load<Texture2D>("Scena1/Moneta")));
                             platform.active = false;
                         }
 

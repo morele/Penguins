@@ -7,12 +7,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TestGame
 {
-    public class Item
+    public class EquipmentItem
     {
         public Texture2D Texture { get; set; }
         public Vector2 Position { get; set; }
 
-        public Item(Texture2D texture)
+        public EquipmentItem(Texture2D texture)
         {
             Texture = texture;
         }

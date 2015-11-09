@@ -8,32 +8,32 @@ namespace TestGame
 {
     public class Equipment
     {
-        public List<Item> Items { get; }
+        public List<EquipmentItem> Items { get; }
 
         public Equipment()
         {
-            Items = new List<Item>();
+            Items = new List<EquipmentItem>();
         }
 
-        public void AddItem(Item item)
+        public void AddItem(EquipmentItem equipmentItem)
         {
             if (Items.Count == 0)
             {
-                item.Position = new Vector2(200, 50);
+                equipmentItem.Position = new Vector2(200, 50);
             }
             else
             {
                 int lastIndex = Items.Count - 1;
                 Vector2 lastPositon = Items[lastIndex].Position;
                 lastPositon.X += 70;
-                item.Position = lastPositon;    
+                equipmentItem.Position = lastPositon;    
             }
-            Items.Add(item);
+            Items.Add(equipmentItem);
         }
 
-        public void RemoveItem(Item item)
+        public void RemoveItem(EquipmentItem equipmentItem)
         {
-            Items.Remove(item);
+            Items.Remove(equipmentItem);
 
             // aktualizacja listy 
             for (int i = 0; i < Items.Count; i++)

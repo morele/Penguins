@@ -9,7 +9,7 @@ namespace TestGame
     /// <summary>
     /// Klasa reprezentująca platformę, która porusza się w górę i w dół
     /// </summary>
-    public class Platform : TextureManager
+    public class Platform : TextureManager, ICollisionable
     {
         public Rectangle PlatformRectangle;
 
@@ -81,7 +81,7 @@ namespace TestGame
 
                         // ustaw pozycję o ile nie została przekroczona maksymalna wysokość platformy
                         if (_currentPlatformPosition <= _maxPlatformScope)
-                            position.Y -= PlatformSpeed;
+                            Position =new Point(Position.X, Position.Y - (int)PlatformSpeed);
 
                         // maksymalna wysokość została przekroczona - platforma zawraca
                         else
@@ -96,7 +96,7 @@ namespace TestGame
 
                         // ustaw pozycję platformy o ile nie znajduje się na dole
                         if (_currentPlatformPosition >= 0)
-                            position.Y += PlatformSpeed;
+                            Position = new Point(Position.X, Position.Y + (int)PlatformSpeed);
 
                         // platforma na dole - teraz się w górę
                         else
@@ -106,7 +106,7 @@ namespace TestGame
                 }
 
                 // aktualizacja sprite'a
-                PlatformRectangle = new Rectangle((int)position.X, (int)position.Y, Image.Width, Image.Height);
+                PlatformRectangle = new Rectangle((int)Position.X, (int)Position.Y, Image.Width, Image.Height);
             }
             if (platformType == PlatformType.MONEY)
             {
@@ -116,23 +116,19 @@ namespace TestGame
                     speed.Y += 0.15f;
                     speed.X += angleFall;
                     if (angleFall > 0.01) angleFall -= 0.2f;
-                    position += speed;
+                    Position += speed.ToPoint();
 
                 }
                 if (initJump)
                 {
-                    position.Y -= 30;
-                    position.X += 60;
+                    Position.Y -= 30;
+                    Position.X += 60;
                     initJump = false;
                     jump = true;
                 }
 
-                PlatformRectangle = new Rectangle((int)position.X, (int)position.Y, Image.Width, Image.Height);
+                PlatformRectangle = new Rectangle(Position, Size);
             }
-            
-
-            
-
         }
 
         public bool CollisionPlatform(Rectangle r1)
@@ -141,7 +137,7 @@ namespace TestGame
         }
         override public void Draw(SpriteBatch spriteBatch)
         {
-            if(active) spriteBatch.Draw(Image, PlatformRectangle, Color.White);
+            if(active) spriteBatch.Draw(Texture, PlatformRectangle, Color.White);
         }
 
 
@@ -164,12 +160,32 @@ namespace TestGame
         }
         public void ResetMoney(Rectangle rectangle)
         {
-            position.X = rectangle.X;
-            position.Y = rectangle.Y;
+            Position.X = rectangle.X;
+            Position.Y = rectangle.Y;
             speed.X = 0;
             speed.Y = 0;
             angleFall = 1f;
         }
-                
+
+        public bool IsCollisionDetect(GameObject collisionObject)
+        {
+            Rectangle rectangle1 = new Rectangle(Position, Size);
+            Rectangle rectangle2 = new Rectangle(collisionObject.Position, collisionObject.Size);
+
+            // sprawdzenie czy nastąpiła kolizja
+            if (rectangle1.Intersects(rectangle2))
+                return true;
+            return false;
+        }
+
+        public void OnCollisionDetect(GameObject collisionObject)
+        {
+            if (collisionObject is Penguin)
+            {
+
+            }
+        }
+
+
     }
 }
