@@ -11,60 +11,70 @@ namespace MiniGameSwiming
         private float _velocityX;
         private float _velocityY;
         private float _scale;
+
+        public Rectangle Position
+        {
+            get
+            {
+                return new Rectangle((int)_position.X, (int)_position.Y, (int)(_texture.Width * _scale),
+                    (int)(_texture.Width * _scale));
+            }
+        }
         /// <summary>
         /// podajemy w procentach 
         /// </summary>
-     
+
         public float Scale
         {
             get
             {
                 return _scale;
-                
+
             }
             set
             {
-                _scale = value/100;
+                _scale = value / 100;
             }
 
         }
 
-        public Pinguin(Texture2D texture, Vector2 position, float scale=100)
+        public Pinguin(Texture2D texture, Vector2 position, float scale = 100)
         {
             _texture = texture;
             _position = position;
-            _scale = scale/100;
+            _scale = scale / 100;
             _velocityY = 2;
             _velocityX = 3;
 
         }
 
-        public void Update(GameTime gametdTime,GraphicsDevice device)
+        public void Update(GameTime gametdTime, GraphicsDevice device)
         {
-          
+
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-               
-                _position.Y -= _velocityY;
+
+                _position.Y -= 4;
             }
-            else if  (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
+          //  if (Keyboard.GetState().IsKeyDown(Keys.Down))
+         //   {
                 _position.Y += _velocityY;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+         //   }
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
                 _position.X -= _velocityX;
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 _position.X += _velocityX;
             }
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
 
-            spriteBatch.Draw(_texture,new Rectangle((int)_position.X,(int)_position.Y, (int)(_texture.Width * _scale), (int)(_texture.Width * _scale)),Color.White);
+            spriteBatch.Draw(_texture, Position, Color.White);
         }
     }
 }
