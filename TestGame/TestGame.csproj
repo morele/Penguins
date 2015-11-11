@@ -51,6 +51,7 @@
     <Compile Include="Interfaces\ICollisionable.cs" />
     <Compile Include="EquipmentItem.cs" />
     <Compile Include="Interfaces\IGravitable.cs" />
+    <Compile Include="Menu\ChooseItemMenu.cs" />
     <Compile Include="Menu\GameMenu.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Menu\MenuItem.cs" />

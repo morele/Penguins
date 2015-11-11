@@ -312,7 +312,7 @@ namespace TestGame
 
         public void FallDown()
         {
-            double a = Mass/Const.GRAVITY; 
+            double a = Mass/Const.GRAVITY;
             speed.Y += (int)a;
         }
 
