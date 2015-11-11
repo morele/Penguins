@@ -2,10 +2,8 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using TestGame.MIniGames.Numbers;
 
 namespace TestGame.Scene
 {
@@ -17,15 +15,24 @@ namespace TestGame.Scene
         // Moneta
         private Bonus _coin;
 
-        public Scene1(ContentManager content, Camera camera) : base(content, camera) { }
+        //minigierka  - AutomatMinigame
+        private AutomatMinigame automatMinigame;
+
+        //Aktywność minigierki
+        private bool activeMiniGame = false;
+
+
+        public Scene1(ContentManager content, Camera camera) : base(content, camera)
+        {
+           // automatMinigame = new AutomatMinigame()
+        }
 
         public override void LoadContent(List<Penguin> penguins, PlayerPanel playerPanel, Penguin player)
         {
             base.LoadContent(penguins, playerPanel, player);
 
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(-1000, 600)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(500, 600)));
-            //platforms.Add(new Platform(content.Load<Texture2D>("Scena1/automat"), new Vector2(1000, 242)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(500, 600))); 
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(-50, 450)));
             
             // stworzenie obiektu monety
@@ -76,13 +83,6 @@ namespace TestGame.Scene
                         for (i = 0; i < penguins.Count; i++)//sprawdza kolizje z innymi pingwinami i blokuje w przypadku wykrycia
                             if (penguins[i].penguinType != penguin.penguinType) penguins[i].CollisionPenguin(penguin.rectangle);
 
-                        for (i = 0; i < platforms.Count; i++)
-                        {              
-                            if (platform.platformType != platforms[i].platformType && platform.CollisionPlatform(platforms[i].PlatformRectangle))
-                            {
-                                platform.jump = false;
-                            }
-                        }
 
                         // moneta spada
                         if (_coin.IsActive)
@@ -109,6 +109,10 @@ namespace TestGame.Scene
                             _coin.OnChecked();
                         }
 
+                        if (_coin.IsCollisionDetect(_slotMachine))
+                        {
+                            activeMiniGame = true;
+                        }
 
                         if (penguin.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
                         {

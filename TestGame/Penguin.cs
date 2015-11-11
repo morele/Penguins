@@ -218,7 +218,7 @@ namespace TestGame
         private bool CollisionUD(Rectangle r1)
         {
             if (CollisionRL(r1) && (rectangle.Y + rectangle.Height) >= r1.Y && (rectangle.Y + rectangle.Height) <= r1.Y + 10) return true;
-            
+
             return false;
         }
         ///
@@ -254,11 +254,13 @@ namespace TestGame
                 }
 
             }
+            
 
             if (colUD) //jak lata i ma kolizje to zatrzymaj
             {
                 JumpStop(0);
                 PutMeOn(r1.Y - 1);
+                blockDircetionLEFT = blockDirectionRIGHT = false;
             }
             
             if (activeDirection == true && block)//jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie 
@@ -312,8 +314,8 @@ namespace TestGame
 
         public void FallDown()
         {
-            double a = Mass/Const.GRAVITY; 
-            speed.Y += (int)a;
+            float a = Mass/Const.GRAVITY; 
+            speed.Y += 0.25f;
         }
 
         public void Jump()

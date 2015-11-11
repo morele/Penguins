@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TestGame.MIniGames.Numbers
 {
-    public class Panel
+    public class AutomatMinigame
     {
 
         private Texture2D _texture;
@@ -41,7 +41,7 @@ namespace TestGame.MIniGames.Numbers
         }
 
 
-        public Panel(SpriteBatch spriteBatch, ContentManager content, Texture2D panelTexture)
+        public AutomatMinigame(SpriteBatch spriteBatch, ContentManager content, Texture2D panelTexture)
         {
             _position = new Vector2(20, 20);
             _arrayOfNumButtons = new NumButton[12];
