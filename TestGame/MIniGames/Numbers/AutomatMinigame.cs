@@ -20,8 +20,8 @@ namespace TestGame.MIniGames.Numbers
 
 
 
-        private MouseState _oldstate;
-        private MouseState _currentState;
+        private KeyboardState _oldstate;
+        private KeyboardState _currentState;
 
         private string _question = String.Empty;
         private string _answer = String.Empty;
@@ -80,7 +80,7 @@ namespace TestGame.MIniGames.Numbers
                 return;
             }
             _oldstate = _currentState;
-            _currentState = Mouse.GetState();
+            _currentState = Keyboard.GetState();
 
             if (GamePass)
             {
@@ -105,19 +105,104 @@ namespace TestGame.MIniGames.Numbers
             }
             else
             {
-                if (_currentState.LeftButton == ButtonState.Pressed && _oldstate.LeftButton == ButtonState.Released)
-                {
-                    foreach (var buttons in _arrayOfNumButtons)
-                    {
-                        if (buttons.Rectangle.Contains(_currentState.X, _currentState.Y))
-                        {
-                            _NumPanel.color = Color.Black;
 
-                            _answer += buttons._number;
-                            _NumPanel.Text = _answer;
-                        }
-                    }
+
+                if ((_currentState.IsKeyDown(Keys.D0) && _oldstate.IsKeyUp(Keys.D0)) || (_currentState.IsKeyDown(Keys.NumPad0) && _oldstate.IsKeyUp(Keys.NumPad0)))
+                {
+
+                    _NumPanel.color = Color.Black;
+
+                    _answer += 0;
+                    _NumPanel.Text = _answer;
                 }
+                if ((_currentState.IsKeyDown(Keys.D1) && _oldstate.IsKeyUp(Keys.D1)) || (_currentState.IsKeyDown(Keys.NumPad1) && _oldstate.IsKeyUp(Keys.NumPad1)))
+                {
+
+                    _NumPanel.color = Color.Black;
+
+                    _answer += 1;
+                    _NumPanel.Text = _answer;
+                }
+
+                if ((_currentState.IsKeyDown(Keys.D2) && _oldstate.IsKeyUp(Keys.D2)) || (_currentState.IsKeyDown(Keys.NumPad2) && _oldstate.IsKeyUp(Keys.NumPad2)))
+                {
+                    _NumPanel.color = Color.Black;
+
+                    _answer += 2;
+                    _NumPanel.Text = _answer;
+
+                }
+                if ((_currentState.IsKeyDown(Keys.D3) && _oldstate.IsKeyUp(Keys.D3)) || (_currentState.IsKeyDown(Keys.NumPad3) && _oldstate.IsKeyUp(Keys.NumPad3)))
+                {
+                    _NumPanel.color = Color.Black;
+
+                    _answer += 3;
+                    _NumPanel.Text = _answer;
+
+                }
+                if ((_currentState.IsKeyDown(Keys.D4) && _oldstate.IsKeyUp(Keys.D4)) || (_currentState.IsKeyDown(Keys.NumPad4) && _oldstate.IsKeyUp(Keys.NumPad4)))
+                {
+
+                    _NumPanel.color = Color.Black;
+
+                    _answer += 4;
+                    _NumPanel.Text = _answer;
+                }
+                if ((_currentState.IsKeyDown(Keys.D5) && _oldstate.IsKeyUp(Keys.D5)) || (_currentState.IsKeyDown(Keys.NumPad5) && _oldstate.IsKeyUp(Keys.NumPad5)))
+                {
+
+                    _NumPanel.color = Color.Black;
+
+                    _answer += 5;
+                    _NumPanel.Text = _answer;
+                }
+                if ((_currentState.IsKeyDown(Keys.D6) && _oldstate.IsKeyUp(Keys.D6)) || (_currentState.IsKeyDown(Keys.NumPad6) && _oldstate.IsKeyUp(Keys.NumPad6)))
+                {
+                    _NumPanel.color = Color.Black;
+
+                    _answer += 6;
+                    _NumPanel.Text = _answer;
+
+                }
+                if ((_currentState.IsKeyDown(Keys.D7) && _oldstate.IsKeyUp(Keys.D7)) || (_currentState.IsKeyDown(Keys.NumPad7) && _oldstate.IsKeyUp(Keys.NumPad7)))
+                {
+                    _NumPanel.color = Color.Black;
+
+                    _answer += 7;
+                    _NumPanel.Text = _answer;
+
+                }
+                if ((_currentState.IsKeyDown(Keys.D8) && _oldstate.IsKeyUp(Keys.D8)) || (_currentState.IsKeyDown(Keys.NumPad8) && _oldstate.IsKeyUp(Keys.NumPad8)))
+                {
+
+                    _NumPanel.color = Color.Black;
+
+                    _answer += 8;
+                    _NumPanel.Text = _answer;
+                }
+                if ((_currentState.IsKeyDown(Keys.D9) && _oldstate.IsKeyUp(Keys.D9)) || (_currentState.IsKeyDown(Keys.NumPad9) && _oldstate.IsKeyUp(Keys.NumPad9)))
+                {
+
+                    _NumPanel.color = Color.Black;
+
+                    _answer += 9;
+                    _NumPanel.Text = _answer;
+                }
+
+             
+                //if (_currentState.LeftButton == ButtonState.Pressed && _oldstate.LeftButton == ButtonState.Released)
+                //{
+                //    foreach (var buttons in _arrayOfNumButtons)
+                //    {
+                //        if (buttons.Rectangle.Contains(_currentState.X, _currentState.Y))
+                //        {
+                //            _NumPanel.color = Color.Black;
+
+                //            _answer += buttons._number;
+                //            _NumPanel.Text = _answer;
+                //        }
+                //    }
+                //}
             }
 
 
