@@ -27,7 +27,7 @@ namespace TestGame.MIniGames.Numbers
         private string _answer = String.Empty;
 
         private SpriteBatch _spriteBatch;
-        private ContentManager _content;
+        private readonly ContentManager _content;
 
         private TextLabel _NumPanel;
 
