@@ -36,15 +36,8 @@ namespace TestGame.Scene
 
         public abstract void UpdatePosition();
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            foreach (Platform platform in platforms)
-                platform.Draw(spriteBatch);
+        public abstract void Draw(SpriteBatch spriteBatch);
 
-            foreach (Penguin penguin in penguins)
-                penguin.Draw(spriteBatch);
-
-        }
         protected Penguin ActiveAndDeactivationPlayer(bool ConSkipper, bool ConKowalski, bool ConRico, bool ConSzeregowy)
         {
             penguins[0].active = ConSkipper;

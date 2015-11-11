@@ -19,14 +19,14 @@ namespace TestGame
         {
             if (Items.Count == 0)
             {
-                equipmentItem.Position = new Vector2(200, 50);
+                equipmentItem.Item.Position = new Point(200, 50);
             }
             else
             {
                 int lastIndex = Items.Count - 1;
-                Vector2 lastPositon = Items[lastIndex].Position;
+                Point lastPositon = Items[lastIndex].Item.Position;
                 lastPositon.X += 70;
-                equipmentItem.Position = lastPositon;    
+                equipmentItem.Item.Position = lastPositon;    
             }
             Items.Add(equipmentItem);
         }

@@ -9,12 +9,11 @@ namespace TestGame
 {
     public class EquipmentItem
     {
-        public Texture2D Texture { get; set; }
-        public Vector2 Position { get; set; }
+        public GameObject Item { get; set; }
 
-        public EquipmentItem(Texture2D texture)
+        public EquipmentItem(GameObject gameObject)
         {
-            Texture = texture;
+            Item = gameObject;
         }
     }
 }
