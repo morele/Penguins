@@ -54,6 +54,8 @@
     <Compile Include="Menu\GameMenu.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Menu\MenuItem.cs" />
+    <Compile Include="MIniGames\Numbers\NumButton.cs" />
+    <Compile Include="MIniGames\Numbers\Panel.cs" />
     <Compile Include="offline\Rico2.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="PlayerPanel.cs" />
