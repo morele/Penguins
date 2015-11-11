@@ -26,7 +26,6 @@ namespace TestGame.MIniGames.Numbers
         private string _question = String.Empty;
         private string _answer = String.Empty;
 
-        private SpriteBatch _spriteBatch;
         private ContentManager _content;
 
         private TextLabel _NumPanel;
@@ -154,9 +153,9 @@ namespace TestGame.MIniGames.Numbers
             spriteBatch.Draw(_texture, new Rectangle((int)_position.X, (int)_position.Y, 400, 640), Color.White);
             foreach (var item in _arrayOfNumButtons)
             {
-                item.Draw(_spriteBatch);
+                item.Draw(spriteBatch);
             }
-            _NumPanel.Draw(_spriteBatch, true);
+            _NumPanel.Draw(spriteBatch, true);
 
         }
     }
