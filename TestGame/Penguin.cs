@@ -7,14 +7,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
+using TestGame.Interfaces;
 
 namespace TestGame
 {
-    public class Penguin : TextureManager
+    public class Penguin : TextureManager, IGravitable
     {
         public Rectangle rectangle;
         public Vector2 speed;
         private float collision = 1;
+
+        public int Mass { get; private set; }
 
         public Equipment Equipment { get; }
         public bool CanMove { get; set; }
@@ -41,18 +44,18 @@ namespace TestGame
         public int pinguinVertical = 0;
         public int pinguinHorizontal = 0;
 
-        public Penguin(Texture2D Image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType) : base(Image, position, speedValue, gravity)
+        public Penguin(Texture2D Image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType, int mass) : base(Image, position, speedValue, gravity)
         {
             this.imageHorizontal = imageHorizontal;
             this.imageVertical = Image;
             Avatar = avatar;
+            Mass = mass;
             this.penguinType = penguinType;
             Equipment = new Equipment();
 
             Texture = Image;
             Position = position.ToPoint();
             Size = new Point(Image.Width/scale, Image.Height/scale);
-
             CanMove = true;
 
             //każdy typ pingwina ma róźną wysokość, wartości odpowiednio przeskalowane 
@@ -90,7 +93,7 @@ namespace TestGame
                     {
                         var lastItem =  Equipment.Items.Last();
                         lastItem.Item.IsActive = true;
-                        lastItem.Item.Position = new Point(Position.X + 100, Position.Y - 50);
+                        lastItem.Item.Position = new Point(Position.X + Size.X, Position.Y - Size.Y - 30);
                         Equipment.RemoveItem(lastItem);
                     }
                 }
@@ -114,14 +117,10 @@ namespace TestGame
                 else speed.X = 0;
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false)
-                {
-                    Position.Y -= 10;
-                    speed.Y = -gravitation;
-                    jump = true;
-                }
-
-                speed.Y += 0.15f;
+                    Jump();
+                FallDown();
             
+
                 positionHorizontal = positionVertical = Position.ToVector2();
                 if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
@@ -147,18 +146,6 @@ namespace TestGame
                 rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
 
             }
-
-            if(platforms.Count > 0)
-            if (platforms[0].platformType == PlatformType.MONEY )
-            {
-                    if (platforms[0].jump == false && platforms[0].initJump == false)
-                    {
-                        platforms[0].Position.X = rectangle.X;
-                        platforms[0].Position.Y = rectangle.Y;
-                    }
-                    
-            }
-
         }
 
         /// <summary>
@@ -321,6 +308,19 @@ namespace TestGame
         public override string ToString()
         {
             return penguinType.ToString();
+        }
+
+        public void FallDown()
+        {
+            double a = Mass/Const.GRAVITY; 
+            speed.Y += (int)a;
+        }
+
+        public void Jump()
+        {
+            speed.Y = -Const.GRAVITY;
+            jump = true;
+            Position.Y -= (int) Math.Pow(Const.GRAVITY*3, 2)/Mass;
         }
     }
 }

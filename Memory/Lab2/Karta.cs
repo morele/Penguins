@@ -18,7 +18,7 @@ namespace Lab2
         public Karta(Rectangle wycinek, Vector2 pozycja)
         {
             Wycinek = wycinek;
-            Pozycja = new Rectangle((int)pozycja.X, (int)pozycja.Y, 100, 100);
+            Pozycja = new Rectangle((int)pozycja.X, (int)pozycja.Y, 150, 150);
             zakryte = true;
             wyswietl = true;
            

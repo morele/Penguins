@@ -78,25 +78,25 @@ namespace TestGame
                                   Content.Load<Texture2D>("Slizg/skipper"),
                                   Content.Load<Texture2D>("WyborPostaci/Skipper"),
                                   new Vector2(-550, 400), penguinSpeed, 
-                                  gravitation, PenguinType.SKIPPER);
+                                  gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS);
 
             kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Kowalski"), 
                                    Content.Load<Texture2D>("Slizg/Kowalski"),
                                    Content.Load<Texture2D>("WyborPostaci/Kowalski"),
                                    new Vector2(-450, 400), penguinSpeed, 
-                                   gravitation, PenguinType.KOWALSKI);
+                                   gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS);
 
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Rico"), 
                                Content.Load<Texture2D>("Slizg/Rico"),
                                Content.Load<Texture2D>("WyborPostaci/Rico"),
                                new Vector2(-350, 400), penguinSpeed, 
-                               gravitation, PenguinType.RICO);
+                               gravitation, PenguinType.RICO, Const.RICO_MASS);
 
             szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Szeregowy"), 
                                     Content.Load<Texture2D>("Slizg/Szeregowy"),
                                     Content.Load<Texture2D>("WyborPostaci/Szeregowy"),
                                     new Vector2(-250, 400), penguinSpeed,
-                                    gravitation, PenguinType.SZEREGOWY);
+                                    gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS);
 
             penguins.Add(skipper);
             penguins.Add(kowalski);

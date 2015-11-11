@@ -12,7 +12,7 @@ namespace TestGame
         public static int PENGUIN_HEIGHT = 197;
 
         // grawitacja - czyli prędkość spadania pingwina
-        public static int GRAVITY = 1;
+        public static int GRAVITY = 10;
         public static Color SELECTED_MENU_ITEM_COLOR = Color.Orange;
 
         public static Color DEFAULT_MENU_ITEM_COLOR = Color.Black;
@@ -32,6 +32,10 @@ namespace TestGame
 
         public static int PLAYER_PANEL_HEIGHT = 150;
 
+        public static int RICO_MASS = 16;
+        public static int KOWALSKI_MASS = 13;
+        public static int SKIPPER_MASS = 12;
+        public static int SZEREGOWY_MASS = 10;
 
     }
 }

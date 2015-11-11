@@ -14,7 +14,7 @@ namespace Lab2
         SpriteBatch spriteBatch;
         private ContentManager Content;
         private Karta[] Karty;
-        private Texture2D Liczby;
+        private Texture2D Obrazki;
         private Texture2D Zakrycie;
         private int odkrytych;
         private float Odczekaj = 500f;
@@ -24,6 +24,7 @@ namespace Lab2
         public int LiczbaKrokow;
         public int liczbakart;
         private float Skala;
+        int rozm_na_planszy=150;
 
         public Plansza(GraphicsDeviceManager graphics, SpriteBatch spriteBatch, ContentManager content)
         {
@@ -31,7 +32,7 @@ namespace Lab2
             this.spriteBatch = spriteBatch;
             Content = content;
             Karty=new Karta[24];
-            Liczby = Content.Load<Texture2D>(@"Karty");
+            Obrazki = Content.Load<Texture2D>(@"Karty");
             Zakrycie = Content.Load<Texture2D>(@"Zakrywka");
             Naczekal = 0;
             odkrytych = 0;
@@ -48,8 +49,10 @@ namespace Lab2
             int poz_y=0;
             int text_x = 0;
             int text_y = 0;
-            int szer = Liczby.Width/4;
-            int wys = Liczby.Height/3;
+            int szer_wycinka = Obrazki.Width/4;
+            int wys_wycinka = Obrazki.Height/3;
+         
+
 
             Rectangle[] Wycinek=new Rectangle[24];
             Vector2[] Pozyja=new Vector2[24];
@@ -57,8 +60,8 @@ namespace Lab2
 
             for (int i = 0; i < 24; i++)
             {
-                Wycinek[i] = new Rectangle(text_x*szer, text_y*wys, szer, wys);
-                Pozyja[i] = new Vector2(poz_x*(szer + 10), poz_y*(wys + 10));
+                Wycinek[i] = new Rectangle(text_x*szer_wycinka, text_y*wys_wycinka, szer_wycinka, wys_wycinka);
+                Pozyja[i] = new Vector2(poz_x*(rozm_na_planszy + 10), poz_y*(rozm_na_planszy + 10));
                 poz_x++;
                 text_x++;
                 if (poz_x >= 6)
@@ -96,7 +99,7 @@ namespace Lab2
             {
                 if (Karty[i].wyswietl)
                 {
-                    spriteBatch.Draw(Liczby, Karty[i].Pozycja, Karty[i].Wycinek, Color.White);
+                    spriteBatch.Draw(Obrazki, Karty[i].Pozycja, Karty[i].Wycinek, Color.White);
 
                     if (Karty[i].zakryte)
                         spriteBatch.Draw(Zakrycie, Karty[i].Pozycja, Color.White);

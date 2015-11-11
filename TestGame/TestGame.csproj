@@ -47,11 +47,12 @@
     <Compile Include="Game1.cs" />
     <Compile Include="GameFlow.cs" />
     <Compile Include="GameObject.cs" />
-    <Compile Include="ICheckable.cs" />
-    <Compile Include="ICollisionable.cs" />
+    <Compile Include="Interfaces\ICheckable.cs" />
+    <Compile Include="Interfaces\ICollisionable.cs" />
     <Compile Include="EquipmentItem.cs" />
+    <Compile Include="Interfaces\IGravitable.cs" />
     <Compile Include="Menu\GameMenu.cs" />
-    <Compile Include="IDrawable.cs" />
+    <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="offline\Rico2.cs" />
     <Compile Include="Platform.cs" />
