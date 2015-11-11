@@ -27,8 +27,9 @@ namespace NumberMiniGame.Minigame
         private string _question = String.Empty;
         private string _answer = String.Empty;
 
-        private SpriteBatch _spriteBatch;
         private ContentManager _content;
+
+        private SpriteBatch _spriteBatch;
 
         private TextLabel _NumPanel;
 
@@ -42,11 +43,11 @@ namespace NumberMiniGame.Minigame
         }
 
 
-        public Panel(SpriteBatch spriteBatch, ContentManager content, Texture2D panelTexture)
+        public Panel(ContentManager content, Texture2D panelTexture)
         {
             _position = new Vector2(20, 20);
             _arrayOfNumButtons = new NumButton[12];
-            _spriteBatch = spriteBatch;
+           
             _content = content;
             _texture = panelTexture;
             LoadContent();
@@ -77,8 +78,9 @@ namespace NumberMiniGame.Minigame
 
         }
 
-        public void Run(GameTime gameTime)
+        public void Run(GameTime gameTime,SpriteBatch spriteBatch)
         {
+            _spriteBatch = spriteBatch;
             Update(gameTime);
             Draw();
         }
