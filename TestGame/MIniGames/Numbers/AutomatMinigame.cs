@@ -10,7 +10,7 @@ namespace TestGame.MIniGames.Numbers
     public class AutomatMinigame
     {
 
-        private readonly Texture2D _texture;
+        private Texture2D _texture;
         private Vector2 _position;
         private NumButton[] _arrayOfNumButtons;
         private Random _random = new Random();
@@ -27,7 +27,7 @@ namespace TestGame.MIniGames.Numbers
         private string _answer = String.Empty;
 
         private SpriteBatch _spriteBatch;
-        private readonly ContentManager _content;
+        private ContentManager _content;
 
         private TextLabel _NumPanel;
 
@@ -41,20 +41,18 @@ namespace TestGame.MIniGames.Numbers
         }
 
 
-        public AutomatMinigame(ContentManager content, Texture2D panelTexture)
+        public AutomatMinigame()
         {
             _position = new Vector2(20, 20);
             _arrayOfNumButtons = new NumButton[12];
-
-            _content = content;
-            _texture = panelTexture;
-           
             GamePass = false;
 
         }
 
-        private void LoadContent()
+        private void LoadContent(ContentManager content, Texture2D panelTexture)
         {
+            _content = content;
+            _texture = panelTexture;
 
             _NumPanel = new TextLabel(new Vector2(100, 50), 50, String.Empty, _content.Load<SpriteFont>("Digit"), _content.Load<Texture2D>("PinPanel"));
             _NumPanel.alignment = TextLabel.Alignment.Center;
@@ -76,10 +74,6 @@ namespace TestGame.MIniGames.Numbers
 
         }
 
-        public void Run()
-        {
-            LoadContent();
-        }
         public void Update(GameTime gameTime)
         {
             if (GamePass)
