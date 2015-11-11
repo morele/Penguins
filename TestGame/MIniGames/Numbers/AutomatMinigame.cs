@@ -7,10 +7,10 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TestGame.MIniGames.Numbers
 {
-    public class Panel
+    public class AutomatMinigame
     {
 
-        private Texture2D _texture;
+        private readonly Texture2D _texture;
         private Vector2 _position;
         private NumButton[] _arrayOfNumButtons;
         private Random _random = new Random();
@@ -41,14 +41,14 @@ namespace TestGame.MIniGames.Numbers
         }
 
 
-        public Panel(SpriteBatch spriteBatch, ContentManager content, Texture2D panelTexture)
+        public AutomatMinigame(ContentManager content, Texture2D panelTexture)
         {
             _position = new Vector2(20, 20);
             _arrayOfNumButtons = new NumButton[12];
-            _spriteBatch = spriteBatch;
+
             _content = content;
             _texture = panelTexture;
-            LoadContent();
+           
             GamePass = false;
 
         }
@@ -76,12 +76,11 @@ namespace TestGame.MIniGames.Numbers
 
         }
 
-        public void Run(GameTime gameTime)
+        public void Run()
         {
-            Update(gameTime);
-            Draw();
+            LoadContent();
         }
-        private void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             if (GamePass)
             {
@@ -90,7 +89,7 @@ namespace TestGame.MIniGames.Numbers
             _oldstate = _currentState;
             _currentState = Mouse.GetState();
 
-            if(GamePass)
+            if (GamePass)
             {
                 return;
             }
@@ -155,10 +154,10 @@ namespace TestGame.MIniGames.Numbers
 
         }
 
-        private void Draw()
+        public void Draw(SpriteBatch spriteBatch)
         {
 
-            _spriteBatch.Draw(_texture, new Rectangle((int)_position.X, (int)_position.Y, 400, 640), Color.White);
+            spriteBatch.Draw(_texture, new Rectangle((int)_position.X, (int)_position.Y, 400, 640), Color.White);
             foreach (var item in _arrayOfNumButtons)
             {
                 item.Draw(_spriteBatch);
