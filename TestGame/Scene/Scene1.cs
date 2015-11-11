@@ -21,7 +21,7 @@ namespace TestGame.Scene
 
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(-1000, 600)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(500, 600)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/automat"), new Vector2(1000, 242)));
+           // platforms.Add(new Platform(content.Load<Texture2D>("Scena1/automat"), new Vector2(1000, 242)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(-50, 450)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/Moneta"), new Vector2(50, 300), false, 0, 0, PlatformType.MONEY));
             
