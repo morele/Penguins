@@ -83,9 +83,16 @@ namespace TestGame.Scene
                             }
                         }
 
-                        // sprawdzenie czy moneta nie ma kolizji z platformą
-                        
+                        // moneta spada
+                        if (_coin.IsActive)
+                        {
+                            _coin.FallDown();
 
+                            if (_coin.IsCollisionDetect(platform))
+                            {
+                                _coin.CanFallDown = false;
+                            }
+                        }
                         // sprawdzenie kolizji między pingwinem a automatem
                         if (_slotMachine.IsCollisionDetect(penguin))
                         {

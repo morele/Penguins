@@ -10,9 +10,12 @@ namespace TestGame
 {
     public class Bonus : GameObject, ICheckable, IGravitable, ICollisionable
     {
+        public bool CanFallDown { get; set; }
+
         public Bonus(Texture2D texture, Point position, Point size) 
             : base(texture, position, size)
         {
+            CanFallDown = true;
         }
 
 
@@ -29,11 +32,16 @@ namespace TestGame
         public void OnChecked()
         {
             IsActive = false;
+            CanFallDown = true;
         }
 
         public void FallDown()
         {
-            Position.Y += 1;
+            if (CanFallDown)
+            {
+                Position.X += 1;
+                Position.Y += 2;
+            }
         }
 
         public void Jump()
@@ -43,12 +51,18 @@ namespace TestGame
 
         public bool IsCollisionDetect(GameObject collisionObject)
         {
-            throw new NotImplementedException();
+            Rectangle bonusRectangle = new Rectangle(Position, Size);
+            Rectangle collisionObjectRectangle = new Rectangle(collisionObject.Position, collisionObject.Size);
+
+            if (collisionObjectRectangle.Intersects(bonusRectangle))
+                return true;
+            return false;
+
         }
 
         public void OnCollisionDetect(GameObject collisionObject)
         {
-            throw new NotImplementedException();
+            // nic nie rób
         }
     }
 }
