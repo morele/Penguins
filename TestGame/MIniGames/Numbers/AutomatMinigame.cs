@@ -52,24 +52,24 @@ namespace TestGame.MIniGames.Numbers
         public void LoadContent(ContentManager content, Texture2D panelTexture)
         {
             _content = content;
-            _texture = panelTexture;
+            _texture = panelTexture; 
 
             _NumPanel = new TextLabel(new Vector2(100, 50), 50, String.Empty, _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), _content.Load<Texture2D>(@"Minigry\AutomatGame\PinPanel"));
             _NumPanel.alignment = TextLabel.Alignment.Center;
 
-            _arrayOfNumButtons[0] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 2, (64 * 4) + 50), "0");
-            _arrayOfNumButtons[1] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64, 64 + 50), "1");
-            _arrayOfNumButtons[2] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 2, 64 + 50), "2");
-            _arrayOfNumButtons[3] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 3, 64 + 50), "3");
-            _arrayOfNumButtons[4] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64, 64 * 2 + 50), "4");
-            _arrayOfNumButtons[5] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 2, 64 * 2 + 50), "5");
-            _arrayOfNumButtons[6] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 3, 64 * 2 + 50), "6");
-            _arrayOfNumButtons[7] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64, 64 * 3 + 50), "7");
-            _arrayOfNumButtons[8] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 2, 64 * 3 + 50), "8");
-            _arrayOfNumButtons[9] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 3, 64 * 3 + 50), "9");
+            _arrayOfNumButtons[0] = new NumButton(_content.Load<Texture2D>(@"Minigry\AutomatGame\Button"), _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), new Vector2(64 * 2, (64 * 4) + 50), "0");
+            _arrayOfNumButtons[1] = new NumButton(_content.Load<Texture2D>(@"Minigry\AutomatGame\Button"), _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), new Vector2(64, 64 + 50), "1");
+            _arrayOfNumButtons[2] = new NumButton(_content.Load<Texture2D>(@"Minigry\AutomatGame\Button"), _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), new Vector2(64 * 2, 64 + 50), "2");
+            _arrayOfNumButtons[3] = new NumButton(_content.Load<Texture2D>(@"Minigry\AutomatGame\Button"), _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), new Vector2(64 * 3, 64 + 50), "3");
+            _arrayOfNumButtons[4] = new NumButton(_content.Load<Texture2D>(@"Minigry\AutomatGame\Button"), _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), new Vector2(64, 64 * 2 + 50), "4");
+            _arrayOfNumButtons[5] = new NumButton(_content.Load<Texture2D>(@"Minigry\AutomatGame\Button"), _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), new Vector2(64 * 2, 64 * 2 + 50), "5");
+            _arrayOfNumButtons[6] = new NumButton(_content.Load<Texture2D>(@"Minigry\AutomatGame\Button"), _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), new Vector2(64 * 3, 64 * 2 + 50), "6");
+            _arrayOfNumButtons[7] = new NumButton(_content.Load<Texture2D>(@"Minigry\AutomatGame\Button"), _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), new Vector2(64, 64 * 3 + 50), "7");
+            _arrayOfNumButtons[8] = new NumButton(_content.Load<Texture2D>(@"Minigry\AutomatGame\Button"), _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), new Vector2(64 * 2, 64 * 3 + 50), "8");
+            _arrayOfNumButtons[9] = new NumButton(_content.Load<Texture2D>(@"Minigry\AutomatGame\Button"), _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), new Vector2(64 * 3, 64 * 3 + 50), "9");
 
-            _arrayOfNumButtons[10] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64, 64 * 4 + 50), "#");
-            _arrayOfNumButtons[11] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 3, 64 * 4 + 50), "*");
+            _arrayOfNumButtons[10] = new NumButton(_content.Load<Texture2D>(@"Minigry\AutomatGame\Button"), _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), new Vector2(64, 64 * 4 + 50), "#");
+            _arrayOfNumButtons[11] = new NumButton(_content.Load<Texture2D>(@"Minigry\AutomatGame\Button"), _content.Load<SpriteFont>(@"Minigry\AutomatGame\NumFont"), new Vector2(64 * 3, 64 * 4 + 50), "*");
 
 
         }
