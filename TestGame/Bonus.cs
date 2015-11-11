@@ -8,7 +8,7 @@ using TestGame.Interfaces;
 
 namespace TestGame
 {
-    public class Bonus : GameObject, ICheckable
+    public class Bonus : GameObject, ICheckable, IGravitable, ICollisionable
     {
         public Bonus(Texture2D texture, Point position, Point size) 
             : base(texture, position, size)
@@ -29,6 +29,26 @@ namespace TestGame
         public void OnChecked()
         {
             IsActive = false;
+        }
+
+        public void FallDown()
+        {
+            Position.Y += 1;
+        }
+
+        public void Jump()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsCollisionDetect(GameObject collisionObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnCollisionDetect(GameObject collisionObject)
+        {
+            throw new NotImplementedException();
         }
     }
 }

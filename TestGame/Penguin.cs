@@ -93,7 +93,7 @@ namespace TestGame
                     {
                         var lastItem =  Equipment.Items.Last();
                         lastItem.Item.IsActive = true;
-                        lastItem.Item.Position = new Point(Position.X + 100, Position.Y - 50);
+                        lastItem.Item.Position = new Point(Position.X + 100, Position.Y - 100);
                         Equipment.RemoveItem(lastItem);
                     }
                 }

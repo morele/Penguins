@@ -170,7 +170,8 @@ namespace TestGame
 
         public bool IsCollisionDetect(GameObject collisionObject)
         {
-            Rectangle rectangle1 = new Rectangle(Position, Size);
+            Point newSize = new Point(Size.X, Size.Y+100);
+            Rectangle rectangle1 = new Rectangle(Position, newSize);
             Rectangle rectangle2 = new Rectangle(collisionObject.Position, collisionObject.Size);
 
             // sprawdzenie czy nastąpiła kolizja

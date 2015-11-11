@@ -83,6 +83,9 @@ namespace TestGame.Scene
                             }
                         }
 
+                        // sprawdzenie czy moneta nie ma kolizji z platformą
+                        
+
                         // sprawdzenie kolizji między pingwinem a automatem
                         if (_slotMachine.IsCollisionDetect(penguin))
                         {
