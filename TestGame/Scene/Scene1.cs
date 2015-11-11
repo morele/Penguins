@@ -93,6 +93,7 @@ namespace TestGame.Scene
                             {
                                 _coin.CanFallDown = false;
                             }
+                            
                         }
                         // sprawdzenie kolizji między pingwinem a automatem
                         if (_slotMachine.IsCollisionDetect(penguin))
