@@ -21,10 +21,11 @@ namespace TestGame
 
         public bool IsChecked(GameObject checkedObject)
         {
-            Rectangle rectangle1 = new Rectangle(Position, Size);
+            Point newSize = new Point(Size.X, Size.Y + 5);
+            Rectangle rectangle1 = new Rectangle(Position, newSize);
             Rectangle rectangle2 = new Rectangle(checkedObject.Position, checkedObject.Size);
 
-            if (rectangle2.Intersects(rectangle1))
+            if (rectangle1.Intersects(rectangle2))
                 return true;
             return false;
         }
