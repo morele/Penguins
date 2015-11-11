@@ -44,7 +44,7 @@ namespace NumberMiniGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            _panel = new Panel(spriteBatch, Content, Content.Load<Texture2D>("Panel"));
+            _panel = new Panel();
             // TODO: use this.Content to load your game content here
         }
 
@@ -81,7 +81,7 @@ namespace NumberMiniGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
-            _panel.Run(gameTime);
+         
             spriteBatch.End();
             // TODO: Add your drawing code here
 

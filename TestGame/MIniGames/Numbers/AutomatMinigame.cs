@@ -49,12 +49,12 @@ namespace TestGame.MIniGames.Numbers
 
         }
 
-        private void LoadContent(ContentManager content, Texture2D panelTexture)
+        public void LoadContent(ContentManager content, Texture2D panelTexture)
         {
             _content = content;
             _texture = panelTexture;
 
-            _NumPanel = new TextLabel(new Vector2(100, 50), 50, String.Empty, _content.Load<SpriteFont>("Digit"), _content.Load<Texture2D>("PinPanel"));
+            _NumPanel = new TextLabel(new Vector2(100, 50), 50, String.Empty, _content.Load<SpriteFont>("Minigry/AutomatGame/NumFont"), _content.Load<Texture2D>(@"Minigry\AutomatGame\PinPanel"));
             _NumPanel.alignment = TextLabel.Alignment.Center;
 
             _arrayOfNumButtons[0] = new NumButton(_content.Load<Texture2D>("Button"), _content.Load<SpriteFont>("fontNumber"), new Vector2(64 * 2, (64 * 4) + 50), "0");

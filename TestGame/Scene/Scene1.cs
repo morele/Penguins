@@ -24,7 +24,7 @@ namespace TestGame.Scene
 
         public Scene1(ContentManager content, Camera camera) : base(content, camera)
         {
-           // automatMinigame;
+            automatMinigame = new AutomatMinigame();
         }
 
         public override void LoadContent(List<Penguin> penguins, PlayerPanel playerPanel, Penguin player)
@@ -41,24 +41,32 @@ namespace TestGame.Scene
             // stworzenie obiektu automatu
             Point slotMachineSize = new Point(content.Load<Texture2D>("Scena1/automat").Width, content.Load<Texture2D>("Scena1/automat").Height);
             _slotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1000, 242), slotMachineSize);
+
+            automatMinigame.LoadContent(content, content.Load<Texture2D>("Minigry/AutomatGame/Panel"));
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            // narysowanie monety
-            _coin.Draw(spriteBatch);
+            if(activeMiniGame == false)
+            {
+                // narysowanie monety
+                _coin.Draw(spriteBatch);
 
-            // narysowanie automatu
-            _slotMachine.Draw(spriteBatch);
+                // narysowanie automatu
+                _slotMachine.Draw(spriteBatch);
 
-            foreach (Platform platform in platforms)
-                platform.Draw(spriteBatch);
 
-            foreach (Penguin penguin in penguins)
-                penguin.Draw(spriteBatch);
+
+                foreach (Platform platform in platforms)
+                    platform.Draw(spriteBatch);
+
+                foreach (Penguin penguin in penguins)
+                    penguin.Draw(spriteBatch);
+
+            }else    automatMinigame.Draw(spriteBatch);
         }
 
-        public override void UpdatePosition()
+        public override void UpdatePosition(GameTime gameTime)
         {
             // metoda ustawia wszystkich graczy na pozycji początkowej
             if (firstStart) FirstStart();
@@ -112,6 +120,11 @@ namespace TestGame.Scene
                         if (_coin.IsCollisionDetect(_slotMachine))
                         {
                             activeMiniGame = true;
+                        }
+
+                        if(activeMiniGame)
+                        {
+                            automatMinigame.Update(gameTime);
                         }
 
                         if (penguin.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny

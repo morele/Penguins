@@ -181,7 +181,7 @@ namespace TestGame
 
               camera.Update(player);*/
 
-            scene1.UpdatePosition();
+            scene1.UpdatePosition(gameTime);
 
             base.Update(gameTime);
         }
