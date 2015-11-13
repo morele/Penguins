@@ -34,7 +34,7 @@ namespace TestGame.Scene
 
         }
 
-        public abstract void UpdatePosition();
+        public abstract void UpdatePosition(GameTime gameTime);
 
         public abstract void Draw(SpriteBatch spriteBatch);
 

@@ -55,6 +55,8 @@
     <Compile Include="Menu\GameMenu.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Menu\MenuItem.cs" />
+    <Compile Include="MIniGames\Numbers\NumButton.cs" />
+    <Compile Include="MIniGames\Numbers\AutomatMinigame.cs" />
     <Compile Include="offline\Rico2.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="PlayerPanel.cs" />
@@ -147,6 +149,7 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Content\JingJing.spritefont" />
   </ItemGroup>
   <ItemGroup />

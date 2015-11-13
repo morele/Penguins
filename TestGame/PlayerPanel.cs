@@ -17,6 +17,7 @@ namespace TestGame
 
         private Texture2D _panelTexture;
         private readonly Rectangle _panelRectangle;
+        public bool activeDraw = true;
 
         public PlayerPanel(Texture2D Image, Vector2 position, Vector2 size, SpriteFont font, Texture2D defalutAvatar) : base(Image, position)
         {
@@ -49,14 +50,18 @@ namespace TestGame
         /// <param name="spriteBatch">SpriteBatch do rysowania</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Image, _panelRectangle, Color.White);
-            Text.Draw(spriteBatch,true);
-
-            // wyświetlenie ekwipunku
-            foreach (var item in _panelEquipment.Items)
+            if(activeDraw)
             {
-                spriteBatch.Draw(item.Item.Texture, new Rectangle(item.Item.Position, item.Item.Size), Color.White);
+                spriteBatch.Draw(Image, _panelRectangle, Color.White);
+                Text.Draw(spriteBatch, true);
+
+                // wyświetlenie ekwipunku
+                foreach (var item in _panelEquipment.Items)
+                {
+                    spriteBatch.Draw(item.Item.Texture, new Rectangle(item.Item.Position, item.Item.Size), Color.White);
+                }
             }
+            
         }
 
         /// <summary>
