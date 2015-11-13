@@ -40,7 +40,7 @@ namespace TestGame.Scene
 
             // stworzenie obiektu automatu
             Point slotMachineSize = new Point(content.Load<Texture2D>("Scena1/automat").Width, content.Load<Texture2D>("Scena1/automat").Height);
-            _slotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1000, 242), slotMachineSize);
+            _slotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1000,242), slotMachineSize, 20);
 
             automatMinigame.LoadContent(content, content.Load<Texture2D>("Minigry/AutomatGame/Panel"));
         }
