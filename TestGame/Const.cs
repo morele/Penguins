@@ -57,6 +57,7 @@ namespace TestGame
                     dimensions.Add(new Rectangle(320, 140, 160, 60));//dziob
                     dimensions.Add(new Rectangle(115, 760, 230, 56));//nogi
                     dimensions.Add(new Rectangle(10, 200, 70, 540));//dupa
+                    dimensions.Add(new Rectangle(300, 380, 35, 290));//brzuch
                     break;
                 case PenguinType.SZEREGOWY:
                     dimensions.Add(new Rectangle(135, 45, 185, 595));//głowa
@@ -72,6 +73,7 @@ namespace TestGame
                     dimensions.Add(new Rectangle(129, 600, 215, 61));  // nogi
                     dimensions.Add(new Rectangle(331, 212, 42, 283));  // brzuch
                     dimensions.Add(new Rectangle(328, 97, 90, 42));    // dziób
+
                     break;
 
             }

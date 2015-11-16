@@ -15,7 +15,6 @@ namespace TestGame
     {
         public Rectangle rectangle;
         public Vector2 speed;
-        private float collision = 1;
 
         public int Mass { get; private set; }
 
@@ -24,7 +23,7 @@ namespace TestGame
         public Texture2D Avatar { get; private set; }
         private Texture2D imageHorizontal;
         private Texture2D imageVertical;
-
+        private List<Rectangle> dimensionsPenguin;
         private Vector2 positionHorizontal;
         private Vector2 positionVertical;
         private Vector2 tmpPosition = new Vector2();
@@ -65,20 +64,24 @@ namespace TestGame
                 case PenguinType.KOWALSKI:
                     pinguinVertical = Const.PINGUIN_KOWALSKI_VERTICAL;
                     pinguinHorizontal = Const.PINGUIN_KOWALSKI_HORIZONTAL;
+                    dimensionsPenguin = Const.DimensionsPenguin(PenguinType.KOWALSKI);
                 break;
                 case PenguinType.RICO:
                     pinguinVertical = Const.PINGUIN_RICO_VERTICAL;
                     pinguinHorizontal = Const.PINGUIN_RICO_HORIZONTAL;
+                    dimensionsPenguin = Const.DimensionsPenguin(PenguinType.RICO);
                     break;
                 case PenguinType.SZEREGOWY:
                     pinguinVertical = Const.PINGUIN_SZEREGOWY_VERTICAL;
                     pinguinHorizontal = Const.PINGUIN_SZEREGOWY_HORIZONTAL;
+                    dimensionsPenguin = Const.DimensionsPenguin(PenguinType.SZEREGOWY);
                     break;
                 case PenguinType.SKIPPER:
                     pinguinHorizontal = Const.PINGUIN_SKIPPER_HORIZONTAL;
                     pinguinVertical = Const.PINGUIN_SKIPPER_VERTICAL;
+                    dimensionsPenguin = Const.DimensionsPenguin(PenguinType.SKIPPER);
                     break;
-
+                   
             }
         }
 
@@ -179,7 +182,7 @@ namespace TestGame
         ///          False - gdy pingwin nie znajduje się na platformie</returns>
         public bool IsOnTopOf(Platform platform)
         {
-            int penguinWidth = rectangle.Width;
+            /*int penguinWidth = rectangle.Width;
             int penguinHeight = rectangle.Height;
             int penguinX = rectangle.X;
             int penguinY = rectangle.Y;
@@ -194,6 +197,25 @@ namespace TestGame
 
                         return true;
                 }
+            return false;*/
+            if (rectangle.Intersects(platform.PlatformRectangle))
+            {
+                
+                    if (dimensionsPenguin[1].Intersects(platform.PlatformRectangle) || dimensionsPenguin[4].Intersects(platform.PlatformRectangle))//jak kolizja po prawej stronie
+                        blockDirectionRIGHT = true;
+                    else blockDirectionRIGHT = false;
+
+                    if (dimensionsPenguin[3].Intersects(platform.PlatformRectangle))//jak kolizja po lewej stronie
+                        blockDircetionLEFT = true;
+                    else blockDircetionLEFT = false;
+
+                    if (dimensionsPenguin[2].Intersects(platform.PlatformRectangle))//jak dotknie nogami
+                        return true;
+
+                    if (dimensionsPenguin[0].Intersects(platform.PlatformRectangle)) //jak wyskoczy 
+                         Position.Y = platform.PlatformRectangle.Y + platform.PlatformRectangle.Height;
+            }
+                
             return false;
         }
        /// <summary>

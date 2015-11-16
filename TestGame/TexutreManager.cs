@@ -72,5 +72,14 @@ namespace TestGame
         }
 
         public abstract void Draw(SpriteBatch spriteBatch);
+
+        public Rectangle ReScale(Rectangle rectangle, int scale)
+        {
+            rectangle.X /= scale;
+            rectangle.Y /= scale;
+            rectangle.Width /= scale;
+            rectangle.Height /= scale;
+            return rectangle;
+        }
     }
 }
