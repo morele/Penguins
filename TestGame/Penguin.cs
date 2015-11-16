@@ -83,6 +83,11 @@ namespace TestGame
                     break;
                    
             }
+            // przeskalowanie wymiarów
+            for (int i = 0; i < dimensionsPenguin.Count; i++)
+            {
+                dimensionsPenguin[i] = ReScale(dimensionsPenguin[i], scale);
+            }
         }
 
         override public void UpdatePosition()
@@ -200,20 +205,19 @@ namespace TestGame
             return false;*/
             if (rectangle.Intersects(platform.PlatformRectangle))
             {
-                
-                    if (dimensionsPenguin[1].Intersects(platform.PlatformRectangle) || dimensionsPenguin[4].Intersects(platform.PlatformRectangle))//jak kolizja po prawej stronie
-                        blockDirectionRIGHT = true;
-                    else blockDirectionRIGHT = false;
+                if (dimensionsPenguin[1].Intersects(platform.PlatformRectangle) || dimensionsPenguin[3].Intersects(platform.PlatformRectangle))//jak kolizja po prawej stronie
+                    blockDirectionRIGHT = true;
+                else blockDirectionRIGHT = false;
 
-                    if (dimensionsPenguin[3].Intersects(platform.PlatformRectangle))//jak kolizja po lewej stronie
-                        blockDircetionLEFT = true;
-                    else blockDircetionLEFT = false;
+                if (dimensionsPenguin[3].Intersects(platform.PlatformRectangle))//jak kolizja po lewej stronie
+                    blockDircetionLEFT = true;
+                else blockDircetionLEFT = false;
 
-                    if (dimensionsPenguin[2].Intersects(platform.PlatformRectangle))//jak dotknie nogami
-                        return true;
+                if (dimensionsPenguin[2].Intersects(platform.PlatformRectangle))//jak dotknie nogami
+                    return true;
 
-                    if (dimensionsPenguin[0].Intersects(platform.PlatformRectangle)) //jak wyskoczy 
-                         Position.Y = platform.PlatformRectangle.Y + platform.PlatformRectangle.Height;
+                if (dimensionsPenguin[0].Intersects(platform.PlatformRectangle)) //jak wyskoczy 
+                    Position.Y = platform.PlatformRectangle.Y + platform.PlatformRectangle.Height;
             }
                 
             return false;
