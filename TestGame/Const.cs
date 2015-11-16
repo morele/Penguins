@@ -44,12 +44,10 @@ namespace TestGame
             switch (type)
             {
                 case PenguinType.KOWALSKI:
-                    dimensions.Add(new Rectangle(150, 17, 129, 45));    // czubek głowy
-                    dimensions.Add(new Rectangle(104, 62, 199, 735));   // głowa i tułów
+                    dimensions.Add(new Rectangle(104, 17, 199, 735));   // głowa i tułów
                     dimensions.Add(new Rectangle(303, 144, 97, 36));    // dziób
-                    dimensions.Add(new Rectangle(65, 275, 39, 329));    // plecy
-                    dimensions.Add(new Rectangle(17, 604, 89, 216));    // dupa
-                    dimensions.Add(new Rectangle(121,797, 240, 83));    // nogi
+                    dimensions.Add(new Rectangle(121, 797, 240, 83));   // nogi
+                    dimensions.Add(new Rectangle(17, 275, 39, 545));    // dupa
                     dimensions.Add(new Rectangle(303, 317, 37, 424));   // brzuch
                     break;
                 case PenguinType.RICO:
@@ -68,11 +66,11 @@ namespace TestGame
                 case PenguinType.SKIPPER:
 
                     dimensions.Add(new Rectangle(89, 10, 239, 586));   // głowa i tułów
-                    dimensions.Add(new Rectangle(39, 281, 54,244));    // plecy
-                    dimensions.Add(new Rectangle(15, 523, 78, 103));   // dupa
-                    dimensions.Add(new Rectangle(129, 600, 215, 61));  // nogi
-                    dimensions.Add(new Rectangle(331, 212, 42, 283));  // brzuch
                     dimensions.Add(new Rectangle(328, 97, 90, 42));    // dziób
+                    dimensions.Add(new Rectangle(129, 600, 215, 61));  // nogi
+                    dimensions.Add(new Rectangle(15, 281, 54, 347));   // plecy                    
+                    dimensions.Add(new Rectangle(331, 212, 42, 283));  // brzuch
+                    
 
                     break;
 
