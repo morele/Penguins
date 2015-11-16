@@ -78,7 +78,7 @@ namespace TestGame
                     pinguinHorizontal = Const.PINGUIN_SKIPPER_HORIZONTAL;
                     pinguinVertical = Const.PINGUIN_SKIPPER_VERTICAL;
                     break;
-
+                   
             }
         }
 
