@@ -36,6 +36,7 @@ namespace TestGame
         private bool blockDircetionLEFT = false;
         private bool blockDirectionRIGHT = false;
         private bool block = false;
+        private bool activeSpace = false;
         public int scale = 8; 
         public int platformSpeed = 0;
         public PenguinType penguinType;
@@ -115,9 +116,15 @@ namespace TestGame
                     activeDirection = false;
                 }
                 else speed.X = 0;
-
-                if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false)
+                 
+                if (Keyboard.GetState().IsKeyUp(Keys.Space)) activeSpace = false;
+                if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false && !activeSpace)
+                {
                     Jump();
+                    activeSpace = true;
+                }
+                    
+
                 FallDown();
             
 
