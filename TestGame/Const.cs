@@ -37,5 +37,31 @@ namespace TestGame
         public static int SKIPPER_MASS = 12;
         public static int SZEREGOWY_MASS = 10;
 
+        public static List<Rectangle> DimensionsPenguin(PenguinType type)
+        {
+            List<Rectangle> dimensions = new List<Rectangle>();
+
+            switch (type)
+            {
+                case PenguinType.KOWALSKI:
+                    
+                    break;
+                case PenguinType.RICO:
+                    dimensions.Add(new Rectangle(135,45,185,595));//głowa
+                    dimensions.Add(new Rectangle(320, 140, 160, 60));//dziob
+                    dimensions.Add(new Rectangle(115, 760, 230, 56));//nogi
+                    dimensions.Add(new Rectangle(10, 200, 70, 540));//dupa
+                    break;
+                case PenguinType.SZEREGOWY:
+                    
+                    break;
+                case PenguinType.SKIPPER:
+                    
+                    break;
+
+            }
+            return dimensions;
+        }
+
     }
 }

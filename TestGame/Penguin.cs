@@ -116,7 +116,7 @@ namespace TestGame
                     activeDirection = false;
                 }
                 else speed.X = 0;
-                 
+
                 if (Keyboard.GetState().IsKeyUp(Keys.Space)) activeSpace = false;
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false && !activeSpace)
                 {

@@ -40,7 +40,7 @@ namespace TestGame
 
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
-            graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferredBackBufferHeight = 900;
             graphics.PreferredBackBufferWidth = 1200;
 
             graphics.ApplyChanges();

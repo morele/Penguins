@@ -31,16 +31,17 @@ namespace TestGame.Scene
         {
             base.LoadContent(penguins, playerPanel, player);
 
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(-1000, 600)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(500, 600))); 
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(-1100, 700)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(500, 850))); 
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(-50, 450)));
-            
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo"), new Vector2(1000, 500)));
+
             // stworzenie obiektu monety
             _coin = new Bonus(content.Load<Texture2D>("Scena1/Moneta"), new Point(50, 300), new Point(50));
 
             // stworzenie obiektu automatu
             Point slotMachineSize = new Point(content.Load<Texture2D>("Scena1/automat").Width, content.Load<Texture2D>("Scena1/automat").Height);
-            _slotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1000,242), slotMachineSize, 20);
+            _slotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1200,150), slotMachineSize, 20);
 
             automatMinigame.LoadContent(content, content.Load<Texture2D>("Minigry/AutomatGame/Panel"));
         }
