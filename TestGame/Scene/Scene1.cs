@@ -33,11 +33,12 @@ namespace TestGame.Scene
 
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(-1100, 700)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(500, 850))); 
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(-50, 450)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo"), new Vector2(1000, 500)));
+           // platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(-50, 450)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo"), new Vector2(-50, 379)));
 
             // stworzenie obiektu monety
             _coin = new Bonus(content.Load<Texture2D>("Scena1/Moneta"), new Point(50, 300), new Point(50));
+            _coin.IsActive = false;
 
             // stworzenie obiektu automatu
             Point slotMachineSize = new Point(content.Load<Texture2D>("Scena1/automat").Width, content.Load<Texture2D>("Scena1/automat").Height);
