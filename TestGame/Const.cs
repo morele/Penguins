@@ -56,7 +56,10 @@ namespace TestGame
                     
                     break;
                 case PenguinType.SKIPPER:
-                    
+                    dimensions.Add(new Rectangle(100, 3, 230, 527));//głowa
+                    dimensions.Add(new Rectangle(335, 100, 87, 30));//dziob
+                    dimensions.Add(new Rectangle(125, 620, 220, 43));//nogi
+                    dimensions.Add(new Rectangle(20, 300, 65, 320));//dupa
                     break;
 
             }
