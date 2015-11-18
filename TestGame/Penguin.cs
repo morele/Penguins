@@ -23,10 +23,12 @@ namespace TestGame
         public Texture2D Avatar { get; private set; }
         private Texture2D imageHorizontal;
         private Texture2D imageVertical;
-        private List<Rectangle> dimensionsPenguin;
+
+        public List<Rectangle> currentdimensionsPenguin = new List<Rectangle>();
         private Vector2 positionHorizontal;
         private Vector2 positionVertical;
         private Vector2 tmpPosition = new Vector2();
+        private Platform blockPlatform = new Platform();
 
         public bool jump = true;
         public bool firstStart = true;
@@ -88,6 +90,7 @@ namespace TestGame
             {
                 dimensionsPenguin[i] = ReScale(dimensionsPenguin[i], scale);
             }
+            currentdimensionsPenguin = dimensionsPenguin;
         }
 
         override public void UpdatePosition()
@@ -161,6 +164,10 @@ namespace TestGame
                 rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
 
             }
+
+            //currentdimensionsPenguin.Clear();//czyszczenie listy
+            //currentdimensionsPenguin.TrimExcess(); //zwalnianie pamieci
+            currentdimensionsPenguin = UpdateDimensions(rectangle);
         }
 
         /// <summary>
@@ -187,38 +194,25 @@ namespace TestGame
         ///          False - gdy pingwin nie znajduje się na platformie</returns>
         public bool IsOnTopOf(Platform platform)
         {
-            /*int penguinWidth = rectangle.Width;
-            int penguinHeight = rectangle.Height;
-            int penguinX = rectangle.X;
-            int penguinY = rectangle.Y;
 
-            // sprawdzenie czy pingwin mieści się na platformie (w orientacji osi X)
-            if (penguinX > (platform.PlatformRectangle.X - penguinWidth) && 
-                 penguinX < (platform.PlatformRectangle.X + platform.PlatformRectangle.Width))
-
-                if((penguinY + penguinHeight) > (platform.PlatformRectangle.Y) &&
-                   (penguinY + penguinHeight) < (platform.PlatformRectangle.Y + platform.PlatformRectangle.Height))
-                {
-
-                        return true;
-                }
-            return false;*/
-            if (rectangle.Intersects(platform.PlatformRectangle))
+            if (penguinType == PenguinType.SZEREGOWY && (currentdimensionsPenguin[1].Intersects(platform.PlatformRectangle) || 
+                currentdimensionsPenguin[4].Intersects(platform.PlatformRectangle)))//jak kolizja po prawej stronie
             {
-                if (dimensionsPenguin[1].Intersects(platform.PlatformRectangle) || dimensionsPenguin[3].Intersects(platform.PlatformRectangle))//jak kolizja po prawej stronie
-                    blockDirectionRIGHT = true;
-                else blockDirectionRIGHT = false;
-
-                if (dimensionsPenguin[3].Intersects(platform.PlatformRectangle))//jak kolizja po lewej stronie
-                    blockDircetionLEFT = true;
-                else blockDircetionLEFT = false;
-
-                if (dimensionsPenguin[2].Intersects(platform.PlatformRectangle))//jak dotknie nogami
-                    return true;
-
-                if (dimensionsPenguin[0].Intersects(platform.PlatformRectangle)) //jak wyskoczy 
-                    Position.Y = platform.PlatformRectangle.Y + platform.PlatformRectangle.Height;
+                Position.X -= 5;
             }
+            
+
+            
+
+            if (currentdimensionsPenguin[3].Intersects(platform.PlatformRectangle))//jak kolizja po lewej stronie
+                blockDircetionLEFT = true;
+            else blockDircetionLEFT = false;
+
+            if (currentdimensionsPenguin[2].Intersects(platform.PlatformRectangle))//jak dotknie nogami
+                return true;
+
+            if (currentdimensionsPenguin[0].Intersects(platform.PlatformRectangle)) //jak wyskoczy 
+                Position.Y = platform.PlatformRectangle.Y + platform.PlatformRectangle.Height;
                 
             return false;
         }

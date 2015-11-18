@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-
+using System.Collections.Generic;
 
 namespace TestGame
 {
@@ -12,7 +12,9 @@ namespace TestGame
         protected Texture2D Image; //tekstrua 
         protected float speedValue; //szybkość poruszania się 
         protected float gravitation; //wysokość wybicia przy skoku
+        protected List<Rectangle> dimensionsPenguin;
 
+        public TextureManager() { }
         /// <summary>
         /// Uniwersalny konstuktor dla tekstur którymi nie mamy w zamiarze się ruszać
         /// </summary>
@@ -79,6 +81,17 @@ namespace TestGame
             rectangle.Y /= scale;
             rectangle.Width /= scale;
             rectangle.Height /= scale;
+            return rectangle;
+        }
+        public List<Rectangle> UpdateDimensions(Rectangle r1)
+        {
+            List<Rectangle> rectangle = new List<Rectangle>();
+            for (int i = 0; i < dimensionsPenguin.Count; i++)
+            {
+                rectangle.Add(new Rectangle(r1.X + dimensionsPenguin[i].X, r1.Y + dimensionsPenguin[i].Y, 
+                    dimensionsPenguin[i].Width, dimensionsPenguin[i].Height));
+            }
+                
             return rectangle;
         }
     }

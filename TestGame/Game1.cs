@@ -50,7 +50,7 @@ namespace TestGame
 
         protected override void Initialize()
         {
-            penguinSpeed = 5; //szybkość poruszania się pingwinów
+            penguinSpeed = 4; //szybkość poruszania się pingwinów
             gravitation = 7f; // wysokość wybicia przy skoku( = 5 ~ 100px)
             camera = new Camera();
 

@@ -34,8 +34,8 @@ namespace TestGame.Scene
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(-1100, 700)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(500, 850))); 
            // platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(-50, 450)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo"), new Vector2(-50, 379)));
-
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_siedzenie"), new Vector2(-50, 539)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_oparcie"), new Vector2(124, 381)));
             // stworzenie obiektu monety
             _coin = new Bonus(content.Load<Texture2D>("Scena1/Moneta"), new Point(50, 300), new Point(50));
             _coin.IsActive = false;
@@ -93,8 +93,8 @@ namespace TestGame.Scene
                         foreach (Penguin penguin in penguins)
                         {
 
-                            for (i = 0; i < penguins.Count; i++)//sprawdza kolizje z innymi pingwinami i blokuje w przypadku wykrycia
-                                if (penguins[i].penguinType != penguin.penguinType) penguins[i].CollisionPenguin(penguin.rectangle);
+                         /*   for (i = 0; i < penguins.Count; i++)//sprawdza kolizje z innymi pingwinami i blokuje w przypadku wykrycia
+                                if (penguins[i].penguinType != penguin.penguinType) penguins[i].CollisionPenguin(penguin.rectangle);*/
 
 
                             // moneta spada

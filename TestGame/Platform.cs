@@ -41,6 +41,7 @@ namespace TestGame
         public bool jump = false;
         public Vector2 speed = new Vector2(0);
         public float angleFall = 10f;
+        public Platform() { }
         /// <summary>
         /// Tworzy obiekt platformy
         /// </summary>
@@ -66,6 +67,7 @@ namespace TestGame
 
             PlatformRectangle = new Rectangle((int)position.X, (int)position.Y, this.Image.Width, this.Image.Height);
         }
+        
 
         override public void UpdatePosition()
         {

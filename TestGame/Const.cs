@@ -58,10 +58,11 @@ namespace TestGame
                     dimensions.Add(new Rectangle(300, 380, 35, 290));//brzuch
                     break;
                 case PenguinType.SZEREGOWY:
-                    dimensions.Add(new Rectangle(135, 45, 185, 595));//głowa
-                    dimensions.Add(new Rectangle(320, 140, 160, 60));//dziob
-                    dimensions.Add(new Rectangle(115, 760, 230, 56));//nogi
-                    dimensions.Add(new Rectangle(10, 200, 70, 540));//dupa
+                    dimensions.Add(new Rectangle(90, 3, 150, 495));//głowa
+                    dimensions.Add(new Rectangle(245, 120, 105, 35));//dziob
+                    dimensions.Add(new Rectangle(115, 590, 200, 45));//nogi
+                    dimensions.Add(new Rectangle(10, 80, 45, 510));//dupa
+                    dimensions.Add(new Rectangle(290, 290, 43, 210));//brzuch
                     break;
                 case PenguinType.SKIPPER:
 

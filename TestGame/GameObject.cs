@@ -13,6 +13,7 @@ namespace TestGame
         public Point Size;
         public bool IsActive;
 
+        public GameObject() { }
         public GameObject(Texture2D texture, Point position, Point size)
         {
             Texture = texture;
