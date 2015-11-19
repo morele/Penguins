@@ -57,7 +57,7 @@ namespace TestGame.Menu
 
             if (IsVisible)
             {
-                _itemPosition = new Point(gameObject.Position.X + 5, gameObject.Position.Y -200);
+                _itemPosition = new Point(gameObject.Position.X + 5, gameObject.Position.Y - 600);
             }
         }
 
