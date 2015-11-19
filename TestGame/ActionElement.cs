@@ -15,7 +15,8 @@ namespace TestGame
             :base(texture, position, size)
         {
             Point newPosition = new Point(position.X - actionSector, position.Y - actionSector);
-            Point newSize = new Point(size.X - actionSector, size.Y - actionSector);
+            Point newSize = new Point(size.X + actionSector*2, size.Y + actionSector*2);
+
             ActionSector = new Rectangle(newPosition, newSize);
         }
 
@@ -23,7 +24,7 @@ namespace TestGame
         {
             Rectangle objRectangle = new Rectangle(obj.Position, obj.Size);
 
-            if (ActionSector.Intersects(objRectangle))
+            if(obj.Position.X + obj.Size.X > ActionSector.X)
                 return true;
             return false;
         }
@@ -40,12 +41,6 @@ namespace TestGame
 
         public void OnCollisionDetect(GameObject collisionObject)
         {
-            // czy jest to kolizja z pingwinem?
-            if (collisionObject is Penguin)
-            {
-                // ;)
-            }
-
         }
     }
 }

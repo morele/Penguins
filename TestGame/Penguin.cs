@@ -19,10 +19,12 @@ namespace TestGame
         public int Mass { get; private set; }
 
         public Equipment Equipment { get; }
+        public EquipmentItem SelectedItem { get; set; }
         public bool CanMove { get; set; }
         public Texture2D Avatar { get; private set; }
         private Texture2D imageHorizontal;
         private Texture2D imageVertical;
+
 
         public List<Rectangle> currentdimensionsPenguin = new List<Rectangle>();
         private Vector2 positionHorizontal;
@@ -36,6 +38,7 @@ namespace TestGame
         private bool activeDirection = true; // true = prawo, false = lewo
         private bool blockDircetionLEFT = false;
         private bool blockDirectionRIGHT = false;
+        private bool blockVomit;
         private bool block = false;
         private bool activeSpace = false;
         public int scale = 8; 
@@ -99,16 +102,23 @@ namespace TestGame
             if(active)
             {
 
-                if (Keyboard.GetState().IsKeyDown(Keys.D5) && penguinType == PenguinType.RICO)
+                if (Keyboard.GetState().IsKeyDown(Keys.D5) && penguinType == PenguinType.RICO && !blockVomit)
                 {
                     if (Equipment.Items.Count > 0)
                     {
-                        var lastItem =  Equipment.Items.Last();
-                        lastItem.Item.IsActive = true;
-                        lastItem.Item.Position = new Point(Position.X + Size.X, Position.Y - Size.Y - 30);
-                        Equipment.RemoveItem(lastItem);
+                        var vomitItem = SelectedItem;
+                        vomitItem.Item.IsActive = true;
+                        vomitItem.Item.Position = new Point(Position.X + Size.X, Position.Y - Size.Y - 30);
+                        Equipment.RemoveItem(vomitItem);
+                        blockVomit = true;
                     }
                 }
+
+                if (Keyboard.GetState().IsKeyUp(Keys.D5))
+                {
+                    blockVomit = false;
+                }
+
                 Position += speed.ToPoint();
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = speedValue * 2;

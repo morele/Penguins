@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Linq;
+using TestGame.Menu;
 using TestGame.MIniGames.Numbers;
 
 namespace TestGame.Scene
@@ -15,16 +17,22 @@ namespace TestGame.Scene
         // Moneta
         private Bonus _coin;
 
+        // Testowa moneta
+        private Bonus _testCoin;
+
         //minigierka  - AutomatMinigame
         private AutomatMinigame automatMinigame;
 
         //Aktywność minigierki
         private bool activeMiniGame = false;
 
+        // menu wyboru ekwipunku
+        private ChooseItemMenu _chooseItemMenu;
 
         public Scene1(ContentManager content, Camera camera) : base(content, camera)
         {
             automatMinigame = new AutomatMinigame();
+            _chooseItemMenu = new ChooseItemMenu();
         }
 
         public override void LoadContent(List<Penguin> penguins, PlayerPanel playerPanel, Penguin player)
@@ -38,11 +46,18 @@ namespace TestGame.Scene
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_oparcie"), new Vector2(124, 381)));
             // stworzenie obiektu monety
             _coin = new Bonus(content.Load<Texture2D>("Scena1/Moneta"), new Point(50, 300), new Point(50));
-            _coin.IsActive = false;
+            _coin.IsActive = true;
+
+            // stworzenie obiektu monety
+            _testCoin = new Bonus(content.Load<Texture2D>("Scena1/testMoneta"), new Point(10, 300), new Point(50));
+            _testCoin.IsActive = true;
 
             // stworzenie obiektu automatu
             Point slotMachineSize = new Point(content.Load<Texture2D>("Scena1/automat").Width, content.Load<Texture2D>("Scena1/automat").Height);
-            _slotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1200,150), slotMachineSize, 20);
+            _slotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1200, 150),
+                slotMachineSize, 50);
+
+
 
             automatMinigame.LoadContent(content, content.Load<Texture2D>("Minigry/AutomatGame/Panel"));
         }
@@ -54,9 +69,14 @@ namespace TestGame.Scene
                 // narysowanie monety
                 _coin.Draw(spriteBatch);
 
+                _testCoin.Draw(spriteBatch);
+
                 // narysowanie automatu
                 _slotMachine.Draw(spriteBatch);
 
+
+                // narysowanie menu wyboru ekwipunku
+                _chooseItemMenu.Draw(spriteBatch);
 
 
                 foreach (Platform platform in platforms)
@@ -80,7 +100,6 @@ namespace TestGame.Scene
                 if (Keyboard.GetState().IsKeyDown(Keys.D2)) player = ActiveAndDeactivationPlayer(false, true, false, false);
                 if (Keyboard.GetState().IsKeyDown(Keys.D3)) player = ActiveAndDeactivationPlayer(false, false, true, false);
                 if (Keyboard.GetState().IsKeyDown(Keys.D4)) player = ActiveAndDeactivationPlayer(false, false, false, true);
-
 
                 // odświeżenie paska gracza
                 playerPanel.Update(player);
@@ -108,6 +127,37 @@ namespace TestGame.Scene
                                 }
 
                             }
+
+                            // test moneta spada
+                            if (_testCoin.IsActive)
+                            {
+                                _testCoin.FallDown();
+
+                                if (_testCoin.IsCollisionDetect(platform))
+                                {
+                                    _testCoin.CanFallDown = false;
+                                }
+
+                            }
+
+
+                            // sprawdzenie czy pingwin (RICO) jest w obrębie automatu
+                            if (penguin.penguinType == PenguinType.RICO && _slotMachine.IsInActionSector(penguin))
+                            {
+                                // wyświetlenie menu wyboru ekwipunku
+                                if (penguin.Equipment.Items.Count > 0)
+                                {
+                                    _chooseItemMenu.IsVisible = true;
+                                    List<Texture2D> textures = penguin.Equipment.Items.Select(equipmentItem => equipmentItem.Item.Texture).ToList();
+                                    _chooseItemMenu.Update(penguin, textures);
+                                    penguin.SelectedItem = penguin.Equipment.Items[_chooseItemMenu.SelectedIndex];
+                                }
+                            }
+                            else if(penguin.penguinType == PenguinType.RICO && !_slotMachine.IsInActionSector(penguin))
+                            {
+                                _chooseItemMenu.IsVisible = false;
+                            }
+
                             // sprawdzenie kolizji między pingwinem a automatem
                             if (_slotMachine.IsCollisionDetect(penguin))
                             {
@@ -121,6 +171,14 @@ namespace TestGame.Scene
                                 penguin.Equipment.AddItem(new EquipmentItem(_coin));
                                 _coin.OnChecked();
                             }
+
+                            // sprawdzenie czy pingwin (RICO) nie zabrał monety
+                            if (penguin.penguinType == PenguinType.RICO && _testCoin.IsChecked(penguin))
+                            {
+                                penguin.Equipment.AddItem(new EquipmentItem(_testCoin));
+                                _testCoin.OnChecked();
+                            }
+
 
                             if (_coin.IsCollisionDetect(_slotMachine))
                             {

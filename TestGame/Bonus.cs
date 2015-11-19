@@ -47,7 +47,7 @@ namespace TestGame
 
         public void Jump()
         {
-            throw new NotImplementedException();
+            // bonusy nie skaczą :P
         }
 
         public bool IsCollisionDetect(GameObject collisionObject)
