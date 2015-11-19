@@ -59,7 +59,7 @@ namespace MiniGameSwiming
                     duration = 0;
                     int randNumber = _random.Next(1, 10);
 
-                    _listOfFish.Add(new Fish(_content.Load<Texture2D>("dorsz"), new Vector2(_graphics.Viewport.Width, (randNumber * 100) - _random.Next(80, (int)_graphics.Viewport.Height) - 80)));
+                    _listOfFish.Add(new Fish(_content.Load<Texture2D>("dorsz"), new Vector2(_graphics.Viewport.Width, (randNumber * 100) - _random.Next(80, (int)_graphics.Viewport.Height) - 90)));
                 }
                 else
                 {
@@ -71,7 +71,7 @@ namespace MiniGameSwiming
                     durationyOfBadFish = 0;
                     delayofBadFish = _random.Next(800, 6666);
                     int randNumber = _random.Next(1, 10);
-                    _listOfBadFish.Add(new Fish(_content.Load<Texture2D>("zly Dorsz"), new Vector2(_graphics.Viewport.Width, (randNumber * 100) - _random.Next(80, (int)_graphics.Viewport.Height) - 80), true));
+                    _listOfBadFish.Add(new Fish(_content.Load<Texture2D>("zly Dorsz"), new Vector2(_graphics.Viewport.Width, (randNumber * 100) - _random.Next(80, (int)_graphics.Viewport.Height) - 90), true));
                 }
                 else
                 {
