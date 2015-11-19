@@ -21,10 +21,12 @@ namespace TestGame.Scene
         //Aktywność minigierki
         private bool activeMiniGame = false;
 
+      
 
         public Scene1(ContentManager content, Camera camera) : base(content, camera)
         {
             automatMinigame = new AutomatMinigame();
+          
         }
 
         public override void LoadContent(List<Penguin> penguins, PlayerPanel playerPanel, Penguin player)
@@ -63,7 +65,18 @@ namespace TestGame.Scene
                     platform.Draw(spriteBatch);
 
                 foreach (Penguin penguin in penguins)
-                    penguin.Draw(spriteBatch);
+                {
+                    if (penguin.penguinType == PenguinType.RICO)
+                    {
+                        penguin.DrawAnimation(spriteBatch);//Ł.G: jeszcze nie wiem po co
+                    }
+                    else
+                    {
+                        penguin.Draw(spriteBatch);
+                    }
+                   
+                }
+                
 
             }else    automatMinigame.Draw(spriteBatch);
         }

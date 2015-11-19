@@ -86,11 +86,11 @@ namespace TestGame
                                    new Vector2(-450, 400), penguinSpeed, 
                                    gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS);
 
-            rico = new Penguin(Content.Load<Texture2D>("Postacie/Rico"), 
+            rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/AnimacjaRIco"), 
                                Content.Load<Texture2D>("Slizg/Rico"),
                                Content.Load<Texture2D>("WyborPostaci/Rico"),
                                new Vector2(-350, 400), penguinSpeed, 
-                               gravitation, PenguinType.RICO, Const.RICO_MASS);
+                               gravitation, PenguinType.RICO, Const.RICO_MASS,new Point(60,97));//Ł.G : dodanie rozmiaru frame do Animacji
 
             szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Szeregowy"), 
                                     Content.Load<Texture2D>("Slizg/Szeregowy"),

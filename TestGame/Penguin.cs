@@ -24,6 +24,9 @@ namespace TestGame
         private Texture2D imageHorizontal;
         private Texture2D imageVertical;
 
+        private Rectangle _positionOnSheet;
+        private int _PositionOnSheetX = 0;
+
         public List<Rectangle> currentdimensionsPenguin = new List<Rectangle>();
         private Vector2 positionHorizontal;
         private Vector2 positionVertical;
@@ -46,18 +49,20 @@ namespace TestGame
         public int pinguinVertical = 0;
         public int pinguinHorizontal = 0;
 
-        public Penguin(Texture2D Image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType, int mass) : base(Image, position, speedValue, gravity)
+        public Penguin(Texture2D image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType, int mass) : base(image, position, speedValue, gravity)
         {
             this.imageHorizontal = imageHorizontal;
-            this.imageVertical = Image;
+            this.imageVertical = image;
             Avatar = avatar;
             Mass = mass;
             this.penguinType = penguinType;
             Equipment = new Equipment();
 
-            Texture = Image;
+           
+
+            Texture = image;
             Position = position.ToPoint();
-            Size = new Point(Image.Width/scale, Image.Height/scale);
+            Size = new Point(image.Width/scale, image.Height/scale);
             CanMove = true;
 
             //każdy typ pingwina ma róźną wysokość, wartości odpowiednio przeskalowane 
@@ -93,6 +98,70 @@ namespace TestGame
             currentdimensionsPenguin = dimensionsPenguin;
         }
 
+        /// <summary>
+        /// Animacja
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="imageHorizontal"></param>
+        /// <param name="avatar"></param>
+        /// <param name="position"></param>
+        /// <param name="speedValue"></param>
+        /// <param name="gravity"></param>
+        /// <param name="penguinType"></param>
+        /// <param name="mass"></param>
+        /// <param name="frameSize">Argument potrzebny do Animacji</param>
+        public Penguin(Texture2D image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType, int mass,Point frameSize) : 
+            base(image, position, speedValue, gravity, frameSize)
+        {
+            this.imageHorizontal = imageHorizontal;
+            this.imageVertical = image;
+            Avatar = avatar;
+            Mass = mass;
+            this.penguinType = penguinType;
+            Equipment = new Equipment();
+
+       
+
+            Texture = image;
+            Position = position.ToPoint();
+
+            _positionOnSheet = new Rectangle(1, 1, frameSize.X , frameSize.Y);//Ł.G;
+            Size = new Point(image.Width / scale, image.Width / scale);
+
+            CanMove = true;
+
+            //każdy typ pingwina ma róźną wysokość, wartości odpowiednio przeskalowane 
+            switch (penguinType)
+            {
+                case PenguinType.KOWALSKI:
+                    pinguinVertical = Const.PINGUIN_KOWALSKI_VERTICAL;
+                    pinguinHorizontal = Const.PINGUIN_KOWALSKI_HORIZONTAL;
+                    dimensionsPenguin = Const.DimensionsPenguin(PenguinType.KOWALSKI);
+                    break;
+                case PenguinType.RICO:
+                    pinguinVertical = Const.PINGUIN_RICO_VERTICAL;
+                    pinguinHorizontal = Const.PINGUIN_RICO_HORIZONTAL;
+                    dimensionsPenguin = Const.DimensionsPenguin(PenguinType.RICO);
+                    break;
+                case PenguinType.SZEREGOWY:
+                    pinguinVertical = Const.PINGUIN_SZEREGOWY_VERTICAL;
+                    pinguinHorizontal = Const.PINGUIN_SZEREGOWY_HORIZONTAL;
+                    dimensionsPenguin = Const.DimensionsPenguin(PenguinType.SZEREGOWY);
+                    break;
+                case PenguinType.SKIPPER:
+                    pinguinHorizontal = Const.PINGUIN_SKIPPER_HORIZONTAL;
+                    pinguinVertical = Const.PINGUIN_SKIPPER_VERTICAL;
+                    dimensionsPenguin = Const.DimensionsPenguin(PenguinType.SKIPPER);
+                    break;
+
+            }
+            // przeskalowanie wymiarów
+            for (int i = 0; i < dimensionsPenguin.Count; i++)
+            {
+                dimensionsPenguin[i] = ReScale(dimensionsPenguin[i], scale);
+            }
+            currentdimensionsPenguin = dimensionsPenguin;
+        }
         override public void UpdatePosition()
         {
            
@@ -111,24 +180,50 @@ namespace TestGame
                 }
                 Position += speed.ToPoint();
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = speedValue * 2;
-                else
-                if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down)) speed.X = -speedValue * 2;
+                if (_PositionOnSheetX >= 8)
+                {
+                    _PositionOnSheetX = 0;
+                }
+                _positionOnSheet=new Rectangle(new Point(480/8 * _PositionOnSheetX,0),this.FrameSize);
+                System.Diagnostics.Debug.WriteLine("X: {0}", 1 * _PositionOnSheetX);
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down))
+                {
+                    speed.X = speedValue * 2;
+                
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down))
+                {
+                    speed.X = -speedValue * 2;
+                
+                }
                 else
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && !blockDirectionRIGHT)
                 {
                     speed.X = speedValue;
                     activeDirection = true;
+                    if (penguinType == PenguinType.RICO)
+                    {
+                        _PositionOnSheetX++;
+                    }
+
+                   
                 }
-                else
-                if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDircetionLEFT)
+                else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDircetionLEFT)
                 {
                     speed.X = -speedValue;
                     activeDirection = false;
+                 
                 }
-                else speed.X = 0;
+                else
+                {
+                    speed.X = 0;
+                }
 
-                if (Keyboard.GetState().IsKeyUp(Keys.Space)) activeSpace = false;
+                if (Keyboard.GetState().IsKeyUp(Keys.Space))
+                {
+                    activeSpace = false;
+                }
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false && !activeSpace)
                 {
                     Jump();
@@ -333,7 +428,15 @@ namespace TestGame
         {
             spriteBatch.Draw(Image, rectangle, Color.White);
         }
-
+        /// <summary>
+        /// Odmiana Draw do Animacji
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void DrawAnimation(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Image, new Rectangle(rectangle.X, rectangle.Y, _positionOnSheet.Width, _positionOnSheet.Height), _positionOnSheet, Color.White);
+//            spriteBatch.Draw(Image, rectangle, _positionOnSheet, Color.White);
+        }
         public override string ToString()
         {
             return penguinType.ToString();
