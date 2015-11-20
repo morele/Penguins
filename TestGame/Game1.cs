@@ -87,7 +87,7 @@ namespace TestGame
                                    gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS);
 
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 
-                               Content.Load<Texture2D>("Postacie/Animacje/AnimacjaRIco"),//Ł.G: tymczasowo zmienione 
+                               Content.Load<Texture2D>("Slizg/Rico"),//Ł.G: tymczasowo zmienione 
                                Content.Load<Texture2D>("WyborPostaci/Rico"),
                                new Vector2(-350, 400), penguinSpeed, 
                                gravitation, PenguinType.RICO, Const.RICO_MASS,new Point(480,815));//Ł.G : dodanie rozmiaru frame do Animacji

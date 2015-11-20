@@ -127,6 +127,8 @@ namespace TestGame
             Equipment = new Equipment();
 
             Texture = image;
+            image = new Texture2D(image.GraphicsDevice,image.Width/4,image.Height);
+
             Position = position.ToPoint();
 
             _positionOnSheet = new Rectangle(1, 1, frameSize.X, frameSize.Y);//Ł.G;
