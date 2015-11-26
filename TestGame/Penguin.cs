@@ -38,8 +38,8 @@ namespace TestGame
         public bool firstStart = true;
         public bool active = true;
         private bool activeDirection = true; // true = prawo, false = lewo
-        private bool blockDircetionLEFT = false;
-        private bool blockDirectionRIGHT = false;
+        public bool blockDircetionLEFT = false;
+        public  bool blockDirectionRIGHT = false;
         private bool blockDircetionDOWN = false;
         private int correctPosition = 0;
         private bool blockVomit;
