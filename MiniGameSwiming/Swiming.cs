@@ -23,7 +23,10 @@ namespace MiniGameSwiming
 
         private Random _random;
 
+        private SpriteFont _font;
+
         private int punkty = 0;
+        private string _gameText = "Press space to play!";
 
         public Swiming(SpriteBatch spriteBatch, ContentManager content, GraphicsDevice graphicsDevice)
         {
@@ -34,6 +37,7 @@ namespace MiniGameSwiming
             _random = new Random();
 
             _pinguin = new Pinguin(_content.Load<Texture2D>("Rico"), new Vector2(80, 81), 10);
+            _font = content.Load<SpriteFont>("Fon");
             _listOfFish = new List<Fish>();
             _listOfBadFish = new List<Fish>();
         }
@@ -42,66 +46,79 @@ namespace MiniGameSwiming
 
         public void Update(GameTime gameTime)
         {
-            if (duration > delay)
+            if (!_pinguin.Run)
             {
-                duration = 0;
-                int randNumber = _random.Next(1, 10);
-
-                _listOfFish.Add(new Fish(_content.Load<Texture2D>("dorsz"), new Vector2(_graphics.Viewport.Width, (randNumber * 100) - _random.Next(80, (int)_graphics.Viewport.Height) - 80)));
+                _gameText = "Press space to play!";
             }
             else
             {
-                duration += gameTime.ElapsedGameTime.Milliseconds;
+                _gameText =String.Format("Number of Life: {0}",_pinguin.NumberOfLife);
 
-            }
-            if (durationyOfBadFish > delayofBadFish)
-            {
-                durationyOfBadFish = 0;
-                delayofBadFish = _random.Next(800, 6666);
-                int randNumber = _random.Next(1, 10);
-                _listOfBadFish.Add(new Fish(_content.Load<Texture2D>("zly Dorsz"), new Vector2(_graphics.Viewport.Width, (randNumber * 100) - _random.Next(80, (int)_graphics.Viewport.Height) - 80), true));
-            }
-            else
-            {
-                durationyOfBadFish += gameTime.ElapsedGameTime.Milliseconds;
-            }
-
-            foreach (Fish fish in _listOfFish)
-            {
-                fish.Update(gameTime);
-                if (fish.Position.Intersects(_pinguin.Position))
+                if (duration > delay)
                 {
-                    if (!fish.Eaten)
-                    {
-                        punkty++;
-                        System.Diagnostics.Debug.WriteLine("Pkt: {0}", punkty);
-                       
-                    }
-                  
-                    fish.Eaten = true;
-                    
-                  
+                    duration = 0;
+                    int randNumber = _random.Next(1, 10);
+
+                    _listOfFish.Add(new Fish(_content.Load<Texture2D>("dorsz"), new Vector2(_graphics.Viewport.Width, (randNumber * 100) - _random.Next(80, (int)_graphics.Viewport.Height) - 90)));
                 }
-            }
-            foreach (Fish Badfish in _listOfBadFish)
-            {
-                Badfish.Update(gameTime);
-                if (Badfish.Position.Intersects(_pinguin.Position))
+                else
                 {
-                    if (!Badfish.Eaten)
-                    {
-                        punkty--;
-                        System.Diagnostics.Debug.WriteLine("Pkt: {0}", punkty);
-                    }
-
-                    Badfish.Eaten = true;
-
+                    duration += gameTime.ElapsedGameTime.Milliseconds;
 
                 }
+                if (durationyOfBadFish > delayofBadFish)
+                {
+                    durationyOfBadFish = 0;
+                    delayofBadFish = _random.Next(800, 6666);
+                    int randNumber = _random.Next(1, 10);
+                    _listOfBadFish.Add(new Fish(_content.Load<Texture2D>("zly Dorsz"), new Vector2(_graphics.Viewport.Width, (randNumber * 100) - _random.Next(80, (int)_graphics.Viewport.Height) - 90), true));
+                }
+                else
+                {
+                    durationyOfBadFish += gameTime.ElapsedGameTime.Milliseconds;
+                }
+
+                foreach (Fish fish in _listOfFish)
+                {
+                    fish.Update(gameTime);
+                    if (fish.Position.Intersects(_pinguin.Position))
+                    {
+                        if (!fish.Eaten)
+                        {
+                            punkty++;
+                            System.Diagnostics.Debug.WriteLine("Pkt: {0}", punkty);
+
+                        }
+
+                        fish.Eaten = true;
+
+
+                    }
+                }
+                foreach (Fish Badfish in _listOfBadFish)
+                {
+                    Badfish.Update(gameTime);
+                    if (Badfish.Position.Intersects(_pinguin.Position))
+                    {
+                        if (!Badfish.Eaten)
+                        {
+                            punkty--;
+
+                            _pinguin.color = Color.GreenYellow;
+
+                            System.Diagnostics.Debug.WriteLine("Pkt: {0}", punkty);
+                        }
+
+                        Badfish.Eaten = true;
+
+
+                    }
+                }
             }
+ 
 
-            
 
+         
             _pinguin.Update(gameTime, _graphics);
         }
 
@@ -121,6 +138,7 @@ namespace MiniGameSwiming
 
             }
             _pinguin.Draw(_spriteBatch);
+            _spriteBatch.DrawString(_font, _gameText,new Vector2(300,30),Color.Black );
         }
     }
 }

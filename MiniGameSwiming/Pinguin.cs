@@ -12,6 +12,27 @@ namespace MiniGameSwiming
         private float _velocityY;
         private float _scale;
 
+        private float _greenDuration = 0;
+        private float _greenDelay = 10000;
+
+        public Color color
+        {
+           get;
+          set;
+        }
+
+        public bool Run
+        {
+            get;
+            set;
+        }
+
+        public int NumberOfLife
+        {
+            get;
+            set;
+        }
+
         public Rectangle Position
         {
             get
@@ -43,38 +64,79 @@ namespace MiniGameSwiming
             _texture = texture;
             _position = position;
             _scale = scale / 100;
-            _velocityY = 2;
+            _velocityY = 3;
             _velocityX = 3;
-
+            NumberOfLife = 3;
+            color = Color.White;
         }
 
-        public void Update(GameTime gametdTime, GraphicsDevice device)
+        public void Update(GameTime gameTime, GraphicsDevice device)
         {
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            if (!Run)
             {
-
-                _position.Y -= 4;
+                if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                {
+                    Run = true;
+                    color=Color.White;
+                }
             }
-          //  if (Keyboard.GetState().IsKeyDown(Keys.Down))
-         //   {
+            if (Run)
+            {
+                if (_greenDuration > _greenDelay)
+                {
+                    color = Color.White;
+                    _greenDuration = 0;
+                }
+                else
+                {
+                    _greenDuration += gameTime.ElapsedGameTime.Milliseconds;
+                }
+
+                if (_position.X <= 0)
+                {
+                    _position.X = 1;
+                }
+                if (_position.X > device.Viewport.X + _texture.Width - 100)
+                {
+                    _position.X = device.Viewport.X + _texture.Width - 100;
+                }
+                if (_position.Y <= 0)
+                {
+                    _position.Y = 1;
+                }
+                if (_position.Y > device.Viewport.Y + _texture.Height - 100)
+                {
+
+                    NumberOfLife--;
+                    System.Diagnostics.Debug.WriteLine("Life: {0}", NumberOfLife);
+                    _position.X = 10;
+                    _position.Y = 10;
+                    Run = false;
+                }
                 _position.Y += _velocityY;
-         //   }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                _position.X -= _velocityX;
+                if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                {
+
+                    _position.Y -= 5;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                {
+                    _position.X -= _velocityX;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                {
+                    _position.X += _velocityX;
+                }
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                _position.X += _velocityX;
-            }
+           
 
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
 
-            spriteBatch.Draw(_texture, Position, Color.White);
+           
+            spriteBatch.Draw(_texture, Position, color);
         }
     }
 }

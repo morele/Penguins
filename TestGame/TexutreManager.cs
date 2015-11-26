@@ -14,6 +14,9 @@ namespace TestGame
         protected float gravitation; //wysokość wybicia przy skoku
         protected List<Rectangle> dimensionsPenguin;
 
+    
+       
+
         public TextureManager() { }
         /// <summary>
         /// Uniwersalny konstuktor dla tekstur którymi nie mamy w zamiarze się ruszać
@@ -52,6 +55,29 @@ namespace TestGame
             Texture = Image;
             Position = position.ToPoint();
             Size = new Point(Image.Width, Image.Height);
+          
+        }
+        /// <summary>
+        /// Konstruktor używany tylko dla textur którymi mamy zamiar ruszać się/skakać paramert do animacji
+        /// </summary>
+        /// <param name="Image">Przyjmuje content textury</param>
+        /// <param name="position">Początkowa pozycja textury</param>
+        /// <param name="speedValue">Szybkość poruszania się textury(optymalna 3-5)</param>
+        /// <param name="gravitation">wysokość wybicia przy skoku(optymalna 5)</param>
+        /// <param name="frameSize">ustawienie rozmiarow do animacji</param>
+        public TextureManager(Texture2D Image, Vector2 position, float speedValue, float gravitation,Point frameSize)
+            : base(Image, position.ToPoint(), new Point(Image.Width, Image.Height))
+        {
+            if (Image == null || position == null || speedValue == null || gravitation == null) throw new ArgumentNullException("Null exception, TextureManager");
+            this.Image = Image;
+            // this.position = position;
+            this.speedValue = speedValue;
+            this.gravitation = gravitation;
+
+            Texture = Image;
+            Position = position.ToPoint();
+            Size = new Point(Image.Width, Image.Height);
+            this.FrameSize = frameSize;
         }
 
         /// <summary>

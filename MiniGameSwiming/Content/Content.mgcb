@@ -46,3 +46,9 @@
 /processorParam:TextureFormat=Color
 /build:zly dorsz.png
 
+#begin Fon.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fon.spritefont
+

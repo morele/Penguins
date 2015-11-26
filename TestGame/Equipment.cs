@@ -34,13 +34,6 @@ namespace TestGame
         public void RemoveItem(EquipmentItem equipmentItem)
         {
             Items.Remove(equipmentItem);
-
-            // aktualizacja listy 
-            for (int i = 0; i < Items.Count; i++)
-            {
-                Items.Add(Items[i]);
-            }
-
         }
 
     }
