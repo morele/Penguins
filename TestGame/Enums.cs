@@ -24,6 +24,7 @@ namespace TestGame
     {
         FLOOR = 1,
         MONEY = 2,
+        NN = 3,
 
     }
 }

@@ -127,59 +127,7 @@ namespace TestGame
                 GameFlow.CurrentInstance.Exit();
             var deltaTime = 1/gameTime.ElapsedGameTime.TotalSeconds;
 
-            // metoda ustawia wszystkich graczy na pozycji początkowej
-            /*  if (firstStart) FirstStart();
-
-              if (Keyboard.GetState().IsKeyDown(Keys.D1)) player = ActiveAndDeactivationPlayer(true, false, false, false);
-              if (Keyboard.GetState().IsKeyDown(Keys.D2)) player = ActiveAndDeactivationPlayer(false, true, false, false);
-              if (Keyboard.GetState().IsKeyDown(Keys.D3)) player = ActiveAndDeactivationPlayer(false, false, true, false);
-              if (Keyboard.GetState().IsKeyDown(Keys.D4)) player = ActiveAndDeactivationPlayer(false, false, false, true);
-
-
-              // odświeżenie paska gracza
-              _playerPanel.Update(player);
-
-
-
-              int i;
-              foreach (Platform platform in platforms)
-              {
-                  foreach (Penguin penguin in penguins)
-                  {
-
-                      for(i = 0; i < penguins.Count; i++)//sprawdza kolizje z innymi pingwinami i blokuje w przypadku wykrycia
-                          if (penguins[i].penguinType != penguin.penguinType) penguins[i].CollisionPenguin(penguin.rectangle);
-
-
-                      if (penguin.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
-                      {
-                          penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
-
-                          if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
-                          {
-                              penguin.PutMeOn(platform.PlatformRectangle);
-
-                              if (penguin.active) platform.Slowdown();
-                              penguin.platformSpeed = (int)platform.PlatformSpeed;
-                          }
-                      }
-                      else
-                      {
-                          if (penguin.active) platform.SpeedUp();
-                      }
-
-                  }
-                  // aktualizacja pozycji jeśli platforma ma sie poruszać
-                  platform.UpdatePosition();
-              }
-
-
-
-                foreach (Penguin penguin in penguins)
-                    penguin.UpdatePosition();
-
-
-              camera.Update(player);*/
+         
 
             scene1.UpdatePosition(gameTime);
 
@@ -191,15 +139,6 @@ namespace TestGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
-
-
-            /* foreach (Platform platform in platforms)
-                 platform.Draw(spriteBatch);
-
-             rico.Draw(spriteBatch);
-             szeregowy.Draw(spriteBatch);
-             skipper.Draw(spriteBatch);
-             kowalski.Draw(spriteBatch);*/
 
             scene1.Draw(spriteBatch);
 
@@ -217,16 +156,6 @@ namespace TestGame
             #endregion
 
             base.Draw(gameTime);
-        }
-        private bool IsOnTopOf(Penguin player, Platform platform)
-        {
-            if (player.IsOnTopOf(platform))
-            {
-                player.speed.Y = 0f;
-                player.jump = false;
-                return true;
-            }
-            return false;
         }
         /// <summary>
         /// Metoda aktywuje i dezaktuwuje graczy
@@ -247,24 +176,6 @@ namespace TestGame
             return skipper;
         }
 
-        private void FirstStart()
-        {
-            while (firstStart)
-            {
-                foreach (Penguin penguin in penguins)
-                    penguin.UpdatePosition();
-
-
-                foreach (Platform platform in platforms)
-                    foreach (Penguin penguin in penguins)
-                        if (IsOnTopOf(penguin, platform)) penguin.firstStart = false;
-
-                if (!rico.firstStart && !kowalski.firstStart && !skipper.firstStart && !szeregowy.firstStart)
-                {
-                    firstStart = false;
-                }
-            }
-        }
     }
 
 }

@@ -45,10 +45,30 @@ namespace TestGame.Scene
             penguins[2].active = ConRico;
             penguins[3].active = ConSzeregowy;
 
-            if (ConSkipper) return penguins[0];//skipper
-            if (ConKowalski) return penguins[1];//kowalski
-            if (ConRico) return penguins[2];//rico
-            if (ConSzeregowy) return penguins[3];//szeregowy
+            if (ConSkipper)
+            {
+                penguins[0].blockDircetionLEFT = penguins[0].blockDirectionRIGHT = false;
+                return penguins[0];//skipper
+            }
+
+            if (ConKowalski)
+            {
+                penguins[1].blockDircetionLEFT = penguins[1].blockDirectionRIGHT = false;
+                return penguins[1];//kowalski
+            }
+            
+            if (ConRico)
+            {
+                penguins[2].blockDircetionLEFT = penguins[2].blockDirectionRIGHT = false;
+                return penguins[2];//rico
+            }
+            
+            if (ConSzeregowy)
+            {
+                penguins[3].blockDircetionLEFT = penguins[3].blockDirectionRIGHT = false;
+                return penguins[3];//szeregowy
+            }
+            
 
             return penguins[0];
         }
@@ -72,7 +92,7 @@ namespace TestGame.Scene
         }
         protected bool IsOnTopOf(Penguin player, Platform platform)
         {
-            if (player.IsOnTopOf(platform))
+            if (player.Collision(platform.PlatformRectangle))
             {
                 player.speed.Y = 0f;
                 player.jump = false;

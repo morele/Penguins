@@ -33,13 +33,13 @@ namespace TestGame.Scene
 
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(-1100, 700)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(500, 850))); 
-           // platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(-50, 450)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_siedzenie"), new Vector2(-50, 539)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_oparcie"), new Vector2(124, 381)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(-50, 450),false,0,0,PlatformType.FLOOR));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_siedzenie"), new Vector2(350, 539)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_oparcie"), new Vector2(524, 381)));
             // stworzenie obiektu monety
             _coin = new Bonus(content.Load<Texture2D>("Scena1/Moneta"), new Point(50, 300), new Point(50));
             _coin.IsActive = false;
-
+            
             // stworzenie obiektu automatu
             Point slotMachineSize = new Point(content.Load<Texture2D>("Scena1/automat").Width, content.Load<Texture2D>("Scena1/automat").Height);
             _slotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1200,150), slotMachineSize, 20);
@@ -95,8 +95,15 @@ namespace TestGame.Scene
 
                          /*   for (i = 0; i < penguins.Count; i++)//sprawdza kolizje z innymi pingwinami i blokuje w przypadku wykrycia
                                 if (penguins[i].penguinType != penguin.penguinType) penguins[i].CollisionPenguin(penguin.rectangle);*/
+                            
+                            for (i = 0; i < penguins.Count; i++)
+                            {
+                                if (penguins[i].penguinType != penguin.penguinType)
+                                       if(penguins[i].Collision(penguin.rectangle))
+                                        penguins[i].JumpStop(0);
 
 
+                            }
                             // moneta spada
                             if (_coin.IsActive)
                             {
@@ -131,7 +138,7 @@ namespace TestGame.Scene
 
 
 
-                            if (penguin.IsOnTopOf(platform))// sprawdzenie czy na platformie są pingwiny
+                            if (penguin.Collision(platform.PlatformRectangle, platform.platformType))// sprawdzenie czy na platformie są pingwiny
                             {
                                 penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
 

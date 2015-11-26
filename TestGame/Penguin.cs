@@ -34,14 +34,17 @@ namespace TestGame
         public bool firstStart = true;
         public bool active = true;
         private bool activeDirection = true; // true = prawo, false = lewo
-        private bool blockDircetionLEFT = false;
-        private bool blockDirectionRIGHT = false;
+        public bool blockDircetionLEFT = false;
+        public bool blockDirectionRIGHT = false;
+        private bool blockDircetionDOWN = false;
+        private int correctPosition = 0;
         private bool block = false;
         private bool activeSpace = false;
         public int scale = 8; 
         public int platformSpeed = 0;
         public PenguinType penguinType;
         public List<Platform> platforms = new List<Platform>();
+        private Rectangle actualCollisionRect;
 
         public int pinguinVertical = 0;
         public int pinguinHorizontal = 0;
@@ -128,11 +131,12 @@ namespace TestGame
                 }
                 else speed.X = 0;
 
-                if (Keyboard.GetState().IsKeyUp(Keys.Space)) activeSpace = false;
-                if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false && !activeSpace)
+                if (Keyboard.GetState().IsKeyUp(Keys.Space)) activeSpace = false;    //zeby nacisnięcie spacji oznaczało tylko JEDNO nacisniecie(szybko odświeża)           
+                if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false && !activeSpace && !blockDircetionDOWN)
                 {
                     Jump();
                     activeSpace = true;
+                    blockDircetionDOWN = true;
                 }
                     
 
@@ -143,12 +147,12 @@ namespace TestGame
                 if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     Image = imageHorizontal;
-                    rectangle = new Rectangle((int)positionHorizontal.X, (int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); // na slizgu
+                    rectangle = new Rectangle((int)positionHorizontal.X + correctPosition, (int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); // na slizgu
                 }
                 else
                 {
                     Image = imageVertical;
-                    rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
+                    rectangle = new Rectangle((int)positionVertical.X + correctPosition, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
                 }
 
 
@@ -161,159 +165,108 @@ namespace TestGame
 
                 positionVertical = Position.ToVector2();
                 Image = imageVertical;
-                rectangle = new Rectangle((int)positionVertical.X, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
+                rectangle = new Rectangle((int)positionVertical.X + correctPosition, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
 
             }
 
-            //currentdimensionsPenguin.Clear();//czyszczenie listy
-            //currentdimensionsPenguin.TrimExcess(); //zwalnianie pamieci
             currentdimensionsPenguin = UpdateDimensions(rectangle);
         }
-
-        /// <summary>
-        /// Wykrywa kolizje z podana platforma
-        /// </summary>
-        /// <param name="r1"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public bool CollisionPlatform(Platform r1, PlatformType type)
+        
+        private void blockSystem()
         {
-            if (rectangle.Intersects(r1.PlatformRectangle) && r1.platformType == type && penguinType == PenguinType.RICO)
+            if (!block)//jezeli nie jest zablokowane
             {
-                platforms.Add(r1);
-                return true;
+                tmpPosition = rectangle.Location.ToVector2(); //zapamietaj aktualna pozycje 
+                block = true;
+
+                if (activeDirection) //prawo
+                {
+                    blockDirectionRIGHT = true;
+                    blockDircetionLEFT = false;
+                    correctPosition = (int)-speedValue;
+                }
+                if (!activeDirection) //lewo
+                {
+                    blockDircetionLEFT = true;
+                    blockDirectionRIGHT = false;
+                    correctPosition = (int)speedValue;
+                }
             }
-            return false;
         }
 
         /// <summary>
-        /// Metoda sprawdza czy pingwin znajduje się platformie
+        /// Wykrywa kolizje pingwina z parametrem
         /// </summary>
         /// <param name="platform">Platforma do sprawdzenia</param>
         /// <returns>True - gdy pingwin znajduje się na platformie
         ///          False - gdy pingwin nie znajduje się na platformie</returns>
-        public bool IsOnTopOf(Platform platform)
+        public bool Collision(Rectangle r1, PlatformType platformType = PlatformType.NN)
         {
+            if(actualCollisionRect != null) //jak pingwin lata to musi mu sie odlokowac mozliwosc poruszania sie na lewo i prawo
+             if (!currentdimensionsPenguin[0].Intersects(actualCollisionRect) &&
+                !currentdimensionsPenguin[1].Intersects(actualCollisionRect) &&
+                !currentdimensionsPenguin[2].Intersects(actualCollisionRect) &&
+                !currentdimensionsPenguin[3].Intersects(actualCollisionRect) &&
+                !currentdimensionsPenguin[4].Intersects(actualCollisionRect))
+             blockDircetionLEFT = blockDirectionRIGHT = false;
 
-            if (penguinType == PenguinType.SZEREGOWY && (currentdimensionsPenguin[1].Intersects(platform.PlatformRectangle) || 
-                currentdimensionsPenguin[4].Intersects(platform.PlatformRectangle)))//jak kolizja po prawej stronie
+            if ((currentdimensionsPenguin[1].Intersects(r1) || currentdimensionsPenguin[4].Intersects(r1)))//jak kolizja po prawej stronie
             {
-                Position.X -= 5;
+                actualCollisionRect = r1;
+                blockSystem();
             }
             
 
+            if (currentdimensionsPenguin[3].Intersects(r1))//jak kolizja po lewej stronie
+            {
+                actualCollisionRect = r1;
+                blockSystem();
+            }
             
+            if (currentdimensionsPenguin[0].Intersects(r1)) //jak dotknie głowa
+            {
+                if (blockDircetionDOWN) speed.Y = 0;
+                blockDircetionDOWN = false;
+            }
 
-            if (currentdimensionsPenguin[3].Intersects(platform.PlatformRectangle))//jak kolizja po lewej stronie
-                blockDircetionLEFT = true;
-            else blockDircetionLEFT = false;
+            if (activeDirection && block)//jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie 
+                if (rectangle.X > tmpPosition.X + speedValue)
+                {
+                    correctPosition = 0;
+                    block = false;
+                }
 
-            if (currentdimensionsPenguin[2].Intersects(platform.PlatformRectangle))//jak dotknie nogami
+            if (!activeDirection && block)//jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie 
+                if (rectangle.X < tmpPosition.X - speedValue)
+                {
+                    correctPosition = 0;
+                    block = false;
+                }
+            
+            if (!block)//jak nie zablokowane to odblokuj oba kierunki 
+                blockDircetionLEFT = blockDirectionRIGHT = false;
+        
+          
+            if(platformType == PlatformType.FLOOR)//jak podloga to powoduje zeby pingwin nie mogl sie zaczepic od boku 
+            {
+                r1.Height = (int)speed.Y+1;
+                if (currentdimensionsPenguin[2].Intersects(r1))//jak dotknie nogami
+                {
+                    blockDircetionDOWN = false;
+                    return true;
+                }
+            }else
+            if (currentdimensionsPenguin[2].Intersects(r1))//jak dotknie nogami
+            {
+                blockDircetionDOWN = false;
                 return true;
-
-            if (currentdimensionsPenguin[0].Intersects(platform.PlatformRectangle)) //jak wyskoczy 
-                Position.Y = platform.PlatformRectangle.Y + platform.PlatformRectangle.Height;
+            }
                 
-            return false;
-        }
-       /// <summary>
-       /// Wykrywa kolizje po prawej i lewej stronie pingwina
-       /// </summary>
-       /// <param name="r1"></param>
-       /// <returns></returns>
-        private bool CollisionRL(Rectangle r1)
-        {
-
-            if ((rectangle.X + rectangle.Width) >= r1.X && 
-                (rectangle.X + rectangle.Width) <= (r1.X + r1.Width) &&
-                (rectangle.Y + rectangle.Height) >= r1.Y && 
-                (rectangle.Y + rectangle.Height) <= (r1.Y + r1.Height)) return true;
-
-            if (rectangle.X <= (r1.X + r1.Width) && 
-                rectangle.X >= r1.X &&
-               (rectangle.Y + rectangle.Height) >= r1.Y && 
-               (rectangle.Y + rectangle.Height) <= (r1.Y + r1.Height)) return true;
 
             return false;
         }
 
-        /// <summary>
-        /// Wykrywa kolizcje z dołu pingwina (w momencie kiedy jeden na drugiego wskoczy)
-        /// </summary>
-        /// <param name="r1"></param>
-        /// <returns></returns>
-        private bool CollisionUD(Rectangle r1)
-        {
-            if (CollisionRL(r1) && (rectangle.Y + rectangle.Height) >= r1.Y && (rectangle.Y + rectangle.Height) <= r1.Y + 10) return true;
-
-            return false;
-        }
-        ///
-        /// <summary>
-        /// Wykrywa kolizje z innym pingwinem i blokuje w przypadku wykrycia
-        /// </summary>
-        /// <param name="r1">Obszar w którym znajduje się pingwin</param>
-        /// <returns>True - gdy pingwin zderzył się z pingwinem
-        ///          False - gdy pingwin nie zderzył się z pingwinem</returns>
-        public bool CollisionPenguin(Rectangle r1)
-        {
-            bool colRL, colUD;
-
-            
-            colRL = CollisionRL(r1); //wykrywa kolizje po lewej i prawej stronie pingwina
-            colUD = CollisionUD(r1); //wykrywa kolizje pod pingwinem 
-
-            if(colUD) colRL = false; //jeśli pingwin lata to nie ma kolizji na lewo i prawo
-            if(colRL && block == false) 
-            {
-                tmpPosition.X = rectangle.X; //zapamietaj aktualna pozycje 
-                block = true;
-
-                if (activeDirection == true) //prawo
-                {
-                    blockDirectionRIGHT = true;
-                    blockDircetionLEFT = false;
-                }
-                if (activeDirection == false) //lewo
-                {
-                    blockDircetionLEFT = true;
-                    blockDirectionRIGHT = false;
-                }
-
-            }
-            
-
-            if (colUD) //jak lata i ma kolizje to zatrzymaj
-            {
-                JumpStop(0);
-                PutMeOn(r1.Y - 1);
-                blockDircetionLEFT = blockDirectionRIGHT = false;
-            }
-            
-            if (activeDirection == true && block)//jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie 
-            {
-                if((rectangle.X) > tmpPosition.X + speedValue)
-                {
-                    block = false;
-                }
-            }
-            if (activeDirection == false && block)//jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie 
-            {
-                if ((rectangle.X) < tmpPosition.X - speedValue)
-                {
-                    block = false;
-                }
-            }
-            if(!block)//jak nie zablokowane to odblokuj oba kierunki 
-            {
-                blockDircetionLEFT = blockDirectionRIGHT = false;
-            }
-
-            if (colRL || colUD) return true;
-
-            return false;
-        }
-
+   
         public void PutMeOn(Rectangle platform)
         {
             Position.Y = platform.Y;
@@ -328,6 +281,7 @@ namespace TestGame
             jump = false;
             this.platformSpeed = platformSpeed;
             
+
         }
         override public void Draw(SpriteBatch spriteBatch)
         {
@@ -342,7 +296,8 @@ namespace TestGame
         public void FallDown()
         {
             float a = Mass/Const.GRAVITY; 
-            speed.Y += 0.25f;
+            if(speed.Y < currentdimensionsPenguin[2].Height * 0.75) speed.Y += 0.25f; //ograniczenie zeby pingwin stawał na platformie a nie w jej połowie
+
         }
 
         public void Jump()

@@ -46,7 +46,7 @@ namespace TestGame
                 case PenguinType.KOWALSKI:
                     dimensions.Add(new Rectangle(104, 17, 199, 735));   // głowa i tułów
                     dimensions.Add(new Rectangle(303, 144, 97, 36));    // dziób
-                    dimensions.Add(new Rectangle(121, 797, 240, 83));   // nogi
+                    dimensions.Add(new Rectangle(121, 797, 240, 103));   // nogi ++20 do wysokości
                     dimensions.Add(new Rectangle(17, 275, 39, 545));    // dupa
                     dimensions.Add(new Rectangle(303, 317, 37, 424));   // brzuch
                     break;
@@ -59,8 +59,8 @@ namespace TestGame
                     break;
                 case PenguinType.SZEREGOWY:
                     dimensions.Add(new Rectangle(90, 3, 150, 495));//głowa
-                    dimensions.Add(new Rectangle(245, 120, 105, 35));//dziob
-                    dimensions.Add(new Rectangle(115, 590, 200, 45));//nogi
+                    dimensions.Add(new Rectangle(245, 170, 105, 35));//dziob
+                    dimensions.Add(new Rectangle(115, 570, 200, 65));//nogi ++ 20 do wysokości
                     dimensions.Add(new Rectangle(10, 80, 45, 510));//dupa
                     dimensions.Add(new Rectangle(290, 290, 43, 210));//brzuch
                     break;
