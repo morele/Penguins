@@ -328,7 +328,7 @@ namespace TestGame
                    !currentdimensionsPenguin[4].Intersects(actualCollisionRect))
                     blockDircetionLEFT = blockDirectionRIGHT = false;
 
-            if ((currentdimensionsPenguin[1].Intersects(r1) || currentdimensionsPenguin[4].Intersects(r1)))//jak kolizja po prawej stronie
+            if ((/*currentdimensionsPenguin[1].Intersects(r1) || */currentdimensionsPenguin[4].Intersects(r1)))//jak kolizja po prawej stronie
             {
                 actualCollisionRect = r1;
                 blockSystem();
@@ -424,7 +424,7 @@ namespace TestGame
         public void FallDown()
         {
             float a = Mass / Const.GRAVITY;
-            if (speed.Y < currentdimensionsPenguin[2].Height * 0.75) speed.Y += 0.25f; //ograniczenie zeby pingwin stawał na platformie a nie w jej połowie
+            if (speed.Y < currentdimensionsPenguin[2].Height * 0.7) speed.Y += 0.7f; //ograniczenie zeby pingwin stawał na platformie a nie w jej połowie
         }
 
         public void Jump()

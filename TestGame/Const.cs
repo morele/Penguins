@@ -60,7 +60,7 @@ namespace TestGame
                 case PenguinType.SZEREGOWY:
                     dimensions.Add(new Rectangle(90, 3, 150, 495));//głowa
                     dimensions.Add(new Rectangle(245, 170, 105, 35));//dziob
-                    dimensions.Add(new Rectangle(115, 570, 200, 65));//nogi ++ 20 do wysokości
+                    dimensions.Add(new Rectangle(115, 580, 200, 65));//nogi ++ 20 do wysokości
                     dimensions.Add(new Rectangle(10, 80, 45, 510));//dupa
                     dimensions.Add(new Rectangle(290, 290, 43, 210));//brzuch
                     break;

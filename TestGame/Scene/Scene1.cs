@@ -43,9 +43,9 @@ namespace TestGame.Scene
 
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(-1100, 700)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(500, 850))); 
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(-50, 450),false,0,0,PlatformType.FLOOR));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_siedzenie"), new Vector2(350, 539)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_oparcie"), new Vector2(524, 381)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(500, 450),false,0,0,PlatformType.FLOOR));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_siedzenie"), new Vector2(-50, 539), false, 0, 0, PlatformType.FLOOR));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_oparcie"), new Vector2(124, 381)));
             // stworzenie obiektu monety
             _coin = new Bonus(content.Load<Texture2D>("Scena1/Moneta"), new Point(50, 300), new Point(50));
             _coin.IsActive = true;
