@@ -69,7 +69,7 @@ namespace TestGame
         }
         
 
-        override public void UpdatePosition()
+        override public void UpdatePosition(GameTime gametime)
         {
             // jeśli platforma się porusza
             if (IsMotion)

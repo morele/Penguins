@@ -25,7 +25,7 @@ namespace TestGame
         private Texture2D imageHorizontal;
         private Texture2D imageVertical;
         private Rectangle _positionOnSheet;
-        private int _PositionOnSheetX = 0;
+        private int _positionOnSheetX = 1;
 
 
         public List<Rectangle> currentdimensionsPenguin = new List<Rectangle>();
@@ -39,13 +39,13 @@ namespace TestGame
         public bool active = true;
         private bool activeDirection = true; // true = prawo, false = lewo
         public bool blockDircetionLEFT = false;
-        public  bool blockDirectionRIGHT = false;
+        public bool blockDirectionRIGHT = false;
         private bool blockDircetionDOWN = false;
         private int correctPosition = 0;
         private bool blockVomit;
         private bool block = false;
         private bool activeSpace = false;
-        public int scale = 8; 
+        public int scale = 8;
         public int platformSpeed = 0;
         public PenguinType penguinType;
         public List<Platform> platforms = new List<Platform>();
@@ -81,7 +81,7 @@ namespace TestGame
                     pinguinVertical = Const.PINGUIN_KOWALSKI_VERTICAL;
                     pinguinHorizontal = Const.PINGUIN_KOWALSKI_HORIZONTAL;
                     dimensionsPenguin = Const.DimensionsPenguin(PenguinType.KOWALSKI);
-                break;
+                    break;
                 case PenguinType.RICO:
                     pinguinVertical = Const.PINGUIN_RICO_VERTICAL;
                     pinguinHorizontal = Const.PINGUIN_RICO_HORIZONTAL;
@@ -97,7 +97,7 @@ namespace TestGame
                     pinguinVertical = Const.PINGUIN_SKIPPER_VERTICAL;
                     dimensionsPenguin = Const.DimensionsPenguin(PenguinType.SKIPPER);
                     break;
-                   
+
             }
             // przeskalowanie wymiarów
             for (int i = 0; i < dimensionsPenguin.Count; i++)
@@ -130,14 +130,14 @@ namespace TestGame
             Equipment = new Equipment();
 
             Texture = image;
-            image = new Texture2D(image.GraphicsDevice,image.Width/4,image.Height);
+            image = new Texture2D(image.GraphicsDevice, image.Width / 4, image.Height);
 
             Position = position.ToPoint();
 
             _positionOnSheet = new Rectangle(1, 1, frameSize.X, frameSize.Y);//Ł.G;
             _frameDuration = 0;
-            _frameDelay = 300;
-        
+            _frameDelay = 100;
+
 
             Size = new Point(image.Width / 16, image.Width / scale);
 
@@ -175,9 +175,9 @@ namespace TestGame
             }
             currentdimensionsPenguin = dimensionsPenguin;
         }
-        override public void UpdatePosition()
+        override public void UpdatePosition(GameTime gametime)
         {
-           
+
             if (active)
             {
 
@@ -192,7 +192,7 @@ namespace TestGame
                         blockVomit = true;
 
                     }
-                    }
+                }
 
                 if (Keyboard.GetState().IsKeyUp(Keys.D5))
                 {
@@ -203,18 +203,30 @@ namespace TestGame
 
                 if (penguinType == PenguinType.RICO)
                 {
+                    _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
+
                     if (_frameDuration >= _frameDelay)
                     {
-                        
+                        _frameDuration = 0;
+                        _positionOnSheet = new Rectangle(new Point(481*_positionOnSheetX, 0), this.FrameSize);
+                        _positionOnSheetX++;
+
+                        if (_positionOnSheetX >=7)
+                        {
+
+                            _positionOnSheetX = 1;
+
+                        }
                     }
-                    if (_PositionOnSheetX >= 8)
-                    {
-                        _PositionOnSheetX = 0;
-                    }
-                    _positionOnSheet = new Rectangle(new Point(480 * _PositionOnSheetX, 0), this.FrameSize);
-             
+
+
+
+
+
+
+
                 }
-              
+
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
@@ -233,7 +245,7 @@ namespace TestGame
                     activeDirection = true;
                     if (penguinType == PenguinType.RICO)
                     {
-                        _PositionOnSheetX++;
+                       // _positionOnSheetX++;
                     }
 
 
@@ -256,10 +268,10 @@ namespace TestGame
                     activeSpace = true;
                     blockDircetionDOWN = true;
                 }
-                    
+
 
                 FallDown();
-            
+
 
                 positionHorizontal = positionVertical = Position.ToVector2();
                 if (Keyboard.GetState().IsKeyDown(Keys.Down))
@@ -302,13 +314,13 @@ namespace TestGame
                     blockDirectionRIGHT = true;
                     blockDircetionLEFT = false;
                     correctPosition = (int)-speedValue;
-            }
+                }
                 if (!activeDirection) //lewo
                 {
                     blockDircetionLEFT = true;
                     blockDirectionRIGHT = false;
                     correctPosition = (int)speedValue;
-        }
+                }
             }
         }
 
@@ -399,7 +411,7 @@ namespace TestGame
             speed.Y = 0f;
             jump = false;
             this.platformSpeed = platformSpeed;
-            
+
 
         }
         override public void Draw(SpriteBatch spriteBatch)

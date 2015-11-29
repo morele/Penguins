@@ -30,6 +30,7 @@ namespace TestGame
         private PlayerPanel _playerPanel;
         Camera camera;
         private bool firstStart = true;
+        private GameTime gametime;
 
         Scene1 scene1;
 
@@ -54,7 +55,7 @@ namespace TestGame
             gravitation = 7f; // wysokość wybicia przy skoku( = 5 ~ 100px)
             camera = new Camera();
 
-            scene1 = new Scene1(Content, camera);
+            scene1 = new Scene1(Content, camera,gametime);
 
 
             // inicjalizacja panelu gracza - podstawowy gracz - skipper           
@@ -136,6 +137,8 @@ namespace TestGame
 
         protected override void Draw(GameTime gameTime)
         {
+            this.gametime = gameTime;
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);

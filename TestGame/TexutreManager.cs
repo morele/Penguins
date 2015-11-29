@@ -83,7 +83,7 @@ namespace TestGame
         /// <summary>
         /// Metoda zmieniająca pozycje tekstury względem osi X o zadaną jednostke speedValue
         /// </summary>
-        public virtual void UpdatePosition()
+        public virtual void UpdatePosition(GameTime gametime)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {

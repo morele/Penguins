@@ -29,7 +29,10 @@ namespace TestGame.Scene
         // menu wyboru ekwipunku
         private ChooseItemMenu _chooseItemMenu;
 
-        public Scene1(ContentManager content, Camera camera) : base(content, camera)
+        private GameTime gametime;
+
+
+        public Scene1(ContentManager content, Camera camera,GameTime gametime) : base(content, camera, gametime)
         {
             automatMinigame = new AutomatMinigame();
 
@@ -103,7 +106,7 @@ namespace TestGame.Scene
 
         public override void UpdatePosition(GameTime gameTime)
         {
-            
+         
             // metoda ustawia wszystkich graczy na pozycji początkowej
             if (firstStart) FirstStart();
 
@@ -228,7 +231,7 @@ namespace TestGame.Scene
 
                         }
                         // aktualizacja pozycji jeśli platforma ma sie poruszać
-                        platform.UpdatePosition();
+                        platform.UpdatePosition(gameTime);
                     }
 
                 }
@@ -236,7 +239,7 @@ namespace TestGame.Scene
 
 
                 foreach (Penguin penguin in penguins)
-                    penguin.UpdatePosition();
+                    penguin.UpdatePosition(gameTime);
 
 
                 camera.Update(player);

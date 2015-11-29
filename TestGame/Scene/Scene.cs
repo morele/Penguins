@@ -17,11 +17,12 @@ namespace TestGame.Scene
         protected Camera camera;
         protected PlayerPanel playerPanel;
         protected bool firstStart = true;
-
-        public Scene(ContentManager content, Camera camera)
+        protected GameTime gameTime;
+        public Scene(ContentManager content, Camera camera,GameTime gameTime)
         {
             this.content = content;
             this.camera = camera;
+            this.gameTime = gameTime;
         }
         public virtual void LoadContent(List<Penguin> penguins, PlayerPanel _playerPanel, Penguin player)
         {
@@ -77,7 +78,7 @@ namespace TestGame.Scene
             while (firstStart)
             {
                 foreach (Penguin penguin in penguins)
-                    penguin.UpdatePosition();
+                    penguin.UpdatePosition(gameTime);
 
 
                 foreach (Platform platform in platforms)
