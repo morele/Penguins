@@ -89,14 +89,10 @@ namespace TestGame.Scene
 
                 foreach (Penguin penguin in penguins)
                 {
-                    if (penguin.penguinType == PenguinType.RICO)
-                    {
-                        penguin.DrawAnimation(spriteBatch);//Ł.G: jeszcze nie wiem po co
-                    }
-                    else
-                    {
-                    penguin.Draw(spriteBatch);
-                    }
+                   
+                        penguin.DrawAnimation(spriteBatch);
+                    
+                 
                    
                 }
                 
