@@ -13,6 +13,18 @@ namespace TestGame
 {
     public class Penguin : TextureManager, IGravitable
     {
+        public event EventHandler<EventArgs> PenguinDeathByFallingHandler;
+
+        protected void OnPenguinDeathByFalling(PenguinType penguinType)
+        {
+            var tempHandler = PenguinDeathByFallingHandler;
+            if (tempHandler != null)
+            {
+                tempHandler(this,EventArgs.Empty);
+            }
+        }
+
+
         public Rectangle rectangle;
         public Vector2 speed;
 
@@ -56,6 +68,9 @@ namespace TestGame
 
         private double _frameDuration;
         private double _frameDelay;
+
+
+        private readonly Vector2 _startPositionOfPenguin;
 
         private bool _left;
 
@@ -132,7 +147,9 @@ namespace TestGame
             this.penguinType = penguinType;
             Equipment = new Equipment();
 
-            _flipEffect=SpriteEffects.FlipHorizontally;
+            _startPositionOfPenguin = position;
+
+            _flipEffect = SpriteEffects.FlipHorizontally;
             
 
             Texture = image;
@@ -144,6 +161,7 @@ namespace TestGame
             _frameDuration = 0;
             _frameDelay = 100;
 
+            this.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler;
 
             Size = new Point(image.Width / 16, image.Width / scale);
 
@@ -181,6 +199,13 @@ namespace TestGame
             }
             currentdimensionsPenguin = dimensionsPenguin;
         }
+
+        private void Penguin_PenguinDeathByFallingHandler(object sender, EventArgs e)
+        {
+            Position = _startPositionOfPenguin.ToPoint();
+
+        }
+
         override public void UpdatePosition(GameTime gametime)
         {
 
@@ -421,6 +446,14 @@ namespace TestGame
             }
 
             currentdimensionsPenguin = UpdateDimensions(rectangle);
+
+            if (positionVertical.Y > 1500)
+            {
+                OnPenguinDeathByFalling(penguinType);
+            }
+
+
+
         }
 
         private void blockSystem()
@@ -552,8 +585,8 @@ namespace TestGame
             {
                 spriteBatch.Draw(Image, rectangle, _positionOnSheet, Color.White, 0.0f, new Vector2(0, 0), _flipEffect, 0.0f);
             }
-            
-           
+
+
         }
 
         public override string ToString()
@@ -573,5 +606,7 @@ namespace TestGame
             jump = true;
             Position.Y -= (int)Math.Pow(Const.GRAVITY * 3, 2) / Mass;
         }
+
+        
     }
 }
