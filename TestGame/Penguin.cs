@@ -274,14 +274,6 @@ namespace TestGame
                         case PenguinType.KOWALSKI:
                             _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
 
-
-
-
-
-
-
-                }
-                            }
                             break;
                         case PenguinType.SZEREGOWY:
                             _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
@@ -293,11 +285,11 @@ namespace TestGame
                                 _positionOnSheetX++;
 
                                 if (_positionOnSheetX >= 7)
-                {
+                                {
 
-                                    _positionOnSheetX = 1;
+                                     _positionOnSheetX = 1;
 
-                }
+                                }
                             }
                             break;
                         default:
