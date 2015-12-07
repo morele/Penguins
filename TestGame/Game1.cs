@@ -75,17 +75,17 @@ namespace TestGame
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Skipper"), 
+            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"), 
                                   Content.Load<Texture2D>("Slizg/skipper"),
                                   Content.Load<Texture2D>("WyborPostaci/Skipper"),
                                   new Vector2(-550, 400), penguinSpeed, 
-                                  gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS);
+                                  gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS, new Point(422, 663));
 
-            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Kowalski"), 
+            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"), 
                                    Content.Load<Texture2D>("Slizg/Kowalski"),
                                    Content.Load<Texture2D>("WyborPostaci/Kowalski"),
                                    new Vector2(-450, 400), penguinSpeed, 
-                                   gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS);
+                                   gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
 
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 
                                Content.Load<Texture2D>("Slizg/Rico"),//Ł.G: tymczasowo zmienione 
@@ -93,11 +93,11 @@ namespace TestGame
                                new Vector2(-350, 400), penguinSpeed, 
                                gravitation, PenguinType.RICO, Const.RICO_MASS,new Point(480,815));//Ł.G : dodanie rozmiaru frame do Animacji
 
-            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Szeregowy"), 
+            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"), 
                                     Content.Load<Texture2D>("Slizg/Szeregowy"),
                                     Content.Load<Texture2D>("WyborPostaci/Szeregowy"),
                                     new Vector2(-250, 400), penguinSpeed,
-                                    gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS);
+                                    gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));
 
             penguins.Add(skipper);
             penguins.Add(kowalski);
