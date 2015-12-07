@@ -76,7 +76,7 @@ namespace TestGame
 
         private SpriteEffects _flipEffect;
 
-       
+      
         /// <summary>
         /// Animacja
         /// </summary>
@@ -119,7 +119,7 @@ namespace TestGame
 
             CanMove = true;
 
-            //każdy typ pingwina ma róźną wysokość, wartości odpowiednio przeskalowane 
+            //każdy typ pingwina ma róźną wysokość, wartości odpowiednio przeskalowane
             switch (penguinType)
             {
                 case PenguinType.KOWALSKI:
@@ -159,7 +159,7 @@ namespace TestGame
         }
 
 
-     
+
         /// <summary>
         /// w metodzie update animuje postac w zaleznosci od typu pingwina
         /// </summary>
@@ -302,7 +302,7 @@ namespace TestGame
                     speed.X = 0;
                 }
 
-                if (Keyboard.GetState().IsKeyUp(Keys.Space)) activeSpace = false; //zeby nacisnięcie spacji oznaczało tylko JEDNO nacisniecie(szybko odświeża)           
+                if (Keyboard.GetState().IsKeyUp(Keys.Space)) activeSpace = false; //zeby nacisnięcie spacji oznaczało tylko JEDNO nacisniecie(szybko odświeża)          
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false && !activeSpace && !blockDircetionDOWN)
                 {
                     Jump();
@@ -352,7 +352,7 @@ namespace TestGame
         {
             if (!block) //jezeli nie jest zablokowane
             {
-                tmpPosition = rectangle.Location.ToVector2(); //zapamietaj aktualna pozycje 
+                tmpPosition = rectangle.Location.ToVector2(); //zapamietaj aktualna pozycje
                 block = true;
 
                 if (activeDirection) //prawo
@@ -401,25 +401,25 @@ namespace TestGame
                 blockDircetionDOWN = false;
             }
 
-            if (activeDirection && block) //jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie 
+            if (activeDirection && block) //jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie
                 if (rectangle.X > tmpPosition.X + speedValue)
                 {
                     correctPosition = 0;
                     block = false;
                 }
 
-            if (!activeDirection && block) //jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie 
+            if (!activeDirection && block) //jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie
                 if (rectangle.X < tmpPosition.X - speedValue)
                 {
                     correctPosition = 0;
                     block = false;
                 }
 
-            if (!block) //jak nie zablokowane to odblokuj oba kierunki 
+            if (!block) //jak nie zablokowane to odblokuj oba kierunki
                 blockDircetionLEFT = blockDirectionRIGHT = false;
 
 
-            if (platformType == PlatformType.FLOOR) //jak podloga to powoduje zeby pingwin nie mogl sie zaczepic od boku 
+            if (platformType == PlatformType.FLOOR) //jak podloga to powoduje zeby pingwin nie mogl sie zaczepic od boku
             {
                 r1.Height = (int)speed.Y + 1;
                 if (currentdimensionsPenguin[2].Intersects(r1)) //jak dotknie nogami
