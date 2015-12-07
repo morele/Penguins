@@ -20,7 +20,7 @@ namespace TestGame
             var tempHandler = PenguinDeathByFallingHandler;
             if (tempHandler != null)
             {
-                tempHandler(this,EventArgs.Empty);
+                tempHandler(this, EventArgs.Empty);
             }
         }
 
@@ -206,14 +206,65 @@ namespace TestGame
 
         }
 
-        override public void UpdatePosition(GameTime gametime)
+        /// <summary>
+        /// w metodzie update animuje postac w zaleznosci od typu pingwina
+        /// </summary>
+        /// <param name="gametime"></param>
+        /// <param name="penguinType"></param>
+        private void UpdateAnimation(GameTime gametime, PenguinType penguinType)
         {
+                    switch (penguinType)
+                    {
+                        case PenguinType.RICO:
+                            _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
+
+                            if (_frameDuration >= _frameDelay)
+                            {
+                                _frameDuration = 0;
+                                _positionOnSheet = new Rectangle(new Point(481 * _positionOnSheetX, 0), this.FrameSize);
+                                _positionOnSheetX++;
+
+                                if (_positionOnSheetX >= 7)
+                                {
+
+                                    _positionOnSheetX = 1;
+
+                                }
+                            }
+                            break;
+                        case PenguinType.KOWALSKI:
+                            _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
+
+                            break;
+                        case PenguinType.SZEREGOWY:
+                            _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
+
+                            if (_frameDuration >= _frameDelay)
+                            {
+                                _frameDuration = 0;
+                                _positionOnSheet = new Rectangle(new Point(352 * _positionOnSheetX, 0), this.FrameSize);
+                                _positionOnSheetX++;
+
+                                if (_positionOnSheetX >= 7)
+                                {
+
+                                    _positionOnSheetX = 1;
+
+                                }
+                            }
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+        override public void UpdatePosition(GameTime gametime)
+                {
 
             if (active)
-            {
+                            {
 
                 if (Keyboard.GetState().IsKeyDown(Keys.D5) && penguinType == PenguinType.RICO && !blockVomit)
-                {
+                                {
                     if (Equipment.Items.Count > 0)
                     {
                         var vomitItem = SelectedItem;
@@ -222,11 +273,11 @@ namespace TestGame
                         Equipment.RemoveItem(vomitItem);
                         blockVomit = true;
 
-                    }
-                }
+                                }
+                            }
 
                 if (Keyboard.GetState().IsKeyUp(Keys.D5))
-                {
+                            {
                     blockVomit = false;
                 }
 
@@ -236,144 +287,31 @@ namespace TestGame
 
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down))
-                {
+                                {
                     speed.X = speedValue * 2;
 
 
-                }
+                                }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down))
-                {
+                            {
                     speed.X = -speedValue * 2;
 
                 }
                 else
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && !blockDirectionRIGHT)
-                {
+                                {
                     speed.X = speedValue;
                     activeDirection = true;
                     _left = false;
-                    switch (penguinType)
-                    {
-                        case PenguinType.RICO:
-                    _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (_frameDuration >= _frameDelay)
-                    {
-                        _frameDuration = 0;
-                                _positionOnSheet = new Rectangle(new Point(481 * _positionOnSheetX, 0), this.FrameSize);
-                        _positionOnSheetX++;
-
-                                if (_positionOnSheetX >= 7)
-                        {
-
-                            _positionOnSheetX = 1;
-
-                        }
-                    }
-                            break;
-                        case PenguinType.KOWALSKI:
-                            _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
-
-                            break;
-                        case PenguinType.SZEREGOWY:
-                            _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
-
-                            if (_frameDuration >= _frameDelay)
-                            {
-                                _frameDuration = 0;
-                                _positionOnSheet = new Rectangle(new Point(352 * _positionOnSheetX, 0), this.FrameSize);
-                                _positionOnSheetX++;
-
-                                if (_positionOnSheetX >= 7)
-                                {
-
-                                     _positionOnSheetX = 1;
+                    UpdateAnimation(gametime, penguinType);
 
                                 }
-                            }
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDircetionLEFT)
                 {
                     speed.X = -speedValue;
                     activeDirection = false;
                     _left = true;
-                    switch (penguinType)
-                    {
-                        case PenguinType.RICO:
-                            _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
-
-                            if (_frameDuration >= _frameDelay)
-                            {
-                                _frameDuration = 0;
-                                _positionOnSheet = new Rectangle(new Point(481 * _positionOnSheetX, 0), this.FrameSize);
-                                _positionOnSheetX++;
-
-                                if (_positionOnSheetX >= 7)
-                {
-
-                                    _positionOnSheetX = 1;
-
-                }
-                            }
-                            break;
-                        case PenguinType.KOWALSKI:
-                            _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
-
-                            if (_frameDuration >= _frameDelay)
-                {
-                                _frameDuration = 0;
-                                _positionOnSheet = new Rectangle(new Point(412 * _positionOnSheetX, 0), this.FrameSize);
-                                _positionOnSheetX++;
-
-                                if (_positionOnSheetX >= 7)
-                    {
-
-                                    _positionOnSheetX = 1;
-
-                                }
-                    }
-                            break;
-                        case PenguinType.SKIPPER:
-                            _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
-
-                            if (_frameDuration >= _frameDelay)
-                            {
-                                _frameDuration = 0;
-                                _positionOnSheet = new Rectangle(new Point(422 * _positionOnSheetX, 0), this.FrameSize);
-                                _positionOnSheetX++;
-
-                                if (_positionOnSheetX >= 7)
-                                {
-
-                                    _positionOnSheetX = 1;
-
-                }
-                            }
-                            break;
-                        case PenguinType.SZEREGOWY:
-                            _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
-
-                            if (_frameDuration >= _frameDelay)
-                            {
-                                _frameDuration = 0;
-                                _positionOnSheet = new Rectangle(new Point(352 * _positionOnSheetX, 0), this.FrameSize);
-                                _positionOnSheetX++;
-
-                                if (_positionOnSheetX >= 7)
-                {
-
-                                    _positionOnSheetX = 1;
-
-                }
-                            }
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
+                    UpdateAnimation(gametime, penguinType);
                 }
                 else
                 {
@@ -426,7 +364,7 @@ namespace TestGame
 
         }
 
-        private void blockSystem()
+        private void BlockSystem()
         {
             if (!block) //jezeli nie jest zablokowane
             {
@@ -463,14 +401,14 @@ namespace TestGame
             if (( /*currentdimensionsPenguin[1].Intersects(r1) || */currentdimensionsPenguin[4].Intersects(r1))) //jak kolizja po prawej stronie
             {
                 actualCollisionRect = r1;
-                blockSystem();
+                BlockSystem();
             }
 
 
             if (currentdimensionsPenguin[3].Intersects(r1)) //jak kolizja po lewej stronie
             {
                 actualCollisionRect = r1;
-                blockSystem();
+                BlockSystem();
             }
 
             if (currentdimensionsPenguin[0].Intersects(r1)) //jak dotknie głowa
@@ -548,9 +486,9 @@ namespace TestGame
             rectangle.Width /= 8;
             if (!_left)
             {
-            spriteBatch.Draw(Image, rectangle, _positionOnSheet, Color.White);
+                spriteBatch.Draw(Image, rectangle, _positionOnSheet, Color.White);
 
-        }
+            }
             else
             {
                 spriteBatch.Draw(Image, rectangle, _positionOnSheet, Color.White, 0.0f, new Vector2(0, 0), _flipEffect, 0.0f);
