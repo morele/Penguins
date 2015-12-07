@@ -315,19 +315,13 @@ namespace TestGame
 
                 Position += speed.ToPoint();
 
-
-
-
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     speed.X = speedValue * 2;
-
-
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     speed.X = -speedValue * 2;
-
                 }
                 else
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && !blockDirectionRIGHT)
@@ -418,6 +412,7 @@ namespace TestGame
             }
         }
 
+        private Rectangle tempRect = new Rectangle();
         /// <summary>
         /// Wykrywa kolizje pingwina z parametrem
         /// </summary>
@@ -430,18 +425,27 @@ namespace TestGame
                 if (!currentdimensionsPenguin[0].Intersects(actualCollisionRect) && !currentdimensionsPenguin[1].Intersects(actualCollisionRect) && !currentdimensionsPenguin[2].Intersects(actualCollisionRect) && !currentdimensionsPenguin[3].Intersects(actualCollisionRect) && !currentdimensionsPenguin[4].Intersects(actualCollisionRect))
                     blockDircetionLEFT = blockDirectionRIGHT = false;
 
-            if (( /*currentdimensionsPenguin[1].Intersects(r1) || */currentdimensionsPenguin[4].Intersects(r1))) //jak kolizja po prawej stronie
+            tempRect = new Rectangle(rectangle.X+2, rectangle.Y+10, rectangle.Width-4, rectangle.Height-30);
+            if ((tempRect.Intersects(r1))) //jak kolizja po prawej stronie
             {
                 actualCollisionRect = r1;
                 BlockSystem();
             }
-
-
+            if (tempRect.Intersects(r1)) //jak kolizja po lewej stronie
+            {
+                actualCollisionRect = r1;
+                BlockSystem();
+            }
+            /* if ((currentdimensionsPenguin[4].Intersects(r1))) //jak kolizja po prawej stronie
+            {
+                actualCollisionRect = r1;
+                BlockSystem();
+            }
             if (currentdimensionsPenguin[3].Intersects(r1)) //jak kolizja po lewej stronie
             {
                 actualCollisionRect = r1;
                 BlockSystem();
-            }
+            }*/
 
             if (currentdimensionsPenguin[0].Intersects(r1)) //jak dotknie głowa
             {
