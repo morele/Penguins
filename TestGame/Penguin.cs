@@ -251,9 +251,6 @@ namespace TestGame
                 {
                     if (Equipment.Items.Count > 0)
                     {
-                        if (SelectedItem == null)
-                            SelectedItem = Equipment.Items[0];
-                        
                         var vomitItem = SelectedItem;
                         vomitItem.Item.IsActive = true;
                         vomitItem.Item.Position = new Point(Position.X + Size.X, Position.Y - Size.Y - 30);
