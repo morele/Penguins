@@ -253,7 +253,7 @@ namespace TestGame.Scene
             if(automatMinigame.GamePass)
             {
                 activeMiniGame = false;
-                camera.active = true;
+                camera.active = false;
                 playerPanel.activeDraw = true;
             }
 
