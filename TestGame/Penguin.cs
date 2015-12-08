@@ -30,7 +30,7 @@ namespace TestGame
 
         public int Mass { get; private set; }
 
-        public Equipment Equipment { get; }
+        public Equipment Equipment { get; private set; }
         public EquipmentItem SelectedItem { get; set; }
         public bool CanMove { get; set; }
         public Texture2D Avatar { get; private set; }
