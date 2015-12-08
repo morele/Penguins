@@ -76,7 +76,55 @@ namespace TestGame
 
         private SpriteEffects _flipEffect;
 
-      
+        public Penguin(Texture2D image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType, int mass) : base(image, position, speedValue, gravity)
+        {
+            this.imageHorizontal = imageHorizontal;
+            this.imageVertical = image;
+            Avatar = avatar;
+            Mass = mass;
+            this.penguinType = penguinType;
+            Equipment = new Equipment();
+
+
+
+            Texture = image;
+            Position = position.ToPoint();
+            Size = new Point(image.Width / scale, image.Height / scale);
+            CanMove = true;
+
+            //każdy typ pingwina ma róźną wysokość, wartości odpowiednio przeskalowane
+            switch (penguinType)
+            {
+                case PenguinType.KOWALSKI:
+                    pinguinVertical = Const.PINGUIN_KOWALSKI_VERTICAL;
+                    pinguinHorizontal = Const.PINGUIN_KOWALSKI_HORIZONTAL;
+                    dimensionsPenguin = Const.DimensionsPenguin(PenguinType.KOWALSKI);
+                    break;
+                case PenguinType.RICO:
+                    pinguinVertical = Const.PINGUIN_RICO_VERTICAL;
+                    pinguinHorizontal = Const.PINGUIN_RICO_HORIZONTAL;
+                    dimensionsPenguin = Const.DimensionsPenguin(PenguinType.RICO);
+                    break;
+                case PenguinType.SZEREGOWY:
+                    pinguinVertical = Const.PINGUIN_SZEREGOWY_VERTICAL;
+                    pinguinHorizontal = Const.PINGUIN_SZEREGOWY_HORIZONTAL;
+                    dimensionsPenguin = Const.DimensionsPenguin(PenguinType.SZEREGOWY);
+                    break;
+                case PenguinType.SKIPPER:
+                    pinguinHorizontal = Const.PINGUIN_SKIPPER_HORIZONTAL;
+                    pinguinVertical = Const.PINGUIN_SKIPPER_VERTICAL;
+                    dimensionsPenguin = Const.DimensionsPenguin(PenguinType.SKIPPER);
+                    break;
+
+            }
+            // przeskalowanie wymiarów
+            for (int i = 0; i < dimensionsPenguin.Count; i++)
+            {
+                dimensionsPenguin[i] = ReScale(dimensionsPenguin[i], scale);
+            }
+            currentdimensionsPenguin = dimensionsPenguin;
+        }
+
         /// <summary>
         /// Animacja
         /// </summary>
@@ -312,12 +360,12 @@ namespace TestGame
                 if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     Image = imageHorizontal;
-                    rectangle = new Rectangle((int)positionHorizontal.X + correctPosition, (int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); // na slizgu
+                    rectangle = new Rectangle((int)positionHorizontal.X + correctPosition, (int)positionHorizontal.Y - (this.Image.Height / scale) + (pinguinHorizontal + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); // na slizgu
                 }
                 else
                 {
                     Image = imageVertical;
-                    rectangle = new Rectangle((int)positionVertical.X + correctPosition, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
+                    rectangle = new Rectangle((int)positionVertical.X + correctPosition, (int)positionVertical.Y - (this.Image.Height / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
                 }
             }
             else
