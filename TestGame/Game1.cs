@@ -76,7 +76,7 @@ namespace TestGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"), 
-                                  Content.Load<Texture2D>("Slizg/skipper"),
+                                  Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"),
                                   Content.Load<Texture2D>("WyborPostaci/Skipper"),
                                   new Vector2(-550, 400), penguinSpeed, 
                                   gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS, new Point(422, 663));

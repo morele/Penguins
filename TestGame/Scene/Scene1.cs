@@ -69,7 +69,8 @@ namespace TestGame.Scene
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if(activeMiniGame == false)
+       
+            if (activeMiniGame == false)
             {
                 // narysowanie monety
                 _coin.Draw(spriteBatch);
