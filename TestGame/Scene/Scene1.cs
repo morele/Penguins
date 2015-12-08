@@ -199,6 +199,7 @@ namespace TestGame.Scene
                             }
 
                             // sprawdzenie czy pingwin (RICO) nie zabrał monety
+
                             if (penguin.penguinType == PenguinType.RICO && _testCoin.IsChecked(penguin))
                             {
                                 penguin.Equipment.AddItem(new EquipmentItem(_testCoin));

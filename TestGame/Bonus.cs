@@ -21,12 +21,18 @@ namespace TestGame
 
         public bool IsChecked(GameObject checkedObject)
         {
-            Point newSize = new Point(Size.X, Size.Y + 5);
+            Penguin temp = checkedObject as Penguin;
+
+            Point newSize = new Point(Size.X, Size.Y + 25);
             Rectangle rectangle1 = new Rectangle(Position, newSize);
             Rectangle rectangle2 = new Rectangle(checkedObject.Position, checkedObject.Size);
 
-            if (rectangle1.Intersects(rectangle2))
-                return true;
+            foreach (var rect in temp.currentdimensionsPenguin)
+            {
+                if (rectangle1.Intersects(rect))
+                    return true;
+            }
+
             return false;
         }
 
