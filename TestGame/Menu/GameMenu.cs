@@ -23,6 +23,23 @@ namespace TestGame.Menu
 
         private Texture2D _backgroundTexture;
 
+        private Point _cursorPosition;
+        private Rectangle _cursorRectangle;
+        private Texture2D _cursorTexture;
+
+        private Rectangle _newGameOptionRectangle;
+        private Texture2D _newGameOptionTexture;
+
+        private Rectangle _exitOptionRectangle;
+        private Texture2D _exitOptionTexture;
+
+        private Rectangle _optionOptionRectangle;
+        private Texture2D _optionOptionTexture;
+
+        private Rectangle _authorsOptionRectangle;
+        private Texture2D _authorsOptionTexture;
+
+
         public GameMenu(List<MenuItem> menuItems)
         {
             _menuItems = menuItems;
@@ -43,16 +60,6 @@ namespace TestGame.Menu
         {
             _backgroundRectangle = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
-            // inicjalizacja czcionek 
-            int rightBorder = GraphicsDevice.Viewport.Width - 300;
-            int verticalCenter = GraphicsDevice.Viewport.Height / 2 - 200;
-
-            for (int i = 0; i < _menuItems.Count; i++)
-            {
-
-                _menuItems[i].SetLabel(new TextLabel(new Vector2(rightBorder, verticalCenter + ((i + 1) * 50)), 100, _menuItems[i].Title, Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("TextLabelBackgroundTransparent")));
-            }
-
             base.Initialize();
         }
 
@@ -60,8 +67,22 @@ namespace TestGame.Menu
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _backgroundTexture = Content.Load<Texture2D>("menu_background");
+            _backgroundTexture = Content.Load<Texture2D>("menu_background_new");
+            _newGameOptionTexture = Content.Load<Texture2D>("NowaGra");
+            _optionOptionTexture = Content.Load<Texture2D>("Opcje");
+            _authorsOptionTexture = Content.Load<Texture2D>("Autorzy");
+            _exitOptionTexture = Content.Load<Texture2D>("Wyjscie");
+            _cursorTexture = Content.Load<Texture2D>("Wskaznik");
+            
+            //rectangle
+            _newGameOptionRectangle = new Rectangle(0,0,_newGameOptionTexture.Width, _newGameOptionTexture.Height);
+            _optionOptionRectangle = new Rectangle(0, 0, _optionOptionTexture.Width, _optionOptionTexture.Height);
+            _authorsOptionRectangle = new Rectangle(0, 0, _authorsOptionTexture.Width, _authorsOptionTexture.Height);
+            _exitOptionRectangle = new Rectangle(0, 0, _exitOptionTexture.Width, _exitOptionTexture.Height);
+            _cursorRectangle = new Rectangle(0, 0, _cursorTexture.Width, _cursorTexture.Height);
 
+            float x = graphics.GraphicsDevice.Viewport.Width / 2 - (_newGameOptionTexture.Width / 2) - 10 - _cursorTexture.Width;
+            _cursorPosition = new Point((int)x, 300);
 
             base.LoadContent();
         }
@@ -73,12 +94,7 @@ namespace TestGame.Menu
 
         private void ChangeSelectedItemColor(int selectedItem)
         {
-            for (int i = 0; i < _menuItems.Count; i++)
-            {
-                _menuItems[i].Label.color = i == selectedItem
-                    ? Const.SELECTED_MENU_ITEM_COLOR
-                    : Const.DEFAULT_MENU_ITEM_COLOR;
-            }
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -88,7 +104,10 @@ namespace TestGame.Menu
                 _blockUpKey = true;
                 // zabezpieczenie przed przekroczeniem zakresu listy
                 if (_selectedMenuItemIndex > 0)
+                {
                     _selectedMenuItemIndex--;
+                    _cursorPosition.Y -= 100;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Down) && !_blockDownKey)
@@ -96,7 +115,10 @@ namespace TestGame.Menu
                 _blockDownKey = true;
                 // zabezpieczenie przed przekroczeniem zakresu listy
                 if (_selectedMenuItemIndex < _menuItems.Count - 1)
+                {
                     _selectedMenuItemIndex++;
+                    _cursorPosition.Y += 100;
+                }
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
@@ -133,10 +155,17 @@ namespace TestGame.Menu
 
             spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), _backgroundRectangle, Color.White);
 
-            foreach (var menuItem in _menuItems)
-            {
-                menuItem.Label.Draw(spriteBatch);
-            }
+            float xAxis = graphics.GraphicsDevice.Viewport.Width/2 - (_newGameOptionTexture.Width/2);
+            float yStart = 300;
+            spriteBatch.Draw(_newGameOptionTexture, new Vector2(xAxis, yStart), _newGameOptionRectangle, Color.White);
+            spriteBatch.Draw(_optionOptionTexture, new Vector2(xAxis, yStart+100), _optionOptionRectangle, Color.White);
+            spriteBatch.Draw(_authorsOptionTexture, new Vector2(xAxis, yStart+200), _authorsOptionRectangle, Color.White);
+            spriteBatch.Draw(_exitOptionTexture, new Vector2(xAxis, yStart+300), _exitOptionRectangle, Color.White);
+
+            // wskaźnik 
+            spriteBatch.Draw(_cursorTexture, _cursorPosition.ToVector2(), _cursorRectangle, Color.White);
+
+
 
             spriteBatch.End();
 
