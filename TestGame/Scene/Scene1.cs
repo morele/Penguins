@@ -45,8 +45,8 @@ namespace TestGame.Scene
             base.LoadContent(penguins, playerPanel, player);
 
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(-1100, 700)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(500, 850))); 
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(500, 450),false,0,0,PlatformType.FLOOR));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(400, 850))); 
+            //platforms.Add(new Platform(content.Load<Texture2D>("Scena1/blat"), new Vector2(500, 450),false,0,0,PlatformType.FLOOR));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_siedzenie"), new Vector2(-50, 539), false, 0, 0, PlatformType.FLOOR));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena1/krzeslo_oparcie"), new Vector2(124, 381)));
             // stworzenie obiektu monety
@@ -113,6 +113,12 @@ namespace TestGame.Scene
                 if (Keyboard.GetState().IsKeyDown(Keys.D2)) player = ActiveAndDeactivationPlayer(false, true, false, false);
                 if (Keyboard.GetState().IsKeyDown(Keys.D3)) player = ActiveAndDeactivationPlayer(false, false, true, false);
                 if (Keyboard.GetState().IsKeyDown(Keys.D4)) player = ActiveAndDeactivationPlayer(false, false, false, true);
+                if (Keyboard.GetState().IsKeyDown(Keys.D6))
+                {
+                    activeMiniGame = true;
+                    camera.active = true;
+                    playerPanel.activeDraw = false;
+                }
 
                 // odświeżenie paska gracza
                 playerPanel.Update(player);
