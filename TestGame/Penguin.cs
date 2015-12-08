@@ -377,7 +377,7 @@ namespace TestGame
                 if (!currentdimensionsPenguin[0].Intersects(actualCollisionRect) && !currentdimensionsPenguin[1].Intersects(actualCollisionRect) && !currentdimensionsPenguin[2].Intersects(actualCollisionRect) && !currentdimensionsPenguin[3].Intersects(actualCollisionRect) && !currentdimensionsPenguin[4].Intersects(actualCollisionRect))
                     blockDircetionLEFT = blockDirectionRIGHT = false;
 
-            tempRect = new Rectangle(rectangle.X+2, rectangle.Y+10, rectangle.Width-4, rectangle.Height-30);
+          /*  tempRect = new Rectangle(rectangle.X+2, rectangle.Y+10, rectangle.Width-4, rectangle.Height-30);
             if ((tempRect.Intersects(r1))) //jak kolizja po prawej stronie
             {
                 actualCollisionRect = r1;
@@ -387,8 +387,8 @@ namespace TestGame
             {
                 actualCollisionRect = r1;
                 BlockSystem();
-            }
-            /* if ((currentdimensionsPenguin[4].Intersects(r1))) //jak kolizja po prawej stronie
+            }*/
+             if ((currentdimensionsPenguin[4].Intersects(r1))) //jak kolizja po prawej stronie
             {
                 actualCollisionRect = r1;
                 BlockSystem();
@@ -397,7 +397,7 @@ namespace TestGame
             {
                 actualCollisionRect = r1;
                 BlockSystem();
-            }*/
+            }
 
             if (currentdimensionsPenguin[0].Intersects(r1)) //jak dotknie głowa
             {
