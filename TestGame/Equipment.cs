@@ -8,7 +8,7 @@ namespace TestGame
 {
     public class Equipment
     {
-        public List<EquipmentItem> Items { get; }
+        public List<EquipmentItem> Items { get; private set; }
 
         public Equipment()
         {
