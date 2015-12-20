@@ -241,6 +241,9 @@ namespace TestGame
                     throw new ArgumentOutOfRangeException();
             }
         }
+
+        KeyboardState keyboard;
+       public  bool activeDown = false;
         override public void UpdatePosition(GameTime gametime)
         {
 
@@ -309,8 +312,12 @@ namespace TestGame
 
 
                 positionHorizontal = positionVertical = Position.ToVector2();
-                if (Keyboard.GetState().IsKeyDown(Keys.Down))
+
+
+                if (Keyboard.GetState().IsKeyUp(Keys.Down)) activeDown = false;
+                if (Keyboard.GetState().IsKeyDown(Keys.Down) && !activeDown)
                 {
+                    activeDown = true;
                     Image = imageHorizontal;
                     rectangle = new Rectangle((int)positionHorizontal.X + correctPosition, (int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); // na slizgu
                 }
