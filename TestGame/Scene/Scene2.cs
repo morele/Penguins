@@ -29,32 +29,46 @@ namespace TestGame.Scene
             base.LoadContent(penguins, playerPanel, player);
 
             int YpositionFloor =700;
-            
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/platforma2"), new Vector2(-1100, YpositionFloor)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/platforma2"), new Vector2(-100, YpositionFloor)));
+            Texture2D mur = content.Load<Texture2D>("Scena2/mur");
+            Texture2D platfroma2 = content.Load<Texture2D>("Scena2/platforma2");
+            Texture2D kolec = content.Load<Texture2D>("Scena2/Kolec");
+            Texture2D waga = content.Load<Texture2D>("Scena2/waga");
+            Texture2D woda = content.Load<Texture2D>("Scena2/woda");
+            Texture2D rura = content.Load<Texture2D>("Scena2/Rura");
+            Texture2D zapadka = content.Load<Texture2D>("Scena2/Zapadka");
+            Texture2D platforma1 = content.Load<Texture2D>("Scena2/platforma1");
+            Texture2D sciana = content.Load<Texture2D>("Scena2/Sciana");
+            Texture2D sprezynaPlatforma = content.Load<Texture2D>("Scena2/SprezynaPlatforma");
+            Texture2D sprezyna = content.Load<Texture2D>("Scena2/Sprezyna");
 
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/mur"), new Vector2(-1100, YpositionFloor + content.Load<Texture2D>("Scena2/platforma2").Height - 2)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/woda"), new Vector2(-1100 + content.Load<Texture2D>("Scena2/mur").Width, YpositionFloor + content.Load<Texture2D>("Scena2/platforma2").Height + 30)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/mur"), new Vector2(-1100 + content.Load<Texture2D>("Scena2/mur").Width + content.Load<Texture2D>("Scena2/woda").Width, YpositionFloor + content.Load<Texture2D>("Scena2/platforma2").Height - 2)));
+            //platformy
+            platforms.Add(new Platform(platfroma2, new Vector2(-1100, YpositionFloor)));
+            platforms.Add(new Platform(platfroma2, new Vector2(-100, YpositionFloor)));
+            platforms.Add(new Platform(platforma1, new Vector2(1221, YpositionFloor)));
 
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Rura"), new Vector2(-700, YpositionFloor - content.Load<Texture2D>("Scena2/Rura").Height), false,0,0,PlatformType.MAGICPIPE));
+            //woda i ograniczenia
+            platforms.Add(new Platform(mur, new Vector2(-1100, YpositionFloor + platfroma2.Height - 2)));
+            platforms.Add(new Platform(woda, new Vector2(-1100 + mur.Width, YpositionFloor + platfroma2.Height + 30)));
+            platforms.Add(new Platform(mur, new Vector2(-1100 + mur.Width + woda.Width, YpositionFloor + platfroma2.Height - 2)));
+
+
+            platforms.Add(new Platform(rura, new Vector2(-700, YpositionFloor - rura.Height), false,0,0,PlatformType.MAGICPIPE));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena2/autko/Autko1"), new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(0, YpositionFloor)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kolec"), new Vector2(400, YpositionFloor - content.Load<Texture2D>("Scena2/Kolec").Height)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kolec"), new Vector2(440, YpositionFloor - content.Load<Texture2D>("Scena2/Kolec").Height)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kolec"), new Vector2(480, YpositionFloor - content.Load<Texture2D>("Scena2/Kolec").Height)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kolec"), new Vector2(520, YpositionFloor - content.Load<Texture2D>("Scena2/Kolec").Height)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Rura"), new Vector2(800, YpositionFloor - content.Load<Texture2D>("Scena2/Rura").Height), false, 0, 0, PlatformType.MAGICPIPE));
+            platforms.Add(new Platform(kolec, new Vector2(400, YpositionFloor - kolec.Height)));
+            platforms.Add(new Platform(kolec, new Vector2(440, YpositionFloor - kolec.Height)));
+            platforms.Add(new Platform(kolec, new Vector2(480, YpositionFloor - kolec.Height)));
+            platforms.Add(new Platform(kolec, new Vector2(520, YpositionFloor - kolec.Height)));
+            platforms.Add(new Platform(rura, new Vector2(800, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena2/wciecie"), new Vector2(981, YpositionFloor)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/waga"), new Vector2(1035, YpositionFloor + 46 - content.Load<Texture2D>("Scena2/waga").Height)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Skrzynia"), new Vector2(1045, YpositionFloor + 46 - content.Load<Texture2D>("Scena2/waga").Height - content.Load<Texture2D>("Scena2/Skrzynia").Height)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/platforma1"), new Vector2(1221, YpositionFloor)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Sprezyna"), new Vector2(1400, YpositionFloor - content.Load<Texture2D>("Scena2/Sprezyna").Height)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/SprezynaPlatforma"), new Vector2(1400, YpositionFloor - content.Load<Texture2D>("Scena2/Sprezyna").Height - content.Load<Texture2D>("Scena2/SprezynaPlatforma").Height),false,0,0,PlatformType.SPRING));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/mur"), new Vector2(1580, YpositionFloor - content.Load<Texture2D>("Scena2/mur").Height)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Zapadka"), new Vector2(1580, YpositionFloor - content.Load<Texture2D>("Scena2/Zapadka").Height - content.Load<Texture2D>("Scena2/mur").Height), false, 0,0,PlatformType.PAWL));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Sciana"), new Vector2(1580, YpositionFloor - content.Load<Texture2D>("Scena2/Zapadka").Height - content.Load<Texture2D>("Scena2/mur").Height - content.Load<Texture2D>("Scena2/Sciana").Height)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Sciana"), new Vector2(1580 + 89, YpositionFloor - content.Load<Texture2D>("Scena2/Zapadka").Height - content.Load<Texture2D>("Scena2/mur").Height - content.Load<Texture2D>("Scena2/Sciana").Height)));
+            platforms.Add(new Platform(waga, new Vector2(1035, YpositionFloor + 46 - waga.Height)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Skrzynia"), new Vector2(1045, YpositionFloor + 46 - waga.Height - content.Load<Texture2D>("Scena2/Skrzynia").Height)));        
+            platforms.Add(new Platform(sprezyna, new Vector2(1400, YpositionFloor - sprezyna.Height)));
+            platforms.Add(new Platform(sprezynaPlatforma, new Vector2(1400, YpositionFloor - sprezyna.Height - sprezynaPlatforma.Height),false,0,0,PlatformType.SPRING));
+            platforms.Add(new Platform(mur, new Vector2(1580, YpositionFloor - mur.Height)));
+            platforms.Add(new Platform(zapadka, new Vector2(1580, YpositionFloor - zapadka.Height - mur.Height), false, 0,0,PlatformType.PAWL));
+            platforms.Add(new Platform(sciana, new Vector2(1580, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
+            platforms.Add(new Platform(sciana, new Vector2(1580 + 89, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
         }
 
         public override void Draw(SpriteBatch spriteBatch)
