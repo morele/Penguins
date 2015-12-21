@@ -33,6 +33,7 @@ namespace TestGame
         private GameTime gametime;
 
         Scene1 scene1;
+        Scene2 scene2;
 
         public Game1()
         {
@@ -55,8 +56,8 @@ namespace TestGame
             gravitation = 7f; // wysokość wybicia przy skoku( = 5 ~ 100px)
             camera = new Camera();
 
-            scene1 = new Scene1(Content, camera, gametime);
-
+            //scene1 = new Scene1(Content, camera, gametime);
+            scene2 = new Scene2(Content, camera, gametime);
 
             // inicjalizacja panelu gracza - podstawowy gracz - skipper           
             _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"),
@@ -78,25 +79,25 @@ namespace TestGame
             skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"),
                                   Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"),
                                   Content.Load<Texture2D>("WyborPostaci/Skipper"),
-                                  new Vector2(-550, 400), penguinSpeed,
+                                  new Vector2(-1080, 400), penguinSpeed,
                                   gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS, new Point(422, 663));
 
             kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"),
                                    Content.Load<Texture2D>("Slizg/Kowalski"),
                                    Content.Load<Texture2D>("WyborPostaci/Kowalski"),
-                                   new Vector2(-450, 400), penguinSpeed,
+                                   new Vector2(-1030, 400), penguinSpeed,
                                    gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
 
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"),
                                Content.Load<Texture2D>("Slizg/Rico"),//Ł.G: tymczasowo zmienione 
                                Content.Load<Texture2D>("WyborPostaci/Rico"),
-                               new Vector2(-350, 400), penguinSpeed,
+                               new Vector2(-980, 400), penguinSpeed,
                                gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815));//Ł.G : dodanie rozmiaru frame do Animacji
 
             szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"),
                                     Content.Load<Texture2D>("Slizg/Szeregowy"),
                                     Content.Load<Texture2D>("WyborPostaci/Szeregowy"),
-                                    new Vector2(-250, 400), penguinSpeed,
+                                    new Vector2(-930, 400), penguinSpeed,
                                     gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));
 
             penguins.Add(skipper);
@@ -107,15 +108,15 @@ namespace TestGame
             //Podstawowy gracz - skipper
             player = ActiveAndDeactivationPlayer(true, false, false, false);
 
-            scene1.LoadContent(penguins, _playerPanel, player);
-
+            //scene1.LoadContent(penguins, _playerPanel, player);
+            scene2.LoadContent(penguins, _playerPanel, player);
 
             // załadowanie i ustawienie platform
-            platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy500x48"), new Vector2(-600, 600)));
-            platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(50, 600), true, 1, 100));
-            platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(300, 600), true, 2, 200));
-            platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(500, 600), true, 3, 100));
-            platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(700, 600), true, 4, 400));
+            /*   platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy500x48"), new Vector2(-600, 600)));
+               platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(50, 600), true, 1, 100));
+               platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(300, 600), true, 2, 200));
+               platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(500, 600), true, 3, 100));
+               platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(700, 600), true, 4, 400));*/
         }
 
         protected override void UnloadContent()
@@ -130,8 +131,9 @@ namespace TestGame
 
 
 
-            scene1.UpdatePosition(gameTime);
+            //scene1.UpdatePosition(gameTime);
 
+            scene2.UpdatePosition(gameTime);
             base.Update(gameTime);
         }
 
@@ -143,7 +145,8 @@ namespace TestGame
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
 
-            scene1.Draw(spriteBatch);
+            //scene1.Draw(spriteBatch);
+            scene2.Draw(spriteBatch);
 
             spriteBatch.End();
 

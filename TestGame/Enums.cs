@@ -25,6 +25,9 @@ namespace TestGame
         FLOOR = 1,
         MONEY = 2,
         NN = 3,
+        MAGICPIPE = 4,
+        SPRING = 5,
+        PAWL = 6,
 
     }
 }
