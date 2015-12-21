@@ -45,7 +45,7 @@ namespace TestGame
             graphics.PreferredBackBufferWidth = 1200;
 
             graphics.ApplyChanges();
-           // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
+            // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
 
         }
 
@@ -55,17 +55,17 @@ namespace TestGame
             gravitation = 7f; // wysokość wybicia przy skoku( = 5 ~ 100px)
             camera = new Camera();
 
-            scene1 = new Scene1(Content, camera,gametime);
+            scene1 = new Scene1(Content, camera, gametime);
 
 
             // inicjalizacja panelu gracza - podstawowy gracz - skipper           
-            _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"), 
-                                           new Vector2(0, 0), 
+            _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"),
+                                           new Vector2(0, 0),
                                            new Vector2(GraphicsDevice.Viewport.Width, 150),
                                            Content.Load<SpriteFont>("JingJing"),
                                            Content.Load<Texture2D>("WyborPostaci/Skipper"));
 
-            
+
 
             base.Initialize();
         }
@@ -75,25 +75,25 @@ namespace TestGame
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"), 
+            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"),
                                   Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"),
                                   Content.Load<Texture2D>("WyborPostaci/Skipper"),
-                                  new Vector2(-550, 400), penguinSpeed, 
+                                  new Vector2(-550, 400), penguinSpeed,
                                   gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS, new Point(422, 663));
 
-            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"), 
+            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"),
                                    Content.Load<Texture2D>("Slizg/Kowalski"),
                                    Content.Load<Texture2D>("WyborPostaci/Kowalski"),
-                                   new Vector2(-450, 400), penguinSpeed, 
+                                   new Vector2(-450, 400), penguinSpeed,
                                    gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
 
-            rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 
+            rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"),
                                Content.Load<Texture2D>("Slizg/Rico"),//Ł.G: tymczasowo zmienione 
                                Content.Load<Texture2D>("WyborPostaci/Rico"),
-                               new Vector2(-350, 400), penguinSpeed, 
-                               gravitation, PenguinType.RICO, Const.RICO_MASS,new Point(480,815));//Ł.G : dodanie rozmiaru frame do Animacji
+                               new Vector2(-350, 400), penguinSpeed,
+                               gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815));//Ł.G : dodanie rozmiaru frame do Animacji
 
-            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"), 
+            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"),
                                     Content.Load<Texture2D>("Slizg/Szeregowy"),
                                     Content.Load<Texture2D>("WyborPostaci/Szeregowy"),
                                     new Vector2(-250, 400), penguinSpeed,
@@ -126,9 +126,9 @@ namespace TestGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 GameFlow.CurrentInstance.Exit();
-            var deltaTime = 1/gameTime.ElapsedGameTime.TotalSeconds;
+            var deltaTime = 1 / gameTime.ElapsedGameTime.TotalSeconds;
 
-         
+
 
             scene1.UpdatePosition(gameTime);
 
