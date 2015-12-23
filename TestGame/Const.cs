@@ -32,6 +32,8 @@ namespace TestGame
 
         public static int PLAYER_PANEL_HEIGHT = 150;
 
+        public static int SPRING_JUMP = 300;
+
         public static int RICO_MASS = 16;
         public static int KOWALSKI_MASS = 13;
         public static int SKIPPER_MASS = 12;

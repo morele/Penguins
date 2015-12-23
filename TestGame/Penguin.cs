@@ -272,7 +272,7 @@ namespace TestGame
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
-                    speed.X = speedValue * 2;
+                    speed.X = speedValue * 5;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
@@ -371,7 +371,7 @@ namespace TestGame
             }
         }
 
-        private Rectangle tempRect = new Rectangle();
+   
         /// <summary>
         /// Wykrywa kolizje pingwina z parametrem
         /// </summary>
@@ -449,6 +449,16 @@ namespace TestGame
             return false;
         }
 
+        public bool Collision(Rectangle r1)
+        {
+            return currentdimensionsPenguin[2].Intersects(r1);
+        }
+
+        public bool Collision2(Rectangle r1)
+        {
+
+            return false;
+        }
 
         public void PutMeOn(Rectangle platform)
         {
@@ -509,7 +519,16 @@ namespace TestGame
             jump = true;
             Position.Y -= (int)Math.Pow(Const.GRAVITY * 3, 2) / Mass;
         }
+        int licz = 0;
+        public void JumpSpring()
+        {
 
+            speed.Y = -Const.SPRING_JUMP;
+            jump = true;
+            Position.Y -= ((int)Math.Pow(Const.GRAVITY * 3, 2) / Mass)   + Const.SPRING_JUMP;
+
+            
+        }
 
     }
 }

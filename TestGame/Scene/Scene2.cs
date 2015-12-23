@@ -28,7 +28,7 @@ namespace TestGame.Scene
         {
             base.LoadContent(penguins, playerPanel, player);
 
-            int YpositionFloor =700;
+            int YpositionFloor = 700;
             Texture2D mur = content.Load<Texture2D>("Scena2/mur");
             Texture2D platfroma2 = content.Load<Texture2D>("Scena2/platforma2");
             Texture2D kolec = content.Load<Texture2D>("Scena2/Kolec");
@@ -82,11 +82,8 @@ namespace TestGame.Scene
                     platform.Draw(spriteBatch);
 
                 foreach (Penguin penguin in penguins)
-                {
-                   
-                        penguin.DrawAnimation(spriteBatch);
+                    penguin.DrawAnimation(spriteBatch);
                  
-                }
 
         }
 
@@ -122,9 +119,16 @@ namespace TestGame.Scene
                                 if (penguins[i].penguinType != penguin.penguinType)
                                        if(penguins[i].Collision(penguin.rectangle))
                                         penguins[i].JumpStop(0);
-
-
                             }
+
+                            //Jak kolizja ze sprezyna to wysoki jump
+                            if(platform.platformType == PlatformType.SPRING)
+                                if(penguin.Collision(platform.PlatformRectangle))
+                                {
+                                penguin.JumpSpring();
+                                 }
+
+
 
                             if (penguin.Collision(platform.PlatformRectangle, platform.platformType))// sprawdzenie czy na platformie są pingwiny
                             {
