@@ -10,6 +10,7 @@ namespace MiniGameSwiming
     {
         private List<Fish> _listOfFish;
         private List<Fish> _listOfBadFish;
+        private List<Barell> _listOfBarell;
         private Pinguin _pinguin;
         private SpriteBatch _spriteBatch;
         private GraphicsDevice _graphics;
@@ -28,6 +29,8 @@ namespace MiniGameSwiming
         private int punkty = 0;
         private string _gameText = "Press space to play!";
 
+
+
         public Swiming(SpriteBatch spriteBatch, ContentManager content, GraphicsDevice graphicsDevice)
         {
             _spriteBatch = spriteBatch;
@@ -36,10 +39,15 @@ namespace MiniGameSwiming
 
             _random = new Random();
 
+
+
+            //   _barell = new Barell(content.Load<Texture2D>("Beczka"), new Vector2(80, 80), graphicsDevice,20);
+
             _pinguin = new Pinguin(_content.Load<Texture2D>("Rico"), new Vector2(80, 81), 10);
             _font = content.Load<SpriteFont>("Fon");
             _listOfFish = new List<Fish>();
             _listOfBadFish = new List<Fish>();
+            _listOfBarell = new List<Barell>();
         }
 
 
@@ -52,7 +60,7 @@ namespace MiniGameSwiming
             }
             else
             {
-                _gameText =String.Format("Number of Life: {0}",_pinguin.NumberOfLife);
+                _gameText = String.Format("Number of Life: {0}", _pinguin.NumberOfLife);
 
                 if (duration > delay)
                 {
@@ -114,12 +122,22 @@ namespace MiniGameSwiming
 
                     }
                 }
+             
             }
- 
+
+            if (_random.Next(0, 100) == 7)
+            {
+                int randNumber = _random.Next(1, 10);
+                _listOfBarell.Add(new Barell(_content.Load<Texture2D>("Beczka"), new Vector2(_graphics.Viewport.Width, (randNumber * 100) - _random.Next(80, (int)_graphics.Viewport.Height) - 90), _graphics, 20));
+            }
 
 
-         
+            foreach (var barell in _listOfBarell)
+            {
+                barell.Update(gameTime);
+            }
             _pinguin.Update(gameTime, _graphics);
+
         }
 
 
@@ -127,7 +145,7 @@ namespace MiniGameSwiming
         {
             foreach (var fish in _listOfFish)
             {
-                if(!fish.Eaten)
+                if (!fish.Eaten)
                     fish.Draw(_spriteBatch);
 
             }
@@ -137,8 +155,13 @@ namespace MiniGameSwiming
                     badFish.Draw(_spriteBatch);
 
             }
+            foreach (var barell in _listOfBarell)
+            {
+                barell.Draw(_spriteBatch);
+            }
+
             _pinguin.Draw(_spriteBatch);
-            _spriteBatch.DrawString(_font, _gameText,new Vector2(300,30),Color.Black );
+            _spriteBatch.DrawString(_font, _gameText, new Vector2(300, 30), Color.Black);
         }
     }
 }

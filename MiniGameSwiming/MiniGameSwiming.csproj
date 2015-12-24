@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Barell.cs" />
     <Compile Include="Fish.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Pinguin.cs" />
