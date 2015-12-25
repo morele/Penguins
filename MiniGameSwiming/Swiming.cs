@@ -48,7 +48,7 @@ namespace MiniGameSwiming
             _listOfFish = new List<Fish>();
             _listOfBadFish = new List<Fish>();
             _listOfBarell = new List<Barell>();
-        } 
+        }
 
 
 
@@ -57,6 +57,7 @@ namespace MiniGameSwiming
             if (!_pinguin.Run)
             {
                 _gameText = "Press space to play!";
+                _pinguin.Update(_graphics);
             }
             else
             {
@@ -138,7 +139,7 @@ namespace MiniGameSwiming
 
                 foreach (Barell barell in _listOfBarell)
                 {
-                    if (_pinguin.Position.Intersects(barell.Position))
+                    if (_pinguin.Position.Contains(barell.Position))
                     {
                         _pinguin.Run = false;
                         _listOfBarell.Clear();
@@ -147,12 +148,12 @@ namespace MiniGameSwiming
                         break;
                     }
                 }
-
+                _pinguin.Update(gameTime, _graphics);
             }
 
 
 
-            _pinguin.Update(gameTime, _graphics);
+
 
         }
 

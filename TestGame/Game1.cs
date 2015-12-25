@@ -83,13 +83,13 @@ namespace TestGame
                                   gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS, new Point(422, 663));
 
             kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"),
-                                   Content.Load<Texture2D>("Slizg/Kowalski"),
+                                   Content.Load<Texture2D>("Postacie/Animacje/KowalskiPlywanie"),
                                    Content.Load<Texture2D>("WyborPostaci/Kowalski"),
                                    new Vector2(-1030, 400), penguinSpeed,
                                    gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
 
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"),
-                               Content.Load<Texture2D>("Slizg/Rico"),//Ł.G: tymczasowo zmienione 
+                               Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"),//Ł.G: tymczasowo zmienione 
                                Content.Load<Texture2D>("WyborPostaci/Rico"),
                                new Vector2(-980, 400), penguinSpeed,
                                gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815));//Ł.G : dodanie rozmiaru frame do Animacji

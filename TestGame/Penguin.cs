@@ -81,7 +81,7 @@ namespace TestGame
         private Animation _animationHorizontal;
         private Animation _animationVertival;
 
-
+        private bool _slide;
 
         /// <summary>
         /// Animacja
@@ -112,7 +112,7 @@ namespace TestGame
 
             _animationVertival = new Animation(this.imageVertical, 8, 50, _startPositionOfPenguin);
 
-
+            _animationHorizontal = new Animation(this.imageHorizontal, 14, 50, _startPositionOfPenguin);
 
 
             Texture = image;
@@ -210,16 +210,46 @@ namespace TestGame
             }
 
         }
+        private void UpdateAnimationSlide(GameTime gametime, Vector2 newPosition)
+        {
+            if (active && inMove)
+            {
+                switch (penguinType)
+                {
+                    case PenguinType.RICO:
+                        {
+                            _animationHorizontal.Update(gametime, newPosition);
+                        }
+                        break;
+                    case PenguinType.KOWALSKI:
+                        {
+                            _animationHorizontal.Update(gametime, newPosition);
+                        }
+                        break;
+                    case PenguinType.SKIPPER:
+                        {
+                            _animationHorizontal.Update(gametime, newPosition);
+                        }
+                        break;
+                    case PenguinType.SZEREGOWY:
+                        {
+                            _animationHorizontal.Update(gametime, newPosition);
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            else
+            {
+                _animationHorizontal.UpdateInStay(newPosition);
+            }
 
-        KeyboardState keyboard;
+        }
+     
         public bool activeDown = false;
         override public void UpdatePosition(GameTime gametime)
         {
-
-            if (gametime != null)
-            {
-                //UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
-            }
             if (active)
             {
 
@@ -246,27 +276,34 @@ namespace TestGame
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     speed.X = speedValue * 5;
+                    _slide = true;
+                    _left = false;
+                    inMove = true;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     speed.X = -speedValue * 2;
+                    _slide = true;
+                    _left = true;
+                    inMove = true;
                 }
                 else
-                if (Keyboard.GetState().IsKeyDown(Keys.Right) && !blockDirectionRIGHT)
+                if (Keyboard.GetState().IsKeyDown(Keys.Right) && !blockDirectionRIGHT && (!Keyboard.GetState().IsKeyDown(Keys.Down)))
                 {
                     speed.X = speedValue;
                     activeDirection = true;
                     _left = false;
                     inMove = true;
-                    //  UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
+                    _slide = false;
 
                 }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDircetionLEFT)
+                else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDircetionLEFT && (!Keyboard.GetState().IsKeyDown(Keys.Down)))
                 {
                     speed.X = -speedValue;
                     activeDirection = false;
                     _left = true;
                     inMove = true;
+                    _slide = false;
                 }
                 else
                 {
@@ -315,7 +352,10 @@ namespace TestGame
                 rectangle = new Rectangle((int)positionVertical.X + correctPosition, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
 
             }
+
             UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
+            UpdateAnimationSlide(gametime, new Vector2(rectangle.X, rectangle.Y));
+
             currentdimensionsPenguin = UpdateDimensions(rectangle);
 
             if (positionVertical.Y > 1500)
@@ -468,7 +508,15 @@ namespace TestGame
         public void DrawAnimation(SpriteBatch spriteBatch)
         {
             rectangle.Width /= 8;
-            _animationVertival.Draw(spriteBatch, _left);
+            if (_slide)
+            {
+                _animationHorizontal.Draw(spriteBatch, _left);
+            }
+            else
+            {
+                _animationVertival.Draw(spriteBatch, _left);
+            }
+
 
 
 
