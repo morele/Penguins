@@ -80,6 +80,46 @@ namespace TestGame
             }
             return dimensions;
         }
+        public static List<Rectangle> DimensionsPenguinShoe(PenguinType type)
+        {
+            List<Rectangle> dimensions = new List<Rectangle>();
 
+            switch (type)
+            {
+                case PenguinType.KOWALSKI:
+                    dimensions.Add(new Rectangle(104, 17, 199, 735));   // głowa i tułów
+                    dimensions.Add(new Rectangle(303, 144, 97, 36));    // dziób
+                    dimensions.Add(new Rectangle(121, 797, 240, 103));   // nogi ++20 do wysokości
+                    dimensions.Add(new Rectangle(17, 275, 39, 545));    // dupa
+                    dimensions.Add(new Rectangle(303, 317, 37, 424));   // brzuch
+                    break;
+                case PenguinType.RICO:
+                    dimensions.Add(new Rectangle(135, 45, 185, 595));//głowa
+                    dimensions.Add(new Rectangle(320, 140, 160, 60));//dziob
+                    dimensions.Add(new Rectangle(115, 760, 230, 56));//nogi
+                    dimensions.Add(new Rectangle(10, 200, 70, 540));//dupa
+                    dimensions.Add(new Rectangle(300, 380, 35, 290));//brzuch
+                    break;
+                case PenguinType.SZEREGOWY:
+                    dimensions.Add(new Rectangle(90, 3, 150, 495));//głowa
+                    dimensions.Add(new Rectangle(245, 170, 105, 35));//dziob
+                    dimensions.Add(new Rectangle(115, 580, 200, 65));//nogi ++ 20 do wysokości
+                    dimensions.Add(new Rectangle(10, 80, 45, 510));//dupa
+                    dimensions.Add(new Rectangle(290, 290, 43, 210));//brzuch
+                    break;
+                case PenguinType.SKIPPER:
+
+                    dimensions.Add(new Rectangle(89, 10, 239, 586));   // głowa i tułów
+                    dimensions.Add(new Rectangle(328, 97, 90, 42));    // dziób
+                    dimensions.Add(new Rectangle(129, 600, 215, 61));  // nogi
+                    dimensions.Add(new Rectangle(15, 281, 54, 347));   // plecy                    
+                    dimensions.Add(new Rectangle(331, 212, 42, 283));  // brzuch
+
+
+                    break;
+
+            }
+            return dimensions;
+        }
     }
 }

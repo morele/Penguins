@@ -41,11 +41,12 @@ namespace TestGame
 
 
         public List<Rectangle> currentdimensionsPenguin = new List<Rectangle>();
+        public List<Rectangle> currentdimensionsPenguinShoe = new List<Rectangle>();
         private Vector2 positionHorizontal;
         private Vector2 positionVertical;
         private Vector2 tmpPosition = new Vector2();
         private Platform blockPlatform = new Platform();
-
+        private bool shoe = false;
         public bool jump = true;
         public bool firstStart = true;
         public bool active = true;
@@ -82,18 +83,6 @@ namespace TestGame
 
 
 
-        /// <summary>
-        /// Animacja
-        /// </summary>
-        /// <param name="image"></param>
-        /// <param name="imageHorizontal"></param>
-        /// <param name="avatar"></param>
-        /// <param name="position"></param>
-        /// <param name="speedValue"></param>
-        /// <param name="gravity"></param>
-        /// <param name="penguinType"></param>
-        /// <param name="mass"></param>
-        /// <param name="frameSize">Argument potrzebny do Animacji</param>
         public Penguin(Texture2D image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType, int mass, Point frameSize) :
             base(image, position, speedValue, gravity, frameSize)
         {
@@ -211,7 +200,7 @@ namespace TestGame
         }
 
         KeyboardState keyboard;
-        public bool activeDown = false;
+        public bool activeKeysDown = false;
         override public void UpdatePosition(GameTime gametime)
         {
 
@@ -286,15 +275,16 @@ namespace TestGame
                 positionHorizontal = positionVertical = Position.ToVector2();
 
 
-                if (Keyboard.GetState().IsKeyUp(Keys.Down)) activeDown = false;
-                if (Keyboard.GetState().IsKeyDown(Keys.Down) && !activeDown)
+                if (Keyboard.GetState().IsKeyUp(Keys.Down)) activeKeysDown = false;
+                if (Keyboard.GetState().IsKeyDown(Keys.Down) && !activeKeysDown)
                 {
-                    activeDown = true;
+                    activeKeysDown = true;
                     Image = imageHorizontal;
                     rectangle = new Rectangle((int)positionHorizontal.X + correctPosition, (int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); // na slizgu
                 }
                 else
                 {
+
                     Image = imageVertical;
                     rectangle = new Rectangle((int)positionVertical.X + correctPosition, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
                 }
