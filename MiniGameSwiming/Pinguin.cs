@@ -41,7 +41,7 @@ namespace MiniGameSwiming
         {
             get
             {
-                return new Rectangle((int)_position.X, (int)_position.Y, (int)(_widthOfShoot * Scale),
+                return new Rectangle((int)_position.X, (int)_position.Y, ((int)(_widthOfShoot * Scale)+40),
                     (int)(_texture.Height * Scale));
             }
         }
@@ -100,7 +100,18 @@ namespace MiniGameSwiming
         {
             Eating = !Eating;
         }
-
+        public void Update(GraphicsDevice device)
+        {
+            _ricoSwiming.UpdateInStay(_position);
+            if (!Run)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                {
+                    Run = true;
+                    color = Color.White;
+                }
+            }
+        }
         public void Update(GameTime gameTime, GraphicsDevice device)
         {
             if (!Run)
@@ -135,7 +146,7 @@ namespace MiniGameSwiming
                 {
                     _position.Y = 1;
                 }
-                if (_position.Y > device.Viewport.Y + _texture.Height - 100)
+                if (_position.Y > device.Viewport.Y + _texture.Height+100)
                 {
 
                     NumberOfLife--;
@@ -166,10 +177,12 @@ namespace MiniGameSwiming
 
             if (Eating)
             {
+              //  _ricoEating.Position = _position;
                 _ricoEating.Update(gameTime, _position);
             }
             else
             {
+
                 _ricoSwiming.Update(gameTime, _position);
             }
 
