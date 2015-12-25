@@ -76,7 +76,12 @@ namespace TestGame
 
         private SpriteEffects _flipEffect;
 
-      
+
+        private Animation _animationHorizontal;
+        private Animation _animationVertival;
+
+
+
         /// <summary>
         /// Animacja
         /// </summary>
@@ -99,19 +104,22 @@ namespace TestGame
             this.penguinType = penguinType;
             Equipment = new Equipment();
 
+
+
+
             _startPositionOfPenguin = position;
 
-            _flipEffect = SpriteEffects.FlipHorizontally;
+            _animationVertival = new Animation(this.imageVertical, 8, 50, _startPositionOfPenguin);
 
+
+           
 
             Texture = image;
             image = new Texture2D(image.GraphicsDevice, image.Width / 4, image.Height);
 
             Position = position.ToPoint();
 
-            _positionOnSheet = new Rectangle(1, 1, frameSize.X, frameSize.Y);//Ł.G;
-            _frameDuration = 0;
-            _frameDelay = 100;
+       
 
             this.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler;
 
@@ -165,76 +173,28 @@ namespace TestGame
         /// </summary>
         /// <param name="gametime"></param>
         /// <param name="penguinType"></param>
-        private void UpdateAnimation(GameTime gametime, PenguinType penguinType)
+        private void UpdateAnimation(GameTime gametime, Vector2 newPosition)
         {
             switch (penguinType)
             {
                 case PenguinType.RICO:
-                    _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (_frameDuration >= _frameDelay)
                     {
-                        _frameDuration = 0;
-                        _positionOnSheet = new Rectangle(new Point(481 * _positionOnSheetX, 0), this.FrameSize);
-                        _positionOnSheetX++;
-
-                        if (_positionOnSheetX >= 7)
-                        {
-
-                            _positionOnSheetX = 1;
-
-                        }
+                        _animationVertival.Update(gametime, newPosition);
                     }
                     break;
                 case PenguinType.KOWALSKI:
-                    _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (_frameDuration >= _frameDelay)
                     {
-                        _frameDuration = 0;
-                        _positionOnSheet = new Rectangle(new Point(412 * _positionOnSheetX, 0), this.FrameSize);
-                        _positionOnSheetX++;
-
-                        if (_positionOnSheetX >= 7)
-                        {
-
-                            _positionOnSheetX = 1;
-
-                        }
+                        _animationVertival.Update(gametime, newPosition);
                     }
                     break;
                 case PenguinType.SKIPPER:
-                    _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (_frameDuration >= _frameDelay)
                     {
-                        _frameDuration = 0;
-                        _positionOnSheet = new Rectangle(new Point(422 * _positionOnSheetX, 0), this.FrameSize);
-                        _positionOnSheetX++;
-
-                        if (_positionOnSheetX >= 7)
-                        {
-
-                            _positionOnSheetX = 1;
-
-                        }
+                        _animationVertival.Update(gametime, newPosition);
                     }
                     break;
                 case PenguinType.SZEREGOWY:
-                    _frameDuration += gametime.ElapsedGameTime.TotalMilliseconds;
-
-                    if (_frameDuration >= _frameDelay)
                     {
-                        _frameDuration = 0;
-                        _positionOnSheet = new Rectangle(new Point(352 * _positionOnSheetX, 0), this.FrameSize);
-                        _positionOnSheetX++;
-
-                        if (_positionOnSheetX >= 7)
-                        {
-
-                            _positionOnSheetX = 1;
-
-                        }
+                        _animationVertival.Update(gametime, newPosition);
                     }
                     break;
                 default:
@@ -243,10 +203,14 @@ namespace TestGame
         }
 
         KeyboardState keyboard;
-       public  bool activeDown = false;
+        public bool activeDown = false;
         override public void UpdatePosition(GameTime gametime)
         {
 
+            if (gametime != null)
+            {
+                UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
+            }
             if (active)
             {
 
@@ -284,7 +248,7 @@ namespace TestGame
                     speed.X = speedValue;
                     activeDirection = true;
                     _left = false;
-                    UpdateAnimation(gametime, penguinType);
+                    UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
 
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDircetionLEFT)
@@ -292,7 +256,7 @@ namespace TestGame
                     speed.X = -speedValue;
                     activeDirection = false;
                     _left = true;
-                    UpdateAnimation(gametime, penguinType);
+                    UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
                 }
                 else
                 {
@@ -345,7 +309,7 @@ namespace TestGame
                 OnPenguinDeathByFalling(penguinType);
             }
 
-
+           
 
         }
 
@@ -371,7 +335,7 @@ namespace TestGame
             }
         }
 
-   
+
         /// <summary>
         /// Wykrywa kolizje pingwina z parametrem
         /// </summary>
@@ -384,18 +348,18 @@ namespace TestGame
                 if (!currentdimensionsPenguin[0].Intersects(actualCollisionRect) && !currentdimensionsPenguin[1].Intersects(actualCollisionRect) && !currentdimensionsPenguin[2].Intersects(actualCollisionRect) && !currentdimensionsPenguin[3].Intersects(actualCollisionRect) && !currentdimensionsPenguin[4].Intersects(actualCollisionRect))
                     blockDircetionLEFT = blockDirectionRIGHT = false;
 
-          /*  tempRect = new Rectangle(rectangle.X+2, rectangle.Y+10, rectangle.Width-4, rectangle.Height-30);
-            if ((tempRect.Intersects(r1))) //jak kolizja po prawej stronie
-            {
-                actualCollisionRect = r1;
-                BlockSystem();
-            }
-            if (tempRect.Intersects(r1)) //jak kolizja po lewej stronie
-            {
-                actualCollisionRect = r1;
-                BlockSystem();
-            }*/
-             if ((currentdimensionsPenguin[4].Intersects(r1))) //jak kolizja po prawej stronie
+            /*  tempRect = new Rectangle(rectangle.X+2, rectangle.Y+10, rectangle.Width-4, rectangle.Height-30);
+              if ((tempRect.Intersects(r1))) //jak kolizja po prawej stronie
+              {
+                  actualCollisionRect = r1;
+                  BlockSystem();
+              }
+              if (tempRect.Intersects(r1)) //jak kolizja po lewej stronie
+              {
+                  actualCollisionRect = r1;
+                  BlockSystem();
+              }*/
+            if ((currentdimensionsPenguin[4].Intersects(r1))) //jak kolizja po prawej stronie
             {
                 actualCollisionRect = r1;
                 BlockSystem();
@@ -489,15 +453,9 @@ namespace TestGame
         public void DrawAnimation(SpriteBatch spriteBatch)
         {
             rectangle.Width /= 8;
-            if (!_left)
-            {
-                spriteBatch.Draw(Image, rectangle, _positionOnSheet, Color.White);
+            _animationVertival.Draw(spriteBatch, _left);
 
-            }
-            else
-            {
-                spriteBatch.Draw(Image, rectangle, _positionOnSheet, Color.White, 0.0f, new Vector2(0, 0), _flipEffect, 0.0f);
-            }
+           
 
 
         }
@@ -525,9 +483,9 @@ namespace TestGame
 
             speed.Y = -Const.SPRING_JUMP;
             jump = true;
-            Position.Y -= ((int)Math.Pow(Const.GRAVITY * 3, 2) / Mass)   + Const.SPRING_JUMP;
+            Position.Y -= ((int)Math.Pow(Const.GRAVITY * 3, 2) / Mass) + Const.SPRING_JUMP;
 
-            
+
         }
 
     }
