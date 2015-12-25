@@ -49,6 +49,7 @@ namespace TestGame
         public bool jump = true;
         public bool firstStart = true;
         public bool active = true;
+        public bool inMove = false;
         private bool activeDirection = true; // true = prawo, false = lewo
         public bool blockDircetionLEFT = false;
         public bool blockDirectionRIGHT = false;
@@ -112,14 +113,14 @@ namespace TestGame
             _animationVertival = new Animation(this.imageVertical, 8, 50, _startPositionOfPenguin);
 
 
-           
+
 
             Texture = image;
             image = new Texture2D(image.GraphicsDevice, image.Width / 4, image.Height);
 
             Position = position.ToPoint();
 
-       
+
 
             this.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler;
 
@@ -175,7 +176,7 @@ namespace TestGame
         /// <param name="penguinType"></param>
         private void UpdateAnimation(GameTime gametime, Vector2 newPosition)
         {
-            if(active)
+            if (active && inMove)
             {
                 switch (penguinType)
                 {
@@ -205,9 +206,9 @@ namespace TestGame
             }
             else
             {
-               // _animationVertival.Update2(newPosition);
+                _animationVertival.UpdateInStay(newPosition);
             }
-            
+
         }
 
         KeyboardState keyboard;
@@ -256,7 +257,8 @@ namespace TestGame
                     speed.X = speedValue;
                     activeDirection = true;
                     _left = false;
-                  //  UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
+                    inMove = true;
+                    //  UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
 
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDircetionLEFT)
@@ -264,11 +266,12 @@ namespace TestGame
                     speed.X = -speedValue;
                     activeDirection = false;
                     _left = true;
-                    
+                    inMove = true;
                 }
                 else
                 {
                     speed.X = 0;
+                    inMove = false;
                 }
 
                 if (Keyboard.GetState().IsKeyUp(Keys.Space)) activeSpace = false; //zeby nacisnięcie spacji oznaczało tylko JEDNO nacisniecie(szybko odświeża)          
@@ -299,7 +302,7 @@ namespace TestGame
                     rectangle = new Rectangle((int)positionVertical.X + correctPosition, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
                 }
 
-               
+
             }
             else
             {
@@ -310,7 +313,7 @@ namespace TestGame
                 positionVertical = Position.ToVector2();
                 Image = imageVertical;
                 rectangle = new Rectangle((int)positionVertical.X + correctPosition, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
-               
+
             }
             UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
             currentdimensionsPenguin = UpdateDimensions(rectangle);
@@ -320,7 +323,7 @@ namespace TestGame
                 OnPenguinDeathByFalling(penguinType);
             }
 
-           
+
 
         }
 
@@ -467,7 +470,7 @@ namespace TestGame
             rectangle.Width /= 8;
             _animationVertival.Draw(spriteBatch, _left);
 
-           
+
 
 
         }
