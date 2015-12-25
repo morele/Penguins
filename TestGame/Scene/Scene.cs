@@ -73,12 +73,12 @@ namespace TestGame.Scene
 
             return penguins[0];
         }
-        protected void FirstStart()
+        protected void FirstStart(GameTime gametime)
         {
             while (firstStart)
             {
                 foreach (Penguin penguin in penguins)
-                    penguin.UpdatePosition(gameTime);
+                    penguin.UpdatePosition(gametime);
 
 
                 foreach (Platform platform in platforms)

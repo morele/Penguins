@@ -175,31 +175,39 @@ namespace TestGame
         /// <param name="penguinType"></param>
         private void UpdateAnimation(GameTime gametime, Vector2 newPosition)
         {
-            switch (penguinType)
+            if(active)
             {
-                case PenguinType.RICO:
-                    {
-                        _animationVertival.Update(gametime, newPosition);
-                    }
-                    break;
-                case PenguinType.KOWALSKI:
-                    {
-                        _animationVertival.Update(gametime, newPosition);
-                    }
-                    break;
-                case PenguinType.SKIPPER:
-                    {
-                        _animationVertival.Update(gametime, newPosition);
-                    }
-                    break;
-                case PenguinType.SZEREGOWY:
-                    {
-                        _animationVertival.Update(gametime, newPosition);
-                    }
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                switch (penguinType)
+                {
+                    case PenguinType.RICO:
+                        {
+                            _animationVertival.Update(gametime, newPosition);
+                        }
+                        break;
+                    case PenguinType.KOWALSKI:
+                        {
+                            _animationVertival.Update(gametime, newPosition);
+                        }
+                        break;
+                    case PenguinType.SKIPPER:
+                        {
+                            _animationVertival.Update(gametime, newPosition);
+                        }
+                        break;
+                    case PenguinType.SZEREGOWY:
+                        {
+                            _animationVertival.Update(gametime, newPosition);
+                        }
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
+            else
+            {
+               // _animationVertival.Update2(newPosition);
+            }
+            
         }
 
         KeyboardState keyboard;
@@ -209,7 +217,7 @@ namespace TestGame
 
             if (gametime != null)
             {
-                UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
+                //UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
             }
             if (active)
             {
@@ -248,7 +256,7 @@ namespace TestGame
                     speed.X = speedValue;
                     activeDirection = true;
                     _left = false;
-                    UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
+                  //  UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
 
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDircetionLEFT)
@@ -256,7 +264,7 @@ namespace TestGame
                     speed.X = -speedValue;
                     activeDirection = false;
                     _left = true;
-                    UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
+                    
                 }
                 else
                 {
@@ -290,6 +298,8 @@ namespace TestGame
                     Image = imageVertical;
                     rectangle = new Rectangle((int)positionVertical.X + correctPosition, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
                 }
+
+               
             }
             else
             {
@@ -300,8 +310,9 @@ namespace TestGame
                 positionVertical = Position.ToVector2();
                 Image = imageVertical;
                 rectangle = new Rectangle((int)positionVertical.X + correctPosition, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
+               
             }
-
+            UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
             currentdimensionsPenguin = UpdateDimensions(rectangle);
 
             if (positionVertical.Y > 1500)
@@ -417,6 +428,7 @@ namespace TestGame
         {
             return currentdimensionsPenguin[2].Intersects(r1);
         }
+
 
         public bool Collision2(Rectangle r1)
         {
