@@ -94,6 +94,14 @@ namespace TestGame
                 _timeElapsed = 0;
             }
         }
+        public void UpdateInStay(Vector2 newPosition)
+        {
+            _position = newPosition;
+
+          
+                _positionOnSheet = new Rectangle((int)_widthOfFrame * 0, 0, (int)_widthOfFrame, _texture.Height);
+               
+        }
         /// <summary>
         /// 
         /// </summary>
