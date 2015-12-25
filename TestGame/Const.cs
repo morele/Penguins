@@ -94,11 +94,11 @@ namespace TestGame
                     dimensions.Add(new Rectangle(303, 317, 37, 424));   // brzuch
                     break;
                 case PenguinType.RICO:
-                    dimensions.Add(new Rectangle(135, 45, 185, 595));//głowa
-                    dimensions.Add(new Rectangle(320, 140, 160, 60));//dziob
-                    dimensions.Add(new Rectangle(115, 760, 230, 56));//nogi
-                    dimensions.Add(new Rectangle(10, 200, 70, 540));//dupa
-                    dimensions.Add(new Rectangle(300, 380, 35, 290));//brzuch
+                    dimensions.Add(new Rectangle(200,25,594,125));//głowa
+                    dimensions.Add(new Rectangle(800,120,146,80));//dziob
+                    dimensions.Add(new Rectangle(170,250,530,90));//nogi
+                    dimensions.Add(new Rectangle(15,80,145,140));//dupa
+                   // dimensions.Add(new Rectangle(800, 120, 146, 80));//brzuch
                     break;
                 case PenguinType.SZEREGOWY:
                     dimensions.Add(new Rectangle(90, 3, 150, 495));//głowa

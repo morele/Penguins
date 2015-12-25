@@ -13,9 +13,9 @@ namespace TestGame
         protected float speedValue; //szybkość poruszania się 
         protected float gravitation; //wysokość wybicia przy skoku
         protected List<Rectangle> dimensionsPenguin;
+        protected List<Rectangle> dimensionsPenguinShoe;
 
-    
-       
+
 
         public TextureManager() { }
         /// <summary>
@@ -109,15 +109,26 @@ namespace TestGame
             rectangle.Height /= scale;
             return rectangle;
         }
-        public List<Rectangle> UpdateDimensions(Rectangle r1, int speed = 0)
+        public List<Rectangle> UpdateDimensions(Rectangle r1, bool shoe, int speed = 0)
         {
             List<Rectangle> rectangle = new List<Rectangle>();
+
+            if(shoe == false)
             for (int i = 0; i < dimensionsPenguin.Count; i++)
-            {
-                rectangle.Add(new Rectangle(r1.X + dimensionsPenguin[i].X, r1.Y + dimensionsPenguin[i].Y + speed, 
-                    dimensionsPenguin[i].Width, dimensionsPenguin[i].Height));
-            }
-                
+                rectangle.Add(new Rectangle(r1.X + dimensionsPenguin[i].X, 
+                                            r1.Y + dimensionsPenguin[i].Y + speed, 
+                                            dimensionsPenguin[i].Width, 
+                                            dimensionsPenguin[i].Height));
+            if (shoe == true)
+
+            for (int i = 0; i < dimensionsPenguinShoe.Count; i++)
+                rectangle.Add(new Rectangle(r1.X + dimensionsPenguinShoe[i].X, 
+                                            r1.Y + dimensionsPenguinShoe[i].Y + speed,
+                                            dimensionsPenguinShoe[i].Width, 
+                                            dimensionsPenguinShoe[i].Height));
+
+
+
             return rectangle;
         }
     }
