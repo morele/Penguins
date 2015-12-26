@@ -5,13 +5,16 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using Microsoft.Xna.Framework.Audio;
 using TestGame.Interfaces;
 
 namespace TestGame
 {
-    public class Penguin : TextureManager, IGravitable
+    public class Penguin : TextureManager, IGravitable, ISpeakable
     {
         public event EventHandler<EventArgs> PenguinDeathByFallingHandler;
 
@@ -39,6 +42,7 @@ namespace TestGame
         private Rectangle _positionOnSheet;
         private int _positionOnSheetX = 1;
 
+        public List<SoundEffect> Voices { get; set; }      
 
         public List<Rectangle> currentdimensionsPenguin = new List<Rectangle>();
         public List<Rectangle> currentdimensionsPenguinShoe = new List<Rectangle>();
@@ -110,6 +114,11 @@ namespace TestGame
 
             Position = position.ToPoint();
 
+            Voices = new List<SoundEffect>();
+
+            _positionOnSheet = new Rectangle(1, 1, frameSize.X, frameSize.Y);//Ł.G;
+            _frameDuration = 0;
+            _frameDelay = 100;
 
 
             this.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler;
@@ -600,6 +609,18 @@ namespace TestGame
             return penguinType.ToString();
         }
 
+        public void StartSpeaking()
+        {
+            if (Voices.Any())
+            {
+                Random rand = new Random();
+                int index = rand.Next(0, Voices.Count);
+                Voices[index].CreateInstance().Resume();
+
+                while (Voices[index].CreateInstance().State == SoundState.Playing) ;
+            }
+        }
+
         public void FallDown()
         {
             float a = Mass / Const.GRAVITY;
@@ -622,6 +643,7 @@ namespace TestGame
 
 
         }
+
 
     }
 }

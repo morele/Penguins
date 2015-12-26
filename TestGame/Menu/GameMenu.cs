@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Media;
 using System.Threading;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace TestGame.Menu
 {
@@ -39,12 +42,15 @@ namespace TestGame.Menu
         private Rectangle _authorsOptionRectangle;
         private Texture2D _authorsOptionTexture;
 
-
+        // dla dźwięku
+        private SoundEffect _chooseMenuItemEffect;
+        private SoundEffectInstance _chooseMenuItemEffectInstance;
+        private Song _themeSong;
+        
         public GameMenu(List<MenuItem> menuItems)
         {
             _menuItems = menuItems;
             _selectedMenuItemIndex = 0;
-
             graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
@@ -74,6 +80,16 @@ namespace TestGame.Menu
             _exitOptionTexture = Content.Load<Texture2D>("Wyjscie");
             _cursorTexture = Content.Load<Texture2D>("Wskaznik");
             
+            // zmiana elementu menu
+            _chooseMenuItemEffect = Content.Load<SoundEffect>(@"Audio\Waves\click");
+            _chooseMenuItemEffectInstance = _chooseMenuItemEffect.CreateInstance();
+            _chooseMenuItemEffectInstance.Volume = 0.24f;
+            _chooseMenuItemEffectInstance.Pitch = 0.5f;
+
+
+            _themeSong = Content.Load<Song>("Audio/Waves/menu_theme");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(_themeSong);
             //rectangle
             _newGameOptionRectangle = new Rectangle(0,0,_newGameOptionTexture.Width, _newGameOptionTexture.Height);
             _optionOptionRectangle = new Rectangle(0, 0, _optionOptionTexture.Width, _optionOptionTexture.Height);
@@ -105,6 +121,7 @@ namespace TestGame.Menu
                 // zabezpieczenie przed przekroczeniem zakresu listy
                 if (_selectedMenuItemIndex > 0)
                 {
+                    _chooseMenuItemEffectInstance.Play();
                     _selectedMenuItemIndex--;
                     _cursorPosition.Y -= 100;
                 }
@@ -112,10 +129,12 @@ namespace TestGame.Menu
 
             if (Keyboard.GetState().IsKeyDown(Keys.Down) && !_blockDownKey)
             {
+                
                 _blockDownKey = true;
                 // zabezpieczenie przed przekroczeniem zakresu listy
                 if (_selectedMenuItemIndex < _menuItems.Count - 1)
                 {
+                    _chooseMenuItemEffectInstance.Play();
                     _selectedMenuItemIndex++;
                     _cursorPosition.Y += 100;
                 }
@@ -123,6 +142,9 @@ namespace TestGame.Menu
 
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
+                _chooseMenuItemEffectInstance.Play();
+                MediaPlayer.Stop();
+
                 _blockUpKey = true;
                 // jeśli wybrano wyście
                 if (_menuItems[_selectedMenuItemIndex].Link == null)
