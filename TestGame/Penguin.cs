@@ -326,6 +326,7 @@ namespace TestGame
                 if (Keyboard.GetState().IsKeyUp(Keys.Down)) activeKeysDown = false;
                 if (Keyboard.GetState().IsKeyDown(Keys.Down) && !activeKeysDown)
                 {
+                   
                     shoe = true;
                     activeKeysDown = true;
                     Image = imageHorizontal;
@@ -335,6 +336,8 @@ namespace TestGame
                 }
                 else
                 {
+                    
+                    activeKeysDown = true;
                     shoe = false;
                     Image = imageVertical;
                     rectangle = new Rectangle((int)positionVertical.X + correctPosition,
