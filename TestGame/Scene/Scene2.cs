@@ -103,7 +103,7 @@ namespace TestGame.Scene
         {
          
             // metoda ustawia wszystkich graczy na pozycji początkowej
-            if (firstStart) FirstStart();
+            if (firstStart) FirstStart(gameTime);
 
 
             if (Keyboard.GetState().IsKeyDown(Keys.D1) && !_blockD1)

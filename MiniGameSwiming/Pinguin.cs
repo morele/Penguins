@@ -1,12 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TestGame;
 
 namespace MiniGameSwiming
 {
     public class Pinguin
     {
         private Texture2D _texture;
+        private Texture2D _textureEating;
         private Vector2 _position;
         private float _velocityX;
         private float _velocityY;
@@ -15,10 +17,12 @@ namespace MiniGameSwiming
         private float _greenDuration = 0;
         private float _greenDelay = 10000;
 
+        private Rectangle _positionOnSheet;
+
         public Color color
         {
-           get;
-          set;
+            get;
+            set;
         }
 
         public bool Run
@@ -37,10 +41,11 @@ namespace MiniGameSwiming
         {
             get
             {
-                return new Rectangle((int)_position.X, (int)_position.Y, (int)(_texture.Width * _scale),
-                    (int)(_texture.Width * _scale));
+                return new Rectangle((int)_position.X, (int)_position.Y, ((int)(_widthOfShoot * Scale)+40),
+                    (int)(_texture.Height * Scale));
             }
         }
+        private const int _widthOfShoot = 991;
         /// <summary>
         /// podajemy w procentach 
         /// </summary>
@@ -59,17 +64,54 @@ namespace MiniGameSwiming
 
         }
 
-        public Pinguin(Texture2D texture, Vector2 position, float scale = 100)
+
+        private int _numberOfFrame = 0;
+
+        private Animation _ricoSwiming;
+        private Animation _ricoEating;
+
+        public bool Eating
+        {
+            get;
+            set;
+        }
+
+        public Pinguin(Texture2D texture, Texture2D textureEating, Vector2 position, float scale = 100)
         {
             _texture = texture;
+            _textureEating = textureEating;
             _position = position;
             _scale = scale / 100;
             _velocityY = 3;
             _velocityX = 3;
             NumberOfLife = 3;
             color = Color.White;
+
+            _ricoSwiming = new Animation(_texture, 14, 50, _position);
+
+
+            _ricoEating = new Animation(_textureEating, 6, 50, _position);
+            _ricoEating.FinishAnimation += _ricoEating_FinishAnimation;
+
+
         }
 
+        private void _ricoEating_FinishAnimation(object sender, System.EventArgs e)
+        {
+            Eating = !Eating;
+        }
+        public void Update(GraphicsDevice device)
+        {
+            _ricoSwiming.UpdateInStay(Position);
+            if (!Run)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                {
+                    Run = true;
+                    color = Color.White;
+                }
+            }
+        }
         public void Update(GameTime gameTime, GraphicsDevice device)
         {
             if (!Run)
@@ -77,7 +119,7 @@ namespace MiniGameSwiming
                 if (Keyboard.GetState().IsKeyDown(Keys.Space))
                 {
                     Run = true;
-                    color=Color.White;
+                    color = Color.White;
                 }
             }
             if (Run)
@@ -104,7 +146,7 @@ namespace MiniGameSwiming
                 {
                     _position.Y = 1;
                 }
-                if (_position.Y > device.Viewport.Y + _texture.Height - 100)
+                if (_position.Y > device.Viewport.Y + _texture.Height+100)
                 {
 
                     NumberOfLife--;
@@ -128,15 +170,38 @@ namespace MiniGameSwiming
                     _position.X += _velocityX;
                 }
             }
-           
+            if (_numberOfFrame >= 14)
+            {
+                _numberOfFrame = 0;
+            }
 
+            if (Eating)
+            {
+              //  _ricoEating.Position = _position;
+                _ricoEating.Update(gameTime, Position);
+            }
+            else
+            {
+
+                _ricoSwiming.Update(gameTime, Position);
+            }
+
+            _ricoSwiming.color = color;
+            _ricoEating.color = color;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (Eating)
+            {
+                _ricoEating.Draw(spriteBatch);
+            }
+            else
+            {
+                _ricoSwiming.Draw(spriteBatch);
+            }
 
-           
-            spriteBatch.Draw(_texture, Position, color);
+
         }
     }
 }
