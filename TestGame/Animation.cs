@@ -105,7 +105,10 @@ namespace TestGame
                 _timeElapsed = 0;
             }
         }
-    
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newPosition"></param>
         public void UpdateInStay(Rectangle newPosition)
         {
             _position.X = newPosition.X;
