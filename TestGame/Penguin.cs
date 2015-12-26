@@ -235,12 +235,12 @@ namespace TestGame
                         break;
                     case PenguinType.KOWALSKI:
                         {
-                            _animationHorizontal.Update(gametime, newRectangle);
+                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 52)));
                         }
                         break;
                     case PenguinType.SKIPPER:
                         {
-                            _animationHorizontal.Update(gametime, newRectangle);
+                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 30)));
                         }
                         break;
                     case PenguinType.SZEREGOWY:
