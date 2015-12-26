@@ -358,7 +358,7 @@ namespace TestGame
 
             UpdateAnimation(gametime);
             UpdateAnimationSlide(gametime);
-            currentdimensionsPenguin = UpdateDimensions(rectangle,shoe);
+            currentdimensionsPenguin = UpdateDimensions(rectangle,false);
 
             if (positionVertical.Y > 1500)
             {
