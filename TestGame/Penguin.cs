@@ -244,7 +244,7 @@ namespace TestGame
         }
      
         KeyboardState keyboard;
-        public bool activeDown = false;
+        public bool activeKeysDown = false;
         override public void UpdatePosition(GameTime gametime)
         {
             if (active)
@@ -358,7 +358,7 @@ namespace TestGame
 
             UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
             UpdateAnimationSlide(gametime, new Vector2(rectangle.X, rectangle.Y));
-            currentdimensionsPenguin = UpdateDimensions(rectangle);
+            currentdimensionsPenguin = UpdateDimensions(rectangle,shoe);
 
             if (positionVertical.Y > 1500)
             {
