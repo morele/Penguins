@@ -106,7 +106,7 @@ namespace TestGame
 
 
             Texture = image;
-            image = new Texture2D(image.GraphicsDevice, image.Width / 4, image.Height);
+            //   image = new Texture2D(image.GraphicsDevice, image.Width / 4, image.Height);
 
             Position = position.ToPoint();
 
@@ -214,22 +214,22 @@ namespace TestGame
                 {
                     case PenguinType.RICO:
                         {
-                            _animationHorizontal.Update(gametime, newPosition);
+                            _animationHorizontal.Update(gametime, newPosition, new Point(0, 50));
                         }
                         break;
                     case PenguinType.KOWALSKI:
                         {
-                            _animationHorizontal.Update(gametime, newPosition);
+                            _animationHorizontal.Update(gametime, newPosition, new Point(0, 50));
                         }
                         break;
                     case PenguinType.SKIPPER:
                         {
-                            _animationHorizontal.Update(gametime, newPosition);
+                            _animationHorizontal.Update(gametime, newPosition, new Point(0, 50));
                         }
                         break;
                     case PenguinType.SZEREGOWY:
                         {
-                            _animationHorizontal.Update(gametime, newPosition);
+                            _animationHorizontal.Update(gametime, newPosition, new Point(0, 50));
                         }
                         break;
                     default:
@@ -242,7 +242,7 @@ namespace TestGame
             }
 
         }
-
+     
         KeyboardState keyboard;
         public bool activeDown = false;
         override public void UpdatePosition(GameTime gametime)
@@ -329,13 +329,17 @@ namespace TestGame
                     shoe = true;
                     activeKeysDown = true;
                     Image = imageHorizontal;
-                    rectangle = new Rectangle((int)positionHorizontal.X + correctPosition, (int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); // na slizgu
+                    rectangle = new Rectangle((int)positionHorizontal.X + correctPosition,
+                        (int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed),
+                        this.Image.Width / scale, this.Image.Height / scale); // na slizgu
                 }
                 else
                 {
                     shoe = false;
                     Image = imageVertical;
-                    rectangle = new Rectangle((int)positionVertical.X + correctPosition, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
+                    rectangle = new Rectangle((int)positionVertical.X + correctPosition,
+                        (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed),
+                        this.Image.Width / scale, this.Image.Height / scale); //jak stoi
                 }
 
 
@@ -577,13 +581,8 @@ namespace TestGame
             }
             else
             {
-            _animationVertival.Draw(spriteBatch, _left);
+                _animationVertival.Draw(spriteBatch, _left);
             }
-
-
-
-
-
         }
 
         public override string ToString()
