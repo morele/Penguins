@@ -80,13 +80,11 @@ namespace TestGame
         /// </summary>
         /// <param name="gametime"></param>
         /// <param name="newPosition"></param>
-        public void Update(GameTime gametime, Vector2 newPosition,Point correctPosition)
+        public void Update(GameTime gametime, Rectangle newPosition)
         {
-            Position = new Rectangle((Position.X + correctPosition.X), (Position.Y + correctPosition.Y),
-                     Position.Width, Position.Height);
 
-
-            _position = newPosition;
+            _position.X = newPosition.X;
+            _position.Y = newPosition.Y;
 
             _timeElapsed += gametime.ElapsedGameTime.Milliseconds;
 
@@ -102,24 +100,7 @@ namespace TestGame
                 _timeElapsed = 0;
             }
         }
-        public void Update(GameTime gametime, Vector2 newPosition)
-        {
-            _position = newPosition;
-
-            _timeElapsed += gametime.ElapsedGameTime.Milliseconds;
-
-            if (_timeElapsed >= _timeRefresh)
-            {
-                _currentFrame++;
-                if (_currentFrame >= _numberOfFrame)
-                {
-                    _currentFrame = 0;
-                    OnFinishAnimation();
-                }
-                _positionOnSheet = new Rectangle((int)_widthOfFrame * _currentFrame, 0, (int)_widthOfFrame, _texture.Height);
-                _timeElapsed = 0;
-            }
-        }
+    
         public void UpdateInStay(Vector2 newPosition)
         {
             _position = newPosition;

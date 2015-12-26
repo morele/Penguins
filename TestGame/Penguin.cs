@@ -178,22 +178,22 @@ namespace TestGame
                 {
                     case PenguinType.RICO:
                         {
-                            _animationVertival.Update(gametime, newPosition);
+                            _animationVertival.Update(gametime, rectangle);
                         }
                         break;
                     case PenguinType.KOWALSKI:
                         {
-                            _animationVertival.Update(gametime, newPosition);
+                            _animationVertival.Update(gametime, rectangle);
                         }
                         break;
                     case PenguinType.SKIPPER:
                         {
-                            _animationVertival.Update(gametime, newPosition);
+                            _animationVertival.Update(gametime, rectangle);
                         }
                         break;
                     case PenguinType.SZEREGOWY:
                         {
-                            _animationVertival.Update(gametime, newPosition);
+                            _animationVertival.Update(gametime, rectangle);
                         }
                         break;
                     default:
