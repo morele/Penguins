@@ -17,7 +17,7 @@ namespace TestGame
 
         public static Color DEFAULT_MENU_ITEM_COLOR = Color.Black;
         public static int PINGUIN_RICO_VERTICAL = -41;
-        public static int PINGUIN_RICO_HORIZONTAL = 82;
+        public static int PINGUIN_RICO_HORIZONTAL = 80;
 
         public static int PINGUIN_SZEREGOWY_VERTICAL = -34;
         public static int PINGUIN_SZEREGOWY_HORIZONTAL = 61;
