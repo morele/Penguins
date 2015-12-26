@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework.Media;
 using TestGame.Menu;
 using TestGame.MIniGames.Numbers;
 
@@ -11,7 +12,13 @@ namespace TestGame.Scene
 {
     public class Scene2 : Scene
     {
+        // muzyka w tle
+        private Song _themeSong;
 
+        bool _blockD1 = false;
+        bool _blockD2 = false;
+        bool _blockD3 = false;
+        bool _blockD4 = false;
 
         // menu wyboru ekwipunku
         private ChooseItemMenu _chooseItemMenu;
@@ -69,6 +76,11 @@ namespace TestGame.Scene
             platforms.Add(new Platform(zapadka, new Vector2(1580, YpositionFloor - zapadka.Height - mur.Height), false, 0,0,PlatformType.PAWL));
             platforms.Add(new Platform(sciana, new Vector2(1580, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
             platforms.Add(new Platform(sciana, new Vector2(1580 + 89, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
+
+            // muzyka tła
+            _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(_themeSong);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -94,14 +106,34 @@ namespace TestGame.Scene
             if (firstStart) FirstStart();
 
 
-                if (Keyboard.GetState().IsKeyDown(Keys.D1)) player = ActiveAndDeactivationPlayer(true, false, false, false);
-                if (Keyboard.GetState().IsKeyDown(Keys.D2)) player = ActiveAndDeactivationPlayer(false, true, false, false);
-                if (Keyboard.GetState().IsKeyDown(Keys.D3)) player = ActiveAndDeactivationPlayer(false, false, true, false);
-                if (Keyboard.GetState().IsKeyDown(Keys.D4)) player = ActiveAndDeactivationPlayer(false, false, false, true);
+            if (Keyboard.GetState().IsKeyDown(Keys.D1) && !_blockD1)
+            {
+                player = ActiveAndDeactivationPlayer(true, false, false, false);
+                _blockD1 = true;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D2) && !_blockD2)
+            {
+                player = ActiveAndDeactivationPlayer(false, true, false, false);
+                _blockD2 = true;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D3) && !_blockD3)
+            {
+                player = ActiveAndDeactivationPlayer(false, false, true, false);
+                _blockD3 = true;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D4) && !_blockD4)
+            {
+                player = ActiveAndDeactivationPlayer(false, false, false, true);
+                _blockD4 = true;
+            }
 
+            if (Keyboard.GetState().IsKeyUp(Keys.D1)) _blockD1 = false;
+            if (Keyboard.GetState().IsKeyUp(Keys.D2)) _blockD2 = false;
+            if (Keyboard.GetState().IsKeyUp(Keys.D3)) _blockD3 = false;
+            if (Keyboard.GetState().IsKeyUp(Keys.D4)) _blockD4 = false;
 
-                // odświeżenie paska gracza
-                playerPanel.Update(player);
+            // odświeżenie paska gracza
+            playerPanel.Update(player);
 
                 int i;
                 foreach (Platform platform in platforms)
@@ -158,13 +190,9 @@ namespace TestGame.Scene
 
                 foreach (Penguin penguin in penguins)
                     penguin.UpdatePosition(gameTime);
+            
 
-
-                camera.Update(player);
-
-
-
-           
+            camera.Update(player);
         }
  
     }

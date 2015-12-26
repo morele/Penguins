@@ -51,6 +51,7 @@
     <Compile Include="Interfaces\ICollisionable.cs" />
     <Compile Include="EquipmentItem.cs" />
     <Compile Include="Interfaces\IGravitable.cs" />
+    <Compile Include="Interfaces\ISpeakable.cs" />
     <Compile Include="Menu\ChooseItemMenu.cs" />
     <Compile Include="Menu\GameMenu.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
@@ -78,6 +79,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Audio\Waves\click.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Audio\Waves\menu_theme.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Audio\Waves\rico_start.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Audio\Waves\scene1_theme.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Audio\Waves\skipper_start.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Autorzy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

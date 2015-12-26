@@ -300,3 +300,33 @@
 /processorParam:TextureFormat=Color
 /build:Postacie/Animacje/SzeregowySheet.png
 
+#begin Audio/Waves/click.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Low
+/build:Audio/Waves/click.wav
+
+#begin Audio/Waves/menu_theme.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/menu_theme.wav
+
+#begin Audio/Waves/scene1_theme.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/scene1_theme.wav
+
+#begin Audio/Waves/skipper_start.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Medium
+/build:Audio/Waves/skipper_start.wav
+
+#begin Audio/Waves/rico_start.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/rico_start.wav
+

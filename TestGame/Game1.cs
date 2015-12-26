@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Audio;
 using TestGame.Menu;
 using TestGame.Scene;
 
@@ -82,6 +83,9 @@ namespace TestGame
                                   new Vector2(-1080, 400), penguinSpeed,
                                   gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS, new Point(422, 663));
 
+            // dźwięki wydawane przez skippera
+            skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper_start"));
+
             kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"),
                                    Content.Load<Texture2D>("Slizg/Kowalski"),
                                    Content.Load<Texture2D>("WyborPostaci/Kowalski"),
@@ -93,6 +97,11 @@ namespace TestGame
                                Content.Load<Texture2D>("WyborPostaci/Rico"),
                                new Vector2(-980, 400), penguinSpeed,
                                gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815));//Ł.G : dodanie rozmiaru frame do Animacji
+
+            // dźwięki wydawane przez skippera
+            rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico_start"));
+
+
 
             szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"),
                                     Content.Load<Texture2D>("Slizg/Szeregowy"),
