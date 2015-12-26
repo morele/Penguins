@@ -170,7 +170,7 @@ namespace TestGame
         /// </summary>
         /// <param name="gametime"></param>
         /// <param name="penguinType"></param>
-        private void UpdateAnimation(GameTime gametime, Vector2 newPosition)
+        private void UpdateAnimation(GameTime gametime)
         {
             if (active && inMove)
             {
@@ -202,11 +202,11 @@ namespace TestGame
             }
             else
             {
-                _animationVertival.UpdateInStay(newPosition);
+                _animationVertival.UpdateInStay(rectangle);
             }
 
         }
-        private void UpdateAnimationSlide(GameTime gametime, Vector2 newPosition)
+        private void UpdateAnimationSlide(GameTime gametime)
         {
             if (active && inMove)
             {
@@ -214,22 +214,22 @@ namespace TestGame
                 {
                     case PenguinType.RICO:
                         {
-                            _animationHorizontal.Update(gametime, newPosition, new Point(0, 50));
+                            _animationHorizontal.Update(gametime, rectangle);
                         }
                         break;
                     case PenguinType.KOWALSKI:
                         {
-                            _animationHorizontal.Update(gametime, newPosition, new Point(0, 50));
+                            _animationHorizontal.Update(gametime, rectangle);
                         }
                         break;
                     case PenguinType.SKIPPER:
                         {
-                            _animationHorizontal.Update(gametime, newPosition, new Point(0, 50));
+                            _animationHorizontal.Update(gametime, rectangle);
                         }
                         break;
                     case PenguinType.SZEREGOWY:
                         {
-                            _animationHorizontal.Update(gametime, newPosition, new Point(0, 50));
+                            _animationHorizontal.Update(gametime, rectangle);
                         }
                         break;
                     default:
@@ -238,7 +238,7 @@ namespace TestGame
             }
             else
             {
-                _animationHorizontal.UpdateInStay(newPosition);
+                _animationHorizontal.UpdateInStay(rectangle);
             }
 
         }
@@ -356,8 +356,8 @@ namespace TestGame
 
             }
 
-            UpdateAnimation(gametime, new Vector2(rectangle.X, rectangle.Y));
-            UpdateAnimationSlide(gametime, new Vector2(rectangle.X, rectangle.Y));
+            UpdateAnimation(gametime);
+            UpdateAnimationSlide(gametime);
             currentdimensionsPenguin = UpdateDimensions(rectangle,shoe);
 
             if (positionVertical.Y > 1500)

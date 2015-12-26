@@ -53,8 +53,13 @@ namespace TestGame
             {
                 Position = value;
             }
-
         }
+        //public Rectangle Position
+        //{
+        //    get;
+        //    set;
+        //}
+        //}
 
         /// <summary>
         /// color default value white
@@ -101,10 +106,10 @@ namespace TestGame
             }
         }
     
-        public void UpdateInStay(Vector2 newPosition)
+        public void UpdateInStay(Rectangle newPosition)
         {
-            _position = newPosition;
-
+            _position.X = newPosition.X;
+            _position.Y = newPosition.Y;
 
             _positionOnSheet = new Rectangle((int)_widthOfFrame * 0, 0, (int)_widthOfFrame, _texture.Height);
 

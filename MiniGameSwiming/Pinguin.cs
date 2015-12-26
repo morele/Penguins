@@ -102,7 +102,7 @@ namespace MiniGameSwiming
         }
         public void Update(GraphicsDevice device)
         {
-            _ricoSwiming.UpdateInStay(_position);
+            _ricoSwiming.UpdateInStay(Position);
             if (!Run)
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Space))
@@ -178,12 +178,12 @@ namespace MiniGameSwiming
             if (Eating)
             {
               //  _ricoEating.Position = _position;
-                _ricoEating.Update(gameTime, _position);
+                _ricoEating.Update(gameTime, Position);
             }
             else
             {
 
-                _ricoSwiming.Update(gameTime, _position);
+                _ricoSwiming.Update(gameTime, Position);
             }
 
             _ricoSwiming.color = color;
