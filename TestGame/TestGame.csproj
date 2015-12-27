@@ -64,6 +64,7 @@
     <Compile Include="MIniGames\Swiming\Pinguin.cs" />
     <Compile Include="MIniGames\Swiming\Swiming.cs" />
     <Compile Include="offline\Rico2.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="PlayerPanel.cs" />
     <Compile Include="Program.cs" />

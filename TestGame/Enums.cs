@@ -11,6 +11,15 @@ namespace TestGame
         Scene2,
         Scene3
     }
+
+    public enum SelectedOptionMenu
+    {
+        NewGame,
+        Options,
+        Authors,
+        Exit
+    }
+
     // kierunek poruszania się obiektów
     public enum Direction
     {

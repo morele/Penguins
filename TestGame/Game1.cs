@@ -64,7 +64,7 @@ namespace TestGame
             camera = new Camera();
 
             //scene1 = new Scene1(Content, camera, gametime);
-            scene2 = new Scene2(Content, camera, gametime);
+            scene2 = new Scene2(Content, camera, gametime, GraphicsDevice);
 
             // inicjalizacja panelu gracza - podstawowy gracz - skipper           
             _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"),
@@ -178,9 +178,15 @@ namespace TestGame
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            #region PANEL GRACZA
+
             spriteBatch.Begin();
-            spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
+
+           // spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
+            _playerPanel.Draw(spriteBatch);
+            
             spriteBatch.End();
+
             switch (_currentScene)
             {
                 case CurrentScene.Scene1:
@@ -202,14 +208,7 @@ namespace TestGame
 
             spriteBatch.End();
 
-            #region PANEL GRACZA
 
-            spriteBatch.Begin();
-
-            _playerPanel.Draw(spriteBatch);
-
-
-            spriteBatch.End();
 
             #endregion
 

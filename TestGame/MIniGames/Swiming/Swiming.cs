@@ -44,7 +44,7 @@ namespace Testgame.MIniGames.Swiming
             //   _barell = new Barell(content.Load<Texture2D>("Beczka"), new Vector2(80, 80), graphicsDevice,20);
 
             _pinguin = new Pinguin(_content.Load<Texture2D>("Minigry/SwimingGame/RicoPlywa"), _content.Load<Texture2D>("Minigry/SwimingGame/dziob"), new Vector2(80, 81), 10);
-            _font = content.Load<SpriteFont>("Fon");
+            _font = content.Load<SpriteFont>("JingJing");
             _listOfFish = new List<Fish>();
             _listOfBadFish = new List<Fish>();
             _listOfBarell = new List<Barell>();
@@ -158,8 +158,9 @@ namespace Testgame.MIniGames.Swiming
         }
 
 
-        public void Draw()
+        public void Draw(SpriteBatch spriteBatch)
         {
+            _spriteBatch = spriteBatch;
             foreach (var fish in _listOfFish)
             {
                 if (!fish.Eaten)
