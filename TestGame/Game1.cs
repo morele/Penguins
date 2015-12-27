@@ -182,7 +182,7 @@ namespace TestGame
 
             spriteBatch.Begin();
 
-           // spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
+            spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
             _playerPanel.Draw(spriteBatch);
             
             spriteBatch.End();
