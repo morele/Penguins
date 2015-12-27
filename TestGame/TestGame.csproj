@@ -84,7 +84,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\Waves\menu_theme.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Audio\Waves\rico_start.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

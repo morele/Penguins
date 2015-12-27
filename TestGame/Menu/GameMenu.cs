@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System;
 
 namespace TestGame.Menu
 {
@@ -86,8 +87,14 @@ namespace TestGame.Menu
             _chooseMenuItemEffectInstance.Volume = 0.24f;
             _chooseMenuItemEffectInstance.Pitch = 0.5f;
 
-
-            _themeSong = Content.Load<Song>("Audio/Waves/menu_theme");
+            try
+            {
+                _themeSong = Content.Load<Song>("Audio/Waves/menu_theme");
+            }catch(Exception ex)
+            {
+                ex.Message.ToString();
+            }
+            
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(_themeSong);
             //rectangle
