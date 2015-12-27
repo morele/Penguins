@@ -98,7 +98,7 @@ namespace TestGame
 
 
             szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"),
-                                    Content.Load<Texture2D>("Slizg/Szeregowy"),
+                                    Content.Load<Texture2D>("Postacie/Animacje/SzeregowySlizg"),
                                     Content.Load<Texture2D>("WyborPostaci/Szeregowy"),
                                     new Vector2(-930, 400), penguinSpeed,
                                     gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));

@@ -235,17 +235,17 @@ namespace TestGame
                         break;
                     case PenguinType.KOWALSKI:
                         {
-                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 52)));
+                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 58)));
                         }
                         break;
                     case PenguinType.SKIPPER:
                         {
-                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 30)));
+                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 38)));
                         }
                         break;
                     case PenguinType.SZEREGOWY:
                         {
-                            _animationHorizontal.Update(gametime, newRectangle);
+                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 38)));
                         }
                         break;
                     default:
@@ -254,7 +254,7 @@ namespace TestGame
             }
             else
             {
-                _animationHorizontal.UpdateInStay(newRectangle);
+                _animationVertival.UpdateInStay(newRectangle);
             }
 
         }
