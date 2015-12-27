@@ -5,6 +5,21 @@ using System.Text;
 
 namespace TestGame
 {
+    public enum CurrentScene
+    {
+        Scene1 = 1,
+        Scene2,
+        Scene3
+    }
+
+    public enum SelectedOptionMenu
+    {
+        NewGame,
+        Options,
+        Authors,
+        Exit
+    }
+
     // kierunek poruszania się obiektów
     public enum Direction
     {

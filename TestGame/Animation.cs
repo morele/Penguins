@@ -46,8 +46,8 @@ namespace TestGame
         {
             get
             {
-                return new Rectangle((int)_position.X, (int)_position.Y, (int)(_widthOfFrame / 8),
-                    (int)(_texture.Height / 8));
+                return new Rectangle((int)_position.X, (int)_position.Y, (int)(_widthOfFrame / 4),
+                    (int)(_texture.Height / 4));
             }
             set
             {

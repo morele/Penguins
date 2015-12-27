@@ -170,9 +170,6 @@ namespace TestGame.Menu
             if (Keyboard.GetState().IsKeyUp(Keys.Up))
                 _blockUpKey = false;
 
-            // zmiana koloru wybranego elementu
-            ChangeSelectedItemColor(_selectedMenuItemIndex);
-
             base.Update(gameTime);
         }
 

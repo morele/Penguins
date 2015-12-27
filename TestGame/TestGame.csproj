@@ -59,7 +59,12 @@
     <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="MIniGames\Numbers\NumButton.cs" />
     <Compile Include="MIniGames\Numbers\AutomatMinigame.cs" />
+    <Compile Include="MIniGames\Swiming\Barell.cs" />
+    <Compile Include="MIniGames\Swiming\Fish.cs" />
+    <Compile Include="MIniGames\Swiming\Pinguin.cs" />
+    <Compile Include="MIniGames\Swiming\Swiming.cs" />
     <Compile Include="offline\Rico2.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="PlayerPanel.cs" />
     <Compile Include="Program.cs" />
@@ -126,6 +131,30 @@
     <Content Include="Content\Platformy\Trawa\Platformy500x48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Postacie\Animacje\AnimacjaRIco.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\KowalskiAnimacja.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\KowalskiPlywanie.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\RicoAnimacja_poprawiony.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\RicoPlywa.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\SkipperAnimacja.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\SkipperSlizg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\SzeregowySheet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Postacie\Kowalski.png" />
     <Content Include="Content\Postacie\Rico.png" />
     <Content Include="Content\Postacie\Skipper.png" />
@@ -163,6 +192,9 @@
     </Content>
     <Content Include="Content\Scena1\Scena1.png" />
     <Content Include="Content\Scena1\testMoneta.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Scena2\arrow_down.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Scena2\autko\Autko1.png">
@@ -253,6 +285,9 @@
     <Content Include="Content\Scena2\ZepsutaRyba.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\scene2_background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Slizg\Kowalski.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -287,9 +322,11 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram2.cd" />
     <None Include="Content\JingJing.spritefont" />
+    <None Include="Content\Postacie\Animacje\Thumbs.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Postacie\Thumbs.db" />
     <None Include="Content\Scena2\autko\Thumbs.db" />
   </ItemGroup>
   <ItemGroup />

@@ -33,8 +33,12 @@ namespace TestGame
         private bool firstStart = true;
         private GameTime gametime;
 
+        private Texture2D _background;
+
         Scene1 scene1;
         Scene2 scene2;
+
+        private CurrentScene _currentScene;
 
         public Game1()
         {
@@ -49,6 +53,8 @@ namespace TestGame
             graphics.ApplyChanges();
             // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
 
+            _currentScene = CurrentScene.Scene2;
+
         }
 
         protected override void Initialize()
@@ -58,7 +64,7 @@ namespace TestGame
             camera = new Camera();
 
             //scene1 = new Scene1(Content, camera, gametime);
-            scene2 = new Scene2(Content, camera, gametime);
+            scene2 = new Scene2(Content, camera, gametime, GraphicsDevice);
 
             // inicjalizacja panelu gracza - podstawowy gracz - skipper           
             _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"),
@@ -77,6 +83,31 @@ namespace TestGame
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            switch (_currentScene)
+            {
+                case CurrentScene.Scene1:
+                    _background = Content.Load<Texture2D>("scene2_background");
+                    break;
+                case CurrentScene.Scene2:
+                    _background = Content.Load<Texture2D>("scene2_background");
+                    break;
+                case CurrentScene.Scene3:
+                    _background = Content.Load<Texture2D>("scene2_background");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"),
+                             Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"),//Ł.G: tymczasowo zmienione 
+                             Content.Load<Texture2D>("WyborPostaci/Rico"),
+                             new Vector2(-980, 400), penguinSpeed,
+                             gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815));//Ł.G : dodanie rozmiaru frame do Animacji
+
+            // dźwięki wydawane przez skippera
+            rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico_start"));
+
+
             skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"),
                                   Content.Load<Texture2D>("Postacie/Animacje/SkipperSlizg"),
                                   Content.Load<Texture2D>("WyborPostaci/Skipper"),
@@ -86,28 +117,23 @@ namespace TestGame
             // dźwięki wydawane przez skippera
             skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper_start"));
 
+
+            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"),
+                                    Content.Load<Texture2D>("Postacie/Animacje/SzeregowySlizg"),
+                                    Content.Load<Texture2D>("WyborPostaci/Szeregowy"),
+                                    new Vector2(-930, 400), penguinSpeed,
+                                    gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));
+
             kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"),
                                    Content.Load<Texture2D>("Postacie/Animacje/KowalskiPlywanie"),
                                    Content.Load<Texture2D>("WyborPostaci/Kowalski"),
                                    new Vector2(-1030, 400), penguinSpeed,
                                    gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
 
-            rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"),
-                               Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"),//Ł.G: tymczasowo zmienione 
-                               Content.Load<Texture2D>("WyborPostaci/Rico"),
-                               new Vector2(-980, 400), penguinSpeed,
-                               gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815));//Ł.G : dodanie rozmiaru frame do Animacji
-
-            // dźwięki wydawane przez skippera
-            rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico_start"));
+          
 
 
 
-            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"),
-                                    Content.Load<Texture2D>("Slizg/Szeregowy"),
-                                    Content.Load<Texture2D>("WyborPostaci/Szeregowy"),
-                                    new Vector2(-930, 400), penguinSpeed,
-                                    gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));
 
             penguins.Add(skipper);
             penguins.Add(kowalski);
@@ -152,21 +178,37 @@ namespace TestGame
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
-
-            //scene1.Draw(spriteBatch);
-            scene2.Draw(spriteBatch);
-
-            spriteBatch.End();
-
             #region PANEL GRACZA
 
             spriteBatch.Begin();
 
+            spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
             _playerPanel.Draw(spriteBatch);
+            
+            spriteBatch.End();
+
+            switch (_currentScene)
+            {
+                case CurrentScene.Scene1:
+                    break;
+                case CurrentScene.Scene2:
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
+                    scene2.Draw(spriteBatch);
+                    break;
+                case CurrentScene.Scene3:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+
+
+            //scene1.Draw(spriteBatch);
 
 
             spriteBatch.End();
+
+
 
             #endregion
 

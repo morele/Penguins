@@ -123,7 +123,7 @@ namespace TestGame
 
             this.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler;
 
-            Size = new Point(image.Width / 16, image.Width / scale);
+            Size = new Point(image.Width / 8, image.Width / scale);
 
             CanMove = true;
 
@@ -228,24 +228,24 @@ namespace TestGame
                 {
                     case PenguinType.RICO:
                         {
-                            
 
-                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle,new Point(0,52)));
+
+                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 52)));
                         }
                         break;
                     case PenguinType.KOWALSKI:
                         {
-                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 52)));
+                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 58)));
                         }
                         break;
                     case PenguinType.SKIPPER:
                         {
-                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 30)));
+                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 38)));
                         }
                         break;
                     case PenguinType.SZEREGOWY:
                         {
-                            _animationHorizontal.Update(gametime, newRectangle);
+                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 38)));
                         }
                         break;
                     default:
@@ -254,7 +254,7 @@ namespace TestGame
             }
             else
             {
-                _animationHorizontal.UpdateInStay(newRectangle);
+                _animationVertival.UpdateInStay(newRectangle);
             }
 
         }
@@ -275,7 +275,10 @@ namespace TestGame
                         vomitItem.Item.Position = new Point(Position.X + Size.X, Position.Y - Size.Y - 30);
                         Equipment.RemoveItem(vomitItem);
                         blockVomit = true;
-
+                    }
+                    else
+                    {
+                        int q = 0;
                     }
                 }
 
@@ -593,7 +596,7 @@ namespace TestGame
         /// <param name="spriteBatch"></param>
         public void DrawAnimation(SpriteBatch spriteBatch)
         {
-            rectangle.Width /= 8;
+            rectangle.Width /= scale;
             if (_slide)
             {
                 _animationHorizontal.Draw(spriteBatch, _left);
