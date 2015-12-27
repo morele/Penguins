@@ -41,7 +41,7 @@ namespace Testgame.MIniGames.Swiming
         {
             get
             {
-                return new Rectangle((int)_position.X, (int)_position.Y, ((int)(_widthOfShoot * Scale)+40),
+                return new Rectangle((int)_position.X, (int)_position.Y, ((int)(_widthOfShoot * Scale)),
                     (int)(_texture.Height * Scale));
             }
         }
@@ -134,25 +134,25 @@ namespace Testgame.MIniGames.Swiming
                     _greenDuration += gameTime.ElapsedGameTime.Milliseconds;
                 }
 
-                if (_position.X <= 0)
+                if (_position.X <= -1200)
                 {
-                    _position.X = 1;
+                    _position.X = -1198;
                 }
                 if (_position.X > device.Viewport.X + _texture.Width - 100)
                 {
                     _position.X = device.Viewport.X + _texture.Width - 100;
                 }
-                if (_position.Y <= 0)
+                if (_position.Y <= 150)
                 {
-                    _position.Y = 1;
+                    _position.Y = 151;
                 }
-                if (_position.Y > device.Viewport.Y + _texture.Height+100)
+                if (_position.Y > 800)
                 {
 
                     NumberOfLife--;
                     System.Diagnostics.Debug.WriteLine("Life: {0}", NumberOfLife);
-                    _position.X = 10;
-                    _position.Y = 10;
+                    _position.X = 170;
+                    _position.Y = -1198;
                     Run = false;
                 }
                 _position.Y += _velocityY;
