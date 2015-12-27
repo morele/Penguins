@@ -24,8 +24,7 @@ namespace TestGame.Scene
         private ChooseItemMenu _chooseItemMenu;
 
         private GameTime gametime;
-
-
+        
         public Scene2(ContentManager content, Camera camera, GameTime gametime) : base(content, camera, gametime)
         {
             _chooseItemMenu = new ChooseItemMenu();
@@ -49,7 +48,7 @@ namespace TestGame.Scene
             Texture2D sciana = content.Load<Texture2D>("Scena2/Sciana");
             Texture2D sprezynaPlatforma = content.Load<Texture2D>("Scena2/SprezynaPlatforma");
             Texture2D sprezyna = content.Load<Texture2D>("Scena2/Sprezyna");
-
+            
             //platformy
             platforms.Add(new Platform(platfroma2, new Vector2(-1100, YpositionFloor)));
             platforms.Add(new Platform(platfroma2, new Vector2(-100, YpositionFloor)));
@@ -87,7 +86,6 @@ namespace TestGame.Scene
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-
             // narysowanie menu wyboru ekwipunku
             _chooseItemMenu.Draw(spriteBatch);
 

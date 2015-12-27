@@ -33,8 +33,12 @@ namespace TestGame
         private bool firstStart = true;
         private GameTime gametime;
 
+        private Texture2D _background;
+
         Scene1 scene1;
         Scene2 scene2;
+
+        private CurrentScene _currentScene;
 
         public Game1()
         {
@@ -48,6 +52,8 @@ namespace TestGame
 
             graphics.ApplyChanges();
             // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
+
+            _currentScene = CurrentScene.Scene2;
 
         }
 
@@ -76,6 +82,21 @@ namespace TestGame
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            switch (_currentScene)
+            {
+                case CurrentScene.Scene1:
+                    _background = Content.Load<Texture2D>("scene2_background");
+                    break;
+                case CurrentScene.Scene2:
+                    _background = Content.Load<Texture2D>("scene2_background");
+                    break;
+                case CurrentScene.Scene3:
+                    _background = Content.Load<Texture2D>("scene2_background");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"),
                              Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"),//Ł.G: tymczasowo zmienione 
@@ -157,10 +178,27 @@ namespace TestGame
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
+            spriteBatch.Begin();
+            spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
+            spriteBatch.End();
+            switch (_currentScene)
+            {
+                case CurrentScene.Scene1:
+                    break;
+                case CurrentScene.Scene2:
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
+                    scene2.Draw(spriteBatch);
+                    break;
+                case CurrentScene.Scene3:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+
 
             //scene1.Draw(spriteBatch);
-            scene2.Draw(spriteBatch);
+
 
             spriteBatch.End();
 
