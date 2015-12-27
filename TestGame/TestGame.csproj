@@ -126,6 +126,30 @@
     <Content Include="Content\Platformy\Trawa\Platformy500x48.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Postacie\Animacje\AnimacjaRIco.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\KowalskiAnimacja.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\KowalskiPlywanie.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\RicoAnimacja_poprawiony.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\RicoPlywa.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\SkipperAnimacja.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\SkipperSlizg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Animacje\SzeregowySheet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Postacie\Kowalski.png" />
     <Content Include="Content\Postacie\Rico.png" />
     <Content Include="Content\Postacie\Skipper.png" />
@@ -290,6 +314,10 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram2.cd" />
     <None Include="Content\JingJing.spritefont" />
+    <None Include="Content\Postacie\Animacje\Thumbs.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Postacie\Thumbs.db" />
     <None Include="Content\Scena2\autko\Thumbs.db" />
   </ItemGroup>
   <ItemGroup />
