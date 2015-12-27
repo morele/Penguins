@@ -16,6 +16,23 @@ namespace TestGame
         public static Color SELECTED_MENU_ITEM_COLOR = Color.Orange;
 
         public static Color DEFAULT_MENU_ITEM_COLOR = Color.Black;
+
+        #region region dla stalych poprawki pozycji animacji
+
+        public static int PINGUIN_RICO_CORRECTION_VERTICAL = 100;
+        public static int PINGUIN_RICO_CORRECTION_HORIZONTAL = 100;
+
+        public static int PINGUIN_KOWALSKI_CORRECTION_VERTICAL = 100;
+        public static int PINGUIN_KOWALSKI_CORRECTION_HORIZONTAL = 100;
+
+        public static int PINGUIN_SKIPPER_CORRECTION_VERTICAL = 100;
+        public static int PINGUIN_SKIPPER_CORRECTION_HORIZONTAL = 100;
+
+        public static int PINGUIN_PRIVATE_CORRECTION_VERTICAL = 100;
+        public static int PINGUIN_PRIVATE_CORRECTION_HORIZONTAL = 100;
+
+        #endregion
+
         public static int PINGUIN_RICO_VERTICAL = -41;
         public static int PINGUIN_RICO_HORIZONTAL = 80;
 

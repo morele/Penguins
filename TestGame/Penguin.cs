@@ -63,7 +63,7 @@ namespace TestGame
         private bool blockVomit;
         private bool block = false;
         private bool activeSpace = false;
-        public int scale = 8;
+        public int scale = 4;
         public int platformSpeed = 0;
         public PenguinType penguinType;
         public List<Platform> platforms = new List<Platform>();
@@ -123,7 +123,7 @@ namespace TestGame
 
             this.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler;
 
-            Size = new Point(image.Width / 16, image.Width / scale);
+            Size = new Point(image.Width / 8, image.Width / scale);
 
             CanMove = true;
 
@@ -228,9 +228,9 @@ namespace TestGame
                 {
                     case PenguinType.RICO:
                         {
-                            
 
-                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle,new Point(0,52)));
+
+                            _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 52)));
                         }
                         break;
                     case PenguinType.KOWALSKI:
@@ -593,7 +593,7 @@ namespace TestGame
         /// <param name="spriteBatch"></param>
         public void DrawAnimation(SpriteBatch spriteBatch)
         {
-            rectangle.Width /= 8;
+            rectangle.Width /= scale;
             if (_slide)
             {
                 _animationHorizontal.Draw(spriteBatch, _left);
