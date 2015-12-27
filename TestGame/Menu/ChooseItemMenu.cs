@@ -31,7 +31,7 @@ namespace TestGame.Menu
             SelectedIndex = 0;
         }
 
-        public void Update(GameObject gameObject, List<Texture2D> textures)
+        public void Update(GameObject gameObject, List<Texture2D> textures, int topMargin = 600)
         {
             // jeśli lista jest pusta to przerwij akcję
             if (!textures.Any()) return;
@@ -57,7 +57,7 @@ namespace TestGame.Menu
 
             if (IsVisible)
             {
-                _itemPosition = new Point(gameObject.Position.X + 5, gameObject.Position.Y - 600);
+                _itemPosition = new Point(gameObject.Position.X + 5, gameObject.Position.Y - topMargin);
             }
         }
 

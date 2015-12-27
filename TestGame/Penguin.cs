@@ -275,7 +275,10 @@ namespace TestGame
                         vomitItem.Item.Position = new Point(Position.X + Size.X, Position.Y - Size.Y - 30);
                         Equipment.RemoveItem(vomitItem);
                         blockVomit = true;
-
+                    }
+                    else
+                    {
+                        int q = 0;
                     }
                 }
 

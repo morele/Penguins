@@ -26,9 +26,11 @@ namespace TestGame.Scene
         private GameTime gametime;
 
 
-        public Scene2(ContentManager content, Camera camera,GameTime gametime) : base(content, camera, gametime)
+        public Scene2(ContentManager content, Camera camera, GameTime gametime) : base(content, camera, gametime)
         {
             _chooseItemMenu = new ChooseItemMenu();
+            _chooseItemMenu.IsVisible = false;
+            
         }
 
         public override void LoadContent(List<Penguin> penguins, PlayerPanel playerPanel, Penguin player)
@@ -59,7 +61,7 @@ namespace TestGame.Scene
             platforms.Add(new Platform(mur, new Vector2(-1100 + mur.Width + woda.Width, YpositionFloor + platfroma2.Height - 2)));
 
 
-            platforms.Add(new Platform(rura, new Vector2(-700, YpositionFloor - rura.Height), false,0,0,PlatformType.MAGICPIPE));
+            platforms.Add(new Platform(rura, new Vector2(-700, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena2/autko/Autko1"), new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height)));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(0, YpositionFloor)));
             platforms.Add(new Platform(kolec, new Vector2(400, YpositionFloor - kolec.Height)));
@@ -69,11 +71,11 @@ namespace TestGame.Scene
             platforms.Add(new Platform(rura, new Vector2(800, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena2/wciecie"), new Vector2(981, YpositionFloor)));
             platforms.Add(new Platform(waga, new Vector2(1035, YpositionFloor + 46 - waga.Height)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Skrzynia"), new Vector2(1045, YpositionFloor + 46 - waga.Height - content.Load<Texture2D>("Scena2/Skrzynia").Height)));        
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Skrzynia"), new Vector2(1045, YpositionFloor + 46 - waga.Height - content.Load<Texture2D>("Scena2/Skrzynia").Height)));
             platforms.Add(new Platform(sprezyna, new Vector2(1400, YpositionFloor - sprezyna.Height)));
-            platforms.Add(new Platform(sprezynaPlatforma, new Vector2(1400, YpositionFloor - sprezyna.Height - sprezynaPlatforma.Height),false,0,0,PlatformType.SPRING));
+            platforms.Add(new Platform(sprezynaPlatforma, new Vector2(1400, YpositionFloor - sprezyna.Height - sprezynaPlatforma.Height), false, 0, 0, PlatformType.SPRING));
             platforms.Add(new Platform(mur, new Vector2(1580, YpositionFloor - mur.Height)));
-            platforms.Add(new Platform(zapadka, new Vector2(1580, YpositionFloor - zapadka.Height - mur.Height), false, 0,0,PlatformType.PAWL));
+            platforms.Add(new Platform(zapadka, new Vector2(1580, YpositionFloor - zapadka.Height - mur.Height), false, 0, 0, PlatformType.PAWL));
             platforms.Add(new Platform(sciana, new Vector2(1580, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
             platforms.Add(new Platform(sciana, new Vector2(1580 + 89, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
 
@@ -85,23 +87,23 @@ namespace TestGame.Scene
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-       
-                // narysowanie menu wyboru ekwipunku
-                _chooseItemMenu.Draw(spriteBatch);
+
+            // narysowanie menu wyboru ekwipunku
+            _chooseItemMenu.Draw(spriteBatch);
 
 
-                foreach (Platform platform in platforms)
-                    platform.Draw(spriteBatch);
+            foreach (Platform platform in platforms)
+                platform.Draw(spriteBatch);
 
-                foreach (Penguin penguin in penguins)
-                    penguin.DrawAnimation(spriteBatch);
-                 
+            foreach (Penguin penguin in penguins)
+                penguin.DrawAnimation(spriteBatch);
+
 
         }
 
         public override void UpdatePosition(GameTime gameTime)
         {
-         
+
             // metoda ustawia wszystkich graczy na pozycji początkowej
             if (firstStart) FirstStart(gameTime);
 
@@ -135,66 +137,86 @@ namespace TestGame.Scene
             // odświeżenie paska gracza
             playerPanel.Update(player);
 
-                int i;
-                foreach (Platform platform in platforms)
+            int i;
+            foreach (Platform platform in platforms)
+            {
+                if (platform.active)
                 {
-                    if (platform.active)
+                    foreach (Penguin penguin in penguins)
                     {
-                        foreach (Penguin penguin in penguins)
+
+                        // sprawdzenie czy pingwin nie stoi na rurze
+                        if (platform.platformType == PlatformType.MAGICPIPE &&
+                            penguin.penguinType == PenguinType.RICO)
                         {
-
-                         /*   for (i = 0; i < penguins.Count; i++)//sprawdza kolizje z innymi pingwinami i blokuje w przypadku wykrycia
-                                if (penguins[i].penguinType != penguin.penguinType) penguins[i].CollisionPenguin(penguin.rectangle);*/
-
-                            for (i = 0; i < penguins.Count; i++)
+                            if (penguin.Collision(platform.PlatformRectangle))
                             {
-                                if (penguins[i].penguinType != penguin.penguinType)
-                                       if(penguins[i].Collision(penguin.rectangle))
-                                        penguins[i].JumpStop(0);
+                                _chooseItemMenu.Update(platform, new List<Texture2D>() { content.Load<Texture2D>(@"Scena2\arrow_down") }, topMargin: 100);
+                                _chooseItemMenu.IsVisible = true;
                             }
-
-                            //Jak kolizja ze sprezyna to wysoki jump
-                            if(platform.platformType == PlatformType.SPRING)
-                                if(penguin.Collision(platform.PlatformRectangle))
-                                {
-                                penguin.JumpSpring();
-                                 }
-
-
-
-                            if (penguin.Collision(platform.PlatformRectangle, platform.platformType))// sprawdzenie czy na platformie są pingwiny
-                            {
-                                penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
-
-                                if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
-                                {
-                                    penguin.PutMeOn(platform.PlatformRectangle);
-
-                                    if (penguin.active) platform.Slowdown();
-                                    penguin.platformSpeed = (int)platform.PlatformSpeed;
-                                }
-                            }
-                            else
-                            {
-                                if (penguin.active) platform.SpeedUp();
-                            }
-
                         }
-                        // aktualizacja pozycji jeśli platforma ma sie poruszać
-                        platform.UpdatePosition(gameTime);
-                    }
 
+                        else if (platform.platformType != PlatformType.MAGICPIPE &&
+                                 penguin.penguinType == PenguinType.RICO &&
+                                 penguin.Collision(platform.PlatformRectangle))
+                        {
+                            _chooseItemMenu.IsVisible = false;
+                        }
+
+
+
+                        /*   for (i = 0; i < penguins.Count; i++)//sprawdza kolizje z innymi pingwinami i blokuje w przypadku wykrycia
+                           if (penguins[i].penguinType != penguin.penguinType) penguins[i].CollisionPenguin(penguin.rectangle);*/
+
+                        for (i = 0; i < penguins.Count; i++)
+                        {
+                            if (penguins[i].penguinType != penguin.penguinType)
+                                if (penguins[i].Collision(penguin.rectangle))
+                                    penguins[i].JumpStop(0);
+                        }
+
+                        //Jak kolizja ze sprezyna to wysoki jump
+                        if (platform.platformType == PlatformType.SPRING)
+                            if (penguin.Collision(platform.PlatformRectangle))
+                            {
+                                penguin.JumpSpring();
+                            }
+
+
+
+                        if (penguin.Collision(platform.PlatformRectangle, platform.platformType))// sprawdzenie czy na platformie są pingwiny
+                        {
+                            penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
+
+                            if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
+                            {
+                                penguin.PutMeOn(platform.PlatformRectangle);
+
+                                if (penguin.active) platform.Slowdown();
+                                penguin.platformSpeed = (int)platform.PlatformSpeed;
+                            }
+                        }
+                        else
+                        {
+                            if (penguin.active) platform.SpeedUp();
+                        }
+
+                    }
+                    // aktualizacja pozycji jeśli platforma ma sie poruszać
+                    platform.UpdatePosition(gameTime);
                 }
 
+            }
 
 
-                foreach (Penguin penguin in penguins)
-                    penguin.UpdatePosition(gameTime);
-            
+
+            foreach (Penguin penguin in penguins)
+                penguin.UpdatePosition(gameTime);
+
 
             camera.Update(player);
         }
- 
+
     }
 
 }
