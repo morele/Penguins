@@ -63,7 +63,7 @@ namespace TestGame
         private bool blockVomit;
         private bool block = false;
         private bool activeSpace = false;
-        public int scale = 4;
+        public int scale = 8;
         public int platformSpeed = 0;
         public PenguinType penguinType;
         public List<Platform> platforms = new List<Platform>();
