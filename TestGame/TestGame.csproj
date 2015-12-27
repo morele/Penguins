@@ -59,6 +59,10 @@
     <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="MIniGames\Numbers\NumButton.cs" />
     <Compile Include="MIniGames\Numbers\AutomatMinigame.cs" />
+    <Compile Include="MIniGames\Swiming\Barell.cs" />
+    <Compile Include="MIniGames\Swiming\Fish.cs" />
+    <Compile Include="MIniGames\Swiming\Pinguin.cs" />
+    <Compile Include="MIniGames\Swiming\Swiming.cs" />
     <Compile Include="offline\Rico2.cs" />
     <Compile Include="Platform.cs" />
     <Compile Include="PlayerPanel.cs" />
@@ -314,8 +318,6 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram2.cd" />
     <None Include="Content\JingJing.spritefont" />
     <None Include="Content\Postacie\Animacje\Thumbs.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
