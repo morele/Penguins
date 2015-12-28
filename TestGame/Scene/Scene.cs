@@ -49,28 +49,28 @@ namespace TestGame.Scene
             if (ConSkipper)
             {
                 penguins[0].blockDircetionLEFT = penguins[0].blockDirectionRIGHT = false;
-                penguins[0].StartSpeaking();
+                //penguins[0].StartSpeaking();
                 return penguins[0];//skipper
             }
 
             if (ConKowalski)
             {
                 penguins[1].blockDircetionLEFT = penguins[1].blockDirectionRIGHT = false;
-                penguins[1].StartSpeaking();
+               // penguins[1].StartSpeaking();
                 return penguins[1];//kowalski
             }
             
             if (ConRico)
             {
                 penguins[2].blockDircetionLEFT = penguins[2].blockDirectionRIGHT = false;
-                penguins[2].StartSpeaking();
+              //  penguins[2].StartSpeaking();
                 return penguins[2];//rico
             }
             
             if (ConSzeregowy)
             {
                 penguins[3].blockDircetionLEFT = penguins[3].blockDirectionRIGHT = false;
-                penguins[3].StartSpeaking();
+               // penguins[3].StartSpeaking();
                 return penguins[3];//szeregowy
             }
             

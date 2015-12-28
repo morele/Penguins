@@ -89,7 +89,7 @@ namespace TestGame.Scene
             // muzyka tła
             _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(_themeSong);
+           // MediaPlayer.Play(_themeSong);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -193,6 +193,12 @@ namespace TestGame.Scene
                             /*   for (i = 0; i < penguins.Count; i++)//sprawdza kolizje z innymi pingwinami i blokuje w przypadku wykrycia
                                if (penguins[i].penguinType != penguin.penguinType) penguins[i].CollisionPenguin(penguin.rectangle);*/
 
+                            /*  for (i = 0; i < penguins.Count; i++)
+                              {
+                                  if (penguins[i].penguinType != penguin.penguinType)
+                                      if (penguins[i].Collision(penguin.rectangle))
+                                          penguins[i].JumpStop(0);
+                              }*/
                             for (i = 0; i < penguins.Count; i++)
                             {
                                 if (penguins[i].penguinType != penguin.penguinType)
