@@ -27,9 +27,17 @@ namespace Testgame.MIniGames.Swiming
         private SpriteFont _font;
 
         private int punkty = 0;
+        private int _fishToCollect = 20;
         private string _gameText = "Press space to play!";
+        private string _gameAllers = "You ate the fish spoiled You can not swim!";
+        private string _numberOfPoint;
 
+        private Texture2D _background;
 
+        public bool EndOfGame
+        {
+            get; set;
+        }
 
         public Swiming(SpriteBatch spriteBatch, ContentManager content, GraphicsDevice graphicsDevice)
         {
@@ -39,7 +47,9 @@ namespace Testgame.MIniGames.Swiming
 
             _random = new Random();
 
+            _numberOfPoint = string.Format("Number of Fish: {0}/{1}", punkty, _fishToCollect);
 
+            _background = _content.Load<Texture2D>("Minigry/SwimingGame/tło minigra");
 
             //   _barell = new Barell(content.Load<Texture2D>("Beczka"), new Vector2(80, 80), graphicsDevice,20);
 
@@ -69,7 +79,8 @@ namespace Testgame.MIniGames.Swiming
                     duration = 0;
                     int randNumber = _random.Next(1, 10);
 
-                    _listOfFish.Add(new Fish(_content.Load<Texture2D>("Minigry/SwimingGame/ryba"), new Vector2(_graphics.Viewport.Width, (randNumber * 100) - _random.Next(80, 150) - 90)));
+                    _listOfFish.Add(new Fish(_content.Load<Texture2D>("Minigry/SwimingGame/ryba"),
+                        new Vector2(25, _random.Next(200, 800)), true));
                 }
                 else
                 {
@@ -82,7 +93,7 @@ namespace Testgame.MIniGames.Swiming
                     delayofBadFish = _random.Next(800, 6666);
                     int randNumber = _random.Next(1, 10);
                     _listOfBadFish.Add(new Fish(_content.Load<Texture2D>("Minigry/SwimingGame/ZepsutaRyba"),
-                        new Vector2(25, _random.Next(150, 1000)), true));
+                        new Vector2(25, _random.Next(200, 800)), true));
                 }
                 else
                 {
@@ -115,7 +126,7 @@ namespace Testgame.MIniGames.Swiming
                         if (!Badfish.Eaten)
                         {
                             _pinguin.Eating = true;
-                            punkty--;
+                            punkty -= 4;
 
                             _pinguin.color = Color.GreenYellow;
 
@@ -131,7 +142,7 @@ namespace Testgame.MIniGames.Swiming
                 {
                     int randNumber = _random.Next(1, 10);
                     _listOfBarell.Add(new Barell(_content.Load<Texture2D>("Minigry/SwimingGame/Beczka"),
-                        new Vector2(40, 
+                        new Vector2(40,
                              _random.Next(150, 600)), _graphics, 20));
                 }
 
@@ -143,12 +154,13 @@ namespace Testgame.MIniGames.Swiming
 
                 foreach (Barell barell in _listOfBarell)
                 {
-                    if (_pinguin.Position.Contains(barell.Position))
+                    if (_pinguin.Position.Intersects(barell.Position)) //Ł:G znalezc dla czego sie sypie!
                     {
                         _pinguin.Run = false;
                         _listOfBarell.Clear();
                         _listOfBadFish.Clear();
                         _listOfFish.Clear();
+                        _pinguin.SetStartPosition();
                         break;
                     }
                 }
@@ -156,15 +168,25 @@ namespace Testgame.MIniGames.Swiming
             }
 
 
-
-
-
+            if (_pinguin.NumberOfLife <= 0)
+            {
+                _pinguin.NumberOfLife = 4;
+                _pinguin.SetStartPosition();
+                _pinguin.Run = false;
+                this.punkty = 0;
+            }
+            if (punkty >= 22)
+            {
+                EndOfGame = true;
+            }
+            _numberOfPoint = string.Format("Number of Fish: {0}/{1}", punkty, _fishToCollect);
         }
 
 
         public void Draw(SpriteBatch spriteBatch)
         {
             _spriteBatch = spriteBatch;
+            _spriteBatch.Draw(_background, new Vector2(-1200, 150), Color.White);
             foreach (var fish in _listOfFish)
             {
                 if (!fish.Eaten)
@@ -186,7 +208,14 @@ namespace Testgame.MIniGames.Swiming
 
 
             _pinguin.Draw(_spriteBatch);
-            _spriteBatch.DrawString(_font, _gameText, new Vector2(300, 30), Color.Black);
+            _spriteBatch.DrawString(_font, _gameText, new Vector2(-800, 30), Color.Black);
+            _spriteBatch.DrawString(_font, _numberOfPoint, new Vector2(-500, 30), Color.Black);
+            if (_pinguin.color == Color.GreenYellow)
+            {
+                _spriteBatch.DrawString(_font, _gameAllers, new Vector2(-800, 10), Color.Black);
+            }
+
+
         }
     }
 }
