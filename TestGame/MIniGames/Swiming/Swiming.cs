@@ -28,8 +28,8 @@ namespace Testgame.MIniGames.Swiming
 
         private int punkty = 0;
         private int _fishToCollect = 20;
-        private string _gameText = "Press space to play!";
-        private string _gameAllers = "You ate the fish spoiled You can not swim!";
+        private string _gameText = "Nacisnij spacje aby plywac!";
+        private string _gameAllers = "Zjadles zatruta rybe nie mozesz plywac!";
         private string _numberOfPoint;
 
         private Texture2D _background;
@@ -47,7 +47,7 @@ namespace Testgame.MIniGames.Swiming
 
             _random = new Random();
 
-            _numberOfPoint = string.Format("Number of Fish: {0}/{1}", punkty, _fishToCollect);
+            _numberOfPoint = string.Format("Zebrane ryby: {0}/{1}", punkty, _fishToCollect);
 
             _background = _content.Load<Texture2D>("Minigry/SwimingGame/tło minigra");
 
@@ -67,12 +67,12 @@ namespace Testgame.MIniGames.Swiming
         {
             if (!_pinguin.Run)
             {
-                _gameText = "Press space to play!";
+                _gameText = "Nacisnij spacje aby plywac!";
                 _pinguin.Update(_graphics);
             }
             else
             {
-                _gameText = String.Format("Number of Life: {0}", _pinguin.NumberOfLife);
+                _gameText = String.Format("Liczba zyc {0}", _pinguin.NumberOfLife);
 
                 if (duration > delay)
                 {
@@ -175,11 +175,11 @@ namespace Testgame.MIniGames.Swiming
                 _pinguin.Run = false;
                 this.punkty = 0;
             }
-            if (punkty >= 22)
+            if (punkty >= 20)
             {
                 EndOfGame = true;
             }
-            _numberOfPoint = string.Format("Number of Fish: {0}/{1}", punkty, _fishToCollect);
+            _numberOfPoint = string.Format("Zebrane ryby: {0}/{1}", punkty, _fishToCollect);
         }
 
 
