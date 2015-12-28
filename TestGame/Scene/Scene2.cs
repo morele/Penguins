@@ -87,9 +87,13 @@ namespace TestGame.Scene
             platforms.Add(new Platform(sciana, new Vector2(1580 + 89, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
 
             // muzyka tła
+            if (SoundManager.SoundOn)
+            {
             _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
             MediaPlayer.IsRepeating = true;
-           // MediaPlayer.Play(_themeSong);
+                MediaPlayer.Volume = SoundManager.Volume;
+                MediaPlayer.Play(_themeSong);
+        }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -102,7 +106,6 @@ namespace TestGame.Scene
             {
                 // narysowanie menu wyboru ekwipunku
                 _chooseItemMenu.Draw(spriteBatch);
-
 
                 foreach (Platform platform in platforms)
                     platform.Draw(spriteBatch);

@@ -81,22 +81,17 @@ namespace TestGame.Menu
             _exitOptionTexture = Content.Load<Texture2D>("Wyjscie");
             _cursorTexture = Content.Load<Texture2D>("Wskaznik");
             
-            // zmiana elementu menu
+            // odtworzenie dźwięku tła jeśli jest to włączone
+            if (SoundManager.SoundOn)
+            {
             _chooseMenuItemEffect = Content.Load<SoundEffect>(@"Audio\Waves\click");
             _chooseMenuItemEffectInstance = _chooseMenuItemEffect.CreateInstance();
-            _chooseMenuItemEffectInstance.Volume = 0.24f;
-            _chooseMenuItemEffectInstance.Pitch = 0.5f;
-
-            try
-            {
+                _chooseMenuItemEffectInstance.Volume = SoundManager.Volume;
                 _themeSong = Content.Load<Song>("Audio/Waves/menu_theme");
-            }catch(Exception ex)
-            {
-                ex.Message.ToString();
-            }
-            
             MediaPlayer.IsRepeating = true;
+                MediaPlayer.Volume = SoundManager.Volume;
             MediaPlayer.Play(_themeSong);
+            }
             //rectangle
             _newGameOptionRectangle = new Rectangle(0,0,_newGameOptionTexture.Width, _newGameOptionTexture.Height);
             _optionOptionRectangle = new Rectangle(0, 0, _optionOptionTexture.Width, _optionOptionTexture.Height);
@@ -128,7 +123,7 @@ namespace TestGame.Menu
                 // zabezpieczenie przed przekroczeniem zakresu listy
                 if (_selectedMenuItemIndex > 0)
                 {
-                    _chooseMenuItemEffectInstance.Play();
+                    if(SoundManager.SoundOn) _chooseMenuItemEffectInstance.Play();
                     _selectedMenuItemIndex--;
                     _cursorPosition.Y -= 100;
                 }
@@ -141,7 +136,7 @@ namespace TestGame.Menu
                 // zabezpieczenie przed przekroczeniem zakresu listy
                 if (_selectedMenuItemIndex < _menuItems.Count - 1)
                 {
-                    _chooseMenuItemEffectInstance.Play();
+                    if (SoundManager.SoundOn) _chooseMenuItemEffectInstance.Play();
                     _selectedMenuItemIndex++;
                     _cursorPosition.Y += 100;
                 }
@@ -149,8 +144,11 @@ namespace TestGame.Menu
 
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
+                if (SoundManager.SoundOn)
+                {
                 _chooseMenuItemEffectInstance.Play();
                 MediaPlayer.Stop();
+                }
 
                 _blockUpKey = true;
                 // jeśli wybrano wyście

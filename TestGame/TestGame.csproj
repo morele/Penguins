@@ -73,6 +73,7 @@
     <Compile Include="Scene\Scene.cs" />
     <Compile Include="Scene\Scene2.cs" />
     <Compile Include="Scene\Scene1.cs" />
+    <Compile Include="SoundManager.cs" />
     <Compile Include="TextLabel.cs" />
     <Compile Include="TexutreManager.cs" />
   </ItemGroup>
