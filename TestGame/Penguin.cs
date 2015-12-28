@@ -615,7 +615,7 @@ namespace TestGame
             {
                 Random rand = new Random();
                 int index = rand.Next(0, Voices.Count);
-                Voices[index].Play();
+                Voices[index].Play(SoundManager.Volume, 0.0f, 0.0f);
             }
         }
 
