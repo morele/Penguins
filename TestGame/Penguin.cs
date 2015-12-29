@@ -256,6 +256,7 @@ namespace TestGame
             else
             {
                 _animationVertival.UpdateInStay(newRectangle);
+                _slide = false;
             }
 
         }

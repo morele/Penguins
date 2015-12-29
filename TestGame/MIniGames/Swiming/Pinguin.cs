@@ -15,9 +15,11 @@ namespace Testgame.MIniGames.Swiming
         private float _scale;
 
         private float _greenDuration = 0;
-        private float _greenDelay = 10000;
+        private float _greenDelay = 1500;
 
         private Rectangle _positionOnSheet;
+
+        private float _viewPortHeigth;
 
         public Color color
         {
@@ -84,7 +86,7 @@ namespace Testgame.MIniGames.Swiming
             _scale = scale / 100;
             _velocityY = 3;
             _velocityX = 3;
-            NumberOfLife = 3;
+            NumberOfLife = 4;
             color = Color.White;
 
             _ricoSwiming = new Animation(_texture, 14, 50, _position);
@@ -142,25 +144,28 @@ namespace Testgame.MIniGames.Swiming
                 {
                     _position.X = device.Viewport.X + _texture.Width - 100;
                 }
-                if (_position.Y <= 150)
+                if (_position.Y <= 200)
                 {
-                    _position.Y = 151;
+                    _position.Y = 201;
                 }
                 if (_position.Y > 800)
                 {
 
-                    NumberOfLife--;
+                    NumberOfLife --;
+                   
                     System.Diagnostics.Debug.WriteLine("Life: {0}", NumberOfLife);
-                    _position.X = 170;
-                    _position.Y = -1198;
+                    SetStartPosition();
                     Run = false;
                 }
                 _position.Y += _velocityY;
-                if (Keyboard.GetState().IsKeyDown(Keys.Up))
+
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Up) && !(color == Color.GreenYellow))
                 {
 
                     _position.Y -= 5;
                 }
+
                 if (Keyboard.GetState().IsKeyDown(Keys.Left))
                 {
                     _position.X -= _velocityX;
@@ -169,6 +174,8 @@ namespace Testgame.MIniGames.Swiming
                 {
                     _position.X += _velocityX;
                 }
+
+
             }
             if (_numberOfFrame >= 14)
             {
@@ -177,7 +184,7 @@ namespace Testgame.MIniGames.Swiming
 
             if (Eating)
             {
-              //  _ricoEating.Position = _position;
+                //  _ricoEating.Position = _position;
                 _ricoEating.Update(gameTime, Position);
             }
             else
@@ -190,6 +197,11 @@ namespace Testgame.MIniGames.Swiming
             _ricoEating.color = color;
         }
 
+        public void SetStartPosition()
+        {
+            _position.X = -1150;
+            _position.Y = 200;
+        }
         public void Draw(SpriteBatch spriteBatch)
         {
             if (Eating)
