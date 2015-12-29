@@ -7,7 +7,7 @@
 
         static SoundManager()
         {
-            SoundOn = true;
+            SoundOn = false;
             Volume = 0.2f;
         }
     }

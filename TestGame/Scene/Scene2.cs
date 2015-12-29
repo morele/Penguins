@@ -205,13 +205,13 @@ namespace TestGame.Scene
                             for (i = 0; i < penguins.Count; i++)
                             {
                                 if (penguins[i].penguinType != penguin.penguinType)
-                                    if (penguins[i].Collision(penguin.rectangle))
-                                        penguins[i].JumpStop(0);
+                                    if (penguin.Collision(penguins[i].rectangle))
+                                        penguin.JumpStop(0);
                             }
 
                             //Jak kolizja ze sprezyna to wysoki jump
                             if (platform.platformType == PlatformType.SPRING)
-                                if (penguin.Collision(platform.PlatformRectangle))
+                                if (penguin.CollisionRectangle(platform.PlatformRectangle))
                                 {
                                     penguin.JumpSpring();
                                 }

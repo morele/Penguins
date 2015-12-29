@@ -50,7 +50,7 @@ namespace TestGame
         private Vector2 positionVertical;
         private Vector2 tmpPosition = new Vector2();
         private Platform blockPlatform = new Platform();
-        private bool shoe = false;
+       // private bool shoe = false;
         public bool jump = true;
         public bool firstStart = true;
         public bool active = true;
@@ -59,7 +59,8 @@ namespace TestGame
         public bool blockDircetionLEFT = false;
         public bool blockDirectionRIGHT = false;
         private bool blockDircetionDOWN = false;
-        private int correctPosition = 0;
+        private int correctPositionX = 0;
+        private int correctPositionY = 0;
         private bool blockVomit;
         private bool block = false;
         private bool activeSpace = false;
@@ -134,33 +135,33 @@ namespace TestGame
                     pinguinVertical = Const.PINGUIN_KOWALSKI_VERTICAL;
                     pinguinHorizontal = Const.PINGUIN_KOWALSKI_HORIZONTAL;
                     dimensionsPenguin = Const.DimensionsPenguin(PenguinType.KOWALSKI);
-                    dimensionsPenguinShoe = Const.DimensionsPenguinShoe(PenguinType.KOWALSKI);
+                    dimensionsPenguinSlide = Const.DimensionsPenguinSlide(PenguinType.KOWALSKI);
                     break;
                 case PenguinType.RICO:
                     pinguinVertical = Const.PINGUIN_RICO_VERTICAL;
                     pinguinHorizontal = Const.PINGUIN_RICO_HORIZONTAL;
                     dimensionsPenguin = Const.DimensionsPenguin(PenguinType.RICO);
-                    dimensionsPenguinShoe = Const.DimensionsPenguinShoe(PenguinType.RICO);
+                    dimensionsPenguinSlide = Const.DimensionsPenguinSlide(PenguinType.RICO);
                     break;
                 case PenguinType.SZEREGOWY:
                     pinguinVertical = Const.PINGUIN_SZEREGOWY_VERTICAL;
                     pinguinHorizontal = Const.PINGUIN_SZEREGOWY_HORIZONTAL;
                     dimensionsPenguin = Const.DimensionsPenguin(PenguinType.SZEREGOWY);
-                    dimensionsPenguinShoe = Const.DimensionsPenguinShoe(PenguinType.SZEREGOWY);
+                    dimensionsPenguinSlide = Const.DimensionsPenguinSlide(PenguinType.SZEREGOWY);
                     break;
                 case PenguinType.SKIPPER:
                     pinguinHorizontal = Const.PINGUIN_SKIPPER_HORIZONTAL;
                     pinguinVertical = Const.PINGUIN_SKIPPER_VERTICAL;
                     dimensionsPenguin = Const.DimensionsPenguin(PenguinType.SKIPPER);
-                    dimensionsPenguinShoe = Const.DimensionsPenguinShoe(PenguinType.SKIPPER);
+                    dimensionsPenguinSlide = Const.DimensionsPenguinSlide(PenguinType.SKIPPER);
                     break;
 
             }
             // przeskalowanie wymiarów
             for (int i = 0; i < dimensionsPenguin.Count; i++)
                 dimensionsPenguin[i] = ReScale(dimensionsPenguin[i], scale);
-            for (int i = 0; i < dimensionsPenguinShoe.Count; i++)
-                dimensionsPenguinShoe[i] = ReScale(dimensionsPenguinShoe[i], scale);
+            for (int i = 0; i < dimensionsPenguinSlide.Count; i++)
+                dimensionsPenguinSlide[i] = ReScale(dimensionsPenguinSlide[i], scale);
 
             //na poczatek ustawiamy rectangle dla stojacego pingwina
             currentdimensionsPenguin = dimensionsPenguin;
@@ -330,6 +331,7 @@ namespace TestGame
                 if (Keyboard.GetState().IsKeyUp(Keys.Space)) activeSpace = false; //zeby nacisnięcie spacji oznaczało tylko JEDNO nacisniecie(szybko odświeża)          
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false && !activeSpace && !blockDircetionDOWN)
                 {
+                    
                     Jump();
                     activeSpace = true;
                     blockDircetionDOWN = true;
@@ -345,22 +347,18 @@ namespace TestGame
                 if (Keyboard.GetState().IsKeyUp(Keys.Down)) activeKeysDown = false;
                 if (Keyboard.GetState().IsKeyDown(Keys.Down) && !activeKeysDown)
                 {
-                   
-                    shoe = true;
                     activeKeysDown = true;
                     Image = imageHorizontal;
-                    rectangle = new Rectangle((int)positionHorizontal.X + correctPosition,
-                        ((int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed)),
+                    rectangle = new Rectangle((int)positionHorizontal.X + correctPositionX,
+                        ((int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed/* + correctPositionY*/)),
                         this.Image.Width / scale, this.Image.Height / scale); // na slizgu
                 }
                 else
-                {
-                    
+                {             
                     activeKeysDown = true;
-                    shoe = false;
                     Image = imageVertical;
-                    rectangle = new Rectangle((int)positionVertical.X + correctPosition,
-                        (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed),
+                    rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
+                        (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed + correctPositionY),
                         this.Image.Width / scale, this.Image.Height / scale); //jak stoi
                 }
 
@@ -374,7 +372,7 @@ namespace TestGame
 
                 positionVertical = Position.ToVector2();
                 Image = imageVertical;
-                rectangle = new Rectangle((int)positionVertical.X + correctPosition, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
+                rectangle = new Rectangle((int)positionVertical.X + correctPositionX, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed + correctPositionY), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
 
             }
 
@@ -402,18 +400,18 @@ namespace TestGame
                 {
                     blockDirectionRIGHT = true;
                     blockDircetionLEFT = false;
-                    correctPosition = (int)-speedValue;
+                    correctPositionX = (int)-speedValue;
                 }
                 if (!activeDirection) //lewo
                 {
                     blockDircetionLEFT = true;
                     blockDirectionRIGHT = false;
-                    correctPosition = (int)speedValue;
+                    correctPositionX = (int)speedValue;
                 }
             }
         }
 
-
+        int temp = 0;
         /// <summary>
         /// Wykrywa kolizje pingwina z parametrem
         /// </summary>
@@ -422,29 +420,42 @@ namespace TestGame
         ///          False - gdy pingwin nie znajduje się na platformie</returns>
         public bool Collision(Rectangle r1, PlatformType platformType = PlatformType.NN)
         {
-            /*    shoe = false;
-                if(shoe) //jak pingwin stoi
-                {*/
-            if (actualCollisionRect != null) //jak pingwin lata to musi mu sie odlokowac mozliwosc poruszania sie na lewo i prawo
-                if (!currentdimensionsPenguin[0].Intersects(actualCollisionRect) && !currentdimensionsPenguin[1].Intersects(actualCollisionRect) && !currentdimensionsPenguin[2].Intersects(actualCollisionRect) && !currentdimensionsPenguin[3].Intersects(actualCollisionRect) && !currentdimensionsPenguin[4].Intersects(actualCollisionRect))
-                    blockDircetionLEFT = blockDirectionRIGHT = false;
+            //correctPositionY = 0;
 
-            /*  tempRect = new Rectangle(rectangle.X+2, rectangle.Y+10, rectangle.Width-4, rectangle.Height-30);
-              if ((tempRect.Intersects(r1))) //jak kolizja po prawej stronie
-              {
-                  actualCollisionRect = r1;
-                  BlockSystem();
-              }
-              if (tempRect.Intersects(r1)) //jak kolizja po lewej stronie
-              {
-                  actualCollisionRect = r1;
-                  BlockSystem();
-              }*/
-            if ((currentdimensionsPenguin[4].Intersects(r1))) //jak kolizja po prawej stronie
+           /* if(_slide)//jak jest slizg
             {
-                actualCollisionRect = r1;
-                BlockSystem();
+                if (actualCollisionRect != null) //jak pingwin lata to musi mu sie odlokowac mozliwosc poruszania sie na lewo i prawo
+                    if (!currentdimensionsPenguin[0].Intersects(actualCollisionRect) &&
+                        !currentdimensionsPenguin[1].Intersects(actualCollisionRect) &&
+                        !currentdimensionsPenguin[2].Intersects(actualCollisionRect) &&
+                        !currentdimensionsPenguin[3].Intersects(actualCollisionRect))
+
+                        blockDircetionLEFT = blockDirectionRIGHT = false;
+
+                if ((currentdimensionsPenguin[1].Intersects(r1))) //jak kolizja po prawej stronie
+                {
+                    actualCollisionRect = r1;
+                    BlockSystem();
+                }
             }
+            else//jak nie ma slizgu
+            {*/
+                if (actualCollisionRect != null) //jak pingwin lata to musi mu sie odlokowac mozliwosc poruszania sie na lewo i prawo
+                    if (!currentdimensionsPenguin[0].Intersects(actualCollisionRect) &&
+                        !currentdimensionsPenguin[1].Intersects(actualCollisionRect) &&
+                        !currentdimensionsPenguin[2].Intersects(actualCollisionRect) &&
+                        !currentdimensionsPenguin[3].Intersects(actualCollisionRect) &&
+                        !currentdimensionsPenguin[4].Intersects(actualCollisionRect))
+
+                        blockDircetionLEFT = blockDirectionRIGHT = false;
+
+                if ((currentdimensionsPenguin[4].Intersects(r1))) //jak kolizja po prawej stronie
+                {
+                    actualCollisionRect = r1;
+                    BlockSystem();
+                }
+           // }
+            
             if (currentdimensionsPenguin[3].Intersects(r1)) //jak kolizja po lewej stronie
             {
                 actualCollisionRect = r1;
@@ -460,14 +471,14 @@ namespace TestGame
             if (activeDirection && block) //jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie
                 if (rectangle.X > tmpPosition.X + speedValue)
                 {
-                    correctPosition = 0;
+                    correctPositionX = 0;
                     block = false;
                 }
 
             if (!activeDirection && block) //jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie
                 if (rectangle.X < tmpPosition.X - speedValue)
                 {
-                    correctPosition = 0;
+                    correctPositionX = 0;
                     block = false;
                 }
 
@@ -480,83 +491,24 @@ namespace TestGame
                 r1.Height = (int)speed.Y + 1;
                 if (currentdimensionsPenguin[2].Intersects(r1)) //jak dotknie nogami
                 {
+                    //correctPositionY = (r1.Y - (rectangle.Y + rectangle.Height)) * -1;
                     blockDircetionDOWN = false;
                     return true;
                 }
             }
             else if (currentdimensionsPenguin[2].Intersects(r1)) //jak dotknie nogami
             {
+               // correctPositionY = (r1.Y - (rectangle.Y + rectangle.Height)) * -1;
                 blockDircetionDOWN = false;
                 return true;
             }
 
 
             return false;
-            /*    }
-                else
-                {
-                    if (actualCollisionRect != null) //jak pingwin lata to musi mu sie odlokowac mozliwosc poruszania sie na lewo i prawo
-                        if (!currentdimensionsPenguin[0].Intersects(actualCollisionRect) && !currentdimensionsPenguin[1].Intersects(actualCollisionRect) && !currentdimensionsPenguin[2].Intersects(actualCollisionRect) && !currentdimensionsPenguin[3].Intersects(actualCollisionRect))
-                            blockDircetionLEFT = blockDirectionRIGHT = false;
+         }
+            
 
-                    if ((currentdimensionsPenguin[1].Intersects(r1))) //jak kolizja po prawej stronie
-                    {
-                        actualCollisionRect = r1;
-                        BlockSystem();
-                    }
-                    if (currentdimensionsPenguin[3].Intersects(r1)) //jak kolizja po lewej stronie
-                    {
-                        actualCollisionRect = r1;
-                        BlockSystem();
-                    }
-
-                    if (currentdimensionsPenguin[0].Intersects(r1)) //jak dotknie głowa
-                    {
-                        if (blockDircetionDOWN) speed.Y = 0;
-                        blockDircetionDOWN = false;
-                    }
-
-                    if (activeDirection && block) //jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie
-                        if (rectangle.X > tmpPosition.X + speedValue)
-                        {
-                            correctPosition = 0;
-                            block = false;
-                        }
-
-                    if (!activeDirection && block) //jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie
-                        if (rectangle.X < tmpPosition.X - speedValue)
-                        {
-                            correctPosition = 0;
-                            block = false;
-                        }
-
-                    if (!block) //jak nie zablokowane to odblokuj oba kierunki
-                        blockDircetionLEFT = blockDirectionRIGHT = false;
-
-
-                    if (platformType == PlatformType.FLOOR) //jak podloga to powoduje zeby pingwin nie mogl sie zaczepic od boku
-                    {
-                        r1.Height = (int)speed.Y + 1;
-                        if (currentdimensionsPenguin[2].Intersects(r1)) //jak dotknie nogami
-                        {
-                            blockDircetionDOWN = false;
-                            return true;
-                        }
-                    }
-                    else if (currentdimensionsPenguin[2].Intersects(r1)) //jak dotknie nogami
-                    {
-                        blockDircetionDOWN = false;
-                        return true;
-                    }
-
-
-                    return false;
-                }
-
-                return false;*/
-        }
-
-        public bool Collision(Rectangle r1)
+        public bool CollisionRectangle(Rectangle r1)
         {
             return currentdimensionsPenguin[2].Intersects(r1);
         }

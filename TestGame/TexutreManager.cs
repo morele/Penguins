@@ -13,7 +13,7 @@ namespace TestGame
         protected float speedValue; //szybkość poruszania się 
         protected float gravitation; //wysokość wybicia przy skoku
         protected List<Rectangle> dimensionsPenguin;
-        protected List<Rectangle> dimensionsPenguinShoe;
+        protected List<Rectangle> dimensionsPenguinSlide;
 
 
 
@@ -121,11 +121,11 @@ namespace TestGame
                                             dimensionsPenguin[i].Height));
             if (shoe == true)
 
-            for (int i = 0; i < dimensionsPenguinShoe.Count; i++)
-                rectangle.Add(new Rectangle(r1.X + dimensionsPenguinShoe[i].X, 
-                                            r1.Y + dimensionsPenguinShoe[i].Y + speed,
-                                            dimensionsPenguinShoe[i].Width, 
-                                            dimensionsPenguinShoe[i].Height));
+            for (int i = 0; i < dimensionsPenguinSlide.Count; i++)
+                rectangle.Add(new Rectangle(r1.X + dimensionsPenguinSlide[i].X, 
+                                            r1.Y + dimensionsPenguinSlide[i].Y + speed,
+                                            dimensionsPenguinSlide[i].Width, 
+                                            dimensionsPenguinSlide[i].Height));
 
 
 

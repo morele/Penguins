@@ -130,10 +130,10 @@ namespace TestGame
                                    new Vector2(-1030, 400), penguinSpeed,
                                    gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
 
-          
 
 
 
+           // SoundManager.SoundOn = false;
 
             penguins.Add(skipper);
             penguins.Add(kowalski);
@@ -164,7 +164,7 @@ namespace TestGame
                 GameFlow.CurrentInstance.Exit();
             var deltaTime = 1 / gameTime.ElapsedGameTime.TotalSeconds;
 
-
+            
 
             //scene1.UpdatePosition(gameTime);
 

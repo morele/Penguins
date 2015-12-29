@@ -97,7 +97,7 @@ namespace TestGame
             }
             return dimensions;
         }
-        public static List<Rectangle> DimensionsPenguinShoe(PenguinType type)
+        public static List<Rectangle> DimensionsPenguinSlide(PenguinType type)
         {
             List<Rectangle> dimensions = new List<Rectangle>();
 
