@@ -193,15 +193,8 @@ namespace TestGame.Scene
                                 _canPlayMiniGame = false;
                             }
 
-                            /*   for (i = 0; i < penguins.Count; i++)//sprawdza kolizje z innymi pingwinami i blokuje w przypadku wykrycia
-                               if (penguins[i].penguinType != penguin.penguinType) penguins[i].CollisionPenguin(penguin.rectangle);*/
 
-                            /*  for (i = 0; i < penguins.Count; i++)
-                              {
-                                  if (penguins[i].penguinType != penguin.penguinType)
-                                      if (penguins[i].Collision(penguin.rectangle))
-                                          penguins[i].JumpStop(0);
-                              }*/
+                            //kolizja z innymi pingwinami
                             for (i = 0; i < penguins.Count; i++)
                             {
                                 if (penguins[i].penguinType != penguin.penguinType)
@@ -216,6 +209,15 @@ namespace TestGame.Scene
                                     penguin.JumpSpring();
                                 }
 
+
+                            if (platform.platformType == PlatformType.MAGICPIPE)
+                            {
+                                if (penguin.Collision(platform.PlatformRectangle, platform.platformType))
+                                {
+                                    int x = 0;
+                                }
+                                
+                            }
 
 
                             if (penguin.Collision(platform.PlatformRectangle, platform.platformType))// sprawdzenie czy na platformie są pingwiny

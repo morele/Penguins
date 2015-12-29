@@ -230,7 +230,7 @@ namespace TestGame
                     case PenguinType.RICO:
                         {
 
-
+                           
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 52)));
                         }
                         break;
@@ -351,16 +351,18 @@ namespace TestGame
                     activeKeysDown = true;
                     Image = imageHorizontal;
                     rectangle = new Rectangle((int)positionHorizontal.X + correctPositionX,
-                        ((int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed/* + correctPositionY*/)),
-                        this.Image.Width / scale, this.Image.Height / scale); // na slizgu
+                                             ((int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed/* + correctPositionY*/)),
+                                             this.Image.Width / scale, 
+                                             this.Image.Height / scale); // na slizgu
                 }
                 else
                 {             
                     activeKeysDown = true;
                     Image = imageVertical;
                     rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
-                        (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed + correctPositionY),
-                        this.Image.Width / scale, this.Image.Height / scale); //jak stoi
+                                              (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed + correctPositionY),
+                                              this.Image.Width / scale, 
+                                              this.Image.Height / scale); //jak stoi
                 }
 
 
@@ -373,13 +375,24 @@ namespace TestGame
 
                 positionVertical = Position.ToVector2();
                 Image = imageVertical;
-                rectangle = new Rectangle((int)positionVertical.X + correctPositionX, (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed + correctPositionY), this.Image.Width / scale, this.Image.Height / scale); //jak stoi
+                rectangle = new Rectangle((int)positionVertical.X + correctPositionX, 
+                                          (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed + correctPositionY), 
+                                          this.Image.Width / scale, 
+                                          this.Image.Height / scale); //jak stoi
 
             }
 
             UpdateAnimation(gametime, rectangle);
             UpdateAnimationSlide(gametime, rectangle);
-            currentdimensionsPenguin = UpdateDimensions(rectangle, false);
+            if(_slide)
+            {
+                currentdimensionsPenguin = UpdateDimensions(_animationHorizontal.Position, _slide);
+            }
+            else
+            {
+                currentdimensionsPenguin = UpdateDimensions(_animationVertival.Position, _slide);
+            }
+            
 
             if (positionVertical.Y > 1500)
             {
@@ -413,6 +426,7 @@ namespace TestGame
         }
 
         int temp = 0;
+        Vector2 posTemp;
         /// <summary>
         /// Wykrywa kolizje pingwina z parametrem
         /// </summary>
@@ -423,7 +437,7 @@ namespace TestGame
         {
             //correctPositionY = 0;
 
-           /* if(_slide)//jak jest slizg
+            if(_slide)//jak jest slizg
             {
                 if (actualCollisionRect != null) //jak pingwin lata to musi mu sie odlokowac mozliwosc poruszania sie na lewo i prawo
                     if (!currentdimensionsPenguin[0].Intersects(actualCollisionRect) &&
@@ -440,7 +454,7 @@ namespace TestGame
                 }
             }
             else//jak nie ma slizgu
-            {*/
+            {
                 if (actualCollisionRect != null) //jak pingwin lata to musi mu sie odlokowac mozliwosc poruszania sie na lewo i prawo
                     if (!currentdimensionsPenguin[0].Intersects(actualCollisionRect) &&
                         !currentdimensionsPenguin[1].Intersects(actualCollisionRect) &&
@@ -455,7 +469,7 @@ namespace TestGame
                     actualCollisionRect = r1;
                     BlockSystem();
                 }
-           // }
+            }
             
             if (currentdimensionsPenguin[3].Intersects(r1)) //jak kolizja po lewej stronie
             {
@@ -489,7 +503,7 @@ namespace TestGame
 
             if (platformType == PlatformType.FLOOR) //jak podloga to powoduje zeby pingwin nie mogl sie zaczepic od boku
             {
-                r1.Height = (int)speed.Y + 1;
+               // r1.Height = (int)speed.Y + 1;
                 if (currentdimensionsPenguin[2].Intersects(r1)) //jak dotknie nogami
                 {
                     //correctPositionY = (r1.Y - (rectangle.Y + rectangle.Height)) * -1;
