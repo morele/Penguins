@@ -89,11 +89,11 @@ namespace TestGame.Scene
             // muzyka tła
             if (SoundManager.SoundOn)
             {
-            _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
-            MediaPlayer.IsRepeating = true;
+                _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
+                MediaPlayer.IsRepeating = true;
                 MediaPlayer.Volume = SoundManager.Volume;
                 MediaPlayer.Play(_themeSong);
-        }
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
