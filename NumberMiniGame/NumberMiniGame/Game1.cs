@@ -18,7 +18,7 @@ namespace NumberMiniGame
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            
+
             this.IsMouseVisible = true;
             this.Window.AllowUserResizing = true;
         }
@@ -44,7 +44,7 @@ namespace NumberMiniGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //_panel = new Panel();
+            _panel = new Panel(Content, Content.Load<Texture2D>("PinPanel"));
             // TODO: use this.Content to load your game content here
         }
 
@@ -67,7 +67,7 @@ namespace NumberMiniGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -81,7 +81,7 @@ namespace NumberMiniGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
-         
+            _panel.Run(gameTime, spriteBatch);
             spriteBatch.End();
             // TODO: Add your drawing code here
 
