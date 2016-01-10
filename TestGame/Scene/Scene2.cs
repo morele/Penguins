@@ -70,7 +70,7 @@ namespace TestGame.Scene
 
             platforms.Add(new Platform(rura, new Vector2(-700, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena2/autko/Autko1"), new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(0, YpositionFloor)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(0, YpositionFloor-150)));
             platforms.Add(new Platform(kolec, new Vector2(400, YpositionFloor - kolec.Height)));
             platforms.Add(new Platform(kolec, new Vector2(440, YpositionFloor - kolec.Height)));
             platforms.Add(new Platform(kolec, new Vector2(480, YpositionFloor - kolec.Height)));
@@ -170,7 +170,7 @@ namespace TestGame.Scene
                         foreach (Penguin penguin in penguins)
                         {
 
-                            // sprawdzenie czy pingwin nie stoi na rurze
+                     /*       // sprawdzenie czy pingwin nie stoi na rurze
                             if (platform.platformType == PlatformType.MAGICPIPE &&
                                 penguin.penguinType == PenguinType.RICO)
                             {
@@ -192,7 +192,7 @@ namespace TestGame.Scene
                                 _chooseItemMenu.IsVisible = false;
                                 _canPlayMiniGame = false;
                             }
-
+                            */
 
                             //kolizja z innymi pingwinami
                             for (i = 0; i < penguins.Count; i++)
@@ -210,14 +210,14 @@ namespace TestGame.Scene
                                 }
 
 
-                            if (platform.platformType == PlatformType.MAGICPIPE)
+                        /*    if (platform.platformType == PlatformType.MAGICPIPE)
                             {
                                 if (penguin.Collision(platform.PlatformRectangle, platform.platformType))
                                 {
-                                    int x = 0;
+                                    penguin.Collision(platform.PlatformRectangle, platform.platformType);
                                 }
                                 
-                            }
+                            }*/
 
 
                             if (penguin.Collision(platform.PlatformRectangle, platform.platformType))// sprawdzenie czy na platformie są pingwiny

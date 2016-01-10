@@ -293,7 +293,8 @@ namespace TestGame
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
-                    speed.X = speedValue * 5;
+                    speed.X = speedValue * 2;
+                    activeDirection = true;
                     _slide = true;
                     _left = false;
                     inMove = true;
@@ -301,6 +302,7 @@ namespace TestGame
                 else if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     speed.X = -speedValue * 2;
+                    activeDirection = false;
                     _slide = true;
                     _left = true;
                     inMove = true;
@@ -425,7 +427,7 @@ namespace TestGame
             }
         }
 
-        int temp = 0;
+        
         Vector2 posTemp;
         /// <summary>
         /// Wykrywa kolizje pingwina z parametrem
@@ -435,7 +437,12 @@ namespace TestGame
         ///          False - gdy pingwin nie znajduje się na platformie</returns>
         public bool Collision(Rectangle r1, PlatformType platformType = PlatformType.NN)
         {
-            //correctPositionY = 0;
+            
+            if(penguinType == PenguinType.RICO && platformType == PlatformType.MAGICPIPE)
+            {
+                int temp = 0;
+            }
+
 
             if(_slide)//jak jest slizg
             {
