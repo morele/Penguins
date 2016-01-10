@@ -182,7 +182,7 @@ namespace TestGame.Scene
                         foreach (Penguin penguin in penguins)
                         {
 
-                     /*       // sprawdzenie czy pingwin nie stoi na rurze
+                            // sprawdzenie czy pingwin nie stoi na rurze
                             if (platform.platformType == PlatformType.MAGICPIPE &&
                                 penguin.penguinType == PenguinType.RICO)
                             {
@@ -204,7 +204,7 @@ namespace TestGame.Scene
                                 _chooseItemMenu.IsVisible = false;
                                 _canPlayMiniGame = false;
                             }
-                            */
+
 
                             //kolizja z innymi pingwinami
                             for (i = 0; i < penguins.Count; i++)
