@@ -154,8 +154,7 @@ namespace TestGame.Menu
             #region DŹWIĘK
 
             MediaPlayer.Volume = SoundManager.Volume;
-            Window.Title = string.Format("{0}", MediaPlayer.Volume);
-
+    
             // podgłośnij klawisz '+' 
             if (Keyboard.GetState().IsKeyDown(Keys.Add) && !_blockSoundUp)
             {

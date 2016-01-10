@@ -57,6 +57,7 @@
     <Compile Include="Menu\GameMenu.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Menu\MenuItem.cs" />
+    <Compile Include="Menu\PauseMenu.cs" />
     <Compile Include="MIniGames\Numbers\NumButton.cs" />
     <Compile Include="MIniGames\Numbers\AutomatMinigame.cs" />
     <Compile Include="MIniGames\Swiming\Barell.cs" />

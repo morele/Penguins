@@ -33,8 +33,13 @@ namespace TestGame
         private bool firstStart = true;
         private GameTime gametime;
 
+        private bool _isGamePause;
+        private bool _blockESCKey;
         private Texture2D _background;
 
+        private PauseMenu _pauseMenu;
+
+        // sceny
         Scene1 scene1;
         Scene2 scene2;
 
@@ -73,7 +78,15 @@ namespace TestGame
                                            Content.Load<SpriteFont>("JingJing"),
                                            Content.Load<Texture2D>("WyborPostaci/Skipper"));
 
-
+            _pauseMenu = new PauseMenu(
+                GraphicsDevice,
+                Content.Load<Texture2D>(@"MenuPauzy\JedzILow"),
+                Content.Load<Texture2D>(@"MenuPauzy\Poziom2"),
+                Content.Load<Texture2D>("Wskaznik"),
+                Content.Load<Texture2D>(@"MenuPauzy\menuBackground"),
+                Content.Load<Texture2D>(@"MenuPauzy\resumeText"),
+                Content.Load<Texture2D>(@"MenuPauzy\exitText"),
+                Content.Load<Texture2D>(@"MenuPauzy\tryAgainText"));
 
             base.Initialize();
         }
@@ -133,7 +146,7 @@ namespace TestGame
 
 
 
-           // SoundManager.SoundOn = false;
+            // SoundManager.SoundOn = false;
 
             penguins.Add(skipper);
             penguins.Add(kowalski);
@@ -160,15 +173,34 @@ namespace TestGame
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                GameFlow.CurrentInstance.Exit();
-            var deltaTime = 1 / gameTime.ElapsedGameTime.TotalSeconds;
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !_blockESCKey)
+            {
+                _blockESCKey = true;
+                _isGamePause = !_isGamePause;
+                _pauseMenu.ShowMenu = true;
+            }
 
-            
+            if (Keyboard.GetState().IsKeyUp(Keys.Escape))
+            {
+                _blockESCKey = false;
+            }
 
-            //scene1.UpdatePosition(gameTime);
+                // po co to tu jest??
+                var deltaTime = 1 / gameTime.ElapsedGameTime.TotalSeconds;
 
-            scene2.UpdatePosition(gameTime);
+            if (!_isGamePause)
+            {
+                //scene1.UpdatePosition(gameTime);
+                scene2.UpdatePosition(gameTime);
+            }
+            else
+            {
+                _pauseMenu.Update();
+                if (!_pauseMenu.ShowMenu)
+                    _isGamePause = false;
+            }
+
+
             base.Update(gameTime);
         }
 
@@ -178,40 +210,39 @@ namespace TestGame
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            #region PANEL GRACZA
-
-            spriteBatch.Begin();
-
-            spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
-            _playerPanel.Draw(spriteBatch);
-            
-            spriteBatch.End();
-
-            switch (_currentScene)
+            if (!_isGamePause)
             {
-                case CurrentScene.Scene1:
-                    break;
-                case CurrentScene.Scene2:
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
-                    scene2.Draw(spriteBatch);
-                    break;
-                case CurrentScene.Scene3:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+
+                // narysowanie panelu użytkownika
+                spriteBatch.Begin();
+                spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
+                _playerPanel.Draw(spriteBatch);
+                spriteBatch.End();
+
+                // narysowanie aktualnej sceny
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null,
+                    camera.transform);
+
+                switch (_currentScene)
+                {
+                    case CurrentScene.Scene1:
+                        scene1.Draw(spriteBatch);
+                        break;
+                    case CurrentScene.Scene2:
+                        scene2.Draw(spriteBatch);
+                        break;
+                    case CurrentScene.Scene3:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                spriteBatch.End();
             }
-
-
-
-            //scene1.Draw(spriteBatch);
-
-
-            spriteBatch.End();
-
-
-
-            #endregion
-
+            else // MENU PAUZY
+            {
+                _pauseMenu.Draw(spriteBatch);
+            }
             base.Draw(gameTime);
         }
         /// <summary>
