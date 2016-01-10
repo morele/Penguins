@@ -281,6 +281,9 @@
     <Content Include="Content\Scena2\woda\woda4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Scena2\woda\WodaAnimacja.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Scena2\Zapadka.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

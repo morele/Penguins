@@ -14,6 +14,12 @@ namespace TestGame
         /// </summary>
         public event EventHandler<EventArgs> FinishAnimation;
 
+        public Texture2D Texture
+        {
+            get { return _texture; }
+
+        }
+
         protected void OnFinishAnimation()
         {
             var tempHandler = FinishAnimation;
@@ -54,6 +60,18 @@ namespace TestGame
                 Position = value;
             }
         }
+        public Rectangle PositionStaticItems
+        {
+            get
+            {
+                return new Rectangle((int)_position.X, (int)_position.Y, (int)(_widthOfFrame),
+                    (int)(_texture.Height));
+            }
+            set
+            {
+                Position = value;
+            }
+        }
         //public Rectangle Position
         //{
         //    get;
@@ -80,17 +98,9 @@ namespace TestGame
             _position = startPosition;
 
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="gametime"></param>
-        /// <param name="newPosition"></param>
-        public void Update(GameTime gametime, Rectangle newPosition)
+
+        public void Update(GameTime gametime)
         {
-
-            _position.X = newPosition.X;
-            _position.Y = newPosition.Y;
-
             _timeElapsed += gametime.ElapsedGameTime.Milliseconds;
 
             if (_timeElapsed >= _timeRefresh)
@@ -104,6 +114,21 @@ namespace TestGame
                 _positionOnSheet = new Rectangle((int)_widthOfFrame * _currentFrame, 0, (int)_widthOfFrame, _texture.Height);
                 _timeElapsed = 0;
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gametime"></param>
+        /// <param name="newPosition"></param>
+        public void Update(GameTime gametime, Rectangle newPosition)
+        {
+
+            _position.X = newPosition.X;
+            _position.Y = newPosition.Y;
+
+            Update(gametime);
+
+
         }
         /// <summary>
         /// 
@@ -133,7 +158,13 @@ namespace TestGame
                 spriteBatch.Draw(_texture, Position, _positionOnSheet, color);
             }
         }
+        public void DrawStaticItems(SpriteBatch spriteBatch)
+        {
 
+
+            spriteBatch.Draw(_texture, PositionStaticItems, _positionOnSheet, color);
+
+        }
 
     }
 }
