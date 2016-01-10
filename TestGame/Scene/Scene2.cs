@@ -89,11 +89,11 @@ namespace TestGame.Scene
             // muzyka tła
             if (SoundManager.SoundOn)
             {
-            _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
-            MediaPlayer.IsRepeating = true;
+                _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
+                MediaPlayer.IsRepeating = true;
                 MediaPlayer.Volume = SoundManager.Volume;
                 MediaPlayer.Play(_themeSong);
-        }
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -117,6 +117,14 @@ namespace TestGame.Scene
 
         public override void UpdatePosition(GameTime gameTime)
         {
+            if (_miniGame.EndOfGame)
+            {
+                _canPlayMiniGame = false;
+                _playMiniGame = false;
+                camera.active = false;
+                playerPanel.activeDraw = true;
+            }
+
             if (_playMiniGame)
             {
                 _miniGame.Update(gameTime);
@@ -252,6 +260,9 @@ namespace TestGame.Scene
 
                 camera.Update(player);
             }
+
+
+
         }
 
     }
