@@ -30,14 +30,14 @@ namespace TestGame.Scene
         private bool _canPlayMiniGame;
 
         private GameTime gametime;
-        
+
         public Scene2(ContentManager content, Camera camera, GameTime gametime, GraphicsDevice device) : base(content, camera, gametime)
         {
             _chooseItemMenu = new ChooseItemMenu();
             _chooseItemMenu.IsVisible = false;
 
             _miniGame = new Swiming(new SpriteBatch(device), content, device);
-            
+
         }
 
         public override void LoadContent(List<Penguin> penguins, PlayerPanel playerPanel, Penguin player)
@@ -49,26 +49,18 @@ namespace TestGame.Scene
             Texture2D platfroma2 = content.Load<Texture2D>("Scena2/platforma2");
             Texture2D kolec = content.Load<Texture2D>("Scena2/Kolec");
             Texture2D waga = content.Load<Texture2D>("Scena2/waga");
-<<<<<<< HEAD
-<<<<<<< HEAD
 
             Texture2D woda = content.Load<Texture2D>("Scena2/woda/WodaAnimacja");
 
-           // Animation Woda=new Animation(content.Load<Texture2D>("Scena2/woda/WodaAnimacja"),3,120, new Vector2(-1100 + mur.Width, YpositionFloor + platfroma2.Height + 30));
+            // Animation Woda=new Animation(content.Load<Texture2D>("Scena2/woda/WodaAnimacja"),3,120, new Vector2(-1100 + mur.Width, YpositionFloor + platfroma2.Height + 30));
 
-=======
-            Texture2D woda = content.Load<Texture2D>("Scena2/woda");
->>>>>>> parent of 14af115... Animacja wody test
-=======
-            Texture2D woda = content.Load<Texture2D>("Scena2/woda");
->>>>>>> parent of 14af115... Animacja wody test
             Texture2D rura = content.Load<Texture2D>("Scena2/Rura");
             Texture2D zapadka = content.Load<Texture2D>("Scena2/Zapadka");
             Texture2D platforma1 = content.Load<Texture2D>("Scena2/platforma1");
             Texture2D sciana = content.Load<Texture2D>("Scena2/Sciana");
             Texture2D sprezynaPlatforma = content.Load<Texture2D>("Scena2/SprezynaPlatforma");
             Texture2D sprezyna = content.Load<Texture2D>("Scena2/Sprezyna");
-            
+
             //platformy
             platforms.Add(new Platform(platfroma2, new Vector2(-1100, YpositionFloor)));
             platforms.Add(new Platform(platfroma2, new Vector2(-100, YpositionFloor)));
@@ -76,28 +68,19 @@ namespace TestGame.Scene
 
             //woda i ograniczenia
             platforms.Add(new Platform(mur, new Vector2(-1100, YpositionFloor + platfroma2.Height - 2)));
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-            for (int i = 1; i <= 10; i ++)
+            for (int i = 1; i <= 10; i++)
             {
-                platforms.Add(
-                    new Platform(new Animation(content.Load<Texture2D>("Scena2/woda/WodaAnimacja"), 3, 120,
-                        new Vector2(-1100 + mur.Width*i, YpositionFloor + platfroma2.Height + 30))));
+                platforms.Add( new Platform(new Animation(content.Load<Texture2D>("Scena2/woda/WodaAnimacja"), 3, 120,
+                        new Vector2(-1100 + mur.Width * i, YpositionFloor + platfroma2.Height + 30))));
             }
-           // platforms.Add(new Platform(Woda));
-=======
-            platforms.Add(new Platform(woda, new Vector2(-1100 + mur.Width, YpositionFloor + platfroma2.Height + 30)));
->>>>>>> parent of 14af115... Animacja wody test
-=======
-            platforms.Add(new Platform(woda, new Vector2(-1100 + mur.Width, YpositionFloor + platfroma2.Height + 30)));
->>>>>>> parent of 14af115... Animacja wody test
+            // platforms.Add(new Platform(Woda));
             platforms.Add(new Platform(mur, new Vector2(-1100 + mur.Width + woda.Width, YpositionFloor + platfroma2.Height - 2)));
 
 
             platforms.Add(new Platform(rura, new Vector2(-700, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena2/autko/Autko1"), new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(0, YpositionFloor-150)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(0, YpositionFloor - 150)));
             platforms.Add(new Platform(kolec, new Vector2(400, YpositionFloor - kolec.Height)));
             platforms.Add(new Platform(kolec, new Vector2(440, YpositionFloor - kolec.Height)));
             platforms.Add(new Platform(kolec, new Vector2(480, YpositionFloor - kolec.Height)));
@@ -138,8 +121,7 @@ namespace TestGame.Scene
                     platform.Draw(spriteBatch);
 
                 foreach (Penguin penguin in penguins)
-                    //penguin.DrawAnimation(spriteBatch); 
-                    penguin.Draw(spriteBatch);
+                    penguin.DrawAnimation(spriteBatch);
             }
         }
 
@@ -206,7 +188,7 @@ namespace TestGame.Scene
                         foreach (Penguin penguin in penguins)
                         {
 
-                     /*       // sprawdzenie czy pingwin nie stoi na rurze
+                            // sprawdzenie czy pingwin nie stoi na rurze
                             if (platform.platformType == PlatformType.MAGICPIPE &&
                                 penguin.penguinType == PenguinType.RICO)
                             {
@@ -228,7 +210,7 @@ namespace TestGame.Scene
                                 _chooseItemMenu.IsVisible = false;
                                 _canPlayMiniGame = false;
                             }
-                            */
+
 
                             //kolizja z innymi pingwinami
                             for (i = 0; i < penguins.Count; i++)
@@ -246,14 +228,14 @@ namespace TestGame.Scene
                                 }
 
 
-                        /*    if (platform.platformType == PlatformType.MAGICPIPE)
-                            {
-                                if (penguin.Collision(platform.PlatformRectangle, platform.platformType))
+                            /*    if (platform.platformType == PlatformType.MAGICPIPE)
                                 {
-                                    penguin.Collision(platform.PlatformRectangle, platform.platformType);
-                                }
-                                
-                            }*/
+                                    if (penguin.Collision(platform.PlatformRectangle, platform.platformType))
+                                    {
+                                        penguin.Collision(platform.PlatformRectangle, platform.platformType);
+                                    }
+
+                                }*/
 
 
                             if (penguin.Collision(platform.PlatformRectangle, platform.platformType))// sprawdzenie czy na platformie są pingwiny

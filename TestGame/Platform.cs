@@ -67,10 +67,30 @@ namespace TestGame
 
             PlatformRectangle = new Rectangle((int)position.X, (int)position.Y, this.Image.Width, this.Image.Height);
         }
-        
+        public Platform(Animation animation, bool isMotion = false, float maxSpeed = 0, float maxScope = 0, PlatformType platformType = PlatformType.FLOOR) : base(animation, new Vector2(animation.PositionStaticItems.X, animation.PositionStaticItems.Y))
+        {
+            // domyślnie platforma będzie na dole, czyli ruch będzie w górę
+            Direction = Direction.Up;
+
+
+
+            // ustawienie maksymalnej prędkości platformy
+            _maxPlatformSpeed = maxSpeed;
+            PlatformSpeed = maxSpeed;
+
+            _maxPlatformScope = maxScope;
+
+            IsMotion = isMotion;
+
+
+            this.platformType = platformType;
+
+            PlatformRectangle = Animation.PositionStaticItems;
+        }
 
         override public void UpdatePosition(GameTime gametime)
         {
+
             // jeśli platforma się porusza
             if (IsMotion)
             {
@@ -84,7 +104,7 @@ namespace TestGame
 
                         // ustaw pozycję o ile nie została przekroczona maksymalna wysokość platformy
                         if (_currentPlatformPosition <= _maxPlatformScope)
-                            Position =new Point(Position.X, Position.Y - (int)PlatformSpeed);
+                            Position = new Point(Position.X, Position.Y - (int)PlatformSpeed);
 
                         // maksymalna wysokość została przekroczona - platforma zawraca
                         else
@@ -132,6 +152,11 @@ namespace TestGame
 
                 PlatformRectangle = new Rectangle(Position, Size);
             }
+            if (gametime != null && Animation != null)
+            {
+                this.Animation.Update(gametime);
+            }
+
         }
 
         public bool CollisionPlatform(Rectangle r1)
@@ -140,7 +165,15 @@ namespace TestGame
         }
         override public void Draw(SpriteBatch spriteBatch)
         {
-            if(active) spriteBatch.Draw(Texture, PlatformRectangle, Color.White);
+            if (Animation != null)
+            {
+                Animation.DrawStaticItems(spriteBatch);
+            }
+            else
+            {
+                if (active) spriteBatch.Draw(Texture, PlatformRectangle, Color.White);
+            }
+
         }
 
 
@@ -149,7 +182,7 @@ namespace TestGame
         /// </summary>
         public void Slowdown()
         {
-            if(PlatformSpeed > 1)
+            if (PlatformSpeed > 1)
                 PlatformSpeed--;
         }
 
@@ -158,7 +191,7 @@ namespace TestGame
         /// </summary>
         public void SpeedUp()
         {
-            if(PlatformSpeed <= _maxPlatformSpeed)
+            if (PlatformSpeed <= _maxPlatformSpeed)
                 PlatformSpeed++;
         }
         public void ResetMoney(Rectangle rectangle)
@@ -172,7 +205,7 @@ namespace TestGame
 
         public bool IsCollisionDetect(GameObject collisionObject)
         {
-            Point newSize = new Point(Size.X, Size.Y+100);
+            Point newSize = new Point(Size.X, Size.Y + 100);
             Rectangle rectangle1 = new Rectangle(Position, newSize);
             Rectangle rectangle2 = new Rectangle(collisionObject.Position, collisionObject.Size);
 

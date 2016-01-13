@@ -64,7 +64,7 @@ namespace TestGame
         private bool blockVomit;
         private bool block = false;
         private bool activeSpace = false;
-        public int scale = 4;
+        public int scale = 8;
         public int platformSpeed = 0;
         public PenguinType penguinType;
         public List<Platform> platforms = new List<Platform>();
@@ -87,37 +87,12 @@ namespace TestGame
         private Animation _animationHorizontal;
         private Animation _animationVertival;
 
-        private bool _slide = false;
+        private bool _slide;
 
-        private double _widthOfFrameVertical;
-        private double _widthOfFrameHorizontal;
-
-        private Rectangle _positionOnSheetRectangleVertical;
-        private Rectangle _positionOnSheetRectangleHorizontal;
-        private Vector2 _position;
-        public Rectangle positionForVertical
-        {
-            get
-            {
-                return new Rectangle((int)rectangle.X, (int)rectangle.Y, (int)(_widthOfFrameVertical / 4),
-                    (int)(this.imageVertical.Height / 4));
-            }
-
-        }
-        public Rectangle positionForHorizontal
-        {
-            get
-            {
-                return new Rectangle((int)rectangle.X+500, (int)rectangle.Y, (int)(_widthOfFrameHorizontal / 4),
-                    (int)(this.imageHorizontal.Height / 4));
-            }
-
-        }
 
         public Penguin(Texture2D image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType, int mass, Point frameSize) :
             base(image, position, speedValue, gravity, frameSize)
         {
-
             this.imageHorizontal = imageHorizontal;
             this.imageVertical = image;
             Avatar = avatar;
@@ -126,7 +101,7 @@ namespace TestGame
             Equipment = new Equipment();
 
 
-            Image = image;// TMP
+
 
             _startPositionOfPenguin = position;
 
@@ -137,15 +112,6 @@ namespace TestGame
 
             Texture = image;
             //   image = new Texture2D(image.GraphicsDevice, image.Width / 4, image.Height);
-
-
-            _widthOfFrameHorizontal = imageHorizontal.Width / 14;
-            _widthOfFrameVertical = imageVertical.Width / 8;
-
-            _positionOnSheetRectangleVertical = new Rectangle((int)_widthOfFrameVertical * 1, 0, (int)_widthOfFrameVertical, imageVertical.Height);
-
-            _positionOnSheetRectangleHorizontal = new Rectangle((int)_widthOfFrameHorizontal * 1, 0, (int)_widthOfFrameHorizontal, imageHorizontal.Height);
-
 
             Position = position.ToPoint();
 
@@ -252,9 +218,8 @@ namespace TestGame
         }
         public Rectangle RecalculateRectangle(Rectangle currentRectangle, Point correct)
         {
-            /*return new Rectangle(currentRectangle.X + correct.X, currentRectangle.Y + correct.Y,
-                                currentRectangle.Width, currentRectangle.Height);*/
-            return currentRectangle;
+            return new Rectangle(currentRectangle.X + correct.X, currentRectangle.Y + correct.Y,
+                                currentRectangle.Width, currentRectangle.Height);
         }
         private void UpdateAnimationSlide(GameTime gametime, Rectangle newRectangle)
         {
@@ -307,7 +272,6 @@ namespace TestGame
             if (active)
             {
 
-
                 if (Keyboard.GetState().IsKeyDown(Keys.D5) && penguinType == PenguinType.RICO && !blockVomit)
                 {
                     if (Equipment.Items.Count > 0)
@@ -318,45 +282,61 @@ namespace TestGame
                         Equipment.RemoveItem(vomitItem);
                         blockVomit = true;
                     }
+                    else
+                    {
+                        int q = 0;
+                    }
                 }
 
-                if (Keyboard.GetState().IsKeyUp(Keys.D5)) blockVomit = false;
+                if (Keyboard.GetState().IsKeyUp(Keys.D5))
+                {
+                    blockVomit = false;
+                }
 
+                Position += speed.ToPoint();
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     speed.X = speedValue * 2;
-                    inMove = _slide = activeDirection = true;
+                    activeDirection = true;
+                    _slide = true;
                     _left = false;
-
+                    inMove = true;
                 }
                 else if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     speed.X = -speedValue * 2;
                     activeDirection = false;
-                    inMove = _left = _slide = true;
+                    _slide = true;
+                    _left = true;
+                    inMove = true;
                 }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Right) && !blockDirectionRIGHT)
+                else
+                if (Keyboard.GetState().IsKeyDown(Keys.Right) && !blockDirectionRIGHT && (!Keyboard.GetState().IsKeyDown(Keys.Down)))
                 {
                     speed.X = speedValue;
-                    inMove = activeDirection = true;
-                    _slide = _left = false;
+                    activeDirection = true;
+                    _left = false;
+                    inMove = true;
+                    _slide = false;
 
                 }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDircetionLEFT)
+                else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDircetionLEFT && (!Keyboard.GetState().IsKeyDown(Keys.Down)))
                 {
                     speed.X = -speedValue;
-                    _slide = activeDirection = false;
-                    _left = inMove = true;
+                    activeDirection = false;
+                    _left = true;
+                    inMove = true;
+                    _slide = false;
                 }
-                else//zatrzymanie
+                else
                 {
                     speed.X = 0;
                     inMove = false;
                 }
 
-                if (Keyboard.GetState().IsKeyUp(Keys.Space)) activeSpace = false; //By nacisnięcie spacji oznaczało tylko JEDNO nacisniecie         
-                if (Keyboard.GetState().IsKeyDown(Keys.Space) && !jump && !activeSpace && !blockDircetionDOWN)
+                if (Keyboard.GetState().IsKeyUp(Keys.Space)) activeSpace = false; //zeby nacisnięcie spacji oznaczało tylko JEDNO nacisniecie(szybko odświeża)          
+                if (Keyboard.GetState().IsKeyDown(Keys.Space) && jump == false && !activeSpace && !blockDircetionDOWN)
                 {
 
                     Jump();
@@ -364,50 +344,30 @@ namespace TestGame
                     blockDircetionDOWN = true;
                 }
 
-                Position += speed.ToPoint();
+
                 FallDown();
 
 
                 positionHorizontal = positionVertical = Position.ToVector2();
 
 
-                if (_slide)
-                {//slizg
-                    Image = imageHorizontal;
-                    rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
-                                                   (int)positionVertical.Y + (pinguinVertical + platformSpeed + correctPositionY),
-                                                   Image.Width / scale,
-                                                   Image.Height / scale);
-                }
-                else//jak stoi
-                {
-                    Image = imageVertical;
-                    rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
-                                                   (int)positionVertical.Y /*- imageHorizontal.Width/ scale */+ (pinguinVertical + platformSpeed + correctPositionY),
-                                                   Image.Width / scale,
-                                                   Image.Height / scale);
-                }
-
-
-
-                /*
                 if (Keyboard.GetState().IsKeyUp(Keys.Down)) activeKeysDown = false;
                 if (Keyboard.GetState().IsKeyDown(Keys.Down) && !activeKeysDown)
                 {
-                    //rectangle = _animationHorizontal.Position; //LG: mniejmy nadzieje ze o to chodzi
+                    rectangle = _animationHorizontal.Position; //LG: mniejmy nadzieje ze o to chodzi
 
                     activeKeysDown = true;
                     Image = imageHorizontal;
                     rectangle = new Rectangle((int)positionHorizontal.X + correctPositionX,
-                                             ((int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed/* + correctPositionY)),
+                                             ((int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed/* + correctPositionY*/)),
                                              this.Image.Width / scale,
                                              this.Image.Height / scale); // na slizgu
-                    
-             
+
+
                 }
                 else
                 {
-                   // rectangle = _animationVertival.Position;
+                    rectangle = _animationVertival.Position;
 
                     activeKeysDown = true;
                     Image = imageVertical;
@@ -415,9 +375,9 @@ namespace TestGame
                                               (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed + correctPositionY),
                                               this.Image.Width / scale,
                                               this.Image.Height / scale); //jak stoi
-              
 
-                }*/
+
+                }
 
 
             }
@@ -430,21 +390,21 @@ namespace TestGame
                 positionVertical = Position.ToVector2();
                 Image = imageVertical;
                 rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
-                                          (int)positionVertical.Y - (Image.Width / scale) + (pinguinVertical + platformSpeed + correctPositionY),
-                                          Image.Width / scale,
-                                          Image.Height / scale); //jak stoi
+                                          (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed + correctPositionY),
+                                          this.Image.Width / scale,
+                                          this.Image.Height / scale); //jak stoi
 
             }
 
-            //UpdateAnimation(gametime, rectangle);
-            // UpdateAnimationSlide(gametime, rectangle);
+            UpdateAnimation(gametime, rectangle);
+            UpdateAnimationSlide(gametime, rectangle);
             if (_slide)
             {
-                currentdimensionsPenguin = UpdateDimensions(rectangle, _slide);
+                currentdimensionsPenguin = UpdateDimensions(_animationHorizontal.Position, _slide);
             }
             else
             {
-                currentdimensionsPenguin = UpdateDimensions(rectangle, _slide);
+                currentdimensionsPenguin = UpdateDimensions(_animationVertival.Position, _slide);
             }
 
 
@@ -562,7 +522,7 @@ namespace TestGame
 
             if (platformType == PlatformType.FLOOR) //jak podloga to powoduje zeby pingwin nie mogl sie zaczepic od boku
             {
-                r1.Height = (int)speed.Y + 1;
+                // r1.Height = (int)speed.Y + 1;
                 if (currentdimensionsPenguin[2].Intersects(r1)) //jak dotknie nogami
                 {
                     //correctPositionY = (r1.Y - (rectangle.Y + rectangle.Height)) * -1;
@@ -613,16 +573,7 @@ namespace TestGame
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            // spriteBatch.Draw(Image, rectangle, Color.White);
-            if (_slide)
-            {
-                spriteBatch.Draw(this.imageHorizontal, positionForHorizontal, _positionOnSheetRectangleHorizontal, Color.White);
-            }
-            else
-            {
-                spriteBatch.Draw(this.imageVertical, positionForVertical, _positionOnSheetRectangleVertical, Color.White);
-            }
-
+            spriteBatch.Draw(Image, rectangle, Color.White);
         }
 
         /// <summary>
