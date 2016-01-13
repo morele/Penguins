@@ -50,11 +50,15 @@ namespace TestGame.Scene
             Texture2D kolec = content.Load<Texture2D>("Scena2/Kolec");
             Texture2D waga = content.Load<Texture2D>("Scena2/waga");
 <<<<<<< HEAD
+<<<<<<< HEAD
 
             Texture2D woda = content.Load<Texture2D>("Scena2/woda/WodaAnimacja");
 
            // Animation Woda=new Animation(content.Load<Texture2D>("Scena2/woda/WodaAnimacja"),3,120, new Vector2(-1100 + mur.Width, YpositionFloor + platfroma2.Height + 30));
 
+=======
+            Texture2D woda = content.Load<Texture2D>("Scena2/woda");
+>>>>>>> parent of 14af115... Animacja wody test
 =======
             Texture2D woda = content.Load<Texture2D>("Scena2/woda");
 >>>>>>> parent of 14af115... Animacja wody test
@@ -73,6 +77,7 @@ namespace TestGame.Scene
             //woda i ograniczenia
             platforms.Add(new Platform(mur, new Vector2(-1100, YpositionFloor + platfroma2.Height - 2)));
 <<<<<<< HEAD
+<<<<<<< HEAD
 
             for (int i = 1; i <= 10; i ++)
             {
@@ -81,6 +86,9 @@ namespace TestGame.Scene
                         new Vector2(-1100 + mur.Width*i, YpositionFloor + platfroma2.Height + 30))));
             }
            // platforms.Add(new Platform(Woda));
+=======
+            platforms.Add(new Platform(woda, new Vector2(-1100 + mur.Width, YpositionFloor + platfroma2.Height + 30)));
+>>>>>>> parent of 14af115... Animacja wody test
 =======
             platforms.Add(new Platform(woda, new Vector2(-1100 + mur.Width, YpositionFloor + platfroma2.Height + 30)));
 >>>>>>> parent of 14af115... Animacja wody test
