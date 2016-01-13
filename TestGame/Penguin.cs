@@ -89,11 +89,34 @@ namespace TestGame
 
         private bool _slide = false;
 
+        private double _widthOfFrame;
+
+        private Rectangle _positionOnSheetRectangleVertical;
+
+        private Vector2 _position;
+        public Rectangle positionForVertical
+        {
+            get
+            {
+                return new Rectangle((int)rectangle.X, (int)rectangle.Y, (int)(_widthOfFrame / 4),
+                    (int)(this.imageVertical.Height / 4));
+            }
+           
+        }
+        public Rectangle positionForSlide
+        {
+            get
+            {
+                return new Rectangle((int)rectangle.X, (int)rectangle.Y, (int)(_widthOfFrame / 4),
+                    (int)(this.imageHorizontal.Height / 4));
+            }
+
+        }
 
         public Penguin(Texture2D image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType, int mass, Point frameSize) :
             base(image, position, speedValue, gravity, frameSize)
         {
-           
+
             this.imageHorizontal = imageHorizontal;
             this.imageVertical = image;
             Avatar = avatar;
@@ -113,6 +136,11 @@ namespace TestGame
 
             Texture = image;
             //   image = new Texture2D(image.GraphicsDevice, image.Width / 4, image.Height);
+
+
+            _widthOfFrame = imageVertical.Width/8;
+
+            _positionOnSheetRectangleVertical = new Rectangle((int)_widthOfFrame * 1, 0, (int)_widthOfFrame, imageVertical.Height);
 
             Position = position.ToPoint();
 
@@ -338,7 +366,7 @@ namespace TestGame
                 positionHorizontal = positionVertical = Position.ToVector2();
 
 
-                if(_slide)
+                if (_slide)
                 {//slizg
                     Image = imageHorizontal;
                     rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
@@ -354,7 +382,7 @@ namespace TestGame
                                                    Image.Width / scale,
                                                    Image.Height / scale);
                 }
-                
+
 
 
                 /*
@@ -385,7 +413,7 @@ namespace TestGame
               
 
                 }*/
-                
+
 
             }
             else
@@ -404,7 +432,7 @@ namespace TestGame
             }
 
             //UpdateAnimation(gametime, rectangle);
-           // UpdateAnimationSlide(gametime, rectangle);
+            // UpdateAnimationSlide(gametime, rectangle);
             if (_slide)
             {
                 currentdimensionsPenguin = UpdateDimensions(rectangle, _slide);
@@ -529,7 +557,7 @@ namespace TestGame
 
             if (platformType == PlatformType.FLOOR) //jak podloga to powoduje zeby pingwin nie mogl sie zaczepic od boku
             {
-                 r1.Height = (int)speed.Y + 1;
+                r1.Height = (int)speed.Y + 1;
                 if (currentdimensionsPenguin[2].Intersects(r1)) //jak dotknie nogami
                 {
                     //correctPositionY = (r1.Y - (rectangle.Y + rectangle.Height)) * -1;
@@ -580,8 +608,8 @@ namespace TestGame
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-           // spriteBatch.Draw(Image, rectangle, Color.White);
-            spriteBatch.Draw(Image, new Vector2(rectangle.X, rectangle.Y), new Rectangle(0,0,Image.Width/8, Image.Height/8), Color.White);
+            // spriteBatch.Draw(Image, rectangle, Color.White);
+            spriteBatch.Draw(this.imageVertical, positionForVertical, _positionOnSheetRectangleVertical, Color.White);
         }
 
         /// <summary>
