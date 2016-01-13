@@ -89,25 +89,26 @@ namespace TestGame
 
         private bool _slide = false;
 
-        private double _widthOfFrame;
+        private double _widthOfFrameVertical;
+        private double _widthOfFrameHorizontal;
 
         private Rectangle _positionOnSheetRectangleVertical;
-
+        private Rectangle _positionOnSheetRectangleHorizontal;
         private Vector2 _position;
         public Rectangle positionForVertical
         {
             get
             {
-                return new Rectangle((int)rectangle.X, (int)rectangle.Y, (int)(_widthOfFrame / 4),
+                return new Rectangle((int)rectangle.X, (int)rectangle.Y, (int)(_widthOfFrameVertical / 4),
                     (int)(this.imageVertical.Height / 4));
             }
-           
+
         }
-        public Rectangle positionForSlide
+        public Rectangle positionForHorizontal
         {
             get
             {
-                return new Rectangle((int)rectangle.X, (int)rectangle.Y, (int)(_widthOfFrame / 4),
+                return new Rectangle((int)rectangle.X+500, (int)rectangle.Y, (int)(_widthOfFrameHorizontal / 4),
                     (int)(this.imageHorizontal.Height / 4));
             }
 
@@ -138,9 +139,13 @@ namespace TestGame
             //   image = new Texture2D(image.GraphicsDevice, image.Width / 4, image.Height);
 
 
-            _widthOfFrame = imageVertical.Width/8;
+            _widthOfFrameHorizontal = imageHorizontal.Width / 14;
+            _widthOfFrameVertical = imageVertical.Width / 8;
 
-            _positionOnSheetRectangleVertical = new Rectangle((int)_widthOfFrame * 1, 0, (int)_widthOfFrame, imageVertical.Height);
+            _positionOnSheetRectangleVertical = new Rectangle((int)_widthOfFrameVertical * 1, 0, (int)_widthOfFrameVertical, imageVertical.Height);
+
+            _positionOnSheetRectangleHorizontal = new Rectangle((int)_widthOfFrameHorizontal * 1, 0, (int)_widthOfFrameHorizontal, imageHorizontal.Height);
+
 
             Position = position.ToPoint();
 
@@ -609,7 +614,15 @@ namespace TestGame
         public override void Draw(SpriteBatch spriteBatch)
         {
             // spriteBatch.Draw(Image, rectangle, Color.White);
-            spriteBatch.Draw(this.imageVertical, positionForVertical, _positionOnSheetRectangleVertical, Color.White);
+            if (_slide)
+            {
+                spriteBatch.Draw(this.imageHorizontal, positionForHorizontal, _positionOnSheetRectangleHorizontal, Color.White);
+            }
+            else
+            {
+                spriteBatch.Draw(this.imageVertical, positionForVertical, _positionOnSheetRectangleVertical, Color.White);
+            }
+
         }
 
         /// <summary>
