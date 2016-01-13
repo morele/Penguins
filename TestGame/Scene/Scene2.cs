@@ -122,7 +122,8 @@ namespace TestGame.Scene
                     platform.Draw(spriteBatch);
 
                 foreach (Penguin penguin in penguins)
-                    penguin.DrawAnimation(spriteBatch);
+                    //penguin.DrawAnimation(spriteBatch); 
+                    penguin.Draw(spriteBatch);
             }
         }
 
