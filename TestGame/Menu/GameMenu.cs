@@ -252,6 +252,7 @@ namespace TestGame.Menu
                 // jeśli wybrano wyście
                 if (_menuItems[_selectedMenuItemIndex].Link == null)
                 {
+                    // todo wywala tu exception!!
                     Exit();
                 }
                 else
