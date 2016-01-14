@@ -64,7 +64,7 @@ namespace TestGame
         private bool blockVomit;
         private bool block = false;
         private bool activeSpace = false;
-        public int scale = 8;
+        public int scale = 4;
         public int platformSpeed = 0;
         public PenguinType penguinType;
         public List<Platform> platforms = new List<Platform>();
@@ -88,7 +88,7 @@ namespace TestGame
         private Animation _animationVertival;
 
         private bool _slide;
-
+       
 
         public Penguin(Texture2D image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType, int mass, Point frameSize) :
             base(image, position, speedValue, gravity, frameSize)
@@ -230,26 +230,26 @@ namespace TestGame
                     case PenguinType.RICO:
                         {
 
-
+                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 52));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 52)));
 
                         }
                         break;
                     case PenguinType.KOWALSKI:
                         {
-                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 52));
+                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 58));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 58)));
                         }
                         break;
                     case PenguinType.SKIPPER:
                         {
-                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 52));
+                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 38)));
                         }
                         break;
                     case PenguinType.SZEREGOWY:
                         {
-                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 52));
+                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 38)));
                         }
                         break;
@@ -360,21 +360,21 @@ namespace TestGame
                     Image = imageHorizontal;
                     rectangle = new Rectangle((int)positionHorizontal.X + correctPositionX,
                                              ((int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed/* + correctPositionY*/)),
-                                             this.Image.Width / scale,
-                                             this.Image.Height / scale); // na slizgu
+                                              _animationHorizontal.Position.Width,
+                                              _animationHorizontal.Position.Height); // na slizgu
 
 
                 }
                 else
                 {
-                    rectangle = _animationVertival.Position;
+                   
 
                     activeKeysDown = true;
                     Image = imageVertical;
                     rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
-                                              (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed + correctPositionY),
-                                              this.Image.Width / scale,
-                                              this.Image.Height / scale); //jak stoi
+                                              (int)positionVertical.Y/* - (this.Image.Width / scale)*/ + (pinguinVertical + platformSpeed + correctPositionY),
+                                             _animationVertival.Position.Width,
+                                              _animationVertival.Position.Height); //jak stoi
 
 
                 }
@@ -390,9 +390,9 @@ namespace TestGame
                 positionVertical = Position.ToVector2();
                 Image = imageVertical;
                 rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
-                                          (int)positionVertical.Y - (this.Image.Width / scale) + (pinguinVertical + platformSpeed + correctPositionY),
-                                          this.Image.Width / scale,
-                                          this.Image.Height / scale); //jak stoi
+                                          (int)positionVertical.Y /*- (this.Image.Width / scale)*/ + (pinguinVertical + platformSpeed + correctPositionY),
+                                           _animationVertival.Position.Width,
+                                           _animationVertival.Position.Height); //jak stoi
 
             }
 
@@ -447,7 +447,7 @@ namespace TestGame
         /// <param name="platform">Platforma do sprawdzenia</param>
         /// <returns>True - gdy pingwin znajduje się na platformie
         ///          False - gdy pingwin nie znajduje się na platformie</returns>
-        public bool Collision(Rectangle r1, PlatformType platformType = PlatformType.NN)
+        public bool Collision(Rectangle r1, PenguinType penguinType = PenguinType.NN, PlatformType platformType = PlatformType.NN)
         {
 
             if (penguinType == PenguinType.RICO && platformType == PlatformType.MAGICPIPE)
@@ -466,7 +466,7 @@ namespace TestGame
 
                         blockDircetionLEFT = blockDirectionRIGHT = false;
 
-                if ((currentdimensionsPenguin[1].Intersects(r1))) //jak kolizja po prawej stronie
+                if ((currentdimensionsPenguin[3].Intersects(r1))) //jak kolizja po prawej stronie
                 {
                     actualCollisionRect = r1;
                     BlockSystem();
@@ -478,19 +478,18 @@ namespace TestGame
                     if (!currentdimensionsPenguin[0].Intersects(actualCollisionRect) &&
                         !currentdimensionsPenguin[1].Intersects(actualCollisionRect) &&
                         !currentdimensionsPenguin[2].Intersects(actualCollisionRect) &&
-                        !currentdimensionsPenguin[3].Intersects(actualCollisionRect) &&
-                        !currentdimensionsPenguin[4].Intersects(actualCollisionRect))
+                        !currentdimensionsPenguin[3].Intersects(actualCollisionRect))
 
                         blockDircetionLEFT = blockDirectionRIGHT = false;
 
-                if ((currentdimensionsPenguin[4].Intersects(r1))) //jak kolizja po prawej stronie
+                if ((currentdimensionsPenguin[3].Intersects(r1))) //jak kolizja po prawej stronie
                 {
                     actualCollisionRect = r1;
                     BlockSystem();
                 }
             }
 
-            if (currentdimensionsPenguin[3].Intersects(r1)) //jak kolizja po lewej stronie
+            if (currentdimensionsPenguin[2].Intersects(r1)) //jak kolizja po lewej stronie
             {
                 actualCollisionRect = r1;
                 BlockSystem();
@@ -523,14 +522,14 @@ namespace TestGame
             if (platformType == PlatformType.FLOOR) //jak podloga to powoduje zeby pingwin nie mogl sie zaczepic od boku
             {
                 // r1.Height = (int)speed.Y + 1;
-                if (currentdimensionsPenguin[2].Intersects(r1)) //jak dotknie nogami
+                if (currentdimensionsPenguin[1].Intersects(r1)) //jak dotknie nogami
                 {
                     //correctPositionY = (r1.Y - (rectangle.Y + rectangle.Height)) * -1;
                     blockDircetionDOWN = false;
                     return true;
                 }
             }
-            else if (currentdimensionsPenguin[2].Intersects(r1)) //jak dotknie nogami
+            else if (currentdimensionsPenguin[1].Intersects(r1)) //jak dotknie nogami
             {
                 // correctPositionY = (r1.Y - (rectangle.Y + rectangle.Height)) * -1;
                 blockDircetionDOWN = false;
@@ -544,7 +543,7 @@ namespace TestGame
 
         public bool CollisionRectangle(Rectangle r1)
         {
-            return currentdimensionsPenguin[2].Intersects(r1);
+            return currentdimensionsPenguin[1].Intersects(r1);
         }
 
 
@@ -611,7 +610,7 @@ namespace TestGame
         public void FallDown()
         {
             float a = Mass / Const.GRAVITY;
-            if (speed.Y < currentdimensionsPenguin[2].Height * 0.7) speed.Y += 0.7f; //ograniczenie zeby pingwin stawał na platformie a nie w jej połowie
+            if (speed.Y < currentdimensionsPenguin[1].Height * 0.7) speed.Y += 0.7f; //ograniczenie zeby pingwin stawał na platformie a nie w jej połowie
         }
 
         public void Jump()

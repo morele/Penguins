@@ -216,7 +216,7 @@ namespace TestGame.Scene
                             for (i = 0; i < penguins.Count; i++)
                             {
                                 if (penguins[i].penguinType != penguin.penguinType)
-                                    if (penguin.Collision(penguins[i].rectangle))
+                                    if (penguin.Collision(penguins[i].rectangle, penguins[i].penguinType))
                                         penguin.JumpStop(0);
                             }
 
@@ -238,7 +238,7 @@ namespace TestGame.Scene
                                 }*/
 
 
-                            if (penguin.Collision(platform.PlatformRectangle, platform.platformType))// sprawdzenie czy na platformie są pingwiny
+                            if (penguin.Collision(platform.PlatformRectangle,PenguinType.NN, platform.platformType))// sprawdzenie czy na platformie są pingwiny
                             {
                                 penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
 

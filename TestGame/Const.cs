@@ -63,34 +63,32 @@ namespace TestGame
             switch (type)
             {
                 case PenguinType.KOWALSKI:
-                    dimensions.Add(new Rectangle(104, 17, 199, 735));   // głowa i tułów
-                    dimensions.Add(new Rectangle(303, 144, 97, 36));    // dziób
-                    dimensions.Add(new Rectangle(121, 797, 240, 103));   // nogi ++20 do wysokości
-                    dimensions.Add(new Rectangle(17, 275, 39, 545));    // dupa
-                    dimensions.Add(new Rectangle(303, 317, 37, 424));   // brzuch
+                    dimensions.Add(new Rectangle(50,0,125,50));   // głowa i tułów
+                    dimensions.Add(new Rectangle(20,390,125,52));    // nogi
+                    dimensions.Add(new Rectangle(20,120,40,230));   // dupa
+                    dimensions.Add(new Rectangle(130,120,45,230));    // brzuch
+
                     break;
                 case PenguinType.RICO:
-                    dimensions.Add(new Rectangle(135, 45, 185, 595));//głowa
-                    dimensions.Add(new Rectangle(320, 140, 160, 60));//dziob
-                    dimensions.Add(new Rectangle(115, 760, 230, 56));//nogi
-                    dimensions.Add(new Rectangle(10, 200, 70, 540));//dupa
-                    dimensions.Add(new Rectangle(300, 380, 35, 290));//brzuch
+                    dimensions.Add(new Rectangle(60,22,110,40));//głowa
+                    dimensions.Add(new Rectangle(0,350,170,58));//nogi
+                    dimensions.Add(new Rectangle(0,110,50,180));// dupa
+                    dimensions.Add(new Rectangle(120,110,50,180));// brzuch
+
                     break;
                 case PenguinType.SZEREGOWY:
-                    dimensions.Add(new Rectangle(90, 3, 150, 495));//głowa
-                    dimensions.Add(new Rectangle(245, 170, 105, 35));//dziob
-                    dimensions.Add(new Rectangle(115, 580, 200, 65));//nogi ++ 20 do wysokości
-                    dimensions.Add(new Rectangle(10, 80, 45, 510));//dupa
-                    dimensions.Add(new Rectangle(290, 290, 43, 210));//brzuch
+                    dimensions.Add(new Rectangle(15,0,145,50));//głowa
+                    dimensions.Add(new Rectangle(15,268,145,40));//nogi
+                    dimensions.Add(new Rectangle(15,100,50,140));// dupa
+                    dimensions.Add(new Rectangle(110,100,50,140));//brzuch
+
                     break;
                 case PenguinType.SKIPPER:
 
-                    dimensions.Add(new Rectangle(89, 10, 239, 586));   // głowa i tułów
-                    dimensions.Add(new Rectangle(328, 97, 90, 42));    // dziób
-                    dimensions.Add(new Rectangle(129, 600, 215, 61));  // nogi
-                    dimensions.Add(new Rectangle(15, 281, 54, 347));   // plecy                    
-                    dimensions.Add(new Rectangle(331, 212, 42, 283));  // brzuch
-
+                    dimensions.Add(new Rectangle(30,0,150,50));   // głowa i tułów
+                    dimensions.Add(new Rectangle(30,280,150,52));    // nogi
+                    dimensions.Add(new Rectangle(30,100,50,140));  // dupa
+                    dimensions.Add(new Rectangle(130,100,50,140));   //   brzuch                  
 
                     break;
 

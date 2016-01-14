@@ -33,7 +33,8 @@ namespace TestGame
         RICO = 1,
         SKIPPER = 2,
         KOWALSKI = 3,
-        SZEREGOWY = 4
+        SZEREGOWY = 4,
+        NN = 5
     }
     public enum PlatformType
     {
