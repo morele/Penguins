@@ -78,7 +78,7 @@ namespace TestGame
                     break;
                 case PenguinType.SZEREGOWY:
                     dimensions.Add(new Rectangle(15,0,145,50));//głowa
-                    dimensions.Add(new Rectangle(15,268,145,40));//nogi
+                    dimensions.Add(new Rectangle(31,268,129,40));//nogi --16 - 16 px
                     dimensions.Add(new Rectangle(15,100,50,140));// dupa
                     dimensions.Add(new Rectangle(110,100,50,140));//brzuch
 

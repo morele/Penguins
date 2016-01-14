@@ -46,8 +46,8 @@ namespace TestGame
 
         public List<Rectangle> currentdimensionsPenguin = new List<Rectangle>();
         public List<Rectangle> currentdimensionsPenguinShoe = new List<Rectangle>();
-        private Vector2 positionHorizontal;
-        private Vector2 positionVertical;
+       // private Vector2 positionHorizontal;
+       // private Vector2 positionVertical;
         private Vector2 tmpPosition = new Vector2();
         private Platform blockPlatform = new Platform();
         // private bool shoe = false;
@@ -348,7 +348,7 @@ namespace TestGame
                 FallDown();
 
 
-                positionHorizontal = positionVertical = Position.ToVector2();
+               // positionHorizontal = positionVertical = Position.ToVector2();
 
 
                 if (Keyboard.GetState().IsKeyUp(Keys.Down)) activeKeysDown = false;
@@ -358,8 +358,8 @@ namespace TestGame
 
                     activeKeysDown = true;
                     Image = imageHorizontal;
-                    rectangle = new Rectangle((int)positionHorizontal.X + correctPositionX,
-                                             ((int)positionHorizontal.Y /*- (this.Image.Width / scale)*/ + (pinguinHorizontal + platformSpeed/* + correctPositionY*/)),
+                    rectangle = new Rectangle((int)Position.ToVector2().X + correctPositionX,
+                                             ((int)Position.ToVector2().Y /*- (this.Image.Width / scale)*/ + (pinguinHorizontal + platformSpeed/* + correctPositionY*/)),
                                               _animationHorizontal.Position.Width,
                                               _animationHorizontal.Position.Height); // na slizgu
 
@@ -367,16 +367,11 @@ namespace TestGame
                 }
                 else
                 {
-                   
-
                     activeKeysDown = true;
-                    Image = imageVertical;
-                    rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
-                                              (int)positionVertical.Y /*- _animationVertival.Position.Width*/ + (pinguinVertical + platformSpeed + correctPositionY),
+                    rectangle = new Rectangle((int)Position.ToVector2().X + correctPositionX,
+                                              (int)Position.ToVector2().Y  + (pinguinVertical + platformSpeed + correctPositionY),
                                              _animationVertival.Position.Width,
-                                              _animationVertival.Position.Height); //jak stoi
-
-               
+                                              _animationVertival.Position.Height); //jak stoi             
                 }
             }
             else
@@ -385,10 +380,9 @@ namespace TestGame
                 Position += speed.ToPoint();
                 speed.Y += 0.15f;
 
-                positionVertical = Position.ToVector2();
-                Image = imageVertical;
-                rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
-                                          (int)positionVertical.Y /*-  _animationVertival.Position.Width */+ (pinguinVertical + platformSpeed + correctPositionY),
+               // positionVertical = Position.ToVector2();
+                rectangle = new Rectangle((int)Position.ToVector2().X + correctPositionX,
+                                          (int)Position.ToVector2().Y + (pinguinVertical + platformSpeed + correctPositionY),
                                            _animationVertival.Position.Width,
                                            _animationVertival.Position.Height); //jak stoi
 
@@ -406,7 +400,7 @@ namespace TestGame
             }
 
 
-            if (positionVertical.Y > 1500)
+            if (Position.ToVector2().Y > 1500)
             {
                 OnPenguinDeathByFalling(penguinType);
             }
