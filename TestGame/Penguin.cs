@@ -88,7 +88,7 @@ namespace TestGame
         private Animation _animationVertival;
 
         private bool _slide;
-       
+
 
         public Penguin(Texture2D image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType, int mass, Point frameSize) :
             base(image, position, speedValue, gravity, frameSize)
@@ -230,26 +230,26 @@ namespace TestGame
                     case PenguinType.RICO:
                         {
 
-                           // rectangle = RecalculateRectangle(newRectangle, new Point(0, 52));
+                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 52));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 52)));
 
                         }
                         break;
                     case PenguinType.KOWALSKI:
                         {
-                          //  rectangle = RecalculateRectangle(newRectangle, new Point(0, 58));
+                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 58));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 58)));
                         }
                         break;
                     case PenguinType.SKIPPER:
                         {
-                         //   rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
+                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 38)));
                         }
                         break;
                     case PenguinType.SZEREGOWY:
                         {
-                         //   rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
+                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 38)));
                         }
                         break;
@@ -359,7 +359,7 @@ namespace TestGame
                     activeKeysDown = true;
                     Image = imageHorizontal;
                     rectangle = new Rectangle((int)positionHorizontal.X + correctPositionX,
-                                             ((int)positionHorizontal.Y /*- (this.Image.Width / scale)*/ + (pinguinHorizontal + platformSpeed/* + correctPositionY*/)),
+                                             ((int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed/* + correctPositionY*/)),
                                               _animationHorizontal.Position.Width,
                                               _animationHorizontal.Position.Height); // na slizgu
 
@@ -367,17 +367,19 @@ namespace TestGame
                 }
                 else
                 {
-                   
+
 
                     activeKeysDown = true;
                     Image = imageVertical;
                     rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
-                                              (int)positionVertical.Y /*- _animationVertival.Position.Width*/ + (pinguinVertical + platformSpeed + correctPositionY),
+                                              (int)positionVertical.Y/* - (this.Image.Width / scale)*/ + (pinguinVertical + platformSpeed + correctPositionY),
                                              _animationVertival.Position.Width,
                                               _animationVertival.Position.Height); //jak stoi
 
-               
+
                 }
+
+
             }
             else
             {
@@ -388,7 +390,7 @@ namespace TestGame
                 positionVertical = Position.ToVector2();
                 Image = imageVertical;
                 rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
-                                          (int)positionVertical.Y /*-  _animationVertival.Position.Width */+ (pinguinVertical + platformSpeed + correctPositionY),
+                                          (int)positionVertical.Y /*- (this.Image.Width / scale)*/ + (pinguinVertical + platformSpeed + correctPositionY),
                                            _animationVertival.Position.Width,
                                            _animationVertival.Position.Height); //jak stoi
 
@@ -579,14 +581,30 @@ namespace TestGame
         /// <param name="spriteBatch"></param>
         public void DrawAnimation(SpriteBatch spriteBatch)
         {
-            if (_slide)
+            //   rectangle.Width /= scale;
+            if (penguinType == PenguinType.RICO)
             {
-                _animationHorizontal.Draw(spriteBatch, _left);
+                if (_slide)
+                {
+                    _animationHorizontal.Draw(spriteBatch, _left);
+                }
+                else
+                {
+                    _animationVertival.Draw(spriteBatch, _left, true);
+                }
             }
             else
             {
-                _animationVertival.Draw(spriteBatch, _left);
+                if (_slide)
+                {
+                    _animationHorizontal.Draw(spriteBatch, _left);
+                }
+                else
+                {
+                    _animationVertival.Draw(spriteBatch, _left);
+                }
             }
+
         }
 
         public override string ToString()
