@@ -230,26 +230,26 @@ namespace TestGame
                     case PenguinType.RICO:
                         {
 
-                           // rectangle = RecalculateRectangle(newRectangle, new Point(0, 52));
+                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 52));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 52)));
 
                         }
                         break;
                     case PenguinType.KOWALSKI:
                         {
-                          //  rectangle = RecalculateRectangle(newRectangle, new Point(0, 58));
+                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 58));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 58)));
                         }
                         break;
                     case PenguinType.SKIPPER:
                         {
-                         //   rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
+                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 38)));
                         }
                         break;
                     case PenguinType.SZEREGOWY:
                         {
-                         //   rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
+                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 38)));
                         }
                         break;
@@ -369,7 +369,7 @@ namespace TestGame
                 {
                     activeKeysDown = true;
                     rectangle = new Rectangle((int)Position.ToVector2().X + correctPositionX,
-                                              (int)Position.ToVector2().Y  + (pinguinVertical + platformSpeed + correctPositionY),
+                                              (int)Position.ToVector2().Y + (pinguinVertical + platformSpeed + correctPositionY),
                                              _animationVertival.Position.Width,
                                               _animationVertival.Position.Height); //jak stoi             
                 }
@@ -380,7 +380,7 @@ namespace TestGame
                 Position += speed.ToPoint();
                 speed.Y += 0.15f;
 
-               // positionVertical = Position.ToVector2();
+                // positionVertical = Position.ToVector2();
                 rectangle = new Rectangle((int)Position.ToVector2().X + correctPositionX,
                                           (int)Position.ToVector2().Y + (pinguinVertical + platformSpeed + correctPositionY),
                                            _animationVertival.Position.Width,
@@ -573,6 +573,20 @@ namespace TestGame
         /// <param name="spriteBatch"></param>
         public void DrawAnimation(SpriteBatch spriteBatch)
         {
+            //   rectangle.Width /= scale;
+            if (penguinType == PenguinType.RICO)
+            {
+                if (_slide)
+                {
+                    _animationHorizontal.Draw(spriteBatch, _left);
+                }
+                else
+                {
+                    _animationVertival.Draw(spriteBatch, _left, true);
+                }
+            }
+            else
+            {
             if (_slide)
             {
                 _animationHorizontal.Draw(spriteBatch, _left);
@@ -581,6 +595,8 @@ namespace TestGame
             {
                 _animationVertival.Draw(spriteBatch, _left);
             }
+            }
+
         }
 
         public override string ToString()

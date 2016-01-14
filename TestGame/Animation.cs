@@ -147,16 +147,31 @@ namespace TestGame
         /// </summary>
         /// <param name="spriteBatch"></param>
         /// <param name="flip">default fasle</param>
-        public void Draw(SpriteBatch spriteBatch, bool flip = false)
+        public void Draw(SpriteBatch spriteBatch, bool flip = false, bool Rico = false)
         {
-            if (flip)
+            if (Rico)
             {
-                spriteBatch.Draw(_texture, Position, _positionOnSheet, color, 0.0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0.0f);
+                if (flip)
+                {
+                    spriteBatch.Draw(_texture, new Rectangle(Position.X - (70 / 4), Position.Y, Position.Width, Position.Height), _positionOnSheet, color, 0.0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0.0f);
+                }
+                else
+                {
+                    spriteBatch.Draw(_texture, Position, _positionOnSheet, color);
+                }
             }
             else
             {
-                spriteBatch.Draw(_texture, Position, _positionOnSheet, color);
+                if (flip)
+                {
+                    spriteBatch.Draw(_texture, Position, _positionOnSheet, color, 0.0f, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0.0f);
+                }
+                else
+                {
+                    spriteBatch.Draw(_texture, Position, _positionOnSheet, color);
+                }
             }
+
         }
         public void DrawStaticItems(SpriteBatch spriteBatch)
         {
