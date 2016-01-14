@@ -359,7 +359,7 @@ namespace TestGame
                     activeKeysDown = true;
                     Image = imageHorizontal;
                     rectangle = new Rectangle((int)positionHorizontal.X + correctPositionX,
-                                             ((int)positionHorizontal.Y - (this.Image.Width / scale) + (pinguinHorizontal + platformSpeed/* + correctPositionY*/)),
+                                             ((int)positionHorizontal.Y /*- (this.Image.Width / scale)*/ + (pinguinHorizontal + platformSpeed/* + correctPositionY*/)),
                                               _animationHorizontal.Position.Width,
                                               _animationHorizontal.Position.Height); // na slizgu
 
@@ -372,14 +372,12 @@ namespace TestGame
                     activeKeysDown = true;
                     Image = imageVertical;
                     rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
-                                              (int)positionVertical.Y/* - (this.Image.Width / scale)*/ + (pinguinVertical + platformSpeed + correctPositionY),
+                                              (int)positionVertical.Y /*- _animationVertival.Position.Width*/ + (pinguinVertical + platformSpeed + correctPositionY),
                                              _animationVertival.Position.Width,
                                               _animationVertival.Position.Height); //jak stoi
 
-
+               
                 }
-
-
             }
             else
             {
@@ -390,7 +388,7 @@ namespace TestGame
                 positionVertical = Position.ToVector2();
                 Image = imageVertical;
                 rectangle = new Rectangle((int)positionVertical.X + correctPositionX,
-                                          (int)positionVertical.Y /*- (this.Image.Width / scale)*/ + (pinguinVertical + platformSpeed + correctPositionY),
+                                          (int)positionVertical.Y /*-  _animationVertival.Position.Width */+ (pinguinVertical + platformSpeed + correctPositionY),
                                            _animationVertival.Position.Width,
                                            _animationVertival.Position.Height); //jak stoi
 
