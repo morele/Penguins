@@ -230,26 +230,26 @@ namespace TestGame
                     case PenguinType.RICO:
                         {
 
-                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 52));
+                           // rectangle = RecalculateRectangle(newRectangle, new Point(0, 52));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 52)));
 
                         }
                         break;
                     case PenguinType.KOWALSKI:
                         {
-                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 58));
+                          //  rectangle = RecalculateRectangle(newRectangle, new Point(0, 58));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 58)));
                         }
                         break;
                     case PenguinType.SKIPPER:
                         {
-                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
+                         //   rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 38)));
                         }
                         break;
                     case PenguinType.SZEREGOWY:
                         {
-                            rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
+                         //   rectangle = RecalculateRectangle(newRectangle, new Point(0, 38));
                             _animationHorizontal.Update(gametime, RecalculateRectangle(newRectangle, new Point(0, 38)));
                         }
                         break;
@@ -579,7 +579,6 @@ namespace TestGame
         /// <param name="spriteBatch"></param>
         public void DrawAnimation(SpriteBatch spriteBatch)
         {
-            rectangle.Width /= scale;
             if (_slide)
             {
                 _animationHorizontal.Draw(spriteBatch, _left);
