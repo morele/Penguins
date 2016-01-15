@@ -146,8 +146,8 @@ namespace TestGame
                     dimensionsPenguinSlide = Const.DimensionsPenguinSlide(PenguinType.SZEREGOWY);
                     break;
                 case PenguinType.SKIPPER:
-                    pinguinHorizontal =0;//= Const.PINGUIN_SKIPPER_HORIZONTAL;
-                    pinguinVertical = Const.PINGUIN_SKIPPER_VERTICAL;
+                    pinguinHorizontal = Const.PINGUIN_SKIPPER_HORIZONTAL;
+                    pinguinVertical = 0;//= Const.PINGUIN_SKIPPER_VERTICAL;
                     dimensionsPenguin = Const.DimensionsPenguin(PenguinType.SKIPPER);
                     dimensionsPenguinSlide = Const.DimensionsPenguinSlide(PenguinType.SKIPPER);
                     break;
@@ -195,7 +195,6 @@ namespace TestGame
             }
 
         }
-
         public bool activeKeysDown = false;
         override public void UpdatePosition(GameTime gametime)
         {
@@ -221,24 +220,26 @@ namespace TestGame
 
                 Position += speed.ToPoint();
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down))
+                if (Keyboard.GetState().IsKeyDown(Keys.Right) && Keyboard.GetState().IsKeyDown(Keys.Down) && !blockDirectionRIGHT)
                 {
-                    speed.X = speedValue * 2;
-                    activeDirection = true;
-                    _slide = true;
-                    _left = false;
-                    inMove = true;
+
+                        speed.X = speedValue * 2;
+                        activeDirection = true;
+                        _slide = true;
+                        _left = false;
+                        inMove = true;
+                    
                 }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down))
+                else if (Keyboard.GetState().IsKeyDown(Keys.Left) && Keyboard.GetState().IsKeyDown(Keys.Down) && !blockDircetionLEFT)
                 {
-                    speed.X = -speedValue * 2;
-                    activeDirection = false;
-                    _slide = true;
-                    _left = true;
-                    inMove = true;
+                        speed.X = -speedValue * 2;
+                        activeDirection = false;
+                        _slide = true;
+                        _left = true;
+                        inMove = true;
                 }
                 else
-                if (Keyboard.GetState().IsKeyDown(Keys.Right) && !blockDirectionRIGHT)
+                if (Keyboard.GetState().IsKeyDown(Keys.Right) && !Keyboard.GetState().IsKeyDown(Keys.Down) && !blockDirectionRIGHT)
                 {
                     speed.X = speedValue;
                     activeDirection = true;
@@ -247,7 +248,7 @@ namespace TestGame
                     _slide = false;
 
                 }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDircetionLEFT)
+                else if (Keyboard.GetState().IsKeyDown(Keys.Left) && !Keyboard.GetState().IsKeyDown(Keys.Down) && !blockDircetionLEFT)
                 {
                     speed.X = -speedValue;
                     activeDirection = false;
@@ -273,19 +274,16 @@ namespace TestGame
 
                 FallDown();
 
-              //  if (Keyboard.GetState().IsKeyUp(Keys.Down)) activeKeysDown = false;
                 if (_slide)// na slizgu
-                {
-                    activeKeysDown = true;
-                    rectangle = new Rectangle((int)Position.ToVector2().X + correctPositionX,
-                                             ((int)Position.ToVector2().Y  + (pinguinHorizontal + platformSpeed/* + correctPositionY*/)),
+                {                    
+                    rectangle = new Rectangle((int)Position.ToVector2().X + correctPositionX ,
+                                             ((int)Position.ToVector2().Y  + (pinguinHorizontal  + platformSpeed + correctPositionY)),
                                               _animationHorizontal.Position.Width,
                                               _animationHorizontal.Position.Height); 
 
                 }
                 else //jak stoi         
                 {
-                    activeKeysDown = true;
                     rectangle = new Rectangle((int)Position.ToVector2().X + correctPositionX,
                                               (int)Position.ToVector2().Y + (pinguinVertical + platformSpeed + correctPositionY),
                                              _animationVertival.Position.Width,
@@ -332,13 +330,15 @@ namespace TestGame
                 {
                     blockDirectionRIGHT = true;
                     blockDircetionLEFT = false;
-                    correctPositionX = (int)-speedValue;
+                    if(_slide)  correctPositionX = (int)-speedValue*2; else
+                                correctPositionX = (int)-speedValue;
                 }
                 if (!activeDirection) //lewo
                 {
                     blockDircetionLEFT = true;
                     blockDirectionRIGHT = false;
-                    correctPositionX = (int)speedValue;
+                  /*  if (_slide) correctPositionX = (int)speedValue * 2; else
+                                correctPositionX = (int)speedValue;*/
                 }
             }
         }
@@ -385,18 +385,36 @@ namespace TestGame
             }
 
             if (activeDirection && block) //jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie
-                if (rectangle.X > tmpPosition.X + speedValue)
+                if(_slide)
                 {
-                    correctPositionX = 0;
-                    block = false;
-                }
+                    if (rectangle.X > tmpPosition.X + speedValue*2)
+                    {
+                        correctPositionX = 0;
+                        block = false;
+                    }
+                } else
+                    if(rectangle.X > tmpPosition.X + speedValue)
+                    {
+                        correctPositionX = 0;
+                        block = false;
+                    }
+
 
             if (!activeDirection && block) //jak pingwin zmienił pozycje w przeciwną strone to odblokuj blokowanie
-                if (rectangle.X < tmpPosition.X - speedValue)
+                if(_slide)
                 {
-                    correctPositionX = 0;
-                    block = false;
+                    if (rectangle.X < tmpPosition.X - speedValue*2)
+                    {
+                        correctPositionX = 0;
+                        block = false;
+                    }
                 }
+                else
+                    if (rectangle.X < tmpPosition.X - speedValue*2)
+                    {
+                        correctPositionX = 0;
+                        block = false;
+                    }
 
             if (!block) //jak nie zablokowane to odblokuj oba kierunki
                 blockDircetionLEFT = blockDirectionRIGHT = false;
