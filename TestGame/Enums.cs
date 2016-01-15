@@ -44,6 +44,7 @@ namespace TestGame
         MAGICPIPE = 4,
         SPRING = 5,
         PAWL = 6,
+        CAR = 7,
 
     }
 }

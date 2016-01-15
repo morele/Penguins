@@ -79,7 +79,7 @@ namespace TestGame.Scene
 
 
             platforms.Add(new Platform(rura, new Vector2(-700, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/autko/Autko1"), new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/autko/Autko1"), new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height),false,0,0, PlatformType.CAR));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(0, YpositionFloor - 150)));
             platforms.Add(new Platform(kolec, new Vector2(400, YpositionFloor - kolec.Height)));
             platforms.Add(new Platform(kolec, new Vector2(440, YpositionFloor - kolec.Height)));
