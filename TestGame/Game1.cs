@@ -94,7 +94,7 @@ namespace TestGame
                 Content.Load<Texture2D>(@"MenuPauzy\JedzILow"),
                 Content.Load<Texture2D>(@"MenuPauzy\Poziom2"),
                 Content.Load<Texture2D>("Wskaznik"),
-                Content.Load<Texture2D>(@"MenuPauzy\menuBackground"),
+                Content.Load<Texture2D>(@"MenuPauzy\bigBackground"),
                 Content.Load<Texture2D>(@"MenuPauzy\resumeText"),
                 Content.Load<Texture2D>(@"MenuPauzy\exitText"),
                 Content.Load<Texture2D>(@"MenuPauzy\tryAgainText"));
@@ -263,14 +263,6 @@ namespace TestGame
                 spriteBatch.Begin();
                 spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
                 _playerPanel.Draw(spriteBatch);
-
-                // narysowanie ikonki dźwięku
-                if (SoundManager.SoundOn)
-                    spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
-                else
-                    spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
-
-
                 spriteBatch.End();
 
                 // narysowanie aktualnej sceny
@@ -297,6 +289,20 @@ namespace TestGame
             {
                 _pauseMenu.Draw(spriteBatch);
             }
+
+            #region IKONKA DŹWIĘKU
+
+            // rysowana jest na końcu po to aby była zawsze na wierzchu
+            spriteBatch.Begin();
+       
+            if (SoundManager.SoundOn)
+                spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+            else
+                spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+
+            spriteBatch.End();
+            #endregion
+
             base.Draw(gameTime);
         }
         /// <summary>
