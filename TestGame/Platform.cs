@@ -35,6 +35,8 @@ namespace TestGame
         //typ platformy
         public PlatformType platformType;
 
+       
+
         //Czy platforma jest aktywna
         public bool active = true;
         public bool initJump = false;
@@ -86,6 +88,8 @@ namespace TestGame
             this.platformType = platformType;
 
             PlatformRectangle = Animation.PositionStaticItems;
+
+          
         }
 
         override public void UpdatePosition(GameTime gametime)
@@ -129,7 +133,7 @@ namespace TestGame
                 }
 
                 // aktualizacja sprite'a
-                PlatformRectangle = new Rectangle((int)Position.X, (int)Position.Y, Image.Width, Image.Height);
+                PlatformRectangle = new Rectangle((int)Position.X, (int)Position.Y, PlatformRectangle.Width, PlatformRectangle.Height);
             }
             if (platformType == PlatformType.MONEY)
             {
@@ -154,7 +158,7 @@ namespace TestGame
             }
             if (gametime != null && Animation != null)
             {
-                this.Animation.Update(gametime);
+                this.Animation.Update(gametime,PlatformRectangle);
             }
 
         }

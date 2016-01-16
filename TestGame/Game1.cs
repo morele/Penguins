@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
 using TestGame.Menu;
 using TestGame.Scene;
+using Microsoft.Xna.Framework.Media;
 
 namespace TestGame
 {
@@ -42,6 +43,16 @@ namespace TestGame
         // sceny
         Scene1 scene1;
         Scene2 scene2;
+
+        // zmienne dla obsługi dźwięku
+        private bool _blockSoundOn;
+        private bool _blockSoundUp;
+        private bool _blockSoundDown;
+
+        private Rectangle _soundIconRectangle;
+        private Texture2D _soundOnTexture;
+        private Texture2D _soundOffTexture;
+        private Vector2 _soundIconPosition = Vector2.Zero;
 
         private CurrentScene _currentScene;
 
@@ -83,10 +94,18 @@ namespace TestGame
                 Content.Load<Texture2D>(@"MenuPauzy\JedzILow"),
                 Content.Load<Texture2D>(@"MenuPauzy\Poziom2"),
                 Content.Load<Texture2D>("Wskaznik"),
-                Content.Load<Texture2D>(@"MenuPauzy\menuBackground"),
+                Content.Load<Texture2D>(@"MenuPauzy\bigBackground"),
                 Content.Load<Texture2D>(@"MenuPauzy\resumeText"),
                 Content.Load<Texture2D>(@"MenuPauzy\exitText"),
                 Content.Load<Texture2D>(@"MenuPauzy\tryAgainText"));
+
+            // grafiki obsługi dźwięku
+            _soundOnTexture = Content.Load<Texture2D>(@"Audio\Graph\soundOn");
+            _soundOffTexture = Content.Load<Texture2D>(@"Audio\Graph\soundOff");
+            _soundIconRectangle = new Rectangle(0, 0, _soundOnTexture.Width, _soundOnTexture.Height);
+
+            _soundIconPosition.X = GraphicsDevice.Viewport.Width - _soundIconRectangle.Width / 2 - 10;
+            _soundIconPosition.Y = 10;
 
             base.Initialize();
         }
@@ -111,37 +130,46 @@ namespace TestGame
                     throw new ArgumentOutOfRangeException();
             }
 
-            rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"),
-                             Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"),//Ł.G: tymczasowo zmienione 
-                             Content.Load<Texture2D>("WyborPostaci/Rico"),
-                             new Vector2(-980, 400), penguinSpeed,
-                             gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815));//Ł.G : dodanie rozmiaru frame do Animacji
-
-            // dźwięki wydawane przez skippera
-            rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico_start"));
-
 
             skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"),
                                   Content.Load<Texture2D>("Postacie/Animacje/SkipperSlizg"),
                                   Content.Load<Texture2D>("WyborPostaci/Skipper"),
-                                  new Vector2(-1080, 400), penguinSpeed,
+                                  new Vector2(-3080, 400), penguinSpeed,
                                   gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS, new Point(422, 663));
-
             // dźwięki wydawane przez skippera
             skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper_start"));
 
+            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"),
+                                  Content.Load<Texture2D>("Postacie/Animacje/KowalskiPlywanie"),
+                                  Content.Load<Texture2D>("WyborPostaci/Kowalski"),
+                                  new Vector2(-3030, 400), penguinSpeed,
+                                  gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
+
+            rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"),
+                             Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"),
+                             Content.Load<Texture2D>("WyborPostaci/Rico"),
+                             new Vector2(-2980, 400), penguinSpeed,
+                             gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815));
+            // dźwięki wydawane przez skippera
+            rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico_start"));
 
             szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"),
                                     Content.Load<Texture2D>("Postacie/Animacje/SzeregowySlizg"),
                                     Content.Load<Texture2D>("WyborPostaci/Szeregowy"),
-                                    new Vector2(-930, 400), penguinSpeed,
+                                    new Vector2(-2930, 400), penguinSpeed,
                                     gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));
 
-            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"),
-                                   Content.Load<Texture2D>("Postacie/Animacje/KowalskiPlywanie"),
-                                   Content.Load<Texture2D>("WyborPostaci/Kowalski"),
-                                   new Vector2(-1030, 400), penguinSpeed,
-                                   gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
+           
+
+
+            
+
+           
+
+
+            
+
+           
 
 
 
@@ -180,6 +208,34 @@ namespace TestGame
                 _pauseMenu.ShowMenu = true;
             }
 
+            #region DŹWIĘK
+
+            MediaPlayer.Volume = SoundManager.Volume;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Q) && !_blockSoundOn)
+            {
+                SoundManager.SoundOn = !SoundManager.SoundOn;
+
+                _blockSoundOn = true;
+
+                // odtworzenie dźwięku tła jeśli jest to włączone
+                if (SoundManager.SoundOn)
+                {
+                    SoundManager.Volume = 1.0f;
+                    MediaPlayer.Resume();
+                }
+                else
+                {
+                    SoundManager.Volume = 0.0f;
+                    MediaPlayer.Pause();
+                }
+            }
+
+            if (Keyboard.GetState().IsKeyUp(Keys.Q))
+                _blockSoundOn = false;
+
+            #endregion
+
             if (Keyboard.GetState().IsKeyUp(Keys.Escape))
             {
                 _blockESCKey = false;
@@ -212,7 +268,6 @@ namespace TestGame
 
             if (!_isGamePause)
             {
-
                 // narysowanie panelu użytkownika
                 spriteBatch.Begin();
                 spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
@@ -243,6 +298,20 @@ namespace TestGame
             {
                 _pauseMenu.Draw(spriteBatch);
             }
+
+            #region IKONKA DŹWIĘKU
+
+            // rysowana jest na końcu po to aby była zawsze na wierzchu
+            spriteBatch.Begin();
+       
+            if (SoundManager.SoundOn)
+                spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+            else
+                spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+
+            spriteBatch.End();
+            #endregion
+
             base.Draw(gameTime);
         }
         /// <summary>

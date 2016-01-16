@@ -26,7 +26,10 @@ namespace Testgame.MIniGames.Swiming
 
         private SpriteFont _font;
 
-        private int punkty = 0;
+        public int EatenFish
+        {
+            get; private set;
+        }
         private int _fishToCollect = 20;
         private string _gameText = "Nacisnij spacje aby plywac!";
         private string _gameAllers = "Zjadles zatruta rybe nie mozesz plywac!";
@@ -47,7 +50,7 @@ namespace Testgame.MIniGames.Swiming
 
             _random = new Random();
 
-            _numberOfPoint = string.Format("Zebrane ryby: {0}/{1}", punkty, _fishToCollect);
+            _numberOfPoint = string.Format("Zebrane ryby: {0}/{1}", EatenFish, _fishToCollect);
 
             _background = _content.Load<Texture2D>("Minigry/SwimingGame/tło minigra");
 
@@ -108,8 +111,8 @@ namespace Testgame.MIniGames.Swiming
                         if (!fish.Eaten)
                         {
                             _pinguin.Eating = true;
-                            punkty++;
-                            System.Diagnostics.Debug.WriteLine("Pkt: {0}", punkty);
+                            EatenFish++;
+                            System.Diagnostics.Debug.WriteLine("Pkt: {0}", EatenFish);
 
                         }
 
@@ -126,11 +129,11 @@ namespace Testgame.MIniGames.Swiming
                         if (!Badfish.Eaten)
                         {
                             _pinguin.Eating = true;
-                            punkty -= 4;
+                            EatenFish -= 4;
 
                             _pinguin.color = Color.GreenYellow;
 
-                            System.Diagnostics.Debug.WriteLine("Pkt: {0}", punkty);
+                            System.Diagnostics.Debug.WriteLine("Pkt: {0}", EatenFish);
                         }
 
                         Badfish.Eaten = true;
@@ -173,13 +176,13 @@ namespace Testgame.MIniGames.Swiming
                 _pinguin.NumberOfLife = 4;
                 _pinguin.SetStartPosition();
                 _pinguin.Run = false;
-                this.punkty = 0;
+                this.EatenFish = 0;
             }
-            if (punkty >= 20)
+            if (EatenFish >= 20)
             {
                 EndOfGame = true;
             }
-            _numberOfPoint = string.Format("Zebrane ryby: {0}/{1}", punkty, _fishToCollect);
+            _numberOfPoint = string.Format("Zebrane ryby: {0}/{1}", EatenFish, _fishToCollect);
         }
 
 
