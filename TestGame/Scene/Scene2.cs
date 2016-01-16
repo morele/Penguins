@@ -82,6 +82,10 @@ namespace TestGame.Scene
             // platforms.Add(new Platform(Woda));
             platforms.Add(new Platform(mur, new Vector2(-1100 + mur.Width + woda.Width, YpositionFloor + platfroma2.Height - 2)));
             platforms.Add(new Platform(rura, new Vector2(-2700, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
+
+            platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 8, 50,
+                new Vector2(-2500, YpositionFloor - content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony").Height))));
+
             platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/AnimacjaTla/AutkoAnimacja"), 6, 50,
                 new Vector2(-2300, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height))));
 
