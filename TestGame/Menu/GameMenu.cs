@@ -13,8 +13,8 @@ namespace TestGame.Menu
     public class GameMenu : Game
     {
         private const float VOLUME_STEP = 19.2f;
-        private readonly Vector2 VOLUME_POINTER_START_POSITION = new Vector2(90, 15);
-        private readonly Vector2 VOLUME_POINTER_END_POSITION = new Vector2(287, 15);
+        private  Vector2 VOLUME_POINTER_START_POSITION = new Vector2(90, 15);
+        private  Vector2 VOLUME_POINTER_END_POSITION = new Vector2(287, 15);
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -52,7 +52,8 @@ namespace TestGame.Menu
         // dla dźwięku
         private Rectangle _soundIconRectangle;
         private Texture2D _soundOnTexture;
-        private Rectangle _soundOffRectangle;
+        private Vector2 _soundIconPosition = Vector2.Zero;
+        private Vector2 _soundProgressBarPosition = Vector2.Zero;
         private Texture2D _soundOffTexture;
         private Rectangle _soundProgressBarRectangle;
         private Texture2D _soundProgressBarTexture;
@@ -111,10 +112,7 @@ namespace TestGame.Menu
             _soundProgressBarRectangle = new Rectangle(0, 0, 
                 _soundProgressBarTexture.Width, 
                 _soundProgressBarTexture.Height);
-
-            _soundValuePointer = VOLUME_POINTER_END_POSITION;
-
-
+            
             // dźwięki
             _chooseMenuItemEffect = Content.Load<SoundEffect>(@"Audio\Waves\click");
             _chooseMenuItemEffectInstance = _chooseMenuItemEffect.CreateInstance();
@@ -135,6 +133,20 @@ namespace TestGame.Menu
 
             float x = graphics.GraphicsDevice.Viewport.Width / 2 - (_newGameOptionTexture.Width / 2) - 10 - _cursorTexture.Width;
             _cursorPosition = new Point((int)x, 300);
+
+            _soundIconPosition.X = GraphicsDevice.Viewport.Width - _soundIconRectangle.Width / 2 - 10;
+            _soundIconPosition.Y = 10;
+
+            _soundProgressBarPosition.X = GraphicsDevice.Viewport.Width - _soundProgressBarRectangle.Width / 3 - 50;
+            _soundProgressBarPosition.Y = 12;
+
+            VOLUME_POINTER_START_POSITION.X = _soundProgressBarPosition.X + 25;
+            VOLUME_POINTER_START_POSITION.Y = 22;
+
+            VOLUME_POINTER_END_POSITION.X = (VOLUME_POINTER_START_POSITION.X + 10) + 178;
+            VOLUME_POINTER_END_POSITION.Y = 22;
+
+            _soundValuePointer = VOLUME_POINTER_END_POSITION;
 
             base.LoadContent();
         }
@@ -291,12 +303,12 @@ namespace TestGame.Menu
 
             // narysowanie ikonki dźwięku
             if(SoundManager.SoundOn)
-                spriteBatch.Draw(_soundOnTexture, Vector2.Zero, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
             else
-                spriteBatch.Draw(_soundOffTexture, Vector2.Zero, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
 
             // naryswoanie progress bara z dźwiękiem
-            spriteBatch.Draw(_soundProgressBarTexture, new Vector2(70, 5),
+            spriteBatch.Draw(_soundProgressBarTexture, _soundProgressBarPosition,
                 _soundProgressBarRectangle, Color.White, 0.0f,
                 Vector2.Zero, 0.3f, SpriteEffects.None, 0);
 
