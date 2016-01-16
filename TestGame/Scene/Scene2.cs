@@ -23,11 +23,15 @@ namespace TestGame.Scene
 
         // menu wyboru ekwipunku
         private ChooseItemMenu _chooseItemMenu;
+        private TextLabel _textLabel;
 
         // minigra
         private bool _playMiniGame;
         private Swiming _miniGame;
         private bool _canPlayMiniGame;
+
+        // rybka zebrana przez Rico
+        private Bonus _fishItem;
 
         private GameTime gametime;
 
@@ -35,7 +39,7 @@ namespace TestGame.Scene
         {
             _chooseItemMenu = new ChooseItemMenu();
             _chooseItemMenu.IsVisible = false;
-
+            
             _miniGame = new Swiming(new SpriteBatch(device), content, device);
 
         }
@@ -96,6 +100,11 @@ namespace TestGame.Scene
             platforms.Add(new Platform(sciana, new Vector2(1580, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
             platforms.Add(new Platform(sciana, new Vector2(1580 + 89, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
 
+            // rybka 
+            _fishItem = new Bonus(content.Load<Texture2D>(@"Scena2/ryba"), new Point(200, 200), new Point(50,50));
+            _fishItem.IsActive = true;
+           
+            
             // muzyka tła
             if (SoundManager.SoundOn)
             {
@@ -127,8 +136,16 @@ namespace TestGame.Scene
 
         public override void UpdatePosition(GameTime gameTime)
         {
-            if (_miniGame.EndOfGame)
+            // to się wykona tylko raz po zakończeniu minigry
+            if (_miniGame.EndOfGame && _canPlayMiniGame)
             {
+                // dodanie ryb do ekwipunku Rico
+                var rico = penguins.FirstOrDefault(p => p.penguinType == PenguinType.RICO);
+                rico.Equipment.AddItem(new EquipmentItem(_fishItem));
+
+                // Rico wychodzi w następnej rurze, więc go tam ustawiam
+                rico.Position = platforms.LastOrDefault(p => p.platformType == PlatformType.MAGICPIPE).Position;
+                rico.Position.Y -= rico.rectangle.Height;
                 _canPlayMiniGame = false;
                 _playMiniGame = false;
                 camera.active = false;
@@ -190,7 +207,8 @@ namespace TestGame.Scene
 
                             // sprawdzenie czy pingwin nie stoi na rurze
                             if (platform.platformType == PlatformType.MAGICPIPE &&
-                                penguin.penguinType == PenguinType.RICO)
+                                penguin.penguinType == PenguinType.RICO &&
+                                !_miniGame.EndOfGame) // jeśli już gra została zakończona to sorry ;P
                             {
                                 if (penguin.Collision(platform.PlatformRectangle))
                                 {
@@ -210,6 +228,9 @@ namespace TestGame.Scene
                                 _chooseItemMenu.IsVisible = false;
                                 _canPlayMiniGame = false;
                             }
+
+
+
 
 
                             //kolizja z innymi pingwinami
