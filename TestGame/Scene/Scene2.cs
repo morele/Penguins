@@ -43,7 +43,7 @@ namespace TestGame.Scene
         {
             _chooseItemMenu = new ChooseItemMenu();
             _chooseItemMenu.IsVisible = false;
-            
+
             _miniGame = new Swiming(new SpriteBatch(device), content, device);
 
         }
@@ -53,20 +53,13 @@ namespace TestGame.Scene
             base.LoadContent(penguins, playerPanel, player);
 
             int YpositionFloor = 700;
+
             Texture2D mur = content.Load<Texture2D>("Scena2/mur");
             Texture2D platfroma2 = content.Load<Texture2D>("Scena2/platforma2");
-
-
-
             Texture2D kolec = content.Load<Texture2D>("Scena2/Kolec");
-
-
             Texture2D waga = content.Load<Texture2D>("Scena2/waga");
-
             Texture2D woda = content.Load<Texture2D>("Scena2/woda/WodaAnimacja");
-
             // Animation Woda=new Animation(content.Load<Texture2D>("Scena2/woda/WodaAnimacja"),3,120, new Vector2(-1100 + mur.Width, YpositionFloor + platfroma2.Height + 30));
-
             Texture2D rura = content.Load<Texture2D>("Scena2/Rura");
             Texture2D zapadka = content.Load<Texture2D>("Scena2/Zapadka");
             Texture2D platforma1 = content.Load<Texture2D>("Scena2/platforma1");
@@ -75,36 +68,39 @@ namespace TestGame.Scene
             Texture2D sprezyna = content.Load<Texture2D>("Scena2/Sprezyna");
 
             //platformy
+            platforms.Add(new Platform(platfroma2, new Vector2(-3100, YpositionFloor)));
+            platforms.Add(new Platform(platfroma2, new Vector2(-2100, YpositionFloor)));
             platforms.Add(new Platform(platfroma2, new Vector2(-1100, YpositionFloor)));
             platforms.Add(new Platform(platfroma2, new Vector2(-100, YpositionFloor)));
             platforms.Add(new Platform(platforma1, new Vector2(1221, YpositionFloor)));
 
             //woda i ograniczenia
-            platforms.Add(new Platform(mur, new Vector2(-1100, YpositionFloor + platfroma2.Height - 2)));
+            platforms.Add(new Platform(mur, new Vector2(-3100, YpositionFloor + platfroma2.Height - 2)));
 
-            for (int i = 1; i <= 10; i++)
+            for (int i = 1; i <= 30; i++)
             {
                 platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/woda/WodaAnimacja"), 3, 120,
-                        new Vector2(-1100 + mur.Width * i, YpositionFloor + platfroma2.Height + 30))));
+                        new Vector2(-3100 + mur.Width * i, YpositionFloor + platfroma2.Height + 30))));
             }
             // platforms.Add(new Platform(Woda));
             platforms.Add(new Platform(mur, new Vector2(-1100 + mur.Width + woda.Width, YpositionFloor + platfroma2.Height - 2)));
+            platforms.Add(new Platform(rura, new Vector2(-2700, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
 
-
-            platforms.Add(new Platform(rura, new Vector2(-700, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
+            platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 8, 50,
+                new Vector2(-2500, YpositionFloor - content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony").Height))));
 
             platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/AnimacjaTla/AutkoAnimacja"), 6, 50,
-                new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height))));
+                new Vector2(-2300, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height))));
 
             //   platforms.Add(new Platform(content.Load<Texture2D>("Scena2/autko/Autko1"), new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height), false, 0, 0, PlatformType.CAR));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(0, YpositionFloor - 150), false, 0, 0, PlatformType.CAR));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(-1500, YpositionFloor), false, 0, 0, PlatformType.CAR));
 
 
 
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(400, YpositionFloor - kolec.Height)), false, 0, 0, PlatformType.SPIKE));
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(440, YpositionFloor - kolec.Height)), false, 0, 0, PlatformType.SPIKE));
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(480, YpositionFloor - kolec.Height)), false, 0, 0, PlatformType.SPIKE));
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(520, YpositionFloor - kolec.Height)), false, 0, 0, PlatformType.SPIKE));
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-400, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE)); 
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-440, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-480, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-520, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
 
 
 
@@ -240,14 +236,7 @@ namespace TestGame.Scene
                 {
                     if (platform.platformType == PlatformType.SPIKE)
                     {
-                        if (platform.Position.Y <= 663)
-                        {
-                            platform.Position.Y--;
-                        }
-                        else if(platform.Position.Y<=(662-(platform.PlatformRectangle.Height+50)))
-                        {
-                            platform.Position.Y++;
-                        }
+                   
                     }
                     if (platform.active)
                     {
