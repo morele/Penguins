@@ -19,8 +19,15 @@ namespace TestGame.Scene
         protected PlayerPanel playerPanel;
         protected bool firstStart = true;
         protected GameTime gameTime;
+
+        /// <summary>
+        /// Flaga informuje czy poziom został ukończony
+        /// </summary>
+        public bool IsCompleted { get; set; }
+
         public Scene(ContentManager content, Camera camera,GameTime gameTime)
         {
+            IsCompleted = false;
             this.content = content;
             this.camera = camera;
             this.gameTime = gameTime;
