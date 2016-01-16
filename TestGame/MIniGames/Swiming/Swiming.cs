@@ -30,7 +30,7 @@ namespace Testgame.MIniGames.Swiming
         {
             get; private set;
         }
-        private int _fishToCollect = 20;
+        private int _fishToCollect = 0;
         private string _gameText = "Nacisnij spacje aby plywac!";
         private string _gameAllers = "Zjadles zatruta rybe nie mozesz plywac!";
         private string _numberOfPoint;
@@ -179,7 +179,7 @@ namespace Testgame.MIniGames.Swiming
                 _pinguin.Run = false;
                 this.EatenFish = 0;
             }
-            if (EatenFish >= 20)
+            if (EatenFish >= _fishToCollect)
             {
                 EndOfGame = true;
             }

@@ -34,6 +34,9 @@ namespace TestGame.Scene
         // rybka zebrana przez Rico
         private Bonus _fishItem;
 
+        // skrzynka do której Rico ma wrzucić rybki
+        private ActionElement _fishBox;
+
         private GameTime gametime;
 
         public Scene2(ContentManager content, Camera camera, GameTime gametime, GraphicsDevice device) : base(content, camera, gametime)
@@ -113,11 +116,18 @@ namespace TestGame.Scene
             platforms.Add(new Platform(sciana, new Vector2(1580, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
             platforms.Add(new Platform(sciana, new Vector2(1580 + 89, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
 
+            // utworzenie obiektu skrzynki na ryby
+            float fishBoxHeight = content.Load<Texture2D>("Scena2/Skrzynia").Height;
+            float fishBoxWidth = content.Load<Texture2D>("Scena2/Skrzynia").Width;
+
+            Point fishBoxPosition = new Point(1045, (int)(YpositionFloor + 46 - waga.Height - fishBoxHeight));
+            Point fishBoxSize = new Point((int)fishBoxWidth, (int)fishBoxHeight);
+            _fishBox = new ActionElement(content.Load<Texture2D>("Scena2/Skrzynia"), fishBoxPosition, fishBoxSize, actionSector: 40);
+
             // rybka 
-            _fishItem = new Bonus(content.Load<Texture2D>(@"Scena2/ryba"), new Point(200, 200), new Point(50,50));
+            Point fishItemSize = new Point(content.Load<Texture2D>(@"Scena2/ryba").Width, content.Load<Texture2D>(@"Scena2/ryba").Height);
+            _fishItem = new Bonus(content.Load<Texture2D>(@"Scena2/ryba"), new Point(50, 300), fishItemSize);
             _fishItem.IsActive = true;
-           
-            
             // muzyka tła
             if (SoundManager.SoundOn)
             {
@@ -136,6 +146,11 @@ namespace TestGame.Scene
             }
             else
             {
+                
+
+                if (_miniGame.EndOfGame)
+                    _textLabel.Draw(spriteBatch, true);
+
                 // narysowanie menu wyboru ekwipunku
                 _chooseItemMenu.Draw(spriteBatch);
 
@@ -144,6 +159,7 @@ namespace TestGame.Scene
 
                 foreach (Penguin penguin in penguins)
                     penguin.DrawAnimation(spriteBatch);
+
             }
         }
 
@@ -155,6 +171,11 @@ namespace TestGame.Scene
                 // dodanie ryb do ekwipunku Rico
                 var rico = penguins.FirstOrDefault(p => p.penguinType == PenguinType.RICO);
                 rico.Equipment.AddItem(new EquipmentItem(_fishItem));
+
+                _textLabel = new TextLabel(rico.Equipment.Items[0].Item.Position.ToVector2(), 
+                    100, "x 20", content.Load<SpriteFont>("JingJing"),
+                    rico.Equipment.Items[0].Item.Texture);
+
 
                 // Rico wychodzi w następnej rurze, więc go tam ustawiam
                 rico.Position = platforms.LastOrDefault(p => p.platformType == PlatformType.MAGICPIPE).Position;
@@ -221,6 +242,17 @@ namespace TestGame.Scene
                     {
                         foreach (Penguin penguin in penguins)
                         {
+                            // opadanie ryby jest dostępne tylko wtedy gdy Rico ją wypluje
+                            if (_fishItem.IsActive)
+                            {
+                                _fishItem.FallDown();
+
+                                if (_fishItem.IsCollisionDetect(platform))
+                                {
+                                    _fishItem.CanFallDown = false;
+                                }
+
+                            }
 
                             // sprawdzenie czy pingwin nie stoi na rurze
                             if (platform.platformType == PlatformType.MAGICPIPE &&
@@ -237,7 +269,7 @@ namespace TestGame.Scene
                                     _canPlayMiniGame = true;
                                 }
                             }
-                            // jeśli jest poza nią to przestań wyświetlać strzałkę
+                            // jeśli jest poza nią to przestań wyświetlać strzałkę MŁ
                             else if (platform.platformType != PlatformType.MAGICPIPE &&
                                      penguin.penguinType == PenguinType.RICO &&
                                      penguin.Collision(platform.PlatformRectangle))
@@ -246,7 +278,30 @@ namespace TestGame.Scene
                                 _canPlayMiniGame = false;
                             }
 
+                            // sprawdzenie czy pingwin (RICO) jest w obrębie skrzynki MŁ
+                            else if (penguin.penguinType == PenguinType.RICO && _fishBox.IsInActionSector(penguin))
+                            {
+                                // wyświetlenie menu wyboru ekwipunku
+                                if (penguin.Equipment.Items.Count > 0)
+                                {
+                                    _chooseItemMenu.IsVisible = true;
+                                    List<Texture2D> textures = penguin.Equipment.Items.Select(equipmentItem => equipmentItem.Item.Texture).ToList();
+                                    _chooseItemMenu.Update(penguin, textures, 40);
+                                    penguin.SelectedItem = penguin.Equipment.Items[_chooseItemMenu.SelectedIndex];
+                                }
+                            }
+                            else if (penguin.penguinType == PenguinType.RICO && 
+                                     !_fishBox.IsInActionSector(penguin) &&
+                                     _miniGame.EndOfGame)
+                            {
+                                _chooseItemMenu.IsVisible = false;
+                            }
 
+                            // sprawdzenie czy Rico wypluł rybę
+                            if (_fishItem.IsCollisionDetect(_fishBox))
+                            {
+                                _fishBox.IsActive = false;
+                            }
 
 
 

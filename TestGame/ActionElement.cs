@@ -22,9 +22,10 @@ namespace TestGame
 
         public bool IsInActionSector(GameObject obj)
         {
+
             Rectangle objRectangle = new Rectangle(obj.Position, obj.Size);
 
-            if(obj.Position.X + obj.Size.X > ActionSector.X)
+            if(ActionSector.Intersects(objRectangle))
                 return true;
             return false;
         }

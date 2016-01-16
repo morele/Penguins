@@ -31,7 +31,6 @@ namespace TestGame.Scene
 
         private GameTime gametime;
 
-
         public Scene1(ContentManager content, Camera camera,GameTime gametime) : base(content, camera, gametime)
         {
             automatMinigame = new AutomatMinigame();
@@ -206,7 +205,7 @@ namespace TestGame.Scene
                                 _testCoin.OnChecked();
                             }
 
-
+                            // sprawdzenie kolizji wyrzuconej monety z automatem
                             if (_coin.IsCollisionDetect(_slotMachine))
                             {
                                 activeMiniGame = true;
@@ -252,6 +251,8 @@ namespace TestGame.Scene
 
             if(automatMinigame.GamePass)
             {
+                // zakończenie poziomu
+                IsCompleted = true;
                 activeMiniGame = false;
                 camera.active = false;
                 playerPanel.activeDraw = true;

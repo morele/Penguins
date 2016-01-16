@@ -40,9 +40,24 @@ namespace TestGame
 
         private PauseMenu _pauseMenu;
 
-        // sceny
-        Scene1 scene1;
-        Scene2 scene2;
+
+        // flaga informuje 
+        private bool _isSceneLoading = true;
+        private Vector2 _levelTitlePosition;
+        private Vector2 _levelNumberPosition;
+
+        // SCENA 1
+        private Scene1 scene1;
+        private Texture2D _scene1TitleTexture;
+        private Texture2D _scene1LevelNumberTexture;
+
+
+        // SCENA 2
+        private Scene2 scene2;
+        private Texture2D _scene2TitleTexture;
+        private Texture2D _scene2LevelNumberTexture;
+
+
 
         // zmienne dla obsługi dźwięku
         private bool _blockSoundOn;
@@ -69,8 +84,8 @@ namespace TestGame
             graphics.ApplyChanges();
             // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
 
-            _currentScene = CurrentScene.Scene2;
-
+            // ustawienie początkowego poziomu na scene 1 MŁ
+            _currentScene = CurrentScene.Scene1;
         }
 
         protected override void Initialize()
@@ -79,32 +94,31 @@ namespace TestGame
             gravitation = 7f; // wysokość wybicia przy skoku( = 5 ~ 100px)
             camera = new Camera();
 
-            //scene1 = new Scene1(Content, camera, gametime);
+            switch (_currentScene)
+            {
+                case CurrentScene.Scene1:
+                    scene1 = new Scene1(Content, camera, gametime);
+                    break;
+                case CurrentScene.Scene2:
             scene2 = new Scene2(Content, camera, gametime, GraphicsDevice);
+                    break;
+                case CurrentScene.Scene3:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             // inicjalizacja panelu gracza - podstawowy gracz - skipper           
-            _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"),
-                                           new Vector2(0, 0),
-                                           new Vector2(GraphicsDevice.Viewport.Width, 150),
-                                           Content.Load<SpriteFont>("JingJing"),
-                                           Content.Load<Texture2D>("WyborPostaci/Skipper"));
+            _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"), new Vector2(0, 0), new Vector2(GraphicsDevice.Viewport.Width, 150), Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Skipper"));
 
-            _pauseMenu = new PauseMenu(
-                GraphicsDevice,
-                Content.Load<Texture2D>(@"MenuPauzy\JedzILow"),
-                Content.Load<Texture2D>(@"MenuPauzy\Poziom2"),
-                Content.Load<Texture2D>("Wskaznik"),
-                Content.Load<Texture2D>(@"MenuPauzy\bigBackground"),
-                Content.Load<Texture2D>(@"MenuPauzy\resumeText"),
-                Content.Load<Texture2D>(@"MenuPauzy\exitText"),
-                Content.Load<Texture2D>(@"MenuPauzy\tryAgainText"));
+            _pauseMenu = new PauseMenu(GraphicsDevice, Content.Load<Texture2D>(@"MenuPauzy\JedzILow"), Content.Load<Texture2D>(@"MenuPauzy\Poziom2"), Content.Load<Texture2D>("Wskaznik"), Content.Load<Texture2D>(@"MenuPauzy\bigBackground"), Content.Load<Texture2D>(@"MenuPauzy\resumeText"), Content.Load<Texture2D>(@"MenuPauzy\exitText"), Content.Load<Texture2D>(@"MenuPauzy\tryAgainText"));
 
             // grafiki obsługi dźwięku
             _soundOnTexture = Content.Load<Texture2D>(@"Audio\Graph\soundOn");
             _soundOffTexture = Content.Load<Texture2D>(@"Audio\Graph\soundOff");
             _soundIconRectangle = new Rectangle(0, 0, _soundOnTexture.Width, _soundOnTexture.Height);
 
-            _soundIconPosition.X = GraphicsDevice.Viewport.Width - _soundIconRectangle.Width / 2 - 10;
+            _soundIconPosition.X = GraphicsDevice.Viewport.Width - _soundIconRectangle.Width/2 - 10;
             _soundIconPosition.Y = 10;
 
             base.Initialize();
@@ -118,9 +132,13 @@ namespace TestGame
             switch (_currentScene)
             {
                 case CurrentScene.Scene1:
+                    _scene1TitleTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene1Title");
+                    _scene1LevelNumberTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene1Number");
                     _background = Content.Load<Texture2D>("scene2_background");
                     break;
                 case CurrentScene.Scene2:
+                    _scene2TitleTexture = Content.Load<Texture2D>(@"MenuPauzy\JedzILow");
+                    _scene2LevelNumberTexture = Content.Load<Texture2D>(@"MenuPauzy\Poziom2");
                     _background = Content.Load<Texture2D>("scene2_background");
                     break;
                 case CurrentScene.Scene3:
@@ -131,35 +149,28 @@ namespace TestGame
             }
 
 
-            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"),
-                                  Content.Load<Texture2D>("Postacie/Animacje/SkipperSlizg"),
-                                  Content.Load<Texture2D>("WyborPostaci/Skipper"),
-                                  new Vector2(-3080, 400), penguinSpeed,
-                                  gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS, new Point(422, 663));
-            // dźwięki wydawane przez skippera
-            skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper_start"));
+            // ustawienie tytułu i numeru poziomu
+            float screenWidth = GraphicsDevice.Viewport.Width;
+            float screenHeight = GraphicsDevice.Viewport.Height;
 
-            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"),
-                                  Content.Load<Texture2D>("Postacie/Animacje/KowalskiPlywanie"),
-                                  Content.Load<Texture2D>("WyborPostaci/Kowalski"),
-                                  new Vector2(-3030, 400), penguinSpeed,
-                                  gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
+            _levelNumberPosition = new Vector2((screenWidth / 2 - _scene1LevelNumberTexture.Width / 2), screenHeight / 2 - 100);
+            _levelTitlePosition = new Vector2((screenWidth / 2 - _scene1TitleTexture.Width / 2) + 5, screenHeight / 2 + 20);
 
-            rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"),
-                             Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"),
-                             Content.Load<Texture2D>("WyborPostaci/Rico"),
-                             new Vector2(-2980, 400), penguinSpeed,
-                             gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815));
+            rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"), //Ł.G: tymczasowo zmienione 
+                Content.Load<Texture2D>("WyborPostaci/Rico"), new Vector2(-980, 400), penguinSpeed, gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815)); //Ł.G : dodanie rozmiaru frame do Animacji
+
             // dźwięki wydawane przez skippera
             rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico_start"));
 
-            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"),
-                                    Content.Load<Texture2D>("Postacie/Animacje/SzeregowySlizg"),
-                                    Content.Load<Texture2D>("WyborPostaci/Szeregowy"),
-                                    new Vector2(-2930, 400), penguinSpeed,
-                                    gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));
 
+            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"), Content.Load<Texture2D>("Postacie/Animacje/SkipperSlizg"), Content.Load<Texture2D>("WyborPostaci/Skipper"), new Vector2(-1080, 400), penguinSpeed, gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS, new Point(422, 663));
+           
+            // dźwięki wydawane przez skippera
+            skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper_start"));
 
+            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"), Content.Load<Texture2D>("Postacie/Animacje/SzeregowySlizg"), Content.Load<Texture2D>("WyborPostaci/Szeregowy"), new Vector2(-930, 400), penguinSpeed, gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));
+
+            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"), Content.Load<Texture2D>("Postacie/Animacje/KowalskiPlywanie"), Content.Load<Texture2D>("WyborPostaci/Kowalski"), new Vector2(-1030, 400), penguinSpeed, gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
 
 
             // SoundManager.SoundOn = false;
@@ -172,8 +183,19 @@ namespace TestGame
             //Podstawowy gracz - skipper
             player = ActiveAndDeactivationPlayer(true, false, false, false);
 
-            //scene1.LoadContent(penguins, _playerPanel, player);
+            switch (_currentScene)
+            {
+                case CurrentScene.Scene1:
+                    scene1.LoadContent(penguins, _playerPanel, player);
+                    break;
+                case CurrentScene.Scene2:
             scene2.LoadContent(penguins, _playerPanel, player);
+                    break;
+                case CurrentScene.Scene3:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
         }
 
@@ -183,6 +205,47 @@ namespace TestGame
 
         protected override void Update(GameTime gameTime)
         {
+            #region SPRAWDZENIE KTÓRY ZAŁADOWAĆ POZIOM
+            if (_currentScene == CurrentScene.Scene1)
+            {
+                if (scene1.IsCompleted)
+                {
+                    _currentScene = CurrentScene.Scene2;
+                    scene2 = new Scene2(Content, camera, gametime, GraphicsDevice);
+                    LoadContent();
+                    _isSceneLoading = true;
+
+                }
+            }
+
+            else if (_currentScene == CurrentScene.Scene2)
+            {
+                if (scene2.IsCompleted)
+                {
+                    _currentScene = CurrentScene.Scene3;
+                    //scene3 = new Scene3(Content, camera, gametime, GraphicsDevice);
+                    //LoadContent();
+                    //_isSceneLoading = true;
+
+                }
+            }
+
+            else if (_currentScene == CurrentScene.Scene3)
+            {
+                //if (scene3.IsCompleted)
+                //{
+                //   /// JESTEŚ ZAJEBISTY WYGRAŁEŚ :)
+                //}
+            }
+            #endregion
+
+            // wyłączenie ekranu ładowania MŁ
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _isSceneLoading)
+            {
+                _isSceneLoading = false;
+            }
+
+
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !_blockESCKey)
             {
                 _blockESCKey = true;
@@ -224,12 +287,24 @@ namespace TestGame
             }
 
                 // po co to tu jest??
-                var deltaTime = 1 / gameTime.ElapsedGameTime.TotalSeconds;
+            var deltaTime = 1/gameTime.ElapsedGameTime.TotalSeconds;
 
             if (!_isGamePause)
             {
-                //scene1.UpdatePosition(gameTime);
+                switch (_currentScene)
+                {
+                    case CurrentScene.Scene1:
+                        scene1.UpdatePosition(gameTime);
+                        break;
+                    case CurrentScene.Scene2:
                 scene2.UpdatePosition(gameTime);
+                        break;
+                    case CurrentScene.Scene3:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                
             }
             else
             {
@@ -246,8 +321,47 @@ namespace TestGame
         {
             this.gametime = gameTime;
 
+            switch (_currentScene)
+            {
+                case CurrentScene.Scene1:
+                    GraphicsDevice.Clear(Color.Indigo);
+                    break;
+                case CurrentScene.Scene2:
+                    GraphicsDevice.Clear(Color.LimeGreen);
+                    break;
+                case CurrentScene.Scene3:
+                    GraphicsDevice.Clear(Color.MediumVioletRed);
+                    break;
+                default:
             GraphicsDevice.Clear(Color.CornflowerBlue);
+                    break;
+            }
+            
 
+            // wyświetlenie screenu początkowego z nazwą oraz tytułem poziomu
+            if (_isSceneLoading)
+            {
+                spriteBatch.Begin();
+
+                switch (_currentScene)
+                {
+                    case CurrentScene.Scene1:
+                        spriteBatch.Draw(_scene1TitleTexture, _levelTitlePosition, Color.White);
+                        spriteBatch.Draw(_scene1LevelNumberTexture, _levelNumberPosition, Color.White);
+                        break;
+                    case CurrentScene.Scene2:
+                        spriteBatch.Draw(_scene2TitleTexture, _levelTitlePosition, Color.White);
+                        spriteBatch.Draw(_scene2LevelNumberTexture, _levelNumberPosition, Color.White);
+                        break;
+                    case CurrentScene.Scene3:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                spriteBatch.End();
+            }
+            else
+            {
             if (!_isGamePause)
             {
                 // narysowanie panelu użytkownika
@@ -257,8 +371,7 @@ namespace TestGame
                 spriteBatch.End();
 
                 // narysowanie aktualnej sceny
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null,
-                    camera.transform);
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
 
                 switch (_currentScene)
                 {
@@ -292,10 +405,13 @@ namespace TestGame
                 spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
 
             spriteBatch.End();
+
             #endregion
+            }
 
             base.Draw(gameTime);
         }
+
         /// <summary>
         /// Metoda aktywuje i dezaktuwuje graczy
         /// </summary>
@@ -314,7 +430,5 @@ namespace TestGame
 
             return skipper;
         }
-
     }
-
 }
