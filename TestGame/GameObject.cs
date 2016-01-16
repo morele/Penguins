@@ -36,10 +36,21 @@ namespace TestGame
             Size = size;
             IsActive = true;
         }
+
+     
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (IsActive)
-                spriteBatch.Draw(Texture, new Rectangle(Position, Size), Color.White);
+            if (Animation == null)
+            {
+                if (IsActive)
+                    spriteBatch.Draw(Texture, new Rectangle(Position, Size), Color.White);
+            }
+            else
+            {
+                if (IsActive)
+                    Animation.Draw(spriteBatch);//.Draw(Texture, new Rectangle(Position, Size), Color.White);
+            }
+           
         }
 
     }

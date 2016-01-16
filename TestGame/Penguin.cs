@@ -208,7 +208,8 @@ namespace TestGame
                 {
                     if (Equipment.Items.Count > 0)
                     {
-                        var vomitItem = SelectedItem;
+                        // jeśli selectedItem jest nullem to weź pierszy z listy
+                        var vomitItem = SelectedItem ?? Equipment.Items[0];
                         vomitItem.Item.IsActive = true;
                         vomitItem.Item.Position = new Point(Position.X + Size.X, Position.Y - Size.Y - 30);
                         Equipment.RemoveItem(vomitItem);
@@ -283,6 +284,7 @@ namespace TestGame
                                              ((int)Position.ToVector2().Y  + (pinguinHorizontal  + platformSpeed + correctPositionY)),
                                               _animationHorizontal.Position.Width,
                                               _animationHorizontal.Position.Height); 
+                    Size = new Point(rectangle.Width, rectangle.Height);
 
                 }
                 else //jak stoi         
@@ -290,7 +292,8 @@ namespace TestGame
                     rectangle = new Rectangle((int)Position.ToVector2().X + correctPositionX,
                                               (int)Position.ToVector2().Y + (pinguinVertical + platformSpeed + correctPositionY),
                                              _animationVertival.Position.Width,
-                                              _animationVertival.Position.Height);    
+                                              _animationVertival.Position.Height);
+                    Size = new Point(rectangle.Width, rectangle.Height);
                 }
             }
             else//gdy nieaktywny
@@ -303,6 +306,7 @@ namespace TestGame
                                           (int)Position.ToVector2().Y + (pinguinVertical + platformSpeed + correctPositionY),
                                            _animationVertival.Position.Width,
                                            _animationVertival.Position.Height); //jak stoi
+                Size = new Point(rectangle.Width, rectangle.Height);
 
             }
 
