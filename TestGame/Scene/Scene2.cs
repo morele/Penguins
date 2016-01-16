@@ -219,14 +219,7 @@ namespace TestGame.Scene
                 {
                     if (platform.platformType == PlatformType.SPIKE)
                     {
-                        if (platform.Position.Y <= 663)
-                        {
-                            platform.Position.Y--;
-                        }
-                        else if(platform.Position.Y<=(662-(platform.PlatformRectangle.Height+50)))
-                        {
-                            platform.Position.Y++;
-                        }
+                   
                     }
                     if (platform.active)
                     {
