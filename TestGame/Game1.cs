@@ -159,18 +159,6 @@ namespace TestGame
                                     new Vector2(-2930, 400), penguinSpeed,
                                     gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));
 
-           
-
-
-            
-
-           
-
-
-            
-
-           
-
 
 
 
@@ -187,12 +175,6 @@ namespace TestGame
             //scene1.LoadContent(penguins, _playerPanel, player);
             scene2.LoadContent(penguins, _playerPanel, player);
 
-            // załadowanie i ustawienie platform
-            /*   platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy500x48"), new Vector2(-600, 600)));
-               platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(50, 600), true, 1, 100));
-               platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(300, 600), true, 2, 200));
-               platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(500, 600), true, 3, 100));
-               platforms.Add(new Platform(Content.Load<Texture2D>("Platformy/Trawa/Platformy100x48"), new Vector2(700, 600), true, 4, 400));*/
         }
 
         protected override void UnloadContent()

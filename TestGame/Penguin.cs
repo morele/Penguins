@@ -79,7 +79,7 @@ namespace TestGame
         private double _frameDelay;
 
 
-        private readonly Vector2 _startPositionOfPenguin;
+        private  Vector2 _startPositionOfPenguin;
 
         private bool _left;
 
@@ -92,7 +92,7 @@ namespace TestGame
 
         private bool _slide;
        
-
+        
         public Penguin(Texture2D image, Texture2D imageHorizontal, Texture2D avatar, Vector2 position, float speedValue, float gravity, PenguinType penguinType, int mass, Point frameSize) :
             base(image, position, speedValue, gravity, frameSize)
         {
@@ -172,7 +172,11 @@ namespace TestGame
 
         }
 
-
+        public void UpdateStartPosition(Vector2 position)
+        {
+            Position = position.ToPoint();
+            _startPositionOfPenguin = position;
+        }
 
         /// <summary>
         /// w metodzie update animuje postac w zaleznosci od typu pingwina

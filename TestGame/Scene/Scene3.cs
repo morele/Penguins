@@ -58,12 +58,7 @@ namespace TestGame.Scene
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (_playMiniGame)
-            {
-                _miniGame.Draw(spriteBatch);
-            }
-            else
-            {
+
                 // narysowanie menu wyboru ekwipunku
                 _chooseItemMenu.Draw(spriteBatch);
 
@@ -72,7 +67,6 @@ namespace TestGame.Scene
 
                 foreach (Penguin penguin in penguins)
                     penguin.DrawAnimation(spriteBatch);
-            }
         }
 
         public override void UpdatePosition(GameTime gameTime)
@@ -108,11 +102,6 @@ namespace TestGame.Scene
                 if (Keyboard.GetState().IsKeyUp(Keys.D3)) _blockD3 = false;
                 if (Keyboard.GetState().IsKeyUp(Keys.D4)) _blockD4 = false;
 
-
-                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && _canPlayMiniGame)
-                {
-                    _playMiniGame = true;
-                }
 
                 // odświeżenie paska gracza
                 playerPanel.Update(player);
