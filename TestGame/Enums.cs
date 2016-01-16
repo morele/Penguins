@@ -45,6 +45,7 @@ namespace TestGame
         SPRING = 5,
         PAWL = 6,
         CAR = 7,
+        SPIKE=8
 
     }
 }

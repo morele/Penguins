@@ -561,7 +561,7 @@
 /processorParam:TextureFormat=Color
 /build:MenuPauzy/Poziom2.png
 
-#begin MenuPauzy/bigBackground.png
+#begin AnimacjeTla/AutkoAnimacja.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -570,5 +570,5 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:TextureFormat=Color
-/build:MenuPauzy/bigBackground.png
+/build:AnimacjeTla/AutkoAnimacja.png
 
