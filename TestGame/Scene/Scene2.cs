@@ -95,7 +95,7 @@ namespace TestGame.Scene
             platforms.Add(new Platform(zapadka, new Vector2(1580, YpositionFloor - zapadka.Height - mur.Height), false, 0, 0, PlatformType.PAWL));
             platforms.Add(new Platform(sciana, new Vector2(1580, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
             platforms.Add(new Platform(sciana, new Vector2(1580 + 89, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
-
+       
             // muzyka tła
             if (SoundManager.SoundOn)
             {
