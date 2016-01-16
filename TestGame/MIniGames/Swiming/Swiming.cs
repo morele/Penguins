@@ -157,6 +157,7 @@ namespace Testgame.MIniGames.Swiming
 
                 foreach (Barell barell in _listOfBarell)
                 {
+                   
                     if (_pinguin.Position.Intersects(barell.Position)) //Ł:G znalezc dla czego sie sypie!
                     {
                         _pinguin.Run = false;
