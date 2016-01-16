@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Media;
 using Testgame.MIniGames.Swiming;
 using TestGame.Menu;
 using TestGame.MIniGames.Numbers;
+using TestGame.Interfaces;
 
 namespace TestGame.Scene
 {
@@ -89,12 +90,15 @@ namespace TestGame.Scene
                 new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height))));
 
             //   platforms.Add(new Platform(content.Load<Texture2D>("Scena2/autko/Autko1"), new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height), false, 0, 0, PlatformType.CAR));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(0, YpositionFloor - 150)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(0, YpositionFloor - 150), false, 0, 0, PlatformType.CAR));
 
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(400, YpositionFloor - kolec.Height))));
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(440, YpositionFloor - kolec.Height))));
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(480, YpositionFloor - kolec.Height))));
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(520, YpositionFloor - kolec.Height))));
+
+
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(400, YpositionFloor - kolec.Height)), false, 0, 0, PlatformType.SPIKE));
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(440, YpositionFloor - kolec.Height)), false, 0, 0, PlatformType.SPIKE));
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(480, YpositionFloor - kolec.Height)), false, 0, 0, PlatformType.SPIKE));
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(520, YpositionFloor - kolec.Height)), false, 0, 0, PlatformType.SPIKE));
+
 
 
 
@@ -196,6 +200,17 @@ namespace TestGame.Scene
                 int i;
                 foreach (Platform platform in platforms)
                 {
+                    if (platform.platformType == PlatformType.SPIKE)
+                    {
+                        if (platform.Position.Y <= 663)
+                        {
+                            platform.Position.Y--;
+                        }
+                        else if(platform.Position.Y<=(662-(platform.PlatformRectangle.Height+50)))
+                        {
+                            platform.Position.Y++;
+                        }
+                    }
                     if (platform.active)
                     {
                         foreach (Penguin penguin in penguins)

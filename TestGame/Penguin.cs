@@ -68,6 +68,8 @@ namespace TestGame
         public int platformSpeed = 0;
         public PenguinType penguinType;
         public List<Platform> platforms = new List<Platform>();
+
+
         private Rectangle actualCollisionRect;
 
         public int pinguinVertical = 0;
@@ -82,6 +84,7 @@ namespace TestGame
         private bool _left;
 
         private SpriteEffects _flipEffect;
+
 
 
         private Animation _animationHorizontal;
