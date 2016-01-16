@@ -157,6 +157,15 @@
     <Content Include="Content\Postacie\Animacje\SzeregowySheet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Postacie\Julek\JulianSpriteBateria.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Julek\JulianSpriteMachanie.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Postacie\Julek\JulianSpritePozegnanie.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Postacie\Kowalski.png" />
     <Content Include="Content\Postacie\Rico.png" />
     <Content Include="Content\Postacie\Skipper.png" />

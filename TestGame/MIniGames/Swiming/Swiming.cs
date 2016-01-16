@@ -146,7 +146,7 @@ namespace Testgame.MIniGames.Swiming
                     int randNumber = _random.Next(1, 10);
                     _listOfBarell.Add(new Barell(_content.Load<Texture2D>("Minigry/SwimingGame/Beczka"),
                         new Vector2(40,
-                             _random.Next(150, 600)), _graphics, 20));
+                             _random.Next(150, 600)), _graphics, 100));
                 }
 
 
@@ -157,7 +157,7 @@ namespace Testgame.MIniGames.Swiming
 
                 foreach (Barell barell in _listOfBarell)
                 {
-                   
+                    
                     if (_pinguin.Position.Intersects(barell.Position)) //Ł:G znalezc dla czego sie sypie!
                     {
                         _pinguin.Run = false;

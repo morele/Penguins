@@ -83,8 +83,11 @@ namespace TestGame.Scene
             platforms.Add(new Platform(mur, new Vector2(-1100 + mur.Width + woda.Width, YpositionFloor + platfroma2.Height - 2)));
             platforms.Add(new Platform(rura, new Vector2(-2700, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
 
-            platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 8, 50,
-                new Vector2(-2500, YpositionFloor - content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony").Height))));
+
+            Texture2D Julek = content.Load<Texture2D>("Postacie/Julek/JulianSpriteMachanie");
+
+            platforms.Add(new Platform(new Animation(Julek, 4, 50,
+                new Vector2(-2500, YpositionFloor - Julek.Height))));
 
             platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/AnimacjaTla/AutkoAnimacja"), 6, 50,
                 new Vector2(-2300, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height))));
@@ -94,7 +97,7 @@ namespace TestGame.Scene
 
 
 
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-400, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE)); 
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-400, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
             platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-440, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
             platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-480, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
             platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-520, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
@@ -114,10 +117,10 @@ namespace TestGame.Scene
             platforms.Add(new Platform(sciana, new Vector2(1580 + 89, YpositionFloor - zapadka.Height - mur.Height - sciana.Height)));
 
             // rybka 
-            _fishItem = new Bonus(content.Load<Texture2D>(@"Scena2/ryba"), new Point(200, 200), new Point(50,50));
+            _fishItem = new Bonus(content.Load<Texture2D>(@"Scena2/ryba"), new Point(200, 200), new Point(50, 50));
             _fishItem.IsActive = true;
-           
-            
+
+
             // muzyka tła
             if (SoundManager.SoundOn)
             {
@@ -215,7 +218,7 @@ namespace TestGame.Scene
                 {
                     if (platform.platformType == PlatformType.SPIKE)
                     {
-                   
+
                     }
                     if (platform.active)
                     {
