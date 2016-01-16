@@ -90,10 +90,10 @@ namespace TestGame.Scene
 
 
 
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-2800, YpositionFloor - kolec.Height)), true, 2, 20, PlatformType.SPIKE)); 
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-440, YpositionFloor - kolec.Height)), false, 0, 0, PlatformType.SPIKE));
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-480, YpositionFloor - kolec.Height)), false, 0, 0, PlatformType.SPIKE));
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-520, YpositionFloor - kolec.Height)), false, 0, 0, PlatformType.SPIKE));
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-400, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE)); 
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-440, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-480, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-520, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
 
 
 
