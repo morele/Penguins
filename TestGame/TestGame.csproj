@@ -72,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Penguin.cs" />
     <Compile Include="Scene\Scene.cs" />
+    <Compile Include="Scene\Scene3.cs" />
     <Compile Include="Scene\Scene2.cs" />
     <Compile Include="Scene\Scene1.cs" />
     <Compile Include="SoundManager.cs" />
