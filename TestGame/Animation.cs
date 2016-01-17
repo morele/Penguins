@@ -17,7 +17,7 @@ namespace TestGame
         public Texture2D Texture
         {
             get { return _texture; }
-
+            set { _texture = value; }
         }
 
         protected void OnFinishAnimation()
@@ -30,7 +30,7 @@ namespace TestGame
         }
 
 
-        private readonly Texture2D _texture;
+        private Texture2D _texture;
         private int _numberOfFrame;
         private readonly float _timeRefresh;
 

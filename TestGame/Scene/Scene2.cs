@@ -46,6 +46,8 @@ namespace TestGame.Scene
 
         private bool _firstStart = true;
 
+        private ContentManager _content;
+
         private GameTime gametime;
 
         public Scene2(ContentManager content, Camera camera, GameTime gametime, GraphicsDevice device) : base(content, camera, gametime)
@@ -55,6 +57,8 @@ namespace TestGame.Scene
 
             _miniGame = new Swiming(new SpriteBatch(device), content, device);
             _minigameMemory = new Memory(new SpriteBatch(device), content, device);
+
+            _content = content;
         }
 
         public override void LoadContent(List<Penguin> penguins, PlayerPanel playerPanel, Penguin player)
@@ -145,7 +149,7 @@ namespace TestGame.Scene
             Point fishItemSize = new Point(content.Load<Texture2D>(@"Scena2/ryba").Width, content.Load<Texture2D>(@"Scena2/ryba").Height);
             _fishItem = new Bonus(content.Load<Texture2D>(@"Scena2/ryba"), new Point(50, 300), fishItemSize);
             _fishItem.IsActive = true;
-            
+
             // muzyka tła
             _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
             MediaPlayer.IsRepeating = true;
@@ -157,7 +161,7 @@ namespace TestGame.Scene
                 penguin.DeathLine = 900;
                 penguin.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler;
             }
-            
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -232,10 +236,12 @@ namespace TestGame.Scene
                 _playMiniGameMemory = false;
 
                 // todo: Julian ma mieć baterię w ręce
+                _julek.Animation.Texture = _content.Load<Texture2D>("Postacie/Julek/JulianSpriteBateria");
+
             }
 
             #endregion
-            
+
             if (_playMiniGame)
             {
                 _miniGame.Update(gameTime);
@@ -283,7 +289,7 @@ namespace TestGame.Scene
                         _playMiniGame = true;
 
                     else if (!_minigameMemory.EndOfGame && _canPlayMiniGameMemory)
-                    { 
+                    {
                         _playMiniGameMemory = true;
                     }
 
@@ -371,7 +377,7 @@ namespace TestGame.Scene
                             }
 
                             // sprawdzenie czy Skipper może rozpocząć grę z Julianem
-                            if (penguin.penguinType == PenguinType.SKIPPER && 
+                            if (penguin.penguinType == PenguinType.SKIPPER &&
                                 _julek.IsInActionSector(penguin) &&
                                 !_minigameMemory.EndOfGame)
                             {
@@ -420,9 +426,9 @@ namespace TestGame.Scene
                         // sprawdzenie czy poziom został ukończony
                         // jeśli wszystkie pingwiny mają współrzędne większe niż takie 
                         // jak były współrzędne zapadki to poziom został ukończony
-                        if (penguins.Count(p=>p.Position.X > 1580) == penguins.Count)
+                        if (penguins.Count(p => p.Position.X > 1580) == penguins.Count)
                             IsCompleted = true;
-                        
+
                         // aktualizacja pozycji jeśli platforma ma sie poruszać
                         platform.UpdatePosition(gameTime);
                     }
