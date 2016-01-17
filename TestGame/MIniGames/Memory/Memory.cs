@@ -50,10 +50,7 @@ namespace TestGame.MIniGames.Memory
             _spriteBatch = spriteBatch;
             _content = content;
             _graphicsDevice = graphicsDevice;
-        }
-        public void LoadContent()
-        {
-            //     spriteBatch = new SpriteBatch(GraphicsDevice);
+
             Wygrana = _content.Load<Texture2D>("Minigry/Memory/Wygrana");
             Przegrana = _content.Load<Texture2D>("Minigry/Memory/JulianSprite");
             JulianTex = _content.Load<Texture2D>("Minigry/Memory/Julian");
@@ -111,27 +108,19 @@ namespace TestGame.MIniGames.Memory
                 }
             }
 
-
-            Julian.UpdateKarty(plansza.Karty);
-
-
-        }
-
-        public void Draw()
-        {
-            _graphicsDevice.Clear(Color.Black);
-
             if (liczba_kart == 0)
             {
                 if (Julian.Punkty < punkty_gracza)
                 {
-                    PolozenieTextury = new Rectangle(0, 0, _graphicsDevice.Viewport.Width, _graphicsDevice.Viewport.Height);
-                    _spriteBatch.Draw(Wygrana, PolozenieTextury, Color.White);
+                    PolozenieTextury = new Rectangle(0, 0, _graphicsDevice.Viewport.Width,
+                        _graphicsDevice.Viewport.Height);
+
                 }
                 else
                 {
-                    PolozenieTextury = new Rectangle(_graphicsDevice.Viewport.Width - (int)(Przegrana.Width / 4), 0, Przegrana.Width / 4, Przegrana.Height / 3);
-                    Naliczanie += (float)_gameTime.ElapsedGameTime.TotalMilliseconds;
+                    PolozenieTextury = new Rectangle(_graphicsDevice.Viewport.Width - (int)(Przegrana.Width / 4), 0,
+                        Przegrana.Width / 4, Przegrana.Height / 3);
+                    Naliczanie += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
                     if (Naliczanie > 70f)
                     {
                         krok++;
@@ -139,7 +128,37 @@ namespace TestGame.MIniGames.Memory
                             krok = 0;
                         Naliczanie = 0;
                     }
-                    PolozenieKlatki = new Rectangle((int)(krok * Przegrana.Width / 4), (int)(Przegrana.Height / 3), Przegrana.Width / 4, Przegrana.Height / 3);
+                    PolozenieKlatki = new Rectangle((int)(krok * Przegrana.Width / 4), (int)(Przegrana.Height / 3),
+                        Przegrana.Width / 4, Przegrana.Height / 3);
+                }
+            }
+            else
+            {
+
+            }
+
+            Julian.UpdateKarty(plansza.Karty);
+        }
+
+
+
+
+
+        public void Draw()
+        {
+            _spriteBatch.Begin();
+            _graphicsDevice.Clear(Color.Black);
+
+            if (liczba_kart == 0)
+            {
+                if (Julian.Punkty < punkty_gracza)
+                {
+
+                    _spriteBatch.Draw(Wygrana, PolozenieTextury, Color.White);
+                }
+                else
+                {
+
                     _spriteBatch.Draw(Przegrana, PolozenieTextury, PolozenieKlatki, Color.White);
                 }
             }
@@ -155,6 +174,7 @@ namespace TestGame.MIniGames.Memory
 
                 plansza.Rysuj();
             }
+            _spriteBatch.End();
 
         }
     }

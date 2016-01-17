@@ -9,7 +9,7 @@ namespace TestGame.MIniGames.Memory
     {
 
         GraphicsDevice graphics;
-        SpriteBatch spriteBatch;
+        SpriteBatch _spriteBatch;
         private ContentManager Content;
         public Karta[] Karty;
         private Texture2D Obrazki;
@@ -29,11 +29,11 @@ namespace TestGame.MIniGames.Memory
         public Plansza(GraphicsDevice graphics, SpriteBatch spriteBatch, ContentManager content)
         {
             this.graphics = graphics;
-            this.spriteBatch = spriteBatch;
+            _spriteBatch = spriteBatch;
             Content = content;
             Karty = new Karta[24];
-            Obrazki = Content.Load<Texture2D>(@"Karty");
-            Zakrycie = Content.Load<Texture2D>(@"Zakrywka");
+            Obrazki = Content.Load<Texture2D>("Minigry/Memory/Karty");
+            Zakrycie = Content.Load<Texture2D>("Minigry/Memory/Zakrywka");
             Naczekal = 0;
             odkrytych = 0;
             Odkryte = new int[2];
@@ -120,14 +120,16 @@ namespace TestGame.MIniGames.Memory
 
         public void Rysuj()
         {
+        
+        
             for (int i = 0; i < 24; i++)
             {
                 if (Karty[i].wyswietl)
                 {
-                    spriteBatch.Draw(Obrazki, Karty[i].Pozycja, Karty[i].Wycinek, Color.White);
+                    _spriteBatch.Draw(Obrazki, Karty[i].Pozycja, Karty[i].Wycinek, Color.White);
 
                     if (Karty[i].zakryte)
-                        spriteBatch.Draw(Zakrycie, Karty[i].Pozycja, Color.White);
+                        _spriteBatch.Draw(Zakrycie, Karty[i].Pozycja, Color.White);
                 }
 
             }

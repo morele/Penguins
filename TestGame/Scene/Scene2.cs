@@ -80,7 +80,7 @@ namespace TestGame.Scene
 
 
             Texture2D Julek = content.Load<Texture2D>("Postacie/Julek/JulianSpriteMachanie");
-            Vector2 tempPositionOfJulian = new Vector2(-2500, YpositionFloor - (Julek.Height/4));
+            Vector2 tempPositionOfJulian = new Vector2(-2500, YpositionFloor - (Julek.Height / 4));
 
             _julek = new ActionElement(new Animation(Julek, 4, 120, tempPositionOfJulian), tempPositionOfJulian.ToPoint(), 5);
 
@@ -268,7 +268,7 @@ namespace TestGame.Scene
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Enter) && (_canPlayMiniGame || _canPlayMiniGameMemory))
                 {
-                    if(_canPlayMiniGame)
+                    if (_canPlayMiniGame)
                         _playMiniGame = true;
 
                     else if (_canPlayMiniGameMemory)
@@ -371,7 +371,7 @@ namespace TestGame.Scene
                                 // teraz możliwe jest włączenie  minigry
                                 _canPlayMiniGameMemory = true;
                             }
-                         
+
 
                             //kolizja z innymi pingwinami
                             for (i = 0; i < penguins.Count; i++)
