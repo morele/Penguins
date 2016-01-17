@@ -160,8 +160,6 @@ namespace TestGame
             float screenWidth = GraphicsDevice.Viewport.Width;
             float screenHeight = GraphicsDevice.Viewport.Height;
 
-          //  _levelNumberPosition = new Vector2((screenWidth / 2 - _scene1LevelNumberTexture.Width / 2), screenHeight / 2 - 100);
-          //  _levelTitlePosition = new Vector2((screenWidth / 2 - _scene1TitleTexture.Width / 2) + 5, screenHeight / 2 + 20);
 
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 
                 Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"), //Ł.G: tymczasowo zmienione 
