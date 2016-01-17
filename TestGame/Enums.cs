@@ -14,8 +14,9 @@ namespace TestGame
 
     public enum SelectedOptionMenu
     {
+        None,
         NewGame,
-        Options,
+        Control,
         Authors,
         Exit
     }

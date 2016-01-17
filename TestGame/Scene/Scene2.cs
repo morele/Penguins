@@ -45,9 +45,9 @@ namespace TestGame.Scene
         //LG: akcja na juliana
         private ActionElement _julek;
 
+        private bool _firstStart = true;
+
         private GameTime gametime;
-
-
 
         public Scene2(ContentManager content, Camera camera, GameTime gametime, GraphicsDevice device) : base(content, camera, gametime)
         {
@@ -146,14 +146,19 @@ namespace TestGame.Scene
             Point fishItemSize = new Point(content.Load<Texture2D>(@"Scena2/ryba").Width, content.Load<Texture2D>(@"Scena2/ryba").Height);
             _fishItem = new Bonus(content.Load<Texture2D>(@"Scena2/ryba"), new Point(50, 300), fishItemSize);
             _fishItem.IsActive = true;
+            
             // muzyka tła
-            if (SoundManager.SoundOn)
+            _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = SoundManager.Volume;
+
+            // przypisanie zdarzenia dla pingwna, który spadł z platformy
+            foreach (var penguin in penguins)
             {
-                _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
-                MediaPlayer.IsRepeating = true;
-                MediaPlayer.Volume = SoundManager.Volume;
-                MediaPlayer.Play(_themeSong);
+                penguin.DeathLine = 900;
+                penguin.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler;
             }
+            
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -182,12 +187,21 @@ namespace TestGame.Scene
 
                 foreach (Penguin penguin in penguins)
                     penguin.DrawAnimation(spriteBatch);
-
             }
         }
 
         public override void UpdatePosition(GameTime gameTime)
         {
+            if (_firstStart)
+            {
+                if (SoundManager.SoundOn)
+                {
+                    MediaPlayer.Play(_themeSong);
+                }
+                _firstStart = false;
+            }
+
+
             #region Zakończenie minigry "Swimming"
 
             // to się wykona tylko raz po zakończeniu minigry "Swiming"
@@ -326,7 +340,7 @@ namespace TestGame.Scene
                             {
                                 _chooseItemMenu.IsVisible = false;
                                 _canPlayMiniGame = false;
-                                _canPlayMiniGameMemory = true;
+                                
                             }
 
                             // sprawdzenie czy pingwin (RICO) jest w obrębie skrzynki MŁ
@@ -420,7 +434,11 @@ namespace TestGame.Scene
                                 if (penguin.active) platform.SpeedUp();
                             }
 
+                            
+
                         }
+
+
 
                         // sprawdzenie czy poziom został ukończony
                         // jeśli wszystkie pingwiny mają współrzędne większe niż takie 
@@ -449,6 +467,10 @@ namespace TestGame.Scene
 
         }
 
+        private void Penguin_PenguinDeathByFallingHandler(object sender, System.EventArgs e)
+        {
+            IsGameOver = true;
+        }
     }
 
 }

@@ -96,16 +96,7 @@ namespace TestGame.Menu
 
                         break;
                     case 2:
-                        // stworzenie elementów menu
-                        List<MenuItem> menuItems = new List<MenuItem>()
-                        {
-                            new MenuItem("New Game", new Game1()),
-                            new MenuItem("How to play?", null),
-                            new MenuItem("Authors", null),
-                            new MenuItem("Exit", null)
-                        };
-
-                        GameFlow.Run(new GameMenu(menuItems));
+                       // todo: powrot do menu
                         break;
                 }
             }

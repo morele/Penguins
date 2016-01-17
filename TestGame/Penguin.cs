@@ -33,6 +33,9 @@ namespace TestGame
 
         public int Mass { get; private set; }
 
+        // gdy pingwin przekroczy tą linie zginie
+        public int DeathLine { get; set; }
+
         public Equipment Equipment { get; private set; }
         public EquipmentItem SelectedItem { get; set; }
         public bool CanMove { get; set; }
@@ -126,6 +129,8 @@ namespace TestGame
             Size = new Point(image.Width / 8, image.Width / scale);
 
             CanMove = true;
+
+            DeathLine = 1500;
 
             //każdy typ pingwina ma róźną wysokość, wartości odpowiednio przeskalowane
             switch (penguinType)
@@ -321,7 +326,7 @@ namespace TestGame
 
 
 
-            if (Position.ToVector2().Y > 1500)//gdy pingwin spadnie
+            if (Position.ToVector2().Y > DeathLine)//gdy pingwin spadnie
             {
                 OnPenguinDeathByFalling(penguinType);
             }
