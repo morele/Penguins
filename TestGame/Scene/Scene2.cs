@@ -9,6 +9,7 @@ using Testgame.MIniGames.Swiming;
 using TestGame.Menu;
 using TestGame.MIniGames.Numbers;
 using TestGame.Interfaces;
+using TestGame.MIniGames.Memory;
 
 namespace TestGame.Scene
 {
@@ -32,8 +33,7 @@ namespace TestGame.Scene
         private bool _canPlayMiniGame;
 
         // minigra - "Memory"
-
-        // flaga informująca, czy można uruchomić minigrę "Memory"
+        private Memory _minigameMemory;
         private bool _canPlayMiniGameMemory;
         private bool _playMiniGameMemory;
 
@@ -55,8 +55,7 @@ namespace TestGame.Scene
             _chooseItemMenu.IsVisible = false;
 
             _miniGame = new Swiming(new SpriteBatch(device), content, device);
-            
-
+            _minigameMemory = new Memory(new SpriteBatch(device), content, device);
         }
 
         public override void LoadContent(List<Penguin> penguins, PlayerPanel playerPanel, Penguin player)
@@ -167,7 +166,7 @@ namespace TestGame.Scene
             }
             else if (_playMiniGameMemory)
             {
-                
+                _minigameMemory.Draw();
             }
             else
             {
@@ -218,6 +217,9 @@ namespace TestGame.Scene
             // to się wykona tylko raz po zakończeniu minigry "Memory"
             if (_miniGame.EndOfGame && _canPlayMiniGameMemory)
             {
+                _canPlayMiniGameMemory = false;
+                _playMiniGameMemory = false;
+
                 // todo: Julian ma mieć baterię w ręce
             }
 
@@ -229,7 +231,7 @@ namespace TestGame.Scene
             }
             else if (_playMiniGameMemory)
             {
-                
+                _minigameMemory.Update(gameTime);
             }
             else
             {
@@ -264,9 +266,16 @@ namespace TestGame.Scene
                 if (Keyboard.GetState().IsKeyUp(Keys.D4)) _blockD4 = false;
 
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && _canPlayMiniGame)
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && (_canPlayMiniGame || _canPlayMiniGameMemory))
                 {
-                    _playMiniGame = true;
+                    if(_canPlayMiniGame)
+                        _playMiniGame = true;
+
+                    else if (_canPlayMiniGameMemory)
+                    {
+                        _playMiniGameMemory = true;
+                    }
+
                 }
 
                 // odświeżenie paska gracza
@@ -354,18 +363,15 @@ namespace TestGame.Scene
                             // sprawdzenie czy Skipper może rozpocząć grę z Julianem
                             if (penguin.penguinType == PenguinType.SKIPPER && _julek.IsInActionSector(penguin))
                             {
-                                if (penguin.Collision(penguin.rectangle))
-                                {
-                                    // załaduj i pokaż strzałke nad rurą
-                                    _chooseItemMenu.Update(penguin, new List<Texture2D>()
-                                    { content.Load<Texture2D>(@"Scena2\talkIcon") }, topMargin: 100);
-                                    _chooseItemMenu.IsVisible = true;
+                                // załaduj i pokaż strzałke nad rurą
+                                _chooseItemMenu.Update(penguin, new List<Texture2D>()
+                                {content.Load<Texture2D>(@"Scena2\talkIcon")}, topMargin: 100);
+                                _chooseItemMenu.IsVisible = true;
 
-                                    // teraz możliwe jest włączenie  minigry karty
-                                    /// todo: fasdf
-                                    
-                                }
+                                // teraz możliwe jest włączenie  minigry
+                                _canPlayMiniGameMemory = true;
                             }
+                         
 
                             //kolizja z innymi pingwinami
                             for (i = 0; i < penguins.Count; i++)
