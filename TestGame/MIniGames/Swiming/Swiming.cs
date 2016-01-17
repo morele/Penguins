@@ -52,16 +52,12 @@ namespace Testgame.MIniGames.Swiming
             _spriteBatch = spriteBatch;
             _content = content;
             _graphics = graphicsDevice;
-
             _widhtOfScreen = _graphics.Viewport.Width;
-
             _random = new Random();
-
             _numberOfPoint = string.Format("Zebrane ryby: {0}/{1}", EatenFish, _fishToCollect);
 
             _background = _content.Load<Texture2D>("Minigry/SwimingGame/tło minigra");
 
-            //   _barell = new Barell(content.Load<Texture2D>("Beczka"), new Vector2(80, 80), graphicsDevice,20);
 
             _pinguin = new Pinguin(_content.Load<Texture2D>("Minigry/SwimingGame/RicoPlywa"),
                 _content.Load<Texture2D>("Minigry/SwimingGame/dziob"), new Vector2(_startOfPeuingin, 400), 10);
