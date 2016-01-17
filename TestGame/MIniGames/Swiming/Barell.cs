@@ -15,6 +15,8 @@ namespace Testgame.MIniGames.Swiming
         private float _velocityY;
         private float _scale;
 
+     
+
         private GraphicsDevice _graphicDevice;
 
         private Random _random = new Random();
@@ -24,8 +26,8 @@ namespace Testgame.MIniGames.Swiming
         {
             get
             {
-                return new Rectangle((int)_position.X, (int)_position.Y, (int)(_texture.Width * _scale),
-                    (int)(_texture.Width * _scale));
+                return new Rectangle((int)_position.X, (int)_position.Y, (int)((_texture.Width / 4)),
+                    (int)(_texture.Width / 4));
             }
         }
         public Barell(Texture2D texture, Vector2 startPositon, GraphicsDevice graphicDevice, float scale = 100)

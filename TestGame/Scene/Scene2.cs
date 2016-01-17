@@ -168,7 +168,7 @@ namespace TestGame.Scene
 
             if (_playMiniGame)
             {
-                _miniGame.Draw(spriteBatch);
+                _miniGame.Draw();
             }
             else if (_playMiniGameMemory)
             {
