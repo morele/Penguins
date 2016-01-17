@@ -41,11 +41,25 @@ namespace TestGame.Scene
         {
             base.LoadContent(penguins, playerPanel, player);
 
-            int YpositionFloor = 700;
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(-700, 700)));
 
-           
-           
-            
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/0"), new Vector2(1254, 263)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/1"), new Vector2(1477, 392)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/2"), new Vector2(1287, 784)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/3"), new Vector2(431, 424)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/4"), new Vector2(2244, 732)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/5"), new Vector2(1700, 482)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/6"), new Vector2(313, 637)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/7"), new Vector2(1723, 658)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/8"), new Vector2(2548, 265)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/9"), new Vector2(877, 681)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/10"), new Vector2(877, 714)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/11"), new Vector2(2755, 494)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/12"), new Vector2(1335, 681)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/13"), new Vector2(2742, 385)));
+
+
+
             // muzyka tła
             if (SoundManager.SoundOn)
             {
