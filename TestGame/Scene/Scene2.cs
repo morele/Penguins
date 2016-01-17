@@ -35,6 +35,9 @@ namespace TestGame.Scene
         private Swiming _miniGame;
         private bool _canPlayMiniGame;
 
+        // czy to czas na Kowalskiego
+        private bool _isKowalskiTime;
+        private bool _canDoItKowalski;
         // minigra - "Memory"
         public Memory _minigameMemory;
         private bool _canPlayMiniGameMemory;
@@ -72,7 +75,9 @@ namespace TestGame.Scene
             // załadowanie dźwięków sceny
             _sceneSounds.Add(content.Load<SoundEffect>(@"Audio\Waves\skipper_przykroMiLemurze"));
             _sceneSounds.Add(content.Load<SoundEffect>(@"Audio\Waves\julian3"));
+            _sceneSounds.Add(content.Load<SoundEffect>(@"Audio\Waves\julian1"));
 
+            _isSceneSoundPlay.Add(false);
             _isSceneSoundPlay.Add(false);
             _isSceneSoundPlay.Add(false);
 
@@ -241,13 +246,19 @@ namespace TestGame.Scene
             #region Zakończenie minigry "Memory"
 
             // to się wykona tylko raz po zakończeniu minigry "Memory"
-            if (_minigameMemory.EndOfGame)
+            if (_minigameMemory.EndOfGame && _canPlayMiniGameMemory)
             {
                 _canPlayMiniGameMemory = false;
                 _playMiniGameMemory = false;
 
-                // todo: Julian ma mieć baterię w ręce
+                // odtworzenie dźwięku "radosnego" Skippera
+                var sound = content.Load<SoundEffect>(@"Audio\Waves\skipper_przykroMiLemurze");
+                sound.Play();
+
                 _julek.Animation.Texture = _content.Load<Texture2D>("Postacie/Julek/JulianSpriteBateria");
+
+                // Kowalski może odegrać swoją role
+                _isKowalskiTime = true;
 
             }
 
@@ -302,6 +313,10 @@ namespace TestGame.Scene
                     else if (!_minigameMemory.EndOfGame && _canPlayMiniGameMemory)
                     {
                         _playMiniGameMemory = true;
+                    }
+                    else if (_isKowalskiTime && _canDoItKowalski)
+                    {
+                        // todo: Łukasz tutaj dodaj to co ma być 
                     }
 
                 }
@@ -418,6 +433,32 @@ namespace TestGame.Scene
                                     if (penguin.Collision(penguins[i].rectangle, penguins[i].penguinType))
                                         penguin.JumpStop(0);
                             }
+
+                            #region AKCJE KOWALSKIEGO
+
+                            if (penguin.penguinType == PenguinType.KOWALSKI &&
+                                _julek.IsInActionSector(penguin) && _isKowalskiTime)
+                            {
+                                if (!_isSceneSoundPlay[2])
+                                {
+                                    _isSceneSoundPlay[2] = true;
+                                    _sceneSounds[2].Play();
+                                }
+
+                                _chooseItemMenu.Update(penguin, new List<Texture2D>()
+                                { content.Load<Texture2D>(@"Scena2\battery") }, topMargin: 100);
+                                _chooseItemMenu.IsVisible = true;
+                                _canDoItKowalski = true;
+                            }
+                            else if (penguin.penguinType == PenguinType.KOWALSKI &&
+                                     !_julek.IsInActionSector(penguin) && _isKowalskiTime)
+                            {
+                                _chooseItemMenu.IsVisible = false;
+                                _isSceneSoundPlay[2] = false;
+                                _canDoItKowalski = false;
+                            }
+
+                            #endregion
 
                             //Jak kolizja ze sprezyna to wysoki jump
                             if (platform.platformType == PlatformType.SPRING)

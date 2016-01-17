@@ -306,6 +306,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Scena2\autko\ReadMy.txt" />
+    <Content Include="Content\Scena2\battery.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Scena2\Kaluza.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
