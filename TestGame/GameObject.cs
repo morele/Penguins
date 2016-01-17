@@ -47,7 +47,7 @@ namespace TestGame
             }
             else
             {
-                if (IsActive)
+             
                     Animation.Draw(spriteBatch);//.Draw(Texture, new Rectangle(Position, Size), Color.White);
             }
            

@@ -36,8 +36,12 @@ namespace TestGame.Scene
 
         // skrzynka do której Rico ma wrzucić rybki
         private ActionElement _fishBox;
+        //LG: akcja na juliana
+        private ActionElement _julek;
 
         private GameTime gametime;
+
+
 
         public Scene2(ContentManager content, Camera camera, GameTime gametime, GraphicsDevice device) : base(content, camera, gametime)
         {
@@ -67,6 +71,14 @@ namespace TestGame.Scene
             Texture2D sprezynaPlatforma = content.Load<Texture2D>("Scena2/SprezynaPlatforma");
             Texture2D sprezyna = content.Load<Texture2D>("Scena2/Sprezyna");
 
+
+
+            Texture2D Julek = content.Load<Texture2D>("Postacie/Julek/JulianSpriteMachanie");
+            Vector2 tempPositionOfJulian = new Vector2(-1500, YpositionFloor - (Julek.Height/4));
+
+            _julek = new ActionElement(new Animation(Julek, 4, 120, tempPositionOfJulian), tempPositionOfJulian.ToPoint(), 5);
+
+
             //platformy
             platforms.Add(new Platform(platfroma2, new Vector2(-3100, YpositionFloor)));
             platforms.Add(new Platform(platfroma2, new Vector2(-2100, YpositionFloor)));
@@ -86,8 +98,8 @@ namespace TestGame.Scene
             platforms.Add(new Platform(mur, new Vector2(-1100 + mur.Width + woda.Width, YpositionFloor + platfroma2.Height - 2)));
             platforms.Add(new Platform(rura, new Vector2(-2700, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
 
-            platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 8, 50,
-                new Vector2(-2500, YpositionFloor - content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony").Height))));
+            //platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 8, 50,
+            //    new Vector2(-2500, YpositionFloor - content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony").Height))));
 
             platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/AnimacjaTla/AutkoAnimacja"), 6, 50,
                 new Vector2(-2300, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height))));
@@ -97,7 +109,7 @@ namespace TestGame.Scene
 
 
 
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-400, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE)); 
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-400, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
             platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-440, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
             platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-480, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
             platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-520, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
@@ -146,7 +158,7 @@ namespace TestGame.Scene
             }
             else
             {
-                
+                _julek.Draw(spriteBatch);
 
                 if (_miniGame.EndOfGame)
                     _textLabel.Draw(spriteBatch, true);
@@ -172,7 +184,7 @@ namespace TestGame.Scene
                 var rico = penguins.FirstOrDefault(p => p.penguinType == PenguinType.RICO);
                 rico.Equipment.AddItem(new EquipmentItem(_fishItem));
 
-                _textLabel = new TextLabel(rico.Equipment.Items[0].Item.Position.ToVector2(), 
+                _textLabel = new TextLabel(rico.Equipment.Items[0].Item.Position.ToVector2(),
                     100, "x 20", content.Load<SpriteFont>("JingJing"),
                     rico.Equipment.Items[0].Item.Texture);
 
@@ -194,7 +206,7 @@ namespace TestGame.Scene
             {
                 // metoda ustawia wszystkich graczy na pozycji początkowej
                 if (firstStart) FirstStart(gameTime);
-
+                _julek.Update(gameTime);
 
                 if (Keyboard.GetState().IsKeyDown(Keys.D1) && !_blockD1)
                 {
@@ -236,7 +248,7 @@ namespace TestGame.Scene
                 {
                     if (platform.platformType == PlatformType.SPIKE)
                     {
-                   
+
                     }
                     if (platform.active)
                     {
@@ -290,7 +302,7 @@ namespace TestGame.Scene
                                     penguin.SelectedItem = penguin.Equipment.Items[_chooseItemMenu.SelectedIndex];
                                 }
                             }
-                            else if (penguin.penguinType == PenguinType.RICO && 
+                            else if (penguin.penguinType == PenguinType.RICO &&
                                      !_fishBox.IsInActionSector(penguin) &&
                                      _miniGame.EndOfGame)
                             {
@@ -303,7 +315,11 @@ namespace TestGame.Scene
                                 _fishBox.IsActive = false;
                             }
 
-
+                          
+                            if (penguin.penguinType == PenguinType.SKIPPER && _julek.IsInActionSector(penguin))
+                            {
+                                //TODO : minigra
+                            }
 
                             //kolizja z innymi pingwinami
                             for (i = 0; i < penguins.Count; i++)
