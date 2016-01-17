@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Content;
 namespace TestGame.MIniGames.Memory
 {
 
-    class Memory
+    public class Memory
     {
         private SpriteBatch _spriteBatch;
         private ContentManager _content;
@@ -35,7 +35,7 @@ namespace TestGame.MIniGames.Memory
         public bool EndOfGame
         {
             get;
-            private set;
+            set;
         }
 
         int krok;
@@ -153,8 +153,8 @@ namespace TestGame.MIniGames.Memory
             {
                 if (Julian.Punkty < punkty_gracza)
                 {
-
                     _spriteBatch.Draw(Wygrana, PolozenieTextury, Color.White);
+                    EndOfGame = true;
                 }
                 else
                 {

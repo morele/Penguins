@@ -232,6 +232,10 @@ namespace TestGame.Scene
                 camera.Update(player);
         }
 
+        public override void ResetScene()
+        {
+            // todo: reset ustawień
+        }
     }
 
 }

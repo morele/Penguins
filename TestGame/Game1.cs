@@ -48,6 +48,12 @@ namespace TestGame
         private Vector2 _levelTitlePosition;
         private Vector2 _levelNumberPosition;
 
+        //SCREEN Z AUTORAMI
+        private Texture2D _authorsScreen;
+        
+        //SCREEN ZE STEROWANIEM
+        private Texture2D _contorolScreen;
+
         // SCENA 1
         private Scene1 scene1;
         private Texture2D _scene1TitleTexture;
@@ -76,6 +82,8 @@ namespace TestGame
         private Vector2 _soundIconPosition = Vector2.Zero;
 
         private CurrentScene _currentScene;
+        private bool _canShowControlScreen;
+        private bool _canShowAuthorsScreen;
 
         public Game1()
         {
@@ -83,11 +91,10 @@ namespace TestGame
 
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
+
             graphics.PreferredBackBufferHeight = 900;
             graphics.PreferredBackBufferWidth = 1200;
-
             graphics.ApplyChanges();
-            // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
 
             // ustawienie początkowego poziomu na scene 1 MŁ
             _currentScene = CurrentScene.Scene3;
@@ -140,6 +147,10 @@ namespace TestGame
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // załadowanie grafik dla screenów
+            _authorsScreen = Content.Load<Texture2D>("MenuAuthorsScreen");
+            _contorolScreen = Content.Load<Texture2D>("MenuControlScreen");
+
             switch (_currentScene)
             {
                 case CurrentScene.Scene1:
@@ -167,43 +178,50 @@ namespace TestGame
             float screenHeight = GraphicsDevice.Viewport.Height;
 
 
-            rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 
-                Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"), //Ł.G: tymczasowo zmienione 
-                Content.Load<Texture2D>("WyborPostaci/Rico"), new Vector2(-2980, 400), 
-                penguinSpeed, gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815)); //Ł.G : dodanie rozmiaru frame do Animacji
+            // zabezpiedczenie przed dublowaniem pingwinów na liście
+            // gdy przechodzę do następnego poziomu to wywoływany jest LoadContent()
+            // wtedy zawsze dodaje 2 razy pingwiny
+            if (firstStart)
+            {
+                rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"),
+                    Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"), //Ł.G: tymczasowo zmienione 
+                    Content.Load<Texture2D>("WyborPostaci/Rico"), new Vector2(-2980, 400),
+                    penguinSpeed, gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815));
+                //Ł.G : dodanie rozmiaru frame do Animacji
 
-            // dźwięki wydawane przez skippera
-            rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico_start"));
-
-
-            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"), 
-                Content.Load<Texture2D>("Postacie/Animacje/SkipperSlizg"), 
-                Content.Load<Texture2D>("WyborPostaci/Skipper"), new Vector2(-3080, 400), 
-                penguinSpeed, gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS, new Point(422, 663));
-           
-            // dźwięki wydawane przez skippera
-            skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper_start"));
-
-            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"), 
-                Content.Load<Texture2D>("Postacie/Animacje/SzeregowySlizg"), 
-                Content.Load<Texture2D>("WyborPostaci/Szeregowy"), new Vector2(-2930, 400), 
-                penguinSpeed, gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));
-
-            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"), 
-                Content.Load<Texture2D>("Postacie/Animacje/KowalskiPlywanie"), 
-                Content.Load<Texture2D>("WyborPostaci/Kowalski"), new Vector2(-3030, 400), 
-                penguinSpeed, gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
+                // dźwięki wydawane przez skippera
+                rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico_start"));
 
 
-            // SoundManager.SoundOn = false;
+                skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"),
+                    Content.Load<Texture2D>("Postacie/Animacje/SkipperSlizg"),
+                    Content.Load<Texture2D>("WyborPostaci/Skipper"), new Vector2(-3080, 400),
+                    penguinSpeed, gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS, new Point(422, 663));
 
-            penguins.Add(skipper);
-            penguins.Add(kowalski);
-            penguins.Add(rico);
-            penguins.Add(szeregowy);
+                // dźwięki wydawane przez skippera
+                skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper_start"));
 
+                szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"),
+                    Content.Load<Texture2D>("Postacie/Animacje/SzeregowySlizg"),
+                    Content.Load<Texture2D>("WyborPostaci/Szeregowy"), new Vector2(-2930, 400),
+                    penguinSpeed, gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));
+
+                kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"),
+                    Content.Load<Texture2D>("Postacie/Animacje/KowalskiPlywanie"),
+                    Content.Load<Texture2D>("WyborPostaci/Kowalski"), new Vector2(-3030, 400),
+                    penguinSpeed, gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
+
+
+                // SoundManager.SoundOn = false;
+
+                penguins.Add(skipper);
+                penguins.Add(kowalski);
+                penguins.Add(rico);
+                penguins.Add(szeregowy);
+            }
             //Podstawowy gracz - skipper
             player = ActiveAndDeactivationPlayer(true, false, false, false);
+           
 
             switch (_currentScene)
             {
@@ -243,6 +261,7 @@ namespace TestGame
                         if (penguin.penguinType == PenguinType.RICO) penguin.UpdateStartPosition(new Vector2(-980, 400));
                         if (penguin.penguinType == PenguinType.SZEREGOWY) penguin.UpdateStartPosition(new Vector2(-930, 400));
                     }
+                    //scene1.ResetScene();
                         break;
                 case 2:
                     foreach (Penguin penguin in penguins)
@@ -252,6 +271,7 @@ namespace TestGame
                         if (penguin.penguinType == PenguinType.RICO) penguin.UpdateStartPosition(new Vector2(-2980, 400));
                         if (penguin.penguinType == PenguinType.SZEREGOWY) penguin.UpdateStartPosition(new Vector2(-2930, 400));
                     }
+                    scene2.ResetScene();
                     break;
                 case 3:
                     foreach (Penguin penguin in penguins)
@@ -261,6 +281,7 @@ namespace TestGame
                         if (penguin.penguinType == PenguinType.RICO) penguin.UpdateStartPosition(new Vector2(110, 400));
                         if (penguin.penguinType == PenguinType.SZEREGOWY) penguin.UpdateStartPosition(new Vector2(160, 400));
                     }
+                    //scene3.ResetScene();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -284,18 +305,37 @@ namespace TestGame
                         _canShowGameMenu = false;
                         break;
                     case SelectedOptionMenu.Control:
+                        _canShowControlScreen = true;
+                        _gameMenu.SelectedOptionMenu = SelectedOptionMenu.None;
                         break;
                     case SelectedOptionMenu.Authors:
+                        _canShowAuthorsScreen = true;
+                        _gameMenu.SelectedOptionMenu = SelectedOptionMenu.None;
                         break;
                     case SelectedOptionMenu.Exit:
                         Exit();
                         break;
                     default:
+                        
                         break;
                 }
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !_blockESCKey)
+                {
+                    _blockESCKey = true;
+                    _canShowControlScreen = false;
+                    _canShowAuthorsScreen = false;
+                }
+
+                if (Keyboard.GetState().IsKeyUp(Keys.Escape))
+                    _blockESCKey = false;
+
             }
             else
             {
+                // gra została juz wczytana
+                firstStart = false;
+
                 #region SPRAWDZENIE, CZY KONIEC GRY
 
                 if (_currentScene == CurrentScene.Scene1)
@@ -310,7 +350,13 @@ namespace TestGame
                 {
                     if (scene2.IsGameOver)
                     {
+                        _canShowGameMenu = true;
+                        _isGamePause = false;
+                        _gameMenu.SelectedOptionMenu = SelectedOptionMenu.None;
+                        _pauseMenu.SelectedOptionPauseMenu = SelectedOptionPauseMenu.None;
+                        setStartPosition((int)_currentScene);
                         _isSceneLoading = true;
+                        scene2.IsGameOver = false;
                     }
                 }
 
@@ -417,8 +463,30 @@ namespace TestGame
                 else
                 {
                     _pauseMenu.Update();
-                    if (!_pauseMenu.ShowMenu)
-                        _isGamePause = false;
+
+                    switch (_pauseMenu.SelectedOptionPauseMenu)
+                    {
+                        case SelectedOptionPauseMenu.Resume:
+                            _isGamePause = false;
+                            _pauseMenu.SelectedOptionPauseMenu = SelectedOptionPauseMenu.None;
+                            break;
+                        case SelectedOptionPauseMenu.TryAgain:
+                            setStartPosition((int)_currentScene);
+                            _isSceneLoading = true;
+                            _isGamePause = false;
+                            _pauseMenu.SelectedOptionPauseMenu = SelectedOptionPauseMenu.None;
+                            break;
+                        case SelectedOptionPauseMenu.BackToMenu:
+                            _currentScene = CurrentScene.Scene1;
+                            setStartPosition(1);
+                            _isSceneLoading = true;
+                            _isGamePause = false;
+                            _canShowGameMenu = true;
+                            _pauseMenu.SelectedOptionPauseMenu = SelectedOptionPauseMenu.None;
+                            break;
+                        default:
+                            break;
+                    }              
                 }
             }
             base.Update(gameTime);
@@ -430,10 +498,29 @@ namespace TestGame
 
             if (_canShowGameMenu)
             {
-                GraphicsDevice.Clear(Color.CornflowerBlue);
-                spriteBatch.Begin();
-                _gameMenu.Draw(spriteBatch);
-                spriteBatch.End();
+                if (_canShowAuthorsScreen)
+                {
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(_authorsScreen, Vector2.Zero, Color.White);
+                    spriteBatch.End();
+                }
+                else if (_canShowControlScreen)
+                {
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(_contorolScreen, Vector2.Zero, Color.White);
+                    spriteBatch.End();
+                }
+                else
+                {
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
+                    spriteBatch.Begin();
+                    _gameMenu.Draw(spriteBatch);
+                    spriteBatch.End();
+                }
+
+
             }
             else
             {

@@ -40,6 +40,8 @@ namespace TestGame.Scene
         }
         public virtual void LoadContent(List<Penguin> penguins, PlayerPanel _playerPanel, Penguin player)
         {
+            if(this.penguins != null)
+                this.penguins.Clear();
             this.player = player;
             this.penguins = penguins;
             this.playerPanel = _playerPanel;
@@ -49,9 +51,12 @@ namespace TestGame.Scene
 
         }
 
+        public abstract void ResetScene();
+
         public abstract void UpdatePosition(GameTime gameTime);
 
         public abstract void Draw(SpriteBatch spriteBatch);
+
 
         protected Penguin ActiveAndDeactivationPlayer(bool ConSkipper, bool ConKowalski, bool ConRico, bool ConSzeregowy)
         {
@@ -63,28 +68,28 @@ namespace TestGame.Scene
             if (ConSkipper)
             {
                 penguins[0].blockDircetionLEFT = penguins[0].blockDirectionRIGHT = false;
-                if (SoundManager.SoundOn) penguins[0].StartSpeaking();
+                if (SoundManager.SoundOn && !firstStart) penguins[0].StartSpeaking();
                 return penguins[0];//skipper
             }
 
             if (ConKowalski)
             {
                 penguins[1].blockDircetionLEFT = penguins[1].blockDirectionRIGHT = false;
-                penguins[1].StartSpeaking();
+                if (SoundManager.SoundOn && !firstStart) penguins[1].StartSpeaking();
                 return penguins[1];//kowalski
             }
             
             if (ConRico)
             {
                 penguins[2].blockDircetionLEFT = penguins[2].blockDirectionRIGHT = false;
-                penguins[2].StartSpeaking();
+                if (SoundManager.SoundOn && !firstStart) penguins[2].StartSpeaking();
                 return penguins[2];//rico
             }
             
             if (ConSzeregowy)
             {
                 penguins[3].blockDircetionLEFT = penguins[3].blockDirectionRIGHT = false;
-                penguins[3].StartSpeaking();
+                if (SoundManager.SoundOn && !firstStart) penguins[3].StartSpeaking();
                 return penguins[3];//szeregowy
             }
             

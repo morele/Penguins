@@ -50,6 +50,8 @@ namespace TestGame.Menu
         private Rectangle _authorsOptionRectangle;
         private Texture2D _authorsOptionTexture;
 
+        private bool _blockEnterKey;
+
         // dla dźwięku
         private Rectangle _soundIconRectangle;
         private Texture2D _soundOnTexture;
@@ -79,7 +81,7 @@ namespace TestGame.Menu
             // grafiki menu
             _backgroundTexture = content.Load<Texture2D>("menu_background_new");
             _newGameOptionTexture = content.Load<Texture2D>("NowaGra");
-            _optionOptionTexture = content.Load<Texture2D>("Opcje");
+            _optionOptionTexture = content.Load<Texture2D>("sterowanie");
             _authorsOptionTexture = content.Load<Texture2D>("Autorzy");
             _exitOptionTexture = content.Load<Texture2D>("Wyjscie");
             _cursorTexture = content.Load<Texture2D>("Wskaznik");
@@ -227,16 +229,15 @@ namespace TestGame.Menu
                 }
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter) && !_blockEnterKey)
             {
+                _blockEnterKey = true;
                 if (SoundManager.SoundOn)
                 {
                     _chooseMenuItemEffectInstance.Play();
                     MediaPlayer.Stop();
                 }
-
-                _blockUpKey = true;
-               
+    
                 // sprawdzenie który element został wybrany
                 switch (_selectedMenuItemIndex)
                 {
@@ -258,6 +259,8 @@ namespace TestGame.Menu
             }
 
             // odblokowanie klawiszy
+            if (Keyboard.GetState().IsKeyUp(Keys.Enter))
+                _blockEnterKey = false;
             if (Keyboard.GetState().IsKeyUp(Keys.Down))
                 _blockDownKey = false;
             if (Keyboard.GetState().IsKeyUp(Keys.Up))
