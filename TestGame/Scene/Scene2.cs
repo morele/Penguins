@@ -9,6 +9,7 @@ using Testgame.MIniGames.Swiming;
 using TestGame.Menu;
 using TestGame.MIniGames.Numbers;
 using TestGame.Interfaces;
+using TestGame.MIniGames.Memory;
 
 namespace TestGame.Scene
 {
@@ -26,10 +27,15 @@ namespace TestGame.Scene
         private ChooseItemMenu _chooseItemMenu;
         private TextLabel _textLabel;
 
-        // minigra
+        // minigra - "Swiming"
         private bool _playMiniGame;
         private Swiming _miniGame;
         private bool _canPlayMiniGame;
+
+        // minigra - "Memory"
+        private Memory _minigameMemory;
+        private bool _canPlayMiniGameMemory;
+        private bool _playMiniGameMemory;
 
         // rybka zebrana przez Rico
         private Bonus _fishItem;
@@ -39,9 +45,9 @@ namespace TestGame.Scene
         //LG: akcja na juliana
         private ActionElement _julek;
 
+        private bool _firstStart = true;
+
         private GameTime gametime;
-
-
 
         public Scene2(ContentManager content, Camera camera, GameTime gametime, GraphicsDevice device) : base(content, camera, gametime)
         {
@@ -49,7 +55,7 @@ namespace TestGame.Scene
             _chooseItemMenu.IsVisible = false;
 
             _miniGame = new Swiming(new SpriteBatch(device), content, device);
-
+            _minigameMemory = new Memory(new SpriteBatch(device), content, device);
         }
 
         public override void LoadContent(List<Penguin> penguins, PlayerPanel playerPanel, Penguin player)
@@ -74,7 +80,7 @@ namespace TestGame.Scene
 
 
             Texture2D Julek = content.Load<Texture2D>("Postacie/Julek/JulianSpriteMachanie");
-            Vector2 tempPositionOfJulian = new Vector2(-1500, YpositionFloor - (Julek.Height/4));
+            Vector2 tempPositionOfJulian = new Vector2(-2500, YpositionFloor - (Julek.Height / 4));
 
             _julek = new ActionElement(new Animation(Julek, 4, 120, tempPositionOfJulian), tempPositionOfJulian.ToPoint(), 5);
 
@@ -140,28 +146,38 @@ namespace TestGame.Scene
             Point fishItemSize = new Point(content.Load<Texture2D>(@"Scena2/ryba").Width, content.Load<Texture2D>(@"Scena2/ryba").Height);
             _fishItem = new Bonus(content.Load<Texture2D>(@"Scena2/ryba"), new Point(50, 300), fishItemSize);
             _fishItem.IsActive = true;
+            
             // muzyka tła
-            if (SoundManager.SoundOn)
+            _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = SoundManager.Volume;
+
+            // przypisanie zdarzenia dla pingwna, który spadł z platformy
+            foreach (var penguin in penguins)
             {
-                _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
-                MediaPlayer.IsRepeating = true;
-                MediaPlayer.Volume = SoundManager.Volume;
-                MediaPlayer.Play(_themeSong);
+                penguin.DeathLine = 900;
+                penguin.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler;
             }
+            
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            // narysowanie rybki
+            _fishItem.Draw(spriteBatch);
+
             if (_playMiniGame)
             {
                 _miniGame.Draw(spriteBatch);
             }
+            else if (_playMiniGameMemory)
+            {
+                _minigameMemory.Draw();
+            }
             else
             {
+                // narysowanie Juliana
                 _julek.Draw(spriteBatch);
-
-                if (_miniGame.EndOfGame)
-                    _textLabel.Draw(spriteBatch, true);
 
                 // narysowanie menu wyboru ekwipunku
                 _chooseItemMenu.Draw(spriteBatch);
@@ -171,23 +187,31 @@ namespace TestGame.Scene
 
                 foreach (Penguin penguin in penguins)
                     penguin.DrawAnimation(spriteBatch);
-
             }
         }
 
         public override void UpdatePosition(GameTime gameTime)
         {
-            // to się wykona tylko raz po zakończeniu minigry
+            if (_firstStart)
+            {
+                if (SoundManager.SoundOn)
+                {
+                    MediaPlayer.Play(_themeSong);
+                }
+                _firstStart = false;
+            }
+
+
+            #region Zakończenie minigry "Swimming"
+
+            // to się wykona tylko raz po zakończeniu minigry "Swiming"
             if (_miniGame.EndOfGame && _canPlayMiniGame)
             {
                 // dodanie ryb do ekwipunku Rico
                 var rico = penguins.FirstOrDefault(p => p.penguinType == PenguinType.RICO);
                 rico.Equipment.AddItem(new EquipmentItem(_fishItem));
 
-                _textLabel = new TextLabel(rico.Equipment.Items[0].Item.Position.ToVector2(),
-                    100, "x 20", content.Load<SpriteFont>("JingJing"),
-                    rico.Equipment.Items[0].Item.Texture);
-
+                _fishItem.OnChecked();
 
                 // Rico wychodzi w następnej rurze, więc go tam ustawiam
                 rico.Position = platforms.LastOrDefault(p => p.platformType == PlatformType.MAGICPIPE).Position;
@@ -198,9 +222,28 @@ namespace TestGame.Scene
                 playerPanel.activeDraw = true;
             }
 
+            #endregion
+
+            #region Zakończenie minigry "Memory"
+
+            // to się wykona tylko raz po zakończeniu minigry "Memory"
+            if (_minigameMemory.EndOfGame && _canPlayMiniGameMemory)
+            {
+                _canPlayMiniGameMemory = false;
+                _playMiniGameMemory = false;
+
+                // todo: Julian ma mieć baterię w ręce
+            }
+
+            #endregion
+
             if (_playMiniGame)
             {
                 _miniGame.Update(gameTime);
+            }
+            else if (_playMiniGameMemory)
+            {
+                _minigameMemory.Update(gameTime);
             }
             else
             {
@@ -235,9 +278,16 @@ namespace TestGame.Scene
                 if (Keyboard.GetState().IsKeyUp(Keys.D4)) _blockD4 = false;
 
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && _canPlayMiniGame)
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && (_canPlayMiniGame || _canPlayMiniGameMemory))
                 {
-                    _playMiniGame = true;
+                    if (_canPlayMiniGame)
+                        _playMiniGame = true;
+
+                    else if (_canPlayMiniGameMemory)
+                    {
+                        _playMiniGameMemory = true;
+                    }
+
                 }
 
                 // odświeżenie paska gracza
@@ -252,20 +302,20 @@ namespace TestGame.Scene
                     }
                     if (platform.active)
                     {
-                        foreach (Penguin penguin in penguins)
+                        // opadanie ryby jest dostępne tylko wtedy gdy Rico ją wypluje
+                        if (_fishItem.IsActive)
                         {
-                            // opadanie ryby jest dostępne tylko wtedy gdy Rico ją wypluje
-                            if (_fishItem.IsActive)
+                            _fishItem.FallDown();
+
+                            if (_fishItem.IsCollisionDetect(platform))
                             {
-                                _fishItem.FallDown();
-
-                                if (_fishItem.IsCollisionDetect(platform))
-                                {
-                                    _fishItem.CanFallDown = false;
-                                }
-
+                                _fishItem.CanFallDown = false;
                             }
 
+                        }
+
+                        foreach (Penguin penguin in penguins)
+                        {
                             // sprawdzenie czy pingwin nie stoi na rurze
                             if (platform.platformType == PlatformType.MAGICPIPE &&
                                 penguin.penguinType == PenguinType.RICO &&
@@ -279,6 +329,8 @@ namespace TestGame.Scene
 
                                     // teraz możliwe jest włączenie  minigry
                                     _canPlayMiniGame = true;
+                                    // ale nie mozna grać w drugą
+                                    _canPlayMiniGameMemory = false;
                                 }
                             }
                             // jeśli jest poza nią to przestań wyświetlać strzałkę MŁ
@@ -288,6 +340,7 @@ namespace TestGame.Scene
                             {
                                 _chooseItemMenu.IsVisible = false;
                                 _canPlayMiniGame = false;
+                                
                             }
 
                             // sprawdzenie czy pingwin (RICO) jest w obrębie skrzynki MŁ
@@ -312,14 +365,31 @@ namespace TestGame.Scene
                             // sprawdzenie czy Rico wypluł rybę
                             if (_fishItem.IsCollisionDetect(_fishBox))
                             {
-                                _fishBox.IsActive = false;
+                                var pawl = platforms.FirstOrDefault(p => p.platformType == PlatformType.PAWL);
+                                platforms[platforms.IndexOf(pawl)].active = false;
+                                _fishItem.IsActive = false;
                             }
 
-                          
+
+                            // sprawdzenie kolizji między Skipperem a Julianem
+                            if (_julek.IsCollisionDetect(penguin))
+                            {
+                                penguin.Position.X -= 2;
+                            }
+
+                            // sprawdzenie czy Skipper może rozpocząć grę z Julianem
                             if (penguin.penguinType == PenguinType.SKIPPER && _julek.IsInActionSector(penguin))
                             {
-                                //TODO : minigra
+                                // załaduj i pokaż strzałke nad rurą
+                                _chooseItemMenu.Update(penguin, new List<Texture2D>()
+                                {content.Load<Texture2D>(@"Scena2\talkIcon")}, topMargin: 100);
+                                _chooseItemMenu.IsVisible = true;
+
+                                // teraz możliwe jest włączenie  minigry
+                                _canPlayMiniGameMemory = true;
+                                _canPlayMiniGame = false;
                             }
+
 
                             //kolizja z innymi pingwinami
                             for (i = 0; i < penguins.Count; i++)
@@ -364,7 +434,20 @@ namespace TestGame.Scene
                                 if (penguin.active) platform.SpeedUp();
                             }
 
+                            
+
                         }
+
+
+
+                        // sprawdzenie czy poziom został ukończony
+                        // jeśli wszystkie pingwiny mają współrzędne większe niż takie 
+                        // jak były współrzędne zapadki to poziom został ukończony
+                        if (penguins.Count(p=>p.Position.X > 1580) == penguins.Count)
+                        {
+                            IsCompleted = true;
+                        }
+
                         // aktualizacja pozycji jeśli platforma ma sie poruszać
                         platform.UpdatePosition(gameTime);
                     }
@@ -384,6 +467,10 @@ namespace TestGame.Scene
 
         }
 
+        private void Penguin_PenguinDeathByFallingHandler(object sender, System.EventArgs e)
+        {
+            IsGameOver = true;
+        }
     }
 
 }

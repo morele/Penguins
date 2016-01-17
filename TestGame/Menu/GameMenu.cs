@@ -7,19 +7,19 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
+using Microsoft.Xna.Framework.Content;
 
 namespace TestGame.Menu
 {
-    public class GameMenu : Game
+    public class GameMenu
     {
         private const float VOLUME_STEP = 19.2f;
         private  Vector2 VOLUME_POINTER_START_POSITION = new Vector2(90, 15);
         private  Vector2 VOLUME_POINTER_END_POSITION = new Vector2(287, 15);
 
-        private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
+        private GraphicsDevice _graphicsDevice;
 
-        private List<MenuItem> _menuItems;
+        private int _menuElementsCount = 3;
         private int _selectedMenuItemIndex;
 
         // flaga blokująca trzymanie klawisza
@@ -29,6 +29,7 @@ namespace TestGame.Menu
         private bool _blockSoundUp;
         private bool _blockSoundDown;
 
+        
         private Rectangle _backgroundRectangle;
 
         private Texture2D _backgroundTexture;
@@ -63,81 +64,66 @@ namespace TestGame.Menu
         private SoundEffect _chooseMenuItemEffect;
         private SoundEffectInstance _chooseMenuItemEffectInstance;
         private Song _themeSong;
-        
-        public GameMenu(List<MenuItem> menuItems)
+
+        public bool IsShowing { get; set; }
+
+
+        public SelectedOptionMenu SelectedOptionMenu { get; set; }
+
+        public GameMenu(ContentManager content, GraphicsDevice device)
         {
-            _menuItems = menuItems;
+            IsShowing = true;
+            _graphicsDevice = device;
             _selectedMenuItemIndex = 0;
-            graphics = new GraphicsDeviceManager(this);
-
-            Content.RootDirectory = "Content";
-            this.IsMouseVisible = true;
-
-            graphics.PreferredBackBufferHeight = 900;
-            graphics.PreferredBackBufferWidth = 1200;
-
-            graphics.ApplyChanges();
-        }
-
-        protected override void Initialize()
-        {
-            _backgroundRectangle = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-
-            base.Initialize();
-        }
-
-        protected override void LoadContent()
-        {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // grafiki menu
-            _backgroundTexture = Content.Load<Texture2D>("menu_background_new");
-            _newGameOptionTexture = Content.Load<Texture2D>("NowaGra");
-            _optionOptionTexture = Content.Load<Texture2D>("Opcje");
-            _authorsOptionTexture = Content.Load<Texture2D>("Autorzy");
-            _exitOptionTexture = Content.Load<Texture2D>("Wyjscie");
-            _cursorTexture = Content.Load<Texture2D>("Wskaznik");
+            _backgroundTexture = content.Load<Texture2D>("menu_background_new");
+            _newGameOptionTexture = content.Load<Texture2D>("NowaGra");
+            _optionOptionTexture = content.Load<Texture2D>("Opcje");
+            _authorsOptionTexture = content.Load<Texture2D>("Autorzy");
+            _exitOptionTexture = content.Load<Texture2D>("Wyjscie");
+            _cursorTexture = content.Load<Texture2D>("Wskaznik");
 
             // grafiki obsługi dźwięku
-            _soundOnTexture = Content.Load<Texture2D>(@"Audio\Graph\soundOn");
-            _soundOffTexture = Content.Load<Texture2D>(@"Audio\Graph\soundOff");
+            _soundOnTexture = content.Load<Texture2D>(@"Audio\Graph\soundOn");
+            _soundOffTexture = content.Load<Texture2D>(@"Audio\Graph\soundOff");
             _soundIconRectangle = new Rectangle(0, 0, _soundOnTexture.Width, _soundOnTexture.Height);
 
-            _soundProgressBarPointerTexture = Content.Load<Texture2D>(@"Audio\Graph\barPointer");
+            _soundProgressBarPointerTexture = content.Load<Texture2D>(@"Audio\Graph\barPointer");
             _soundProgressBarPointerRectangle = new Rectangle(0, 0,
                 _soundProgressBarPointerTexture.Width,
                 _soundProgressBarPointerTexture.Height);
 
-            _soundProgressBarTexture = Content.Load<Texture2D>(@"Audio\Graph\progressBar");
-            _soundProgressBarRectangle = new Rectangle(0, 0, 
-                _soundProgressBarTexture.Width, 
+            _soundProgressBarTexture = content.Load<Texture2D>(@"Audio\Graph\progressBar");
+            _soundProgressBarRectangle = new Rectangle(0, 0,
+                _soundProgressBarTexture.Width,
                 _soundProgressBarTexture.Height);
-            
+
             // dźwięki
-            _chooseMenuItemEffect = Content.Load<SoundEffect>(@"Audio\Waves\click");
+            _chooseMenuItemEffect = content.Load<SoundEffect>(@"Audio\Waves\click");
             _chooseMenuItemEffectInstance = _chooseMenuItemEffect.CreateInstance();
             _chooseMenuItemEffectInstance.Volume = SoundManager.Volume;
-            _themeSong = Content.Load<Song>("Audio/Waves/menu_theme");
+            _themeSong = content.Load<Song>("Audio/Waves/menu_theme");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(_themeSong);
             SoundManager.SoundOn = true;
             SoundManager.Volume = 1.0f;
 
             //rectangle
-            _newGameOptionRectangle = new Rectangle(0,0,_newGameOptionTexture.Width, _newGameOptionTexture.Height);
+            _newGameOptionRectangle = new Rectangle(0, 0, _newGameOptionTexture.Width, _newGameOptionTexture.Height);
             _optionOptionRectangle = new Rectangle(0, 0, _optionOptionTexture.Width, _optionOptionTexture.Height);
             _authorsOptionRectangle = new Rectangle(0, 0, _authorsOptionTexture.Width, _authorsOptionTexture.Height);
             _exitOptionRectangle = new Rectangle(0, 0, _exitOptionTexture.Width, _exitOptionTexture.Height);
             _cursorRectangle = new Rectangle(0, 0, _cursorTexture.Width, _cursorTexture.Height);
-            
 
-            float x = graphics.GraphicsDevice.Viewport.Width / 2 - (_newGameOptionTexture.Width / 2) - 10 - _cursorTexture.Width;
+
+            float x = device.Viewport.Width / 2 - (_newGameOptionTexture.Width / 2) - 10 - _cursorTexture.Width;
             _cursorPosition = new Point((int)x, 300);
 
-            _soundIconPosition.X = GraphicsDevice.Viewport.Width - _soundIconRectangle.Width / 2 - 10;
+            _soundIconPosition.X = device.Viewport.Width - _soundIconRectangle.Width / 2 - 10;
             _soundIconPosition.Y = 10;
 
-            _soundProgressBarPosition.X = GraphicsDevice.Viewport.Width - _soundProgressBarRectangle.Width / 3 - 50;
+            _soundProgressBarPosition.X = device.Viewport.Width - _soundProgressBarRectangle.Width / 3 - 50;
             _soundProgressBarPosition.Y = 12;
 
             VOLUME_POINTER_START_POSITION.X = _soundProgressBarPosition.X + 25;
@@ -148,20 +134,9 @@ namespace TestGame.Menu
 
             _soundValuePointer = VOLUME_POINTER_END_POSITION;
 
-            base.LoadContent();
         }
 
-        protected override void UnloadContent()
-        {
-            base.UnloadContent();
-        }
-
-        private void ChangeSelectedItemColor(int selectedItem)
-        {
-
-        }
-
-        protected override void Update(GameTime gameTime)
+        public void Update()
         {
             #region DŹWIĘK
 
@@ -244,7 +219,7 @@ namespace TestGame.Menu
             {
                 _blockDownKey = true;
                 // zabezpieczenie przed przekroczeniem zakresu listy
-                if (_selectedMenuItemIndex < _menuItems.Count - 1)
+                if (_selectedMenuItemIndex < _menuElementsCount)
                 {
                     if (SoundManager.SoundOn) _chooseMenuItemEffectInstance.Play();
                     _selectedMenuItemIndex++;
@@ -261,16 +236,25 @@ namespace TestGame.Menu
                 }
 
                 _blockUpKey = true;
-                // jeśli wybrano wyście
-                if (_menuItems[_selectedMenuItemIndex].Link == null)
+               
+                // sprawdzenie który element został wybrany
+                switch (_selectedMenuItemIndex)
                 {
-                    // todo wywala tu exception!!
-                    Exit();
+                    case 0:
+                        IsShowing = false;
+                        SelectedOptionMenu = SelectedOptionMenu.NewGame;
+                        break;
+                    case 1:
+                        SelectedOptionMenu = SelectedOptionMenu.Control;
+                        break;
+                    case 2:
+                        SelectedOptionMenu = SelectedOptionMenu.Authors;
+                        break;
+                    case 3:
+                        SelectedOptionMenu = SelectedOptionMenu.Exit;
+                        break;
                 }
-                else
-                {
-                    GameFlow.Run(_menuItems[_selectedMenuItemIndex].Link);
-                }
+
             }
 
             // odblokowanie klawiszy
@@ -286,34 +270,28 @@ namespace TestGame.Menu
                 _blockSoundDown = false;
 
             #endregion
-
-            base.Update(gameTime);
         }
 
-        protected override void Draw(GameTime gameTime)
+        public void Draw(SpriteBatch _spriteBatch)
         {
-            GraphicsDevice.Clear(Color.White);
-
-            spriteBatch.Begin();
-
             // narysowanie tła
-            spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), _backgroundRectangle, Color.White);
+            _spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), Color.White);
 
             #region RYSOWANIE OPCJI DŹWIĘKU
 
             // narysowanie ikonki dźwięku
             if(SoundManager.SoundOn)
-                spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                _spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
             else
-                spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                _spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
 
             // naryswoanie progress bara z dźwiękiem
-            spriteBatch.Draw(_soundProgressBarTexture, _soundProgressBarPosition,
+            _spriteBatch.Draw(_soundProgressBarTexture, _soundProgressBarPosition,
                 _soundProgressBarRectangle, Color.White, 0.0f,
                 Vector2.Zero, 0.3f, SpriteEffects.None, 0);
 
             // narysowanie wskaźnika dźwięku
-            spriteBatch.Draw(_soundProgressBarPointerTexture, _soundValuePointer,
+            _spriteBatch.Draw(_soundProgressBarPointerTexture, _soundValuePointer,
                 _soundProgressBarPointerRectangle, Color.White, 0.0f,
                 Vector2.Zero, 0.5f, SpriteEffects.None, 0);
 
@@ -321,21 +299,15 @@ namespace TestGame.Menu
             #endregion
 
 
-            float xAxis = graphics.GraphicsDevice.Viewport.Width/2 - (_newGameOptionTexture.Width/2);
+            float xAxis = _graphicsDevice.Viewport.Width/2 - (_newGameOptionTexture.Width/2);
             float yStart = 300;
-            spriteBatch.Draw(_newGameOptionTexture, new Vector2(xAxis, yStart), _newGameOptionRectangle, Color.White);
-            spriteBatch.Draw(_optionOptionTexture, new Vector2(xAxis, yStart+100), _optionOptionRectangle, Color.White);
-            spriteBatch.Draw(_authorsOptionTexture, new Vector2(xAxis, yStart+200), _authorsOptionRectangle, Color.White);
-            spriteBatch.Draw(_exitOptionTexture, new Vector2(xAxis, yStart+300), _exitOptionRectangle, Color.White);
+            _spriteBatch.Draw(_newGameOptionTexture, new Vector2(xAxis, yStart), _newGameOptionRectangle, Color.White);
+            _spriteBatch.Draw(_optionOptionTexture, new Vector2(xAxis, yStart+100), _optionOptionRectangle, Color.White);
+            _spriteBatch.Draw(_authorsOptionTexture, new Vector2(xAxis, yStart+200), _authorsOptionRectangle, Color.White);
+            _spriteBatch.Draw(_exitOptionTexture, new Vector2(xAxis, yStart+300), _exitOptionRectangle, Color.White);
 
             // wskaźnik 
-            spriteBatch.Draw(_cursorTexture, _cursorPosition.ToVector2(), _cursorRectangle, Color.White);
-
-
-
-            spriteBatch.End();
-
-            base.Draw(gameTime);
+            _spriteBatch.Draw(_cursorTexture, _cursorPosition.ToVector2(), _cursorRectangle, Color.White);
         }
     }
 }

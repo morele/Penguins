@@ -40,6 +40,8 @@ namespace TestGame
 
         private PauseMenu _pauseMenu;
 
+        private GameMenu _gameMenu;
+        private bool _canShowGameMenu =  true;
 
         // flaga informuje 
         private bool _isSceneLoading = true;
@@ -77,7 +79,6 @@ namespace TestGame
 
         public Game1()
         {
-
             graphics = new GraphicsDeviceManager(this);
 
             Content.RootDirectory = "Content";
@@ -89,7 +90,7 @@ namespace TestGame
             // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
 
             // ustawienie początkowego poziomu na scene 1 MŁ
-            _currentScene = CurrentScene.Scene3;
+            _currentScene = CurrentScene.Scene2;
         }
 
         protected override void Initialize()
@@ -113,10 +114,16 @@ namespace TestGame
                     throw new ArgumentOutOfRangeException();
             }
 
+
             // inicjalizacja panelu gracza - podstawowy gracz - skipper           
             _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"), new Vector2(0, 0), new Vector2(GraphicsDevice.Viewport.Width, 150), Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Skipper"));
 
+            // inicjalizacja menu pauzy
             _pauseMenu = new PauseMenu(GraphicsDevice, Content.Load<Texture2D>(@"MenuPauzy\JedzILow"), Content.Load<Texture2D>(@"MenuPauzy\Poziom2"), Content.Load<Texture2D>("Wskaznik"), Content.Load<Texture2D>(@"MenuPauzy\bigBackground"), Content.Load<Texture2D>(@"MenuPauzy\resumeText"), Content.Load<Texture2D>(@"MenuPauzy\exitText"), Content.Load<Texture2D>(@"MenuPauzy\tryAgainText"));
+
+
+            // inicjalizacja menu głównego
+            _gameMenu = new GameMenu(this.Content, GraphicsDevice);
 
             // grafiki obsługi dźwięku
             _soundOnTexture = Content.Load<Texture2D>(@"Audio\Graph\soundOn");
@@ -128,7 +135,6 @@ namespace TestGame
 
             base.Initialize();
         }
-
 
         protected override void LoadContent()
         {
@@ -147,8 +153,8 @@ namespace TestGame
                     _background = Content.Load<Texture2D>("scene2_background");
                     break;
                 case CurrentScene.Scene3:
-                    _scene3TitleTexture = Content.Load<Texture2D>(@"MenuPauzy\JedzILow");
-                    _scene3LevelNumberTexture = Content.Load<Texture2D>(@"MenuPauzy\Poziom2");
+                    _scene3TitleTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene3Title");
+                    _scene3LevelNumberTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene3Number");
                     _background = Content.Load<Texture2D>("scene2_background"); 
                     break;
                 default:
@@ -260,220 +266,269 @@ namespace TestGame
                     throw new ArgumentOutOfRangeException();
             }
         }
+
         protected override void UnloadContent()
         {
         }
 
         protected override void Update(GameTime gameTime)
         {
-            #region SPRAWDZENIE KTÓRY ZAŁADOWAĆ POZIOM
-            if (_currentScene == CurrentScene.Scene1)
+            if (_canShowGameMenu)
             {
-                if (scene1.IsCompleted)
+                _gameMenu.Update();
+                
+                // sprawdzenie jaką opcję wybrał użytkownik
+                switch (_gameMenu.SelectedOptionMenu)
                 {
-                    _currentScene = CurrentScene.Scene2;
-                    scene2 = new Scene2(Content, camera, gametime, GraphicsDevice);
-                    LoadContent();
-                    _isSceneLoading = true;
-
-                }
-            }
-
-            else if (_currentScene == CurrentScene.Scene2)
-            {
-                if (scene2.IsCompleted)
-                {
-                    _currentScene = CurrentScene.Scene3;
-                    //scene3 = new Scene3(Content, camera, gametime, GraphicsDevice);
-                    //LoadContent();
-                    //_isSceneLoading = true;
-
-                }
-            }
-
-            else if (_currentScene == CurrentScene.Scene3)
-            {
-                //if (scene3.IsCompleted)
-                //{
-                //   /// JESTEŚ ZAJEBISTY WYGRAŁEŚ :)
-                //}
-            }
-            #endregion
-
-            // wyłączenie ekranu ładowania MŁ
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && _isSceneLoading)
-            {
-                _isSceneLoading = false;
-            }
-
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !_blockESCKey)
-            {
-                _blockESCKey = true;
-                _isGamePause = !_isGamePause;
-                _pauseMenu.ShowMenu = true;
-            }
-
-            #region DŹWIĘK
-
-            MediaPlayer.Volume = SoundManager.Volume;
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Q) && !_blockSoundOn)
-            {
-                SoundManager.SoundOn = !SoundManager.SoundOn;
-
-                _blockSoundOn = true;
-
-                // odtworzenie dźwięku tła jeśli jest to włączone
-                if (SoundManager.SoundOn)
-                {
-                    SoundManager.Volume = 1.0f;
-                    MediaPlayer.Resume();
-                }
-                else
-                {
-                    SoundManager.Volume = 0.0f;
-                    MediaPlayer.Pause();
-                }
-            }
-
-            if (Keyboard.GetState().IsKeyUp(Keys.Q))
-                _blockSoundOn = false;
-
-            #endregion
-
-            if (Keyboard.GetState().IsKeyUp(Keys.Escape))
-            {
-                _blockESCKey = false;
-            }
-
-                // po co to tu jest??
-            var deltaTime = 1/gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (!_isGamePause)
-            {
-                switch (_currentScene)
-                {
-                    case CurrentScene.Scene1:
-                        scene1.UpdatePosition(gameTime);
+                    case SelectedOptionMenu.NewGame:
+                        _canShowGameMenu = false;
                         break;
-                    case CurrentScene.Scene2:
-                        scene2.UpdatePosition(gameTime);
+                    case SelectedOptionMenu.Control:
                         break;
-                    case CurrentScene.Scene3:
-                        scene3.UpdatePosition(gameTime);
+                    case SelectedOptionMenu.Authors:
+                        break;
+                    case SelectedOptionMenu.Exit:
+                        Exit();
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        break;
                 }
-                
             }
             else
             {
-                _pauseMenu.Update();
-                if (!_pauseMenu.ShowMenu)
-                    _isGamePause = false;
+                #region SPRAWDZENIE, CZY KONIEC GRY
+
+                if (_currentScene == CurrentScene.Scene1)
+                {
+                    if (scene1.IsGameOver)
+                    {
+                        _isSceneLoading = true;
+                    }
+                }
+
+                else if (_currentScene == CurrentScene.Scene2)
+                {
+                    if (scene2.IsGameOver)
+                    {
+                        _isSceneLoading = true;
+                    }
+                }
+
+                #endregion
+
+                #region SPRAWDZENIE KTÓRY ZAŁADOWAĆ POZIOM
+
+                if (_currentScene == CurrentScene.Scene1)
+                {
+                    if (scene1.IsCompleted)
+                    {
+                        _currentScene = CurrentScene.Scene2;
+                        scene2 = new Scene2(Content, camera, gametime, GraphicsDevice);
+                        LoadContent();
+                        _isSceneLoading = true;
+                    }
+                }
+
+                else if (_currentScene == CurrentScene.Scene2)
+                {
+                    if (scene2.IsCompleted)
+                    {
+                        _currentScene = CurrentScene.Scene3;
+                        scene3 = new Scene3(Content, camera, gametime, GraphicsDevice);
+                        LoadContent();
+                        _isSceneLoading = true;
+                    }
+                }
+
+                else if (_currentScene == CurrentScene.Scene3)
+                {
+                    //if (scene3.IsCompleted)
+                    //{
+                    //   /// JESTEŚ ZAJEBISTY WYGRAŁEŚ :)
+                    //}
+                }
+
+                #endregion
+
+                // wyłączenie ekranu ładowania MŁ
+                if (Keyboard.GetState().IsKeyDown(Keys.Space) && _isSceneLoading)
+                {
+                    _isSceneLoading = false;
+                }
+
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !_blockESCKey)
+                {
+                    _blockESCKey = true;
+                    _isGamePause = !_isGamePause;
+                    _pauseMenu.ShowMenu = true;
+                }
+
+                #region DŹWIĘK
+
+                MediaPlayer.Volume = SoundManager.Volume;
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Q) && !_blockSoundOn)
+                {
+                    SoundManager.SoundOn = !SoundManager.SoundOn;
+
+                    _blockSoundOn = true;
+
+                    // odtworzenie dźwięku tła jeśli jest to włączone
+                    if (SoundManager.SoundOn)
+                    {
+                        SoundManager.Volume = 1.0f;
+                        MediaPlayer.Resume();
+                    }
+                    else
+                    {
+                        SoundManager.Volume = 0.0f;
+                        MediaPlayer.Pause();
+                    }
+                }
+
+                if (Keyboard.GetState().IsKeyUp(Keys.Q))
+                    _blockSoundOn = false;
+
+                #endregion
+
+                if (Keyboard.GetState().IsKeyUp(Keys.Escape))
+                {
+                    _blockESCKey = false;
+                }
+
+                // po co to tu jest??
+                var deltaTime = 1/gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (!_isGamePause)
+                {
+                    switch (_currentScene)
+                    {
+                        case CurrentScene.Scene1:
+                            scene1.UpdatePosition(gameTime);
+                            break;
+                        case CurrentScene.Scene2:
+                            scene2.UpdatePosition(gameTime);
+                            break;
+                        case CurrentScene.Scene3:
+                            scene3.UpdatePosition(gameTime);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+                else
+                {
+                    _pauseMenu.Update();
+                    if (!_pauseMenu.ShowMenu)
+                        _isGamePause = false;
+                }
             }
-
-
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            this.gametime = gameTime;
+            gametime = gameTime;
 
-            switch (_currentScene)
+            if (_canShowGameMenu)
             {
-                case CurrentScene.Scene1:
-                    GraphicsDevice.Clear(Color.Indigo);
-                    break;
-                case CurrentScene.Scene2:
-                    GraphicsDevice.Clear(Color.LimeGreen);
-                    break;
-                case CurrentScene.Scene3:
-                    GraphicsDevice.Clear(Color.MediumVioletRed);
-                    break;
-                default:
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-                    break;
-            }
-            
-
-            // wyświetlenie screenu początkowego z nazwą oraz tytułem poziomu
-            if (_isSceneLoading)
-            {
+                GraphicsDevice.Clear(Color.CornflowerBlue);
                 spriteBatch.Begin();
-
-                switch (_currentScene)
-                {
-                    case CurrentScene.Scene1:
-                        spriteBatch.Draw(_scene1TitleTexture, _levelTitlePosition, Color.White);
-                        spriteBatch.Draw(_scene1LevelNumberTexture, _levelNumberPosition, Color.White);
-                        break;
-                    case CurrentScene.Scene2:
-                        spriteBatch.Draw(_scene2TitleTexture, _levelTitlePosition, Color.White);
-                        spriteBatch.Draw(_scene2LevelNumberTexture, _levelNumberPosition, Color.White);
-                        break;
-                    case CurrentScene.Scene3:
-                        spriteBatch.Draw(_scene3TitleTexture, _levelTitlePosition, Color.White);
-                        spriteBatch.Draw(_scene3LevelNumberTexture, _levelNumberPosition, Color.White);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                _gameMenu.Draw(spriteBatch);
                 spriteBatch.End();
             }
             else
             {
-            if (!_isGamePause)
-            {
-                // narysowanie panelu użytkownika
-                spriteBatch.Begin();
-                spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
-                _playerPanel.Draw(spriteBatch);
-                spriteBatch.End();
-
-                // narysowanie aktualnej sceny
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
-
                 switch (_currentScene)
                 {
                     case CurrentScene.Scene1:
-                        scene1.Draw(spriteBatch);
+                        GraphicsDevice.Clear(Color.Indigo);
                         break;
                     case CurrentScene.Scene2:
-                        scene2.Draw(spriteBatch);
+                        GraphicsDevice.Clear(Color.LimeGreen);
                         break;
                     case CurrentScene.Scene3:
-                        scene3.Draw(spriteBatch);
+                        GraphicsDevice.Clear(Color.MediumVioletRed);
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+                        break;
                 }
+                // wyświetlenie screenu początkowego z nazwą oraz tytułem poziomu
+                if (_isSceneLoading)
+                {
+                    spriteBatch.Begin();
 
-                spriteBatch.End();
+                    switch (_currentScene)
+                    {
+                        case CurrentScene.Scene1:
+                            spriteBatch.Draw(_scene1TitleTexture, _levelTitlePosition, Color.White);
+                            spriteBatch.Draw(_scene1LevelNumberTexture, _levelNumberPosition, Color.White);
+                            break;
+                        case CurrentScene.Scene2:
+                            spriteBatch.Draw(_scene2TitleTexture, _levelTitlePosition, Color.White);
+                            spriteBatch.Draw(_scene2LevelNumberTexture, _levelNumberPosition, Color.White);
+                            break;
+                        case CurrentScene.Scene3:
+                            spriteBatch.Draw(_scene3TitleTexture, _levelTitlePosition, Color.White);
+                            spriteBatch.Draw(_scene3LevelNumberTexture, _levelNumberPosition, Color.White);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                    spriteBatch.End();
+                }
+                else
+                {
+                    if (!_isGamePause)
+                    {
+                        // narysowanie panelu użytkownika
+                        spriteBatch.Begin();
+                        spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
+                        _playerPanel.Draw(spriteBatch);
+                        spriteBatch.End();
+
+                        // narysowanie aktualnej sceny
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
+
+                        switch (_currentScene)
+                        {
+                            case CurrentScene.Scene1:
+                                scene1.Draw(spriteBatch);
+                                break;
+                            case CurrentScene.Scene2:
+                                scene2.Draw(spriteBatch);
+                                break;
+                            case CurrentScene.Scene3:
+                                scene3.Draw(spriteBatch);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+
+                        spriteBatch.End();
+                    }
+                    else // MENU PAUZY
+                    {
+                        _pauseMenu.Draw(spriteBatch);
+                    }
+
+                    #region IKONKA DŹWIĘKU
+
+                    // rysowana jest na końcu po to aby była zawsze na wierzchu
+                    spriteBatch.Begin();
+
+                    if (SoundManager.SoundOn)
+                        spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                    else
+                        spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+
+                    spriteBatch.End();
+
+                    #endregion
+                }
             }
-            else // MENU PAUZY
-            {
-                _pauseMenu.Draw(spriteBatch);
-            }
-
-            #region IKONKA DŹWIĘKU
-
-            // rysowana jest na końcu po to aby była zawsze na wierzchu
-            spriteBatch.Begin();
-       
-            if (SoundManager.SoundOn)
-                spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
-            else
-                spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
-
-            spriteBatch.End();
-
-            #endregion
-            }
-
             base.Draw(gameTime);
         }
 
