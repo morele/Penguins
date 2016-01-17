@@ -74,7 +74,7 @@ namespace TestGame.Scene
 
 
             Texture2D Julek = content.Load<Texture2D>("Postacie/Julek/JulianSpriteMachanie");
-            Vector2 tempPositionOfJulian = new Vector2(-1500, YpositionFloor - (Julek.Height/4));
+            Vector2 tempPositionOfJulian = new Vector2(-2500, YpositionFloor - (Julek.Height/4));
 
             _julek = new ActionElement(new Animation(Julek, 4, 120, tempPositionOfJulian), tempPositionOfJulian.ToPoint(), 5);
 
