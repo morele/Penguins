@@ -8,6 +8,7 @@ namespace TestGame
     /// </summary>
     public class GameObject
     {
+        public Animation Animation;
         public Texture2D Texture;
         public Point Position;
         public Point Size;
@@ -28,17 +29,28 @@ namespace TestGame
         /// <param name="position"></param>
         /// <param name="size"></param>
         /// <param name="frameSize">rozmiar pojedycznej klatki</param>
-        public GameObject(Texture2D texture, Point position, Point size,Point frameSize)
+        public GameObject(Texture2D texture, Point position, Point size, Point frameSize)
         {
             Texture = texture;
             Position = position;
             Size = size;
             IsActive = true;
         }
+
+     
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if(IsActive)
-                spriteBatch.Draw(Texture, new Rectangle(Position, Size), Color.White);
+            if (Animation == null)
+            {
+                if (IsActive)
+                    spriteBatch.Draw(Texture, new Rectangle(Position, Size), Color.White);
+            }
+            else
+            {
+                if (IsActive)
+                    Animation.Draw(spriteBatch);//.Draw(Texture, new Rectangle(Position, Size), Color.White);
+            }
+           
         }
 
     }
