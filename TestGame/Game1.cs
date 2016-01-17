@@ -286,10 +286,9 @@ namespace TestGame
                 if (scene2.IsCompleted)
                 {
                     _currentScene = CurrentScene.Scene3;
-                    //scene3 = new Scene3(Content, camera, gametime, GraphicsDevice);
-                    //LoadContent();
-                    //_isSceneLoading = true;
-
+                    scene3 = new Scene3(Content, camera, gametime, GraphicsDevice);
+                    LoadContent();
+                    _isSceneLoading = true;
                 }
             }
 

@@ -288,20 +288,20 @@ namespace TestGame.Scene
                     }
                     if (platform.active)
                     {
-                        foreach (Penguin penguin in penguins)
+                        // opadanie ryby jest dostępne tylko wtedy gdy Rico ją wypluje
+                        if (_fishItem.IsActive)
                         {
-                            // opadanie ryby jest dostępne tylko wtedy gdy Rico ją wypluje
-                            if (_fishItem.IsActive)
+                            _fishItem.FallDown();
+
+                            if (_fishItem.IsCollisionDetect(platform))
                             {
-                                _fishItem.FallDown();
-
-                                if (_fishItem.IsCollisionDetect(platform))
-                                {
-                                    _fishItem.CanFallDown = false;
-                                }
-
+                                _fishItem.CanFallDown = false;
                             }
 
+                        }
+
+                        foreach (Penguin penguin in penguins)
+                        {
                             // sprawdzenie czy pingwin nie stoi na rurze
                             if (platform.platformType == PlatformType.MAGICPIPE &&
                                 penguin.penguinType == PenguinType.RICO &&
@@ -421,6 +421,15 @@ namespace TestGame.Scene
                             }
 
                         }
+
+                        // sprawdzenie czy poziom został ukończony
+                        // jeśli wszystkie pingwiny mają współrzędne większe niż takie 
+                        // jak były współrzędne zapadki to poziom został ukończony
+                        if (penguins.Count(p=>p.Position.X > 1580) == penguins.Count)
+                        {
+                            IsCompleted = true;
+                        }
+
                         // aktualizacja pozycji jeśli platforma ma sie poruszać
                         platform.UpdatePosition(gameTime);
                     }
