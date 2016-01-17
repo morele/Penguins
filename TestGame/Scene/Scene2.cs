@@ -158,7 +158,8 @@ namespace TestGame.Scene
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-
+            // narysowanie rybki
+            _fishItem.Draw(spriteBatch);
 
             if (_playMiniGame)
             {
@@ -196,10 +197,7 @@ namespace TestGame.Scene
                 var rico = penguins.FirstOrDefault(p => p.penguinType == PenguinType.RICO);
                 rico.Equipment.AddItem(new EquipmentItem(_fishItem));
 
-                _textLabel = new TextLabel(rico.Equipment.Items[0].Item.Position.ToVector2(),
-                    100, "x 20", content.Load<SpriteFont>("JingJing"),
-                    rico.Equipment.Items[0].Item.Texture);
-
+                _fishItem.OnChecked();
 
                 // Rico wychodzi w następnej rurze, więc go tam ustawiam
                 rico.Position = platforms.LastOrDefault(p => p.platformType == PlatformType.MAGICPIPE).Position;
@@ -215,7 +213,7 @@ namespace TestGame.Scene
             #region Zakończenie minigry "Memory"
 
             // to się wykona tylko raz po zakończeniu minigry "Memory"
-            if (_miniGame.EndOfGame && _canPlayMiniGameMemory)
+            if (_minigameMemory.EndOfGame && _canPlayMiniGameMemory)
             {
                 _canPlayMiniGameMemory = false;
                 _playMiniGameMemory = false;
@@ -317,6 +315,8 @@ namespace TestGame.Scene
 
                                     // teraz możliwe jest włączenie  minigry
                                     _canPlayMiniGame = true;
+                                    // ale nie mozna grać w drugą
+                                    _canPlayMiniGameMemory = false;
                                 }
                             }
                             // jeśli jest poza nią to przestań wyświetlać strzałkę MŁ
@@ -326,6 +326,7 @@ namespace TestGame.Scene
                             {
                                 _chooseItemMenu.IsVisible = false;
                                 _canPlayMiniGame = false;
+                                _canPlayMiniGameMemory = true;
                             }
 
                             // sprawdzenie czy pingwin (RICO) jest w obrębie skrzynki MŁ
@@ -350,7 +351,9 @@ namespace TestGame.Scene
                             // sprawdzenie czy Rico wypluł rybę
                             if (_fishItem.IsCollisionDetect(_fishBox))
                             {
-                                _fishBox.IsActive = false;
+                                var pawl = platforms.FirstOrDefault(p => p.platformType == PlatformType.PAWL);
+                                platforms[platforms.IndexOf(pawl)].active = false;
+                                _fishItem.IsActive = false;
                             }
 
 
@@ -370,6 +373,7 @@ namespace TestGame.Scene
 
                                 // teraz możliwe jest włączenie  minigry
                                 _canPlayMiniGameMemory = true;
+                                _canPlayMiniGame = false;
                             }
 
 
