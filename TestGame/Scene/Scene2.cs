@@ -226,7 +226,7 @@ namespace TestGame.Scene
             #region Zakończenie minigry "Memory"
 
             // to się wykona tylko raz po zakończeniu minigry "Memory"
-            if (_minigameMemory.EndOfGame && _canPlayMiniGameMemory)
+            if (_minigameMemory.EndOfGame)
             {
                 _canPlayMiniGameMemory = false;
                 _playMiniGameMemory = false;
@@ -235,7 +235,7 @@ namespace TestGame.Scene
             }
 
             #endregion
-
+            
             if (_playMiniGame)
             {
                 _miniGame.Update(gameTime);
@@ -277,13 +277,13 @@ namespace TestGame.Scene
                 if (Keyboard.GetState().IsKeyUp(Keys.D4)) _blockD4 = false;
 
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && (_canPlayMiniGame || _canPlayMiniGameMemory))
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                 {
-                    if (_canPlayMiniGame)
+                    if (!_miniGame.EndOfGame && _canPlayMiniGame)
                         _playMiniGame = true;
 
-                    else if (_canPlayMiniGameMemory)
-                    {
+                    else if (!_minigameMemory.EndOfGame && _canPlayMiniGameMemory)
+                    { 
                         _playMiniGameMemory = true;
                     }
 
@@ -325,8 +325,6 @@ namespace TestGame.Scene
 
                                     // teraz możliwe jest włączenie  minigry
                                     _canPlayMiniGame = true;
-                                    // ale nie mozna grać w drugą
-                                    _canPlayMiniGameMemory = false;
                                 }
                             }
                             // jeśli jest poza nią to przestań wyświetlać strzałkę MŁ
@@ -336,7 +334,6 @@ namespace TestGame.Scene
                             {
                                 _chooseItemMenu.IsVisible = false;
                                 _canPlayMiniGame = false;
-                                
                             }
 
                             // sprawdzenie czy pingwin (RICO) jest w obrębie skrzynki MŁ
@@ -374,16 +371,16 @@ namespace TestGame.Scene
                             }
 
                             // sprawdzenie czy Skipper może rozpocząć grę z Julianem
-                            if (penguin.penguinType == PenguinType.SKIPPER && _julek.IsInActionSector(penguin))
+                            if (penguin.penguinType == PenguinType.SKIPPER && 
+                                _julek.IsInActionSector(penguin) &&
+                                !_minigameMemory.EndOfGame)
                             {
-                                // załaduj i pokaż strzałke nad rurą
                                 _chooseItemMenu.Update(penguin, new List<Texture2D>()
-                                {content.Load<Texture2D>(@"Scena2\talkIcon")}, topMargin: 100);
+                                { content.Load<Texture2D>(@"Scena2\talkIcon") }, topMargin: 100);
                                 _chooseItemMenu.IsVisible = true;
 
                                 // teraz możliwe jest włączenie  minigry
                                 _canPlayMiniGameMemory = true;
-                                _canPlayMiniGame = false;
                             }
 
 

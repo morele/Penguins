@@ -153,8 +153,8 @@ namespace TestGame.MIniGames.Memory
             {
                 if (Julian.Punkty < punkty_gracza)
                 {
-
                     _spriteBatch.Draw(Wygrana, PolozenieTextury, Color.White);
+                    EndOfGame = true;
                 }
                 else
                 {
