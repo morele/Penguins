@@ -81,7 +81,7 @@ namespace TestGame.Menu
             // grafiki menu
             _backgroundTexture = content.Load<Texture2D>("menu_background_new");
             _newGameOptionTexture = content.Load<Texture2D>("NowaGra");
-            _optionOptionTexture = content.Load<Texture2D>("Opcje");
+            _optionOptionTexture = content.Load<Texture2D>("sterowanie");
             _authorsOptionTexture = content.Load<Texture2D>("Autorzy");
             _exitOptionTexture = content.Load<Texture2D>("Wyjscie");
             _cursorTexture = content.Load<Texture2D>("Wskaznik");

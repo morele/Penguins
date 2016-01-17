@@ -48,6 +48,12 @@ namespace TestGame
         private Vector2 _levelTitlePosition;
         private Vector2 _levelNumberPosition;
 
+        //SCREEN Z AUTORAMI
+        private Texture2D _authorsScreen;
+        
+        //SCREEN ZE STEROWANIEM
+        private Texture2D _contorolScreen;
+
         // SCENA 1
         private Scene1 scene1;
         private Texture2D _scene1TitleTexture;
@@ -76,6 +82,8 @@ namespace TestGame
         private Vector2 _soundIconPosition = Vector2.Zero;
 
         private CurrentScene _currentScene;
+        private bool _canShowControlScreen;
+        private bool _canShowAuthorsScreen;
 
         public Game1()
         {
@@ -83,11 +91,10 @@ namespace TestGame
 
             Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
+
             graphics.PreferredBackBufferHeight = 900;
             graphics.PreferredBackBufferWidth = 1200;
-
             graphics.ApplyChanges();
-            // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
 
             // ustawienie początkowego poziomu na scene 1 MŁ
             _currentScene = CurrentScene.Scene2;
@@ -139,6 +146,10 @@ namespace TestGame
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // załadowanie grafik dla screenów
+            _authorsScreen = Content.Load<Texture2D>("MenuAuthorsScreen");
+            _contorolScreen = Content.Load<Texture2D>("MenuControlScreen");
 
             switch (_currentScene)
             {
@@ -294,8 +305,12 @@ namespace TestGame
                         _canShowGameMenu = false;
                         break;
                     case SelectedOptionMenu.Control:
+                        _canShowControlScreen = true;
+                        _gameMenu.SelectedOptionMenu = SelectedOptionMenu.None;
                         break;
                     case SelectedOptionMenu.Authors:
+                        _canShowAuthorsScreen = true;
+                        _gameMenu.SelectedOptionMenu = SelectedOptionMenu.None;
                         break;
                     case SelectedOptionMenu.Exit:
                         Exit();
@@ -304,6 +319,17 @@ namespace TestGame
                         
                         break;
                 }
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Escape) && !_blockESCKey)
+                {
+                    _blockESCKey = true;
+                    _canShowControlScreen = false;
+                    _canShowAuthorsScreen = false;
+                }
+
+                if (Keyboard.GetState().IsKeyUp(Keys.Escape))
+                    _blockESCKey = false;
+
             }
             else
             {
@@ -475,10 +501,29 @@ namespace TestGame
 
             if (_canShowGameMenu)
             {
-                GraphicsDevice.Clear(Color.CornflowerBlue);
-                spriteBatch.Begin();
-                _gameMenu.Draw(spriteBatch);
-                spriteBatch.End();
+                if (_canShowAuthorsScreen)
+                {
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(_authorsScreen, Vector2.Zero, Color.White);
+                    spriteBatch.End();
+                }
+                else if (_canShowControlScreen)
+                {
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(_contorolScreen, Vector2.Zero, Color.White);
+                    spriteBatch.End();
+                }
+                else
+                {
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
+                    spriteBatch.Begin();
+                    _gameMenu.Draw(spriteBatch);
+                    spriteBatch.End();
+                }
+
+
             }
             else
             {
