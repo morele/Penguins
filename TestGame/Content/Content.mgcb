@@ -903,3 +903,99 @@
 /processorParam:TextureFormat=Color
 /build:sterowanie.png
 
+#begin Audio/Waves/julian1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/julian1.wav
+
+#begin Audio/Waves/julian2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/julian2.wav
+
+#begin Audio/Waves/julian3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/julian3.wav
+
+#begin Audio/Waves/kowalski1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/kowalski1.wav
+
+#begin Audio/Waves/kowalski2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/kowalski2.wav
+
+#begin Audio/Waves/rico_rzygorzut.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/rico_rzygorzut.wav
+
+#begin Audio/Waves/rico1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/rico1.wav
+
+#begin Audio/Waves/rico2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/rico2.wav
+
+#begin Audio/Waves/skipper_przykroMiLemurze.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/skipper_przykroMiLemurze.wav
+
+#begin Audio/Waves/skipper1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/skipper1.wav
+
+#begin Audio/Waves/skipper2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/skipper2.wav
+
+#begin Audio/Waves/skipper3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/skipper3.wav
+
+#begin Audio/Waves/skipper4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/skipper4.wav
+
+#begin Audio/Waves/szeregowy1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/szeregowy1.wav
+
+#begin Audio/Waves/szeregowy2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/szeregowy2.wav
+
+#begin Audio/Waves/szeregowy3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/szeregowy3.wav
+
