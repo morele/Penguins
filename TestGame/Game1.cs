@@ -147,8 +147,8 @@ namespace TestGame
                     _background = Content.Load<Texture2D>("scene2_background");
                     break;
                 case CurrentScene.Scene3:
-                    _scene3TitleTexture = Content.Load<Texture2D>(@"MenuPauzy\JedzILow");
-                    _scene3LevelNumberTexture = Content.Load<Texture2D>(@"MenuPauzy\Poziom2");
+                    _scene3TitleTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene3Title");
+                    _scene3LevelNumberTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene3Number");
                     _background = Content.Load<Texture2D>("scene2_background"); 
                     break;
                 default:
