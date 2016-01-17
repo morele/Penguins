@@ -26,10 +26,16 @@ namespace TestGame.Scene
         private ChooseItemMenu _chooseItemMenu;
         private TextLabel _textLabel;
 
-        // minigra
+        // minigra - "Swiming"
         private bool _playMiniGame;
         private Swiming _miniGame;
         private bool _canPlayMiniGame;
+
+        // minigra - "Memory"
+
+        // flaga informująca, czy można uruchomić minigrę "Memory"
+        private bool _canPlayMiniGameMemory;
+        private bool _playMiniGameMemory;
 
         // rybka zebrana przez Rico
         private Bonus _fishItem;
@@ -49,6 +55,7 @@ namespace TestGame.Scene
             _chooseItemMenu.IsVisible = false;
 
             _miniGame = new Swiming(new SpriteBatch(device), content, device);
+            
 
         }
 
@@ -152,16 +159,20 @@ namespace TestGame.Scene
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+
+
             if (_playMiniGame)
             {
                 _miniGame.Draw(spriteBatch);
             }
+            else if (_playMiniGameMemory)
+            {
+                
+            }
             else
             {
+                // narysowanie Juliana
                 _julek.Draw(spriteBatch);
-
-                if (_miniGame.EndOfGame)
-                    _textLabel.Draw(spriteBatch, true);
 
                 // narysowanie menu wyboru ekwipunku
                 _chooseItemMenu.Draw(spriteBatch);
@@ -177,7 +188,9 @@ namespace TestGame.Scene
 
         public override void UpdatePosition(GameTime gameTime)
         {
-            // to się wykona tylko raz po zakończeniu minigry
+            #region Zakończenie minigry "Swimming"
+
+            // to się wykona tylko raz po zakończeniu minigry "Swiming"
             if (_miniGame.EndOfGame && _canPlayMiniGame)
             {
                 // dodanie ryb do ekwipunku Rico
@@ -198,9 +211,25 @@ namespace TestGame.Scene
                 playerPanel.activeDraw = true;
             }
 
+            #endregion
+
+            #region Zakończenie minigry "Memory"
+
+            // to się wykona tylko raz po zakończeniu minigry "Memory"
+            if (_miniGame.EndOfGame && _canPlayMiniGameMemory)
+            {
+                // todo: Julian ma mieć baterię w ręce
+            }
+
+            #endregion
+
             if (_playMiniGame)
             {
                 _miniGame.Update(gameTime);
+            }
+            else if (_playMiniGameMemory)
+            {
+                
             }
             else
             {
@@ -315,10 +344,27 @@ namespace TestGame.Scene
                                 _fishBox.IsActive = false;
                             }
 
-                          
+
+                            // sprawdzenie kolizji między Skipperem a Julianem
+                            if (_julek.IsCollisionDetect(penguin))
+                            {
+                                penguin.Position.X -= 2;
+                            }
+
+                            // sprawdzenie czy Skipper może rozpocząć grę z Julianem
                             if (penguin.penguinType == PenguinType.SKIPPER && _julek.IsInActionSector(penguin))
                             {
-                                //TODO : minigra
+                                if (penguin.Collision(penguin.rectangle))
+                                {
+                                    // załaduj i pokaż strzałke nad rurą
+                                    _chooseItemMenu.Update(penguin, new List<Texture2D>()
+                                    { content.Load<Texture2D>(@"Scena2\talkIcon") }, topMargin: 100);
+                                    _chooseItemMenu.IsVisible = true;
+
+                                    // teraz możliwe jest włączenie  minigry karty
+                                    /// todo: fasdf
+                                    
+                                }
                             }
 
                             //kolizja z innymi pingwinami

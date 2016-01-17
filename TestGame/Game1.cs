@@ -89,7 +89,7 @@ namespace TestGame
             // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
 
             // ustawienie początkowego poziomu na scene 1 MŁ
-            _currentScene = CurrentScene.Scene3;
+            _currentScene = CurrentScene.Scene2;
         }
 
         protected override void Initialize()
