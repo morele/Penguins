@@ -97,7 +97,7 @@ namespace TestGame
             graphics.ApplyChanges();
 
             // ustawienie początkowego poziomu na scene 1 MŁ
-            _currentScene = CurrentScene.Scene3;
+            _currentScene = CurrentScene.Scene2;
         }
 
         protected override void Initialize()
@@ -189,10 +189,12 @@ namespace TestGame
                     penguinSpeed, gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815));
                 //Ł.G : dodanie rozmiaru frame do Animacji
 
-                // dźwięki wydawane przez skippera
+                // dźwięki wydawane przez Rico
                 rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico_start"));
-
-
+                rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico1"));
+                rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico2"));
+                // specjalny dźwięk
+                rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico_rzygorzut"));
                 skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"),
                     Content.Load<Texture2D>("Postacie/Animacje/SkipperSlizg"),
                     Content.Load<Texture2D>("WyborPostaci/Skipper"), new Vector2(-3080, 400),
@@ -200,16 +202,30 @@ namespace TestGame
 
                 // dźwięki wydawane przez skippera
                 skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper_start"));
+                skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper1"));
+                skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper2"));
+                skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper3"));
+                skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper4"));
 
                 szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"),
                     Content.Load<Texture2D>("Postacie/Animacje/SzeregowySlizg"),
                     Content.Load<Texture2D>("WyborPostaci/Szeregowy"), new Vector2(-2930, 400),
                     penguinSpeed, gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));
 
+                // dźwięki wydawane przez szeregowego
+                szeregowy.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\szeregowy1"));
+                szeregowy.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\szeregowy2"));
+                szeregowy.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\szeregowy3"));
+
+
                 kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"),
                     Content.Load<Texture2D>("Postacie/Animacje/KowalskiPlywanie"),
                     Content.Load<Texture2D>("WyborPostaci/Kowalski"), new Vector2(-3030, 400),
                     penguinSpeed, gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
+
+                // dźwięki wydawane przez Kowalskiego
+                kowalski.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\kowalski1"));
+                kowalski.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\kowalski2"));
 
 
                 // SoundManager.SoundOn = false;

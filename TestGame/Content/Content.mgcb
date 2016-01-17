@@ -999,3 +999,15 @@
 /processorParam:Quality=Best
 /build:Audio/Waves/szeregowy3.wav
 
+#begin Audio/Waves/scene2_theme.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/scene2_theme.wav
+
+#begin Audio/Waves/scene3_theme.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Waves/scene3_theme.wav
+

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework.Media;
 using TestGame.Menu;
 using TestGame.MIniGames.Numbers;
 
@@ -11,6 +12,14 @@ namespace TestGame.Scene
 {
     public class Scene1 : Scene
     {
+        bool _blockD1 = false;
+        bool _blockD2 = false;
+        bool _blockD3 = false;
+        bool _blockD4 = false;
+
+        // muzyka w tle
+        private Song _themeSong;
+
         // automat
         private ActionElement _slotMachine;
 
@@ -61,9 +70,12 @@ namespace TestGame.Scene
             _slotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1200, 150),
                 slotMachineSize, 50);
 
-
-
             automatMinigame.LoadContent(content, content.Load<Texture2D>("Minigry/AutomatGame/Panel"));
+
+            // muzyka tła
+            _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = SoundManager.Volume;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -102,22 +114,44 @@ namespace TestGame.Scene
 
         public override void UpdatePosition(GameTime gameTime)
         {
-         
+            if (firstStart)
+            {
+                if (SoundManager.SoundOn)
+                {
+                    MediaPlayer.Play(_themeSong);
+                }
+            }
+
             // metoda ustawia wszystkich graczy na pozycji początkowej
             if (firstStart) FirstStart(gameTime);
 
             if (!activeMiniGame)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.D1)) player = ActiveAndDeactivationPlayer(true, false, false, false);
-                if (Keyboard.GetState().IsKeyDown(Keys.D2)) player = ActiveAndDeactivationPlayer(false, true, false, false);
-                if (Keyboard.GetState().IsKeyDown(Keys.D3)) player = ActiveAndDeactivationPlayer(false, false, true, false);
-                if (Keyboard.GetState().IsKeyDown(Keys.D4)) player = ActiveAndDeactivationPlayer(false, false, false, true);
-                if (Keyboard.GetState().IsKeyDown(Keys.D6))
+                if (Keyboard.GetState().IsKeyDown(Keys.D1) && !_blockD1)
                 {
-                    activeMiniGame = true;
-                    camera.active = true;
-                    playerPanel.activeDraw = false;
+                    _blockD1 = true;
+                    player = ActiveAndDeactivationPlayer(true, false, false, false);
                 }
+                if (Keyboard.GetState().IsKeyDown(Keys.D2) && !_blockD2)
+                {
+                    _blockD2 = true;
+                    player = ActiveAndDeactivationPlayer(false, true, false, false);
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.D3) && !_blockD3)
+                {
+                    _blockD3 = true;
+                    player = ActiveAndDeactivationPlayer(false, false, true, false);
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.D4) && !_blockD4)
+                {
+                    _blockD4 = true;
+                    player = ActiveAndDeactivationPlayer(false, false, false, true);
+                }
+
+                if (Keyboard.GetState().IsKeyUp(Keys.D1)) _blockD1 = false;
+                if (Keyboard.GetState().IsKeyUp(Keys.D2)) _blockD2 = false;
+                if (Keyboard.GetState().IsKeyUp(Keys.D3)) _blockD3 = false;
+                if (Keyboard.GetState().IsKeyUp(Keys.D4)) _blockD4 = false;
 
                 // odświeżenie paska gracza
                 playerPanel.Update(player);
