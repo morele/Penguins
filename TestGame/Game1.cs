@@ -85,7 +85,7 @@ namespace TestGame
             // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
 
             // ustawienie początkowego poziomu na scene 1 MŁ
-            _currentScene = CurrentScene.Scene1;
+            _currentScene = CurrentScene.Scene2;
         }
 
         protected override void Initialize()
@@ -107,7 +107,7 @@ namespace TestGame
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
+
             // inicjalizacja panelu gracza - podstawowy gracz - skipper           
             _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"), new Vector2(0, 0), new Vector2(GraphicsDevice.Viewport.Width, 150), Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Skipper"));
 
@@ -118,7 +118,7 @@ namespace TestGame
             _soundOffTexture = Content.Load<Texture2D>(@"Audio\Graph\soundOff");
             _soundIconRectangle = new Rectangle(0, 0, _soundOnTexture.Width, _soundOnTexture.Height);
 
-            _soundIconPosition.X = GraphicsDevice.Viewport.Width - _soundIconRectangle.Width/2 - 10;
+            _soundIconPosition.X = GraphicsDevice.Viewport.Width - _soundIconRectangle.Width / 2 - 10;
             _soundIconPosition.Y = 10;
 
             base.Initialize();
@@ -153,8 +153,8 @@ namespace TestGame
             float screenWidth = GraphicsDevice.Viewport.Width;
             float screenHeight = GraphicsDevice.Viewport.Height;
 
-            _levelNumberPosition = new Vector2((screenWidth / 2 - _scene1LevelNumberTexture.Width / 2), screenHeight / 2 - 100);
-            _levelTitlePosition = new Vector2((screenWidth / 2 - _scene1TitleTexture.Width / 2) + 5, screenHeight / 2 + 20);
+            _levelNumberPosition = new Vector2((screenWidth / 2 - _scene2LevelNumberTexture.Width / 2), screenHeight / 2 - 100);
+            _levelTitlePosition = new Vector2((screenWidth / 2 - _scene2TitleTexture.Width / 2) + 5, screenHeight / 2 + 20);
 
             rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"), //Ł.G: tymczasowo zmienione 
                 Content.Load<Texture2D>("WyborPostaci/Rico"), new Vector2(-980, 400), penguinSpeed, gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815)); //Ł.G : dodanie rozmiaru frame do Animacji
@@ -293,7 +293,7 @@ namespace TestGame
             }
 
             // po co to tu jest??
-            var deltaTime = 1/gameTime.ElapsedGameTime.TotalSeconds;
+            var deltaTime = 1 / gameTime.ElapsedGameTime.TotalSeconds;
 
             if (!_isGamePause)
             {
@@ -310,7 +310,7 @@ namespace TestGame
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                
+
             }
             else
             {
@@ -342,7 +342,7 @@ namespace TestGame
                     GraphicsDevice.Clear(Color.CornflowerBlue);
                     break;
             }
-            
+
 
             // wyświetlenie screenu początkowego z nazwą oraz tytułem poziomu
             if (_isSceneLoading)
