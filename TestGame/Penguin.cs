@@ -217,6 +217,9 @@ namespace TestGame
                 {
                     if (Equipment.Items.Count > 0)
                     {
+                        // dźwięk rzygorzutu
+                        Voices.LastOrDefault().Play();
+
                         // jeśli selectedItem jest nullem to weź pierszy z listy
                         var vomitItem = SelectedItem ?? Equipment.Items[0];
                         vomitItem.Item.IsActive = true;
@@ -535,7 +538,14 @@ namespace TestGame
             if (Voices.Any())
             {
                 Random rand = new Random();
-                int index = rand.Next(0, Voices.Count);
+                // jeśli to Rico to losujemy bez ostatniego
+                // ostatni dźwięk to rzygorzut
+                int index = 0;
+                if(penguinType == PenguinType.RICO)
+                    index = rand.Next(0, Voices.Count-1);
+                else
+                    index = rand.Next(0, Voices.Count);
+
                 Voices[index].Play(SoundManager.Volume > 1.0 ? 0.99f : SoundManager.Volume, 0.0f, 0.0f);
             }
         }

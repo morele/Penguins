@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using Testgame.MIniGames.Swiming;
 using TestGame.Menu;
@@ -18,6 +19,9 @@ namespace TestGame.Scene
         // muzyka w tle
         private Song _themeSong;
 
+
+        private List<SoundEffect> _sceneSounds = new List<SoundEffect>();
+        private List<bool> _isSceneSoundPlay = new List<bool>(2);
         bool _blockD1 = false;
         bool _blockD2 = false;
         bool _blockD3 = false;
@@ -64,6 +68,13 @@ namespace TestGame.Scene
         public override void LoadContent(List<Penguin> penguins, PlayerPanel playerPanel, Penguin player)
         {
             base.LoadContent(penguins, playerPanel, player);
+
+            // załadowanie dźwięków sceny
+            _sceneSounds.Add(content.Load<SoundEffect>(@"Audio\Waves\skipper_przykroMiLemurze"));
+            _sceneSounds.Add(content.Load<SoundEffect>(@"Audio\Waves\julian3"));
+
+            _isSceneSoundPlay.Add(false);
+            _isSceneSoundPlay.Add(false);
 
             int YpositionFloor = 700;
 
@@ -151,7 +162,7 @@ namespace TestGame.Scene
             _fishItem.IsActive = true;
 
             // muzyka tła
-            _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
+            _themeSong = content.Load<Song>("Audio/Waves/scene2_theme");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = SoundManager.Volume;
 
@@ -381,6 +392,12 @@ namespace TestGame.Scene
                                 _julek.IsInActionSector(penguin) &&
                                 !_minigameMemory.EndOfGame)
                             {
+                                // odtworzenie dźwięku
+                                if (!_isSceneSoundPlay[1])
+                                {
+                                    _isSceneSoundPlay[1] = true;
+                                    _sceneSounds[1].Play();
+                                }
                                 _chooseItemMenu.Update(penguin, new List<Texture2D>()
                                 { content.Load<Texture2D>(@"Scena2\talkIcon") }, topMargin: 100);
                                 _chooseItemMenu.IsVisible = true;
@@ -388,7 +405,11 @@ namespace TestGame.Scene
                                 // teraz możliwe jest włączenie  minigry
                                 _canPlayMiniGameMemory = true;
                             }
-
+                            else if (penguin.penguinType == PenguinType.SKIPPER &&
+                                     !_julek.IsInActionSector(penguin))
+                            {
+                                _isSceneSoundPlay[1] = false;
+                            }
 
                             //kolizja z innymi pingwinami
                             for (i = 0; i < penguins.Count; i++)

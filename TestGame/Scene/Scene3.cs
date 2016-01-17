@@ -27,12 +27,13 @@ namespace TestGame.Scene
         private TextLabel _textLabel;
 
         private List<Platform> partsPlane = new List<Platform>();
+        private bool _firstStart;
 
         public Scene3(ContentManager content, Camera camera, GameTime gametime, GraphicsDevice device) : base(content, camera, gametime)
         {
             _chooseItemMenu = new ChooseItemMenu();
             _chooseItemMenu.IsVisible = false;
-
+            _firstStart = true;
 
         }
 
@@ -62,16 +63,10 @@ namespace TestGame.Scene
             platforms.Add(new Platform(content.Load<Texture2D>("Scena3/PustaPlatforma"), new Vector2(0, 864), false, 0, 0, PlatformType.FLOOR));
 
 
-
-
             // muzyka tła
-            if (SoundManager.SoundOn)
-            {
-                _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
-                MediaPlayer.IsRepeating = true;
-                MediaPlayer.Volume = SoundManager.Volume;
-                MediaPlayer.Play(_themeSong);
-            }
+            _themeSong = content.Load<Song>("Audio/Waves/scene3_theme");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = SoundManager.Volume;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -99,7 +94,16 @@ namespace TestGame.Scene
         }
         private void UpdatePartsPlane(Penguin player)
         {
-            for(int i = 0; i < partsPlane.Count; i++)
+            if (_firstStart)
+            {
+                if (SoundManager.SoundOn)
+                {
+                    MediaPlayer.Play(_themeSong);
+                }
+                _firstStart = false;
+            }
+
+            for (int i = 0; i < partsPlane.Count; i++)
             {     
                 Rectangle tmp = partsPlane[i].PlatformRectangle;
                 if (i == 0)
