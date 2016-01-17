@@ -25,8 +25,14 @@ namespace TestGame.Scene
         /// </summary>
         public bool IsCompleted { get; set; }
 
+        /// <summary>
+        /// Flaga informuje czy gracz przegrał
+        /// </summary>
+        public bool IsGameOver { get; set; }
+
         public Scene(ContentManager content, Camera camera,GameTime gameTime)
         {
+            IsGameOver = false;
             IsCompleted = false;
             this.content = content;
             this.camera = camera;

@@ -152,7 +152,7 @@
     </Content>
     <Content Include="Content\menu_background.png" />
     <Content Include="Content\menu_background_new.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Minigry\AutomatGame\Button.png" />
     <Content Include="Content\Minigry\AutomatGame\Panel.png" />
