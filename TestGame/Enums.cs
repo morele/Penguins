@@ -47,7 +47,10 @@ namespace TestGame
         PAWL = 6,
         CAR = 7,
         SPIKE=8,
-        JULIAN=9
+        JULIAN=9,
+        BUSH = 10,
+        PALM = 11,
+        PARTSPLANE = 12
 
     }
 }

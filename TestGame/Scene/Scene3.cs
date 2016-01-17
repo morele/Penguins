@@ -26,8 +26,7 @@ namespace TestGame.Scene
         private ChooseItemMenu _chooseItemMenu;
         private TextLabel _textLabel;
 
-
-        private GameTime gametime;
+        private List<Platform> partsPlane = new List<Platform>();
 
         public Scene3(ContentManager content, Camera camera, GameTime gametime, GraphicsDevice device) : base(content, camera, gametime)
         {
@@ -41,22 +40,27 @@ namespace TestGame.Scene
         {
             base.LoadContent(penguins, playerPanel, player);
 
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena1/podloga"), new Vector2(-700, 700)));
 
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/0"), new Vector2(1254, 263)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/1"), new Vector2(1477, 392)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/2"), new Vector2(1287, 784)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/3"), new Vector2(431, 424)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/4"), new Vector2(2244, 732)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/5"), new Vector2(1700, 482)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/6"), new Vector2(313, 637)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/7"), new Vector2(1723, 658)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/8"), new Vector2(2548, 265)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/9"), new Vector2(877, 681)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/10"), new Vector2(877, 714)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/11"), new Vector2(2755, 494)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/12"), new Vector2(1335, 681)));
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/13"), new Vector2(2742, 385)));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/0"), new Vector2(1254, 333), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/1"), new Vector2(1477, 392), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/2"), new Vector2(1287, 784), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/3"), new Vector2(431, 424), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/4"), new Vector2(2244, 732), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/5"), new Vector2(1700, 482), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/6"), new Vector2(313, 637), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/7"), new Vector2(1723, 658), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/8"), new Vector2(2548, 365), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/9"), new Vector2(877, 641), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/10"), new Vector2(877, 714), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/11"), new Vector2(2755, 494), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/12"), new Vector2(1335, 681), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/13"), new Vector2(2742, 385), false, 0, 0, PlatformType.PARTSPLANE));
+         
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/Palmy"), new Vector2(0, 128), false, 0, 0, PlatformType.PALM));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/Krzaki"), new Vector2(0, 590), false, 0, 0, PlatformType.BUSH));
+
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/PustaPlatforma"), new Vector2(0, 864), false, 0, 0, PlatformType.FLOOR));
+
 
 
 
@@ -73,16 +77,58 @@ namespace TestGame.Scene
         public override void Draw(SpriteBatch spriteBatch)
         {
 
-                // narysowanie menu wyboru ekwipunku
-                _chooseItemMenu.Draw(spriteBatch);
-
                 foreach (Platform platform in platforms)
                     platform.Draw(spriteBatch);
 
                 foreach (Penguin penguin in penguins)
                     penguin.DrawAnimation(spriteBatch);
+
+            foreach (Platform part in partsPlane)
+                part.Draw(spriteBatch);
         }
 
+        private void AddItem(Platform platform)
+        {
+            platform.active = true;
+            Rectangle tmp = platform.PlatformRectangle;
+            tmp.Width /= 4;
+            tmp.Height /= 4;    
+            platform.PlatformRectangle = tmp;
+            partsPlane.Add(platform);
+            
+        }
+        private void UpdatePartsPlane(Penguin player)
+        {
+            for(int i = 0; i < partsPlane.Count; i++)
+            {     
+                Rectangle tmp = partsPlane[i].PlatformRectangle;
+                if (i == 0)
+                {
+                    tmp.X = 70 + (player.rectangle.X - 400);
+                    tmp.Y = 20;
+                    partsPlane[i].PlatformRectangle = tmp;
+                }
+                else
+                {
+                    tmp.X = partsPlane[i - 1].PlatformRectangle.X + partsPlane[i - 1].PlatformRectangle.Width + 20;
+                    tmp.Y = 20;
+                    partsPlane[i].PlatformRectangle = tmp;
+                    /*  if (i < 7)
+                      {
+                          tmp.X = partsPlane[i - 1].PlatformRectangle.X + partsPlane[i - 1].PlatformRectangle.Width + 20;
+                          tmp.Y = 10;
+                      }
+                      else
+                      {
+                          if (i == 7) tmp.X = 150 + (player.rectangle.X - 400); else tmp.X = partsPlane[i - 1].PlatformRectangle.X + partsPlane[i - 1].PlatformRectangle.Width + 20;
+                          tmp.Y = 70;
+                      }
+
+                      partsPlane[i].PlatformRectangle = tmp;*/
+                }
+               // partsPlane[i].PlatformRectangle.X = (player.rectangle.X - 400) + partsPlane[i].PlatformRectangle.X; ;
+            }
+        }
         public override void UpdatePosition(GameTime gameTime)
         {
           
@@ -123,10 +169,6 @@ namespace TestGame.Scene
                 int i;
                 foreach (Platform platform in platforms)
                 {
-                    if (platform.platformType == PlatformType.SPIKE)
-                    {
-                   
-                    }
                     if (platform.active)
                     {
                         foreach (Penguin penguin in penguins)
@@ -140,31 +182,39 @@ namespace TestGame.Scene
                                         penguin.JumpStop(0);
                             }
 
-                            //...
 
-
-
-
-
-
-                            //...
-                            
-                            if (penguin.Collision(platform.PlatformRectangle, PenguinType.NN, platform.platformType))// sprawdzenie czy na platformie są pingwiny
+                        if(platform.platformType == PlatformType.PARTSPLANE)
+                        {
+                            if (penguin.Collision2(platform.PlatformRectangle))
                             {
-                                penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
-
-                                if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
+                                platform.active = false;
+                                AddItem(platform);
+                            }
+                        }
+                        else
+                        {
+                            if (platform.platformType != PlatformType.PALM && platform.platformType != PlatformType.BUSH)
+                                if (penguin.Collision(platform.PlatformRectangle, PenguinType.NN, platform.platformType))// sprawdzenie czy na platformie są pingwiny
                                 {
-                                    penguin.PutMeOn(platform.PlatformRectangle);
+                                    penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
 
-                                    if (penguin.active) platform.Slowdown();
-                                    penguin.platformSpeed = (int)platform.PlatformSpeed;
+                                    if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
+                                    {
+                                        penguin.PutMeOn(platform.PlatformRectangle);
+
+                                        if (penguin.active) platform.Slowdown();
+                                        penguin.platformSpeed = (int)platform.PlatformSpeed;
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                if (penguin.active) platform.SpeedUp();
-                            }
+                                else
+                                {
+                                    if (penguin.active) platform.SpeedUp();
+                                }
+                        }
+                            
+
+
+                           
 
                         }
                         // aktualizacja pozycji jeśli platforma ma sie poruszać
@@ -178,12 +228,8 @@ namespace TestGame.Scene
                 foreach (Penguin penguin in penguins)
                     penguin.UpdatePosition(gameTime);
 
-
+                 UpdatePartsPlane(player);
                 camera.Update(player);
-            
-
-
-
         }
 
     }

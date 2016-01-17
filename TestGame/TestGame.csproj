@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -92,6 +93,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\AnimacjeTla\AutkoAnimacja.png" />
     <Content Include="Content\Audio\Waves\click.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -163,12 +165,24 @@
     <Content Include="Content\Minigry\Memory\Skipper.png" />
     <Content Include="Content\Minigry\Memory\Wygrana.png" />
     <Content Include="Content\Minigry\Memory\Zakrywka.png" />
-    <Content Include="Content\Minigry\SwimingGame\Beczka.png" />
-    <Content Include="Content\Minigry\SwimingGame\dziob.png" />
-    <Content Include="Content\Minigry\SwimingGame\RicoPlywa.png" />
-    <Content Include="Content\Minigry\SwimingGame\ryba.png" />
-    <Content Include="Content\Minigry\SwimingGame\tło minigra.png" />
-    <Content Include="Content\Minigry\SwimingGame\ZepsutaRyba.png" />
+    <Content Include="Content\Minigry\SwimingGame\Beczka.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\SwimingGame\dziob.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\SwimingGame\RicoPlywa.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\SwimingGame\ryba.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\SwimingGame\tło minigra.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\SwimingGame\ZepsutaRyba.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\NapisPingwingi.png" />
     <Content Include="Content\NowaGra.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -406,6 +420,9 @@
     <Content Include="Content\Scena3\Palmy.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Scena3\PustaPlatforma.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Scena3\Samolot_End.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -427,6 +444,8 @@
     <Content Include="Content\Slizg\Szeregowy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\TextLabelBackground.png" />
+    <Content Include="Content\TextLabelBackgroundTransparent.png" />
     <Content Include="Content\trawa.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -449,7 +468,9 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\JingJing.spritefont" />
+    <Content Include="Content\JingJing.spritefont">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Content\Minigry\AutomatGame\NumFont.spritefont" />
     <None Include="Content\Minigry\Memory\Liczby.spritefont" />
     <None Include="Content\Minigry\Memory\NewSpriteFont.spritefont" />

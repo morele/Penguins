@@ -468,7 +468,7 @@ namespace TestGame
         public bool Collision2(Rectangle r1)
         {
 
-            return false;
+            return rectangle.Intersects(r1);
         }
 
         public void PutMeOn(Rectangle platform)

@@ -90,7 +90,7 @@ namespace TestGame
             // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
 
             // ustawienie początkowego poziomu na scene 1 MŁ
-            _currentScene = CurrentScene.Scene2;
+            _currentScene = CurrentScene.Scene3;
         }
 
         protected override void Initialize()
@@ -256,10 +256,10 @@ namespace TestGame
                 case 3:
                     foreach (Penguin penguin in penguins)
                     {
-                        if (penguin.penguinType == PenguinType.SKIPPER) penguin.UpdateStartPosition(new Vector2(-680, 400));
-                        if (penguin.penguinType == PenguinType.KOWALSKI) penguin.UpdateStartPosition(new Vector2(-630, 400));
-                        if (penguin.penguinType == PenguinType.RICO) penguin.UpdateStartPosition(new Vector2(-580, 400));
-                        if (penguin.penguinType == PenguinType.SZEREGOWY) penguin.UpdateStartPosition(new Vector2(-530, 400));
+                        if (penguin.penguinType == PenguinType.SKIPPER) penguin.UpdateStartPosition(new Vector2(10, 400));
+                        if (penguin.penguinType == PenguinType.KOWALSKI) penguin.UpdateStartPosition(new Vector2(60, 400));
+                        if (penguin.penguinType == PenguinType.RICO) penguin.UpdateStartPosition(new Vector2(110, 400));
+                        if (penguin.penguinType == PenguinType.SZEREGOWY) penguin.UpdateStartPosition(new Vector2(160, 400));
                     }
                     break;
                 default:
@@ -396,9 +396,6 @@ namespace TestGame
                 {
                     _blockESCKey = false;
                 }
-
-                // po co to tu jest??
-                var deltaTime = 1/gameTime.ElapsedGameTime.TotalSeconds;
 
                 if (!_isGamePause)
                 {
