@@ -79,13 +79,13 @@ namespace TestGame
         {
 
             graphics = new GraphicsDeviceManager(this);
-
             Content.RootDirectory = "Content";
-            this.IsMouseVisible = true;
-            graphics.PreferredBackBufferHeight = 900;
+            this.Window.AllowUserResizing = false;
             graphics.PreferredBackBufferWidth = 1200;
+            graphics.PreferredBackBufferHeight = 900;
+     
+            IsMouseVisible = true;
 
-            graphics.ApplyChanges();
             // TargetElapsedTime  = new TimeSpan(0, 0, 0, 0, 1);
 
             // ustawienie początkowego poziomu na scene 1 MŁ
@@ -123,7 +123,7 @@ namespace TestGame
             _soundOffTexture = Content.Load<Texture2D>(@"Audio\Graph\soundOff");
             _soundIconRectangle = new Rectangle(0, 0, _soundOnTexture.Width, _soundOnTexture.Height);
 
-            _soundIconPosition.X = GraphicsDevice.Viewport.Width - _soundIconRectangle.Width/2 - 10;
+            _soundIconPosition.X = GraphicsDevice.Viewport.Width - _soundIconRectangle.Width / 2 - 10;
             _soundIconPosition.Y = 10;
 
             base.Initialize();
@@ -149,7 +149,7 @@ namespace TestGame
                 case CurrentScene.Scene3:
                     _scene3TitleTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene3Title");
                     _scene3LevelNumberTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene3Number");
-                    _background = Content.Load<Texture2D>("scene2_background"); 
+                    _background = Content.Load<Texture2D>("scene2_background");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -160,34 +160,34 @@ namespace TestGame
             float screenWidth = GraphicsDevice.Viewport.Width;
             float screenHeight = GraphicsDevice.Viewport.Height;
 
-          //  _levelNumberPosition = new Vector2((screenWidth / 2 - _scene1LevelNumberTexture.Width / 2), screenHeight / 2 - 100);
-          //  _levelTitlePosition = new Vector2((screenWidth / 2 - _scene1TitleTexture.Width / 2) + 5, screenHeight / 2 + 20);
+            //  _levelNumberPosition = new Vector2((screenWidth / 2 - _scene1LevelNumberTexture.Width / 2), screenHeight / 2 - 100);
+            //  _levelTitlePosition = new Vector2((screenWidth / 2 - _scene1TitleTexture.Width / 2) + 5, screenHeight / 2 + 20);
 
-            rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 
+            rico = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"),
                 Content.Load<Texture2D>("Postacie/Animacje/RicoPlywa"), //Ł.G: tymczasowo zmienione 
-                Content.Load<Texture2D>("WyborPostaci/Rico"), new Vector2(-2980, 400), 
+                Content.Load<Texture2D>("WyborPostaci/Rico"), new Vector2(-2980, 400),
                 penguinSpeed, gravitation, PenguinType.RICO, Const.RICO_MASS, new Point(480, 815)); //Ł.G : dodanie rozmiaru frame do Animacji
 
             // dźwięki wydawane przez skippera
             rico.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\rico_start"));
 
 
-            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"), 
-                Content.Load<Texture2D>("Postacie/Animacje/SkipperSlizg"), 
-                Content.Load<Texture2D>("WyborPostaci/Skipper"), new Vector2(-3080, 400), 
+            skipper = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SkipperAnimacja"),
+                Content.Load<Texture2D>("Postacie/Animacje/SkipperSlizg"),
+                Content.Load<Texture2D>("WyborPostaci/Skipper"), new Vector2(-3080, 400),
                 penguinSpeed, gravitation, PenguinType.SKIPPER, Const.SKIPPER_MASS, new Point(422, 663));
-           
+
             // dźwięki wydawane przez skippera
             skipper.Voices.Add(Content.Load<SoundEffect>(@"Audio\Waves\skipper_start"));
 
-            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"), 
-                Content.Load<Texture2D>("Postacie/Animacje/SzeregowySlizg"), 
-                Content.Load<Texture2D>("WyborPostaci/Szeregowy"), new Vector2(-2930, 400), 
+            szeregowy = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/SzeregowySheet"),
+                Content.Load<Texture2D>("Postacie/Animacje/SzeregowySlizg"),
+                Content.Load<Texture2D>("WyborPostaci/Szeregowy"), new Vector2(-2930, 400),
                 penguinSpeed, gravitation, PenguinType.SZEREGOWY, Const.SZEREGOWY_MASS, new Point(352, 635));
 
-            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"), 
-                Content.Load<Texture2D>("Postacie/Animacje/KowalskiPlywanie"), 
-                Content.Load<Texture2D>("WyborPostaci/Kowalski"), new Vector2(-3030, 400), 
+            kowalski = new Penguin(Content.Load<Texture2D>("Postacie/Animacje/KowalskiAnimacja"),
+                Content.Load<Texture2D>("Postacie/Animacje/KowalskiPlywanie"),
+                Content.Load<Texture2D>("WyborPostaci/Kowalski"), new Vector2(-3030, 400),
                 penguinSpeed, gravitation, PenguinType.KOWALSKI, Const.KOWALSKI_MASS, new Point(412, 882));
 
 
@@ -239,7 +239,7 @@ namespace TestGame
                         if (penguin.penguinType == PenguinType.RICO) penguin.UpdateStartPosition(new Vector2(-980, 400));
                         if (penguin.penguinType == PenguinType.SZEREGOWY) penguin.UpdateStartPosition(new Vector2(-930, 400));
                     }
-                        break;
+                    break;
                 case 2:
                     foreach (Penguin penguin in penguins)
                     {
@@ -268,6 +268,8 @@ namespace TestGame
 
         protected override void Update(GameTime gameTime)
         {
+        
+
             #region SPRAWDZENIE KTÓRY ZAŁADOWAĆ POZIOM
             if (_currentScene == CurrentScene.Scene1)
             {
@@ -349,8 +351,8 @@ namespace TestGame
                 _blockESCKey = false;
             }
 
-                // po co to tu jest??
-            var deltaTime = 1/gameTime.ElapsedGameTime.TotalSeconds;
+            // po co to tu jest??
+            var deltaTime = 1 / gameTime.ElapsedGameTime.TotalSeconds;
 
             if (!_isGamePause)
             {
@@ -368,7 +370,7 @@ namespace TestGame
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                
+
             }
             else
             {
@@ -397,10 +399,10 @@ namespace TestGame
                     GraphicsDevice.Clear(Color.MediumVioletRed);
                     break;
                 default:
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+                    GraphicsDevice.Clear(Color.CornflowerBlue);
                     break;
             }
-            
+
 
             // wyświetlenie screenu początkowego z nazwą oraz tytułem poziomu
             if (_isSceneLoading)
@@ -428,52 +430,52 @@ namespace TestGame
             }
             else
             {
-            if (!_isGamePause)
-            {
-                // narysowanie panelu użytkownika
-                spriteBatch.Begin();
-                spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
-                _playerPanel.Draw(spriteBatch);
-                spriteBatch.End();
+                if (!_isGamePause)
+                {
+                    // narysowanie panelu użytkownika
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
+                    _playerPanel.Draw(spriteBatch);
+                    spriteBatch.End();
 
-                // narysowanie aktualnej sceny
+                    // narysowanie aktualnej sceny
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
 
-                switch (_currentScene)
+                    switch (_currentScene)
+                    {
+                        case CurrentScene.Scene1:
+                            scene1.Draw(spriteBatch);
+                            break;
+                        case CurrentScene.Scene2:
+                            scene2.Draw(spriteBatch);
+                            break;
+                        case CurrentScene.Scene3:
+                            scene3.Draw(spriteBatch);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    spriteBatch.End();
+                }
+                else // MENU PAUZY
                 {
-                    case CurrentScene.Scene1:
-                        scene1.Draw(spriteBatch);
-                        break;
-                    case CurrentScene.Scene2:
-                        scene2.Draw(spriteBatch);
-                        break;
-                    case CurrentScene.Scene3:
-                        scene3.Draw(spriteBatch);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    _pauseMenu.Draw(spriteBatch);
                 }
 
+                #region IKONKA DŹWIĘKU
+
+                // rysowana jest na końcu po to aby była zawsze na wierzchu
+                spriteBatch.Begin();
+
+                if (SoundManager.SoundOn)
+                    spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                else
+                    spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+
                 spriteBatch.End();
-            }
-            else // MENU PAUZY
-            {
-                _pauseMenu.Draw(spriteBatch);
-            }
 
-            #region IKONKA DŹWIĘKU
-
-            // rysowana jest na końcu po to aby była zawsze na wierzchu
-            spriteBatch.Begin();
-       
-            if (SoundManager.SoundOn)
-                spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
-            else
-                spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
-
-            spriteBatch.End();
-
-            #endregion
+                #endregion
             }
 
             base.Draw(gameTime);

@@ -199,7 +199,7 @@ namespace Testgame.MIniGames.Swiming
 
         public void SetStartPosition()
         {
-            _position.X = -1150;
+            _position.X = 20;
             _position.Y = 200;
         }
         public void Draw(SpriteBatch spriteBatch)
