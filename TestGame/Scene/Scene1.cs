@@ -260,7 +260,14 @@ namespace TestGame.Scene
 
            
         }
- 
+
+        public override void ResetScene()
+        {
+            activeMiniGame = false;
+            IsCompleted = false;
+            activeMiniGame = false;
+            camera.active = false;
+        }
     }
 
 }

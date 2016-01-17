@@ -186,6 +186,10 @@ namespace TestGame.Scene
 
         }
 
+        public override void ResetScene()
+        {
+            // todo: reset ustawień
+        }
     }
 
 }

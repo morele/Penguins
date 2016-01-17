@@ -25,7 +25,6 @@ namespace TestGame.Scene
 
         // menu wyboru ekwipunku
         private ChooseItemMenu _chooseItemMenu;
-        private TextLabel _textLabel;
 
         // minigra - "Swiming"
         private bool _playMiniGame;
@@ -33,7 +32,7 @@ namespace TestGame.Scene
         private bool _canPlayMiniGame;
 
         // minigra - "Memory"
-        private Memory _minigameMemory;
+        public Memory _minigameMemory;
         private bool _canPlayMiniGameMemory;
         private bool _playMiniGameMemory;
 
@@ -308,10 +307,7 @@ namespace TestGame.Scene
                             _fishItem.FallDown();
 
                             if (_fishItem.IsCollisionDetect(platform))
-                            {
                                 _fishItem.CanFallDown = false;
-                            }
-
                         }
 
                         foreach (Penguin penguin in penguins)
@@ -406,17 +402,6 @@ namespace TestGame.Scene
                                     penguin.JumpSpring();
                                 }
 
-
-                            /*    if (platform.platformType == PlatformType.MAGICPIPE)
-                                {
-                                    if (penguin.Collision(platform.PlatformRectangle, platform.platformType))
-                                    {
-                                        penguin.Collision(platform.PlatformRectangle, platform.platformType);
-                                    }
-
-                                }*/
-
-
                             if (penguin.Collision(platform.PlatformRectangle, PenguinType.NN, platform.platformType))// sprawdzenie czy na platformie są pingwiny
                             {
                                 penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
@@ -433,21 +418,14 @@ namespace TestGame.Scene
                             {
                                 if (penguin.active) platform.SpeedUp();
                             }
-
-                            
-
                         }
-
-
 
                         // sprawdzenie czy poziom został ukończony
                         // jeśli wszystkie pingwiny mają współrzędne większe niż takie 
                         // jak były współrzędne zapadki to poziom został ukończony
                         if (penguins.Count(p=>p.Position.X > 1580) == penguins.Count)
-                        {
                             IsCompleted = true;
-                        }
-
+                        
                         // aktualizacja pozycji jeśli platforma ma sie poruszać
                         platform.UpdatePosition(gameTime);
                     }
@@ -470,6 +448,17 @@ namespace TestGame.Scene
         private void Penguin_PenguinDeathByFallingHandler(object sender, System.EventArgs e)
         {
             IsGameOver = true;
+        }
+
+        public override void ResetScene()
+        {
+            _canPlayMiniGame = false;
+            _canPlayMiniGameMemory = false;
+            _firstStart = true;
+            _playMiniGameMemory = false;
+            _playMiniGame = false;
+            _miniGame.EndOfGame = false;
+            _minigameMemory.EndOfGame = false;
         }
     }
 

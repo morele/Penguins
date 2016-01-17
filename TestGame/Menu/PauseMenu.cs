@@ -25,10 +25,12 @@ namespace TestGame.Menu
 
         private bool _blockDownKey;
         private bool _blockUpKey;
-
+        
         private int _selectedMenuItem = 0;
 
         public bool ShowMenu { get; set; }
+
+        public SelectedOptionPauseMenu SelectedOptionPauseMenu { get; set; }
 
         public PauseMenu(
             GraphicsDevice graphicsDevice,
@@ -90,13 +92,13 @@ namespace TestGame.Menu
                 switch (_selectedMenuItem)
                 {
                     case 0:
-                        ShowMenu = false;
+                        SelectedOptionPauseMenu = SelectedOptionPauseMenu.Resume;
                         break;
                     case 1:
-
+                        SelectedOptionPauseMenu = SelectedOptionPauseMenu.TryAgain;
                         break;
                     case 2:
-                       // todo: powrot do menu
+                        SelectedOptionPauseMenu = SelectedOptionPauseMenu.BackToMenu;
                         break;
                 }
             }

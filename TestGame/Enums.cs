@@ -21,6 +21,15 @@ namespace TestGame
         Exit
     }
 
+    public enum SelectedOptionPauseMenu
+    {
+        None,
+        Resume,
+        TryAgain,
+        BackToMenu
+    }
+
+
     // kierunek poruszania się obiektów
     public enum Direction
     {
