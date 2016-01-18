@@ -45,6 +45,8 @@ namespace TestGame.Scene
         private bool _canPlayMiniGameMemory;
         private bool _playMiniGameMemory;
 
+
+
         // rybka zebrana przez Rico
         private Bonus _fishItem;
 
@@ -128,8 +130,11 @@ namespace TestGame.Scene
             //platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 8, 50,
             //    new Vector2(-2500, YpositionFloor - content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony").Height))));
 
+
+
+
             platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja"), 6, 50,
-                new Vector2(-2300, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height))));
+               new Vector2(-2300, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height)), false, 0f, 0f, PlatformType.CAR));
 
             //   platforms.Add(new Platform(content.Load<Texture2D>("Scena2/autko/Autko1"), new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height), false, 0, 0, PlatformType.CAR));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(-1500, YpositionFloor), false, 0, 0, PlatformType.CAR));
@@ -307,6 +312,10 @@ namespace TestGame.Scene
                 if (Keyboard.GetState().IsKeyUp(Keys.D4)) _blockD4 = false;
 
 
+               
+
+
+
                 if (Keyboard.GetState().IsKeyDown(Keys.Enter))
                 {
                     if (!_miniGame.EndOfGame && _canPlayMiniGame)
@@ -327,6 +336,7 @@ namespace TestGame.Scene
                             int index = platforms.IndexOf(car);
                             platforms[index] = new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja2"), 6, 50,
                 new Vector2(-2300, 700 - content.Load<Texture2D>("Scena2/autko/Autko1").Height)));
+                            platforms[index].ActiveCar = true;
 
                         }
                         foreach (var penguin in penguins)
@@ -427,7 +437,7 @@ namespace TestGame.Scene
                                 !_minigameMemory.EndOfGame)
                             {
                                 // odtworzenie dźwięku
-                                if(SoundManager.SoundOn)
+                                if (SoundManager.SoundOn)
                                     if (!_isSceneSoundPlay[1])
                                     {
                                         _isSceneSoundPlay[1] = true;
@@ -506,6 +516,7 @@ namespace TestGame.Scene
                             }
                             else
                             {
+
                                 if (penguin.active) platform.SpeedUp();
                             }
                         }
@@ -517,12 +528,21 @@ namespace TestGame.Scene
                             IsCompleted = true;
 
                         // aktualizacja pozycji jeśli platforma ma sie poruszać
-                        platform.UpdatePosition(gameTime);
+                        if (platform.platformType != PlatformType.CAR)
+                        {
+                            platform.UpdatePosition(gameTime);
+                        }
+                        else
+                        {
+                            platform.UpdatePosition(gameTime);
+                        }
+
                     }
 
                 }
 
 
+              
 
                 foreach (Penguin penguin in penguins)
                     penguin.UpdatePosition(gameTime);

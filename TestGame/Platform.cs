@@ -35,7 +35,11 @@ namespace TestGame
         //typ platformy
         public PlatformType platformType;
 
-       
+        //LG: dla samochodu
+        public bool ActiveCar
+        {
+            get; set;
+        }
 
         //Czy platforma jest aktywna
         public bool active = true;
@@ -91,16 +95,31 @@ namespace TestGame
 
             PlatformRectangle = Animation.PositionStaticItems;
 
-          
+
         }
 
+        public void UpdateCar(GameTime gametime)
+        {
+            if (platformType != PlatformType.CAR)
+            {
+                throw new Exception("This is not a Car!");
+            }
+            Animation.UpdatePosition(2, 0);
+        }
         override public void UpdatePosition(GameTime gametime)
         {
-
+            if (platformType == PlatformType.CAR && !ActiveCar && Animation != null)
+            {
+                Animation.UpdateInStay();
+            }
+            else if (platformType == PlatformType.CAR && ActiveCar)
+            {
+                UpdateCar(gametime);
+            }
             // jeśli platforma się porusza
             if (IsMotion)
             {
-                if(stop)//jak platforma ma sie podczas ruchu zatrzymac na jakis czas
+                if (stop)//jak platforma ma sie podczas ruchu zatrzymac na jakis czas
                 {
                     // sprawdź kierunek ruchu
                     switch (Direction)
@@ -109,21 +128,21 @@ namespace TestGame
                         case Direction.Up:
 
                             time += gametime.ElapsedGameTime.Milliseconds;
-                            
+
                             // ustaw pozycję o ile nie została przekroczona maksymalna wysokość platformy
                             if (_currentPlatformPosition <= _maxPlatformScope)
                             {
                                 _currentPlatformPosition += (int)PlatformSpeed;
                                 Position = new Point(Position.X, Position.Y - (int)PlatformSpeed);
                             }
-                               
+
                             // maksymalna wysokość została przekroczona - platforma zawraca
                             else
                             if (time > 4000)
                             {
                                 Direction = Direction.Down;
                                 time = 0;
-                            }                  
+                            }
 
                             break;
 
@@ -132,7 +151,7 @@ namespace TestGame
 
                             time += gametime.ElapsedGameTime.Milliseconds;
 
-                           
+
 
                             // ustaw pozycję platformy o ile nie znajduje się na dole
                             if (_currentPlatformPosition >= 0)
@@ -140,15 +159,15 @@ namespace TestGame
                                 _currentPlatformPosition -= (int)PlatformSpeed;
                                 Position = new Point(Position.X, Position.Y + (int)PlatformSpeed);
                             }
-                            
+
                             // platforma na dole - teraz się w górę
                             else
-                            if(time > 4000)
+                            if (time > 4000)
                             {
                                 Direction = Direction.Up;
                                 time = 0;
                             }
-                                
+
                             break;
                     }
                 }
@@ -188,7 +207,7 @@ namespace TestGame
                             break;
                     }
                 }
-               
+
 
                 // aktualizacja sprite'a
                 PlatformRectangle = new Rectangle((int)Position.X, (int)Position.Y, PlatformRectangle.Width, PlatformRectangle.Height);
@@ -214,9 +233,9 @@ namespace TestGame
 
                 PlatformRectangle = new Rectangle(Position, Size);
             }
-            if (gametime != null && Animation != null)
+            if (gametime != null && Animation != null && platformType != PlatformType.CAR)
             {
-                this.Animation.Update(gametime,PlatformRectangle);
+                this.Animation.Update(gametime, PlatformRectangle);
             }
 
         }

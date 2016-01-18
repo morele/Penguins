@@ -99,6 +99,11 @@ namespace TestGame
 
         }
 
+        public void UpdatePosition(int x, int y)
+        {
+            _position.X += x;
+            _position.Y += y;
+        }
         public void Update(GameTime gametime)
         {
             _timeElapsed += gametime.ElapsedGameTime.Milliseconds;
@@ -138,6 +143,13 @@ namespace TestGame
         {
             _position.X = newPosition.X;
             _position.Y = newPosition.Y;
+
+            _positionOnSheet = new Rectangle((int)_widthOfFrame * 0, 0, (int)_widthOfFrame, _texture.Height);
+
+        }
+        public void UpdateInStay()
+        {
+
 
             _positionOnSheet = new Rectangle((int)_widthOfFrame * 0, 0, (int)_widthOfFrame, _texture.Height);
 
