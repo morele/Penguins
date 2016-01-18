@@ -103,18 +103,18 @@ namespace TestGame
             if (platformType == PlatformType.CAR)
             {
 
-               if(Keyboard.GetState().IsKeyDown(Keys.Right))
+                if (Keyboard.GetState().IsKeyDown(Keys.Right))
                 {
                     Position.X += 2;
                 }
-               if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                if (Keyboard.GetState().IsKeyDown(Keys.Left))
                 {
                     Position.X -= 2;
                 }
 
                 Animation.UpdatePosition(Position.X, Position.Y);
             }
-            
+
         }
         override public void UpdatePosition(GameTime gametime)
         {
@@ -124,7 +124,7 @@ namespace TestGame
             }
             else if (platformType == PlatformType.CAR && ActiveCar)
             {
-                UpdateCar(gametime);
+                Animation?.Update(gametime);
             }
             // jeśli platforma się porusza
             if (IsMotion)
