@@ -126,7 +126,7 @@ namespace TestGame.Scene
             //platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 8, 50,
             //    new Vector2(-2500, YpositionFloor - content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony").Height))));
 
-            platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/AnimacjaTla/AutkoAnimacja"), 6, 50,
+            platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja"), 6, 50,
                 new Vector2(-2300, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height))));
 
             //   platforms.Add(new Platform(content.Load<Texture2D>("Scena2/autko/Autko1"), new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height), false, 0, 0, PlatformType.CAR));
@@ -316,7 +316,23 @@ namespace TestGame.Scene
                     }
                     else if (_isKowalskiTime && _canDoItKowalski)
                     {
-                        // todo: Łukasz tutaj dodaj to co ma być 
+                        _julek.Animation.Texture = _content.Load<Texture2D>("Postacie/Julek/JulianSpritePozegnanie");
+
+                        var car = platforms.FirstOrDefault(element => element.platformType == PlatformType.CAR);
+                        if (car != null)
+                        {
+                            int index = platforms.IndexOf(car);
+                            platforms[index] = new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja2"), 6, 50,
+                new Vector2(-2300, 700 - content.Load<Texture2D>("Scena2/autko/Autko1").Height)));
+
+                        }
+                        foreach (var penguin in penguins)
+                        {
+                            if (penguin.penguinType != PenguinType.RICO)
+                            {
+                                penguin.IsActive = false;
+                            }
+                        }
                     }
 
                 }
