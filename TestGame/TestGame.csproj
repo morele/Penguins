@@ -114,9 +114,6 @@
     <Content Include="Content\Autorzy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\gear.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\Image1.png" />
     <Content Include="Content\MenuAuthorsScreen.png" />
     <Content Include="Content\MenuControlScreen.png" />

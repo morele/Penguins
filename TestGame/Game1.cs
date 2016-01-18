@@ -41,7 +41,7 @@ namespace TestGame
         private PauseMenu _pauseMenu;
 
         private GameMenu _gameMenu;
-        private bool _canShowGameMenu =  true;
+        private bool _canShowGameMenu = true;
 
         // flaga informuje 
         private bool _isSceneLoading = true;
@@ -50,7 +50,7 @@ namespace TestGame
 
         //SCREEN Z AUTORAMI
         private Texture2D _authorsScreen;
-        
+
         //SCREEN ZE STEROWANIEM
         private Texture2D _contorolScreen;
 
@@ -97,7 +97,7 @@ namespace TestGame
             graphics.ApplyChanges();
 
             // ustawienie początkowego poziomu na scene 1 MŁ
-            _currentScene = CurrentScene.Scene3;
+            _currentScene = CurrentScene.Scene2;
         }
 
         protected override void Initialize()
@@ -137,7 +137,7 @@ namespace TestGame
             _soundOffTexture = Content.Load<Texture2D>(@"Audio\Graph\soundOff");
             _soundIconRectangle = new Rectangle(0, 0, _soundOnTexture.Width, _soundOnTexture.Height);
 
-            _soundIconPosition.X = GraphicsDevice.Viewport.Width - _soundIconRectangle.Width/2 - 10;
+            _soundIconPosition.X = GraphicsDevice.Viewport.Width - _soundIconRectangle.Width / 2 - 10;
             _soundIconPosition.Y = 10;
 
             base.Initialize();
@@ -166,7 +166,7 @@ namespace TestGame
                 case CurrentScene.Scene3:
                     _scene3TitleTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene3Title");
                     _scene3LevelNumberTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene3Number");
-                    _background = Content.Load<Texture2D>("scene3_background"); 
+                    _background = Content.Load<Texture2D>("scene3_background");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -237,7 +237,7 @@ namespace TestGame
             }
             //Podstawowy gracz - skipper
             player = ActiveAndDeactivationPlayer(true, false, false, false);
-           
+
 
             switch (_currentScene)
             {
@@ -278,7 +278,7 @@ namespace TestGame
                         if (penguin.penguinType == PenguinType.SZEREGOWY) penguin.UpdateStartPosition(new Vector2(-930, 400));
                     }
                     //scene1.ResetScene();
-                        break;
+                    break;
                 case 2:
                     foreach (Penguin penguin in penguins)
                     {
@@ -313,7 +313,7 @@ namespace TestGame
             if (_canShowGameMenu)
             {
                 _gameMenu.Update();
-                
+
                 // sprawdzenie jaką opcję wybrał użytkownik
                 switch (_gameMenu.SelectedOptionMenu)
                 {
@@ -332,7 +332,7 @@ namespace TestGame
                         Exit();
                         break;
                     default:
-                        
+
                         break;
                 }
 
@@ -502,7 +502,7 @@ namespace TestGame
                             break;
                         default:
                             break;
-                    }              
+                    }
                 }
             }
             base.Update(gameTime);
