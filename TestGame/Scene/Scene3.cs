@@ -14,6 +14,7 @@ namespace TestGame.Scene
 {
     public class Scene3 : Scene
     {
+        private const int MAX_ELEMENTS = 14;
         // muzyka w tle
         private Song _themeSong;
 
@@ -25,6 +26,9 @@ namespace TestGame.Scene
         // menu wyboru ekwipunku
         private ChooseItemMenu _chooseItemMenu;
         private TextLabel _textLabel;
+
+        private bool _canPlayMiniGamePuzzle;
+        private bool _playMiniGamePuzzle;
 
         private List<Platform> partsPlane = new List<Platform>();
         private bool _firstStart;
@@ -72,7 +76,8 @@ namespace TestGame.Scene
         public override void Draw(SpriteBatch spriteBatch)
         {
 
-                foreach (Platform platform in platforms)
+
+            foreach (Platform platform in platforms)
                     platform.Draw(spriteBatch);
 
                 foreach (Penguin penguin in penguins)
@@ -80,6 +85,10 @@ namespace TestGame.Scene
 
             foreach (Platform part in partsPlane)
                 part.Draw(spriteBatch);
+
+            // narysowanie menu wyboru ekwipunku
+            _chooseItemMenu.Draw(spriteBatch);
+
         }
 
         private void AddItem(Platform platform)
@@ -133,11 +142,19 @@ namespace TestGame.Scene
                // partsPlane[i].PlatformRectangle.X = (player.rectangle.X - 400) + partsPlane[i].PlatformRectangle.X; ;
             }
         }
+
         public override void UpdatePosition(GameTime gameTime)
         {
-          
-                // metoda ustawia wszystkich graczy na pozycji początkowej
-                if (firstStart) FirstStart(gameTime);
+            // metoda ustawia wszystkich graczy na pozycji początkowej
+            if (firstStart) FirstStart(gameTime);
+
+            if (_playMiniGamePuzzle)
+            {
+                //todo: uruchomienie minigry
+            }
+            else
+            {
+
 
 
                 if (Keyboard.GetState().IsKeyDown(Keys.D1) && !_blockD1)
@@ -166,6 +183,10 @@ namespace TestGame.Scene
                 if (Keyboard.GetState().IsKeyUp(Keys.D3)) _blockD3 = false;
                 if (Keyboard.GetState().IsKeyUp(Keys.D4)) _blockD4 = false;
 
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter) && _canPlayMiniGamePuzzle)
+                {
+                    _playMiniGamePuzzle = true;
+                }
 
                 // odświeżenie paska gracza
                 playerPanel.Update(player);
@@ -187,38 +208,60 @@ namespace TestGame.Scene
                             }
 
 
-                        if(platform.platformType == PlatformType.PARTSPLANE)
-                        {
-                            if (penguin.Collision2(platform.PlatformRectangle))
+                            if (platform.platformType == PlatformType.PARTSPLANE)
                             {
-                                platform.active = false;
-                                AddItem(platform);
+                                if (penguin.Collision2(platform.PlatformRectangle))
+                                {
+                                    platform.active = false;
+                                    AddItem(platform);
+                                }
                             }
-                        }
-                        else
-                        {
-                            if (platform.platformType != PlatformType.PALM && platform.platformType != PlatformType.BUSH)
-                                if (penguin.Collision(platform.PlatformRectangle, PenguinType.NN, platform.platformType))// sprawdzenie czy na platformie są pingwiny
-                                {
-                                    penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
-
-                                    if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
+                            else
+                            {
+                                if (platform.platformType != PlatformType.PALM &&
+                                    platform.platformType != PlatformType.BUSH)
+                                    if (penguin.Collision(platform.PlatformRectangle, PenguinType.NN,
+                                        platform.platformType))
+                                        // sprawdzenie czy na platformie są pingwiny
                                     {
-                                        penguin.PutMeOn(platform.PlatformRectangle);
+                                        penguin.JumpStop((int) platform.PlatformSpeed);
+                                        //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
 
-                                        if (penguin.active) platform.Slowdown();
-                                        penguin.platformSpeed = (int)platform.PlatformSpeed;
+                                        if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
+                                        {
+                                            penguin.PutMeOn(platform.PlatformRectangle);
+
+                                            if (penguin.active) platform.Slowdown();
+                                            penguin.platformSpeed = (int) platform.PlatformSpeed;
+                                        }
                                     }
-                                }
-                                else
+                                    else
+                                    {
+                                        if (penguin.active) platform.SpeedUp();
+                                    }
+                            }
+
+                            // jeśli zostały zebrane wszytkie elementy 
+                            // to nad głową Kowalskiego ma się pojaiwć zębatka
+                            // Kowalski może złożyć samolot
+                            if (penguin.penguinType == PenguinType.KOWALSKI &&
+                                player.penguinType == PenguinType.KOWALSKI &&
+                                partsPlane.Count == MAX_ELEMENTS)
+                            {
+                                _chooseItemMenu.Update(penguin, new List<Texture2D>()
                                 {
-                                    if (penguin.active) platform.SpeedUp();
-                                }
-                        }
-                            
+                                    content.Load<Texture2D>(@"gear")
+                                }, topMargin: 70);
+                                _chooseItemMenu.IsVisible = true;
+                                _canPlayMiniGamePuzzle = true;
+                            }
+                            else if (player.penguinType != PenguinType.KOWALSKI &&
+                                     partsPlane.Count == MAX_ELEMENTS)
+                            {
+                                _chooseItemMenu.IsVisible = false;
+                                _canPlayMiniGamePuzzle = false;
+                            }
 
-
-                           
 
                         }
                         // aktualizacja pozycji jeśli platforma ma sie poruszać
@@ -227,13 +270,12 @@ namespace TestGame.Scene
 
                 }
 
-
-
                 foreach (Penguin penguin in penguins)
                     penguin.UpdatePosition(gameTime);
 
-                 UpdatePartsPlane(player);
+                UpdatePartsPlane(player);
                 camera.Update(player);
+            }
         }
 
         public override void ResetScene()

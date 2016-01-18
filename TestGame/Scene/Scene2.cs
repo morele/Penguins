@@ -35,6 +35,11 @@ namespace TestGame.Scene
         private Swiming _miniGame;
         private bool _canPlayMiniGame;
 
+        private bool _isCollisionWithJulian = true;
+
+        // czy to czas na Kowalskiego
+        private bool _isKowalskiTime;
+        private bool _canDoItKowalski;
         // minigra - "Memory"
         public Memory _minigameMemory;
         private bool _canPlayMiniGameMemory;
@@ -72,7 +77,9 @@ namespace TestGame.Scene
             // załadowanie dźwięków sceny
             _sceneSounds.Add(content.Load<SoundEffect>(@"Audio\Waves\skipper_przykroMiLemurze"));
             _sceneSounds.Add(content.Load<SoundEffect>(@"Audio\Waves\julian3"));
+            _sceneSounds.Add(content.Load<SoundEffect>(@"Audio\Waves\julian1"));
 
+            _isSceneSoundPlay.Add(false);
             _isSceneSoundPlay.Add(false);
             _isSceneSoundPlay.Add(false);
 
@@ -121,7 +128,7 @@ namespace TestGame.Scene
             //platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 8, 50,
             //    new Vector2(-2500, YpositionFloor - content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony").Height))));
 
-            platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/AnimacjaTla/AutkoAnimacja"), 6, 50,
+            platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja"), 6, 50,
                 new Vector2(-2300, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height))));
 
             //   platforms.Add(new Platform(content.Load<Texture2D>("Scena2/autko/Autko1"), new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height), false, 0, 0, PlatformType.CAR));
@@ -241,13 +248,19 @@ namespace TestGame.Scene
             #region Zakończenie minigry "Memory"
 
             // to się wykona tylko raz po zakończeniu minigry "Memory"
-            if (_minigameMemory.EndOfGame)
+            if (_minigameMemory.EndOfGame && _canPlayMiniGameMemory)
             {
                 _canPlayMiniGameMemory = false;
                 _playMiniGameMemory = false;
 
-                // todo: Julian ma mieć baterię w ręce
+                // odtworzenie dźwięku "radosnego" Skippera
+                var sound = content.Load<SoundEffect>(@"Audio\Waves\skipper_przykroMiLemurze");
+                sound.Play();
+
                 _julek.Animation.Texture = _content.Load<Texture2D>("Postacie/Julek/JulianSpriteBateria");
+
+                // Kowalski może odegrać swoją role
+                _isKowalskiTime = true;
 
             }
 
@@ -302,6 +315,27 @@ namespace TestGame.Scene
                     else if (!_minigameMemory.EndOfGame && _canPlayMiniGameMemory)
                     {
                         _playMiniGameMemory = true;
+                    }
+                    else if (_isKowalskiTime && _canDoItKowalski)
+                    {
+                        _isCollisionWithJulian = false;
+                        _julek.Animation.Texture = _content.Load<Texture2D>("Postacie/Julek/JulianSpritePozegnanie");
+
+                        var car = platforms.FirstOrDefault(element => element.platformType == PlatformType.CAR);
+                        if (car != null)
+                        {
+                            int index = platforms.IndexOf(car);
+                            platforms[index] = new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja2"), 6, 50,
+                new Vector2(-2300, 700 - content.Load<Texture2D>("Scena2/autko/Autko1").Height)));
+
+                        }
+                        foreach (var penguin in penguins)
+                        {
+                            if (penguin.penguinType != PenguinType.RICO)
+                            {
+                                penguin.IsActive = false;
+                            }
+                        }
                     }
 
                 }
@@ -367,7 +401,7 @@ namespace TestGame.Scene
                             }
                             else if (penguin.penguinType == PenguinType.RICO &&
                                      !_fishBox.IsInActionSector(penguin) &&
-                                     _miniGame.EndOfGame)
+                                     _miniGame.EndOfGame && _canPlayMiniGame)
                             {
                                 _chooseItemMenu.IsVisible = false;
                             }
@@ -382,7 +416,7 @@ namespace TestGame.Scene
 
 
                             // sprawdzenie kolizji między Skipperem a Julianem
-                            if (_julek.IsCollisionDetect(penguin))
+                            if (_julek.IsCollisionDetect(penguin) && _isCollisionWithJulian)
                             {
                                 penguin.Position.X -= 2;
                             }
@@ -393,13 +427,18 @@ namespace TestGame.Scene
                                 !_minigameMemory.EndOfGame)
                             {
                                 // odtworzenie dźwięku
-                                if (!_isSceneSoundPlay[1])
-                                {
-                                    _isSceneSoundPlay[1] = true;
-                                    _sceneSounds[1].Play();
-                                }
+                                if(SoundManager.SoundOn)
+                                    if (!_isSceneSoundPlay[1])
+                                    {
+                                        _isSceneSoundPlay[1] = true;
+                                        _sceneSounds[1].Play();
+                                    }
+
                                 _chooseItemMenu.Update(penguin, new List<Texture2D>()
-                                { content.Load<Texture2D>(@"Scena2\talkIcon") }, topMargin: 100);
+                                {
+                                    content.Load<Texture2D>(@"Scena2\talkIcon")
+                                }, topMargin: 100);
+
                                 _chooseItemMenu.IsVisible = true;
 
                                 // teraz możliwe jest włączenie  minigry
@@ -418,6 +457,33 @@ namespace TestGame.Scene
                                     if (penguin.Collision(penguins[i].rectangle, penguins[i].penguinType))
                                         penguin.JumpStop(0);
                             }
+
+                            #region AKCJE KOWALSKIEGO
+
+                            if (penguin.penguinType == PenguinType.KOWALSKI &&
+                                _julek.IsInActionSector(penguin) && _isKowalskiTime)
+                            {
+                                if (SoundManager.SoundOn)
+                                    if (!_isSceneSoundPlay[2])
+                                    {
+                                        _isSceneSoundPlay[2] = true;
+                                        _sceneSounds[2].Play();
+                                    }
+
+                                _chooseItemMenu.Update(penguin, new List<Texture2D>()
+                                { content.Load<Texture2D>(@"Scena2\battery") }, topMargin: 100);
+                                _chooseItemMenu.IsVisible = true;
+                                _canDoItKowalski = true;
+                            }
+                            else if (penguin.penguinType == PenguinType.KOWALSKI &&
+                                     !_julek.IsInActionSector(penguin) && _isKowalskiTime)
+                            {
+                                _chooseItemMenu.IsVisible = false;
+                                _isSceneSoundPlay[2] = false;
+                                _canDoItKowalski = false;
+                            }
+
+                            #endregion
 
                             //Jak kolizja ze sprezyna to wysoki jump
                             if (platform.platformType == PlatformType.SPRING)

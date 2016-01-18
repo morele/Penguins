@@ -59,6 +59,8 @@
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="Menu\PauseMenu.cs" />
+    <Compile Include="MIniGames\Areoplane\ElementUkladanki.cs" />
+    <Compile Include="MIniGames\Areoplane\SkladanieSamolotu.cs" />
     <Compile Include="MIniGames\Memory\Karta.cs" />
     <Compile Include="MIniGames\Memory\Memory.cs" />
     <Compile Include="MIniGames\Memory\Plansza.cs" />
@@ -112,7 +114,12 @@
     <Content Include="Content\Autorzy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\gear.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Image1.png" />
+    <Content Include="Content\MenuAuthorsScreen.png" />
+    <Content Include="Content\MenuControlScreen.png" />
     <Content Include="Content\MenuPauzy\bigBackground.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -305,7 +312,13 @@
     <Content Include="Content\Scena2\autko\AutkoAnimacja.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Scena2\autko\AutkoAnimacja2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Scena2\autko\ReadMy.txt" />
+    <Content Include="Content\Scena2\battery.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Scena2\Kaluza.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -429,8 +442,14 @@
     <Content Include="Content\Scena2\talkIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\scene1_background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\scene2_background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\scene3_background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Slizg\Kowalski.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -444,6 +463,7 @@
     <Content Include="Content\Slizg\Szeregowy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\sterowanie.png" />
     <Content Include="Content\TextLabelBackground.png" />
     <Content Include="Content\TextLabelBackgroundTransparent.png" />
     <Content Include="Content\trawa.png">
