@@ -9,12 +9,13 @@ using Testgame.MIniGames.Swiming;
 using TestGame.Menu;
 using TestGame.MIniGames.Numbers;
 using TestGame.Interfaces;
+using TestGame.MIniGames.Areoplane;
 
 namespace TestGame.Scene
 {
     public class Scene3 : Scene
     {
-        private const int MAX_ELEMENTS = 14;
+        private const int MAX_ELEMENTS = 1;
         // muzyka w tle
         private Song _themeSong;
 
@@ -29,6 +30,8 @@ namespace TestGame.Scene
 
         private bool _canPlayMiniGamePuzzle;
         private bool _playMiniGamePuzzle;
+        private SkladanieSamolotu _miniGamePuzzle;
+
 
         private List<Platform> partsPlane = new List<Platform>();
         private bool _firstStart;
@@ -39,6 +42,7 @@ namespace TestGame.Scene
             _chooseItemMenu.IsVisible = false;
             _firstStart = true;
 
+            _miniGamePuzzle = new SkladanieSamolotu(device, new SpriteBatch(device), content);
         }
 
         public override void LoadContent(List<Penguin> penguins, PlayerPanel playerPanel, Penguin player)
@@ -75,20 +79,25 @@ namespace TestGame.Scene
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-
-
-            foreach (Platform platform in platforms)
+            if (_playMiniGamePuzzle && !_miniGamePuzzle.EndOfGame)
+            {
+                _miniGamePuzzle.Draw();
+            }
+            else
+            {
+                foreach (Platform platform in platforms)
                     platform.Draw(spriteBatch);
 
                 foreach (Penguin penguin in penguins)
                     penguin.DrawAnimation(spriteBatch);
 
-            foreach (Platform part in partsPlane)
-                part.Draw(spriteBatch);
+                if(!_miniGamePuzzle.EndOfGame)
+                    foreach (Platform part in partsPlane)
+                        part.Draw(spriteBatch);
 
-            // narysowanie menu wyboru ekwipunku
-            _chooseItemMenu.Draw(spriteBatch);
-
+                // narysowanie menu wyboru ekwipunku
+                _chooseItemMenu.Draw(spriteBatch);
+            }
         }
 
         private void AddItem(Platform platform)
@@ -148,9 +157,13 @@ namespace TestGame.Scene
             // metoda ustawia wszystkich graczy na pozycji początkowej
             if (firstStart) FirstStart(gameTime);
 
-            if (_playMiniGamePuzzle)
+            if (_playMiniGamePuzzle && !_miniGamePuzzle.EndOfGame)
             {
-                //todo: uruchomienie minigry
+                // wyczyszczenie ekwipunku 
+                penguins.ForEach(p => p.Equipment.Items.Clear());
+                partsPlane.Clear();
+                _chooseItemMenu.IsVisible = false;
+                _miniGamePuzzle.Update(gameTime);
             }
             else
             {
@@ -246,7 +259,7 @@ namespace TestGame.Scene
                             // Kowalski może złożyć samolot
                             if (penguin.penguinType == PenguinType.KOWALSKI &&
                                 player.penguinType == PenguinType.KOWALSKI &&
-                                partsPlane.Count == MAX_ELEMENTS)
+                                partsPlane.Count == MAX_ELEMENTS && !_miniGamePuzzle.EndOfGame)
                             {
                                 _chooseItemMenu.Update(penguin, new List<Texture2D>()
                                 {
@@ -256,7 +269,7 @@ namespace TestGame.Scene
                                 _canPlayMiniGamePuzzle = true;
                             }
                             else if (player.penguinType != PenguinType.KOWALSKI &&
-                                     partsPlane.Count == MAX_ELEMENTS)
+                                     partsPlane.Count == MAX_ELEMENTS && !_miniGamePuzzle.EndOfGame)
                             {
                                 _chooseItemMenu.IsVisible = false;
                                 _canPlayMiniGamePuzzle = false;

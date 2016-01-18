@@ -26,8 +26,6 @@ namespace TestGame.Scene
         // Moneta
         private Bonus _coin;
 
-        // Testowa moneta
-        private Bonus _testCoin;
 
         //minigierka  - AutomatMinigame
         private AutomatMinigame automatMinigame;
@@ -61,10 +59,6 @@ namespace TestGame.Scene
             _coin = new Bonus(content.Load<Texture2D>("Scena1/Moneta"), new Point(50, 300), new Point(50));
             _coin.IsActive = true;
 
-            // stworzenie obiektu monety
-            _testCoin = new Bonus(content.Load<Texture2D>("Scena1/testMoneta"), new Point(10, 300), new Point(50));
-            _testCoin.IsActive = true;
-
             // stworzenie obiektu automatu
             Point slotMachineSize = new Point(content.Load<Texture2D>("Scena1/automat").Width, content.Load<Texture2D>("Scena1/automat").Height);
             _slotMachine = new ActionElement(content.Load<Texture2D>("Scena1/automat"), new Point(1200, 150),
@@ -85,8 +79,6 @@ namespace TestGame.Scene
             {
                 // narysowanie monety
                 _coin.Draw(spriteBatch);
-
-                _testCoin.Draw(spriteBatch);
 
                 // narysowanie automatu
                 _slotMachine.Draw(spriteBatch);
@@ -187,19 +179,6 @@ namespace TestGame.Scene
 
                             }
 
-                            // test moneta spada
-                            if (_testCoin.IsActive)
-                            {
-                                _testCoin.FallDown();
-
-                                if (_testCoin.IsCollisionDetect(platform))
-                                {
-                                    _testCoin.CanFallDown = false;
-                                }
-
-                            }
-
-
                             // sprawdzenie czy pingwin (RICO) jest w obrębie automatu
                             if (penguin.penguinType == PenguinType.RICO && _slotMachine.IsInActionSector(penguin))
                             {
@@ -231,13 +210,6 @@ namespace TestGame.Scene
                                 _coin.OnChecked();
                             }
 
-                            // sprawdzenie czy pingwin (RICO) nie zabrał monety
-
-                            if (penguin.penguinType == PenguinType.RICO && _testCoin.IsChecked(penguin))
-                            {
-                                penguin.Equipment.AddItem(new EquipmentItem(_testCoin));
-                                _testCoin.OnChecked();
-                            }
 
                             // sprawdzenie kolizji wyrzuconej monety z automatem
                             if (_coin.IsCollisionDetect(_slotMachine))
