@@ -97,7 +97,7 @@ namespace TestGame
             graphics.ApplyChanges();
 
             // ustawienie początkowego poziomu na scene 1 MŁ
-            _currentScene = CurrentScene.Scene2;
+            _currentScene = CurrentScene.Scene3;
         }
 
         protected override void Initialize()
@@ -156,7 +156,7 @@ namespace TestGame
                 case CurrentScene.Scene1:
                     _scene1TitleTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene1Title");
                     _scene1LevelNumberTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene1Number");
-                    _background = Content.Load<Texture2D>("scene2_background");
+                    _background = Content.Load<Texture2D>("scene1_background");
                     break;
                 case CurrentScene.Scene2:
                     _scene2TitleTexture = Content.Load<Texture2D>(@"MenuPauzy\JedzILow");
@@ -166,7 +166,7 @@ namespace TestGame
                 case CurrentScene.Scene3:
                     _scene3TitleTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene3Title");
                     _scene3LevelNumberTexture = Content.Load<Texture2D>(@"MenuPauzy\Scene3Number");
-                    _background = Content.Load<Texture2D>("scene2_background"); 
+                    _background = Content.Load<Texture2D>("scene3_background"); 
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
