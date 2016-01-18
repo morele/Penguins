@@ -35,6 +35,8 @@ namespace TestGame.Scene
         private Swiming _miniGame;
         private bool _canPlayMiniGame;
 
+        private bool _isCollisionWithJulian = true;
+
         // czy to czas na Kowalskiego
         private bool _isKowalskiTime;
         private bool _canDoItKowalski;
@@ -316,6 +318,7 @@ namespace TestGame.Scene
                     }
                     else if (_isKowalskiTime && _canDoItKowalski)
                     {
+                        _isCollisionWithJulian = false;
                         _julek.Animation.Texture = _content.Load<Texture2D>("Postacie/Julek/JulianSpritePozegnanie");
 
                         var car = platforms.FirstOrDefault(element => element.platformType == PlatformType.CAR);
@@ -398,7 +401,7 @@ namespace TestGame.Scene
                             }
                             else if (penguin.penguinType == PenguinType.RICO &&
                                      !_fishBox.IsInActionSector(penguin) &&
-                                     _miniGame.EndOfGame)
+                                     _miniGame.EndOfGame && _canPlayMiniGame)
                             {
                                 _chooseItemMenu.IsVisible = false;
                             }
@@ -413,7 +416,7 @@ namespace TestGame.Scene
 
 
                             // sprawdzenie kolizji między Skipperem a Julianem
-                            if (_julek.IsCollisionDetect(penguin))
+                            if (_julek.IsCollisionDetect(penguin) && _isCollisionWithJulian)
                             {
                                 penguin.Position.X -= 2;
                             }
@@ -424,13 +427,18 @@ namespace TestGame.Scene
                                 !_minigameMemory.EndOfGame)
                             {
                                 // odtworzenie dźwięku
-                                if (!_isSceneSoundPlay[1])
-                                {
-                                    _isSceneSoundPlay[1] = true;
-                                    _sceneSounds[1].Play();
-                                }
+                                if(SoundManager.SoundOn)
+                                    if (!_isSceneSoundPlay[1])
+                                    {
+                                        _isSceneSoundPlay[1] = true;
+                                        _sceneSounds[1].Play();
+                                    }
+
                                 _chooseItemMenu.Update(penguin, new List<Texture2D>()
-                                { content.Load<Texture2D>(@"Scena2\talkIcon") }, topMargin: 100);
+                                {
+                                    content.Load<Texture2D>(@"Scena2\talkIcon")
+                                }, topMargin: 100);
+
                                 _chooseItemMenu.IsVisible = true;
 
                                 // teraz możliwe jest włączenie  minigry
@@ -455,11 +463,12 @@ namespace TestGame.Scene
                             if (penguin.penguinType == PenguinType.KOWALSKI &&
                                 _julek.IsInActionSector(penguin) && _isKowalskiTime)
                             {
-                                if (!_isSceneSoundPlay[2])
-                                {
-                                    _isSceneSoundPlay[2] = true;
-                                    _sceneSounds[2].Play();
-                                }
+                                if (SoundManager.SoundOn)
+                                    if (!_isSceneSoundPlay[2])
+                                    {
+                                        _isSceneSoundPlay[2] = true;
+                                        _sceneSounds[2].Play();
+                                    }
 
                                 _chooseItemMenu.Update(penguin, new List<Texture2D>()
                                 { content.Load<Texture2D>(@"Scena2\battery") }, topMargin: 100);
