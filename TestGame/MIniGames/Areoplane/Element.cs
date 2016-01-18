@@ -58,6 +58,7 @@ namespace TestGame.MIniGames.Areoplane
 
         public void Rysuj()
         {
+            rozmiar += 0.0003f;
             spriteBatch.Draw(_background, new Rectangle(0, 0, _background.Width, _background.Height), Color.White);
             spriteBatch.Draw(tekstura, new Rectangle(pocz_x, krok + pocz_y, (int)(szerokosc * rozmiar), (int)(wysokosc * rozmiar)), SheetPart, Color.White);
         }

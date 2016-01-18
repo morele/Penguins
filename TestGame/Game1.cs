@@ -90,6 +90,7 @@ namespace TestGame
         private CurrentScene _currentScene;
         private bool _canShowControlScreen;
         private bool _canShowAuthorsScreen;
+        private bool _blockEnterKey;
 
         public Game1()
         {
@@ -322,6 +323,7 @@ namespace TestGame
         {
             if (_canShowGameMenu)
             {
+                
                 _gameMenu.Update();
 
                 // sprawdzenie jaką opcję wybrał użytkownik
@@ -368,6 +370,13 @@ namespace TestGame
                 {
                     if (scene1.IsGameOver)
                     {
+                        if (SoundManager.SoundOn)
+                        {
+                            MediaPlayer.IsRepeating = true;
+                            MediaPlayer.Play(Content.Load<Song>("Audio/Waves/menu_theme"));
+                        }
+                        
+
                         _isGameOverScreen = true;
                         _canShowGameMenu = true;
                         _isGamePause = false;
@@ -383,6 +392,12 @@ namespace TestGame
                 {
                     if (scene2.IsGameOver)
                     {
+                        if (SoundManager.SoundOn)
+                        {
+                            MediaPlayer.IsRepeating = true;
+                            MediaPlayer.Play(Content.Load<Song>("Audio/Waves/menu_theme"));
+                        }
+
                         _isGameOverScreen = true;
                         _canShowGameMenu = true;
                         _isGamePause = false;
@@ -397,6 +412,12 @@ namespace TestGame
                 {
                     if (scene3.IsGameOver)
                     {
+                        if (SoundManager.SoundOn)
+                        {
+                            MediaPlayer.IsRepeating = true;
+                            MediaPlayer.Play(Content.Load<Song>("Audio/Waves/menu_theme"));
+                        }
+
                         _isGameOverScreen = true;
                         _canShowGameMenu = true;
                         _isGamePause = false;
@@ -551,12 +572,17 @@ namespace TestGame
                 spriteBatch.Draw(_gameOverScreen, _levelNumberPosition, Color.White);
                 spriteBatch.End();
 
-                if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                if (Keyboard.GetState().IsKeyDown(Keys.Space) && !_blockEnterKey)
                 {
+                    _blockEnterKey = true;
                     _gameMenu.SelectedOptionMenu = SelectedOptionMenu.None;
                     _canShowGameMenu = true;
                     _isGameOverScreen = false;
                 }
+
+                if (Keyboard.GetState().IsKeyUp(Keys.Space))
+                    _blockEnterKey = false;
+
             }
             else
             {

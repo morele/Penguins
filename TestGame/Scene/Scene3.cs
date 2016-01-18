@@ -169,7 +169,11 @@ namespace TestGame.Scene
             // metoda ustawia wszystkich graczy na pozycji początkowej
             if (firstStart) FirstStart(gameTime);
 
-            if (_playMiniGamePuzzle && !_miniGamePuzzle.EndOfGame)
+            if (_miniGamePuzzle.EndOfGame)
+            {
+                IsGameOver = true;
+            }
+            else if (_playMiniGamePuzzle && !_miniGamePuzzle.EndOfGame)
             {
                 // wyczyszczenie ekwipunku 
                 penguins.ForEach(p => p.Equipment.Items.Clear());
