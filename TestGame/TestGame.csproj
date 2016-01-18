@@ -14,6 +14,22 @@
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <MonoGameContentBuilderExe>
     </MonoGameContentBuilderExe>
+    <PublishUrl>C:\Users\gawin\Desktop\GRA\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -38,6 +54,18 @@
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>870FA9D0B44877412686D4482BFAD3B5CA58714B</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>TestGame_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="ActionElement.cs" />
     <Compile Include="Animation.cs" />
@@ -59,6 +87,7 @@
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="Menu\PauseMenu.cs" />
+    <Compile Include="MIniGames\Areoplane\Element.cs" />
     <Compile Include="MIniGames\Areoplane\ElementUkladanki.cs" />
     <Compile Include="MIniGames\Areoplane\SkladanieSamolotu.cs" />
     <Compile Include="MIniGames\Memory\Karta.cs" />
@@ -96,6 +125,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\AnimacjeTla\AutkoAnimacja.png" />
+    <Content Include="Content\Audio\Graph\barPointer.png" />
+    <Content Include="Content\Audio\Graph\progressBar.png" />
+    <Content Include="Content\Audio\Graph\soundOff.png" />
+    <Content Include="Content\Audio\Graph\soundOn.png" />
     <Content Include="Content\Audio\Waves\click.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -114,6 +147,7 @@
     <Content Include="Content\Autorzy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\gear.png" />
     <Content Include="Content\Image1.png" />
     <Content Include="Content\MenuAuthorsScreen.png" />
     <Content Include="Content\MenuControlScreen.png" />
@@ -158,6 +192,81 @@
     </Content>
     <Content Include="Content\menu_background.png" />
     <Content Include="Content\menu_background_new.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\0.png" />
+    <Content Include="Content\Minigry\AreoPlane\1.png" />
+    <Content Include="Content\Minigry\AreoPlane\10.png" />
+    <Content Include="Content\Minigry\AreoPlane\11.png" />
+    <Content Include="Content\Minigry\AreoPlane\12.png" />
+    <Content Include="Content\Minigry\AreoPlane\13.png" />
+    <Content Include="Content\Minigry\AreoPlane\2.png" />
+    <Content Include="Content\Minigry\AreoPlane\3.png" />
+    <Content Include="Content\Minigry\AreoPlane\4.png" />
+    <Content Include="Content\Minigry\AreoPlane\5.png" />
+    <Content Include="Content\Minigry\AreoPlane\6 - Kopia.png" />
+    <Content Include="Content\Minigry\AreoPlane\6.png" />
+    <Content Include="Content\Minigry\AreoPlane\7.png" />
+    <Content Include="Content\Minigry\AreoPlane\71.png" />
+    <Content Include="Content\Minigry\AreoPlane\8.png" />
+    <Content Include="Content\Minigry\AreoPlane\9.png" />
+    <Content Include="Content\Minigry\AreoPlane\SamolotTlo.png" />
+    <Content Include="Content\Minigry\AreoPlane\Samolot_End.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\12.png" />
+    <Content Include="Content\Minigry\AreoPlane\13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\6 - Kopia.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\71.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\SamolotTlo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\Samolot_End.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Minigry\AreoPlane\TloSamolot.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Minigry\AutomatGame\Button.png" />
@@ -234,6 +343,7 @@
     <Content Include="Content\Postacie\Animacje\SzeregowySheet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Postacie\Animacje\SzeregowySlizg.png" />
     <Content Include="Content\Postacie\Julek\JulianSpriteBateria.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -254,6 +364,7 @@
     <Content Include="Content\Scena1\automat.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Scena1\automat_off.png" />
     <Content Include="Content\Scena1\blat.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -497,8 +608,25 @@
     <None Include="Content\Postacie\Thumbs.db" />
     <None Include="Content\Scena2\autko\Thumbs.db" />
     <None Include="Content\Scena3\ElementyKolejność.xlsx" />
+    <None Include="TestGame_TemporaryKey.pfx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

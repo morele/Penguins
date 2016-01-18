@@ -75,6 +75,18 @@ namespace TestGame.Scene
             _themeSong = content.Load<Song>("Audio/Waves/scene3_theme");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = SoundManager.Volume;
+
+            // przypisanie zdarzenia dla pingwna, który spadł z platformy
+            foreach (var penguin in penguins)
+            {
+                penguin.DeathLine = 900;
+                penguin.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler; ;
+            }
+        }
+
+        private void Penguin_PenguinDeathByFallingHandler(object sender, System.EventArgs e)
+        {
+            IsGameOver = true;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -157,7 +169,11 @@ namespace TestGame.Scene
             // metoda ustawia wszystkich graczy na pozycji początkowej
             if (firstStart) FirstStart(gameTime);
 
-            if (_playMiniGamePuzzle && !_miniGamePuzzle.EndOfGame)
+            if (_miniGamePuzzle.EndOfGame)
+            {
+                IsGameOver = true;
+            }
+            else if (_playMiniGamePuzzle && !_miniGamePuzzle.EndOfGame)
             {
                 // wyczyszczenie ekwipunku 
                 penguins.ForEach(p => p.Equipment.Items.Clear());

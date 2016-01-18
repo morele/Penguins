@@ -99,7 +99,7 @@ namespace TestGame
 
             PlatformRectangle = Animation.PositionStaticItems;
             Animation = animation;
-           
+
 
         }
 
@@ -108,19 +108,19 @@ namespace TestGame
             if (platformType == PlatformType.CAR)
             {
 
-               if(Keyboard.GetState().IsKeyDown(Keys.Right) && !blockDirectionRIGHT)
+                if (Keyboard.GetState().IsKeyDown(Keys.Right) && !blockDirectionRIGHT)
                 {
                     PlatformRectangle.X += 3;
                     activeDirection = true;
                 }
-               if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDirectionLEFT)
+                if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDirectionLEFT)
                 {
                     PlatformRectangle.X -= 2;
                     activeDirection = false;
                 }
                 this.Animation.Update(gametime, PlatformRectangle);
             }
-            
+
         }
         override public void UpdatePosition(GameTime gametime)
         {
@@ -256,37 +256,37 @@ namespace TestGame
         {
             return PlatformRectangle.Intersects(r1);
         }
-        
+
         public void CollisionCar(Rectangle r1, PlatformType type)
         {
             if (PlatformRectangle.Intersects(r1))
-            {      
-                 tmpPosition = PlatformRectangle.Location.ToVector2();
+            {
+                tmpPosition = PlatformRectangle.Location.ToVector2();
                 if (activeDirection == true)
                 {
                     blockDirectionRIGHT = true;
                     blockDirectionLEFT = false;
                 }
-                if(activeDirection == false)
+                if (activeDirection == false)
                 {
                     blockDirectionLEFT = true;
                     blockDirectionRIGHT = false;
                 }
             }
-            if (activeDirection) 
-              if (PlatformRectangle.X > tmpPosition.X + 3)
+            if (activeDirection)
+                if (PlatformRectangle.X > tmpPosition.X + 3)
                 {
                     blockDirectionLEFT = false;
                 }
-            if (!activeDirection) 
-               if (PlatformRectangle.X < tmpPosition.X )
+            if (!activeDirection)
+                if (PlatformRectangle.X < tmpPosition.X)
                 {
                     blockDirectionRIGHT = false;
                 }
 
             if (type == PlatformType.SPIKEFIRST && blockDirectionRIGHT)
             {
-                if(!PlatformRectangle.Intersects(r1))
+                if (!PlatformRectangle.Intersects(r1))
                 {
                     blockDirectionRIGHT = false;
                 }

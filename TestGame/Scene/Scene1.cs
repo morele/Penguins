@@ -38,6 +38,8 @@ namespace TestGame.Scene
 
         private GameTime gametime;
 
+        public bool IsGameOver { get; set; }
+
         public Scene1(ContentManager content, Camera camera,GameTime gametime) : base(content, camera, gametime)
         {
             automatMinigame = new AutomatMinigame();
@@ -70,6 +72,18 @@ namespace TestGame.Scene
             _themeSong = content.Load<Song>("Audio/Waves/scene1_theme");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = SoundManager.Volume;
+
+            // przypisanie zdarzenia dla pingwna, który spadł z platformy
+            foreach (var penguin in penguins)
+            {
+                penguin.DeathLine = 900;
+                penguin.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler;
+            }
+        }
+
+        private void Penguin_PenguinDeathByFallingHandler(object sender, System.EventArgs e)
+        {
+            IsGameOver = true;
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -19,12 +19,14 @@ namespace TestGame.MIniGames.Areoplane
         private Texture2D Tlo;
         int zlapany;
         int Mysz;
+        private bool _drawEndGame;
 
         public bool EndOfGame
         {
             get;
             private set;
         }
+        public Element SamolotEnd { get; private set; }
 
         public SkladanieSamolotu(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, ContentManager content)
         {
@@ -57,6 +59,8 @@ namespace TestGame.MIniGames.Areoplane
             {
                 y = elementy[i].ZaladujDoPrzybornika(y);
             }
+
+            SamolotEnd = new Element("Minigry/Areoplane/Samolot_End", 13, 30f, 2, _content, spriteBatch);
 
         }
 
@@ -116,7 +120,11 @@ namespace TestGame.MIniGames.Areoplane
             }
 
             if (poprawneElementy == elementy.Count())
-                EndOfGame = true;
+            {
+                _drawEndGame = true;
+                SamolotEnd.Update(gameTime);
+            }
+
         }
 
         public void Draw()
@@ -129,6 +137,15 @@ namespace TestGame.MIniGames.Areoplane
             {
                 elementy[i].Wyswiwietl();
             }
+            if (_drawEndGame)
+            {
+                SamolotEnd.Rysuj();
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                {
+                    EndOfGame = true;
+                }
+            }
+          
 
             _spriteBatch.End();
 
