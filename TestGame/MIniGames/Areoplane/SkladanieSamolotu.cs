@@ -107,10 +107,16 @@ namespace TestGame.MIniGames.Areoplane
             {
                 elementy[i].Powrot(gameTime);
             }
+
+            int poprawneElementy = 0;
             foreach (ElementUkladanki element in elementy)
             {
-                EndOfGame = element.NaMejscu;
+                if (element.NaMejscu)
+                    poprawneElementy++;
             }
+
+            if (poprawneElementy == elementy.Count())
+                EndOfGame = true;
         }
 
         public void Draw()
