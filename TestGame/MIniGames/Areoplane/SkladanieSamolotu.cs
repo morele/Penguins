@@ -60,7 +60,7 @@ namespace TestGame.MIniGames.Areoplane
                 y = elementy[i].ZaladujDoPrzybornika(y);
             }
 
-            SamolotEnd = new Element("Minigry/Areoplane/Samolot_End", 13, 30f, 1, _content, spriteBatch);
+            SamolotEnd = new Element("Minigry/Areoplane/Samolot_End", 13, 30f, 2, _content, spriteBatch);
 
         }
 
