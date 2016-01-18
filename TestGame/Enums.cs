@@ -59,7 +59,9 @@ namespace TestGame
         JULIAN=9,
         BUSH = 10,
         PALM = 11,
-        PARTSPLANE = 12
+        PARTSPLANE = 12,
+            SPIKEFIRST = 13,
+            SPIKELAST = 14,
 
     }
 }

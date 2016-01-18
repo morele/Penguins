@@ -47,6 +47,10 @@ namespace TestGame
         private float time = 0;
         public bool initJump = false;
         public bool jump = false;
+        private bool blockDirectionRIGHT = false;
+        private bool blockDirectionLEFT = false;
+        private bool activeDirection = true;
+        private Vector2 tmpPosition = new Vector2();
         public Vector2 speed = new Vector2(0);
         public float angleFall = 10f;
         public Platform() { }
@@ -94,7 +98,8 @@ namespace TestGame
             this.platformType = platformType;
 
             PlatformRectangle = Animation.PositionStaticItems;
-
+            Animation = animation;
+           
 
         }
 
@@ -103,149 +108,146 @@ namespace TestGame
             if (platformType == PlatformType.CAR)
             {
 
-               if(Keyboard.GetState().IsKeyDown(Keys.Right))
+               if(Keyboard.GetState().IsKeyDown(Keys.Right) && !blockDirectionRIGHT)
                 {
-                    Position.X += 2;
+                    PlatformRectangle.X += 3;
+                    activeDirection = true;
                 }
-               if (Keyboard.GetState().IsKeyDown(Keys.Left))
+               if (Keyboard.GetState().IsKeyDown(Keys.Left) && !blockDirectionLEFT)
                 {
-                    Position.X -= 2;
+                    PlatformRectangle.X -= 2;
+                    activeDirection = false;
                 }
-
-                Animation.UpdatePosition(Position.X, Position.Y);
+                this.Animation.Update(gametime, PlatformRectangle);
             }
             
         }
         override public void UpdatePosition(GameTime gametime)
         {
-            if (platformType == PlatformType.CAR && !ActiveCar && Animation != null)
+            if (platformType != PlatformType.CAR)
             {
-                Animation.UpdateInStay();
-            }
-            else if (platformType == PlatformType.CAR && ActiveCar)
-            {
-                UpdateCar(gametime);
-            }
-            // jeśli platforma się porusza
-            if (IsMotion)
-            {
-                if (stop)//jak platforma ma sie podczas ruchu zatrzymac na jakis czas
+
+                // jeśli platforma się porusza
+                if (IsMotion)
                 {
-                    // sprawdź kierunek ruchu
-                    switch (Direction)
+                    if (stop)//jak platforma ma sie podczas ruchu zatrzymac na jakis czas
                     {
-                        // ruch w górę
-                        case Direction.Up:
+                        // sprawdź kierunek ruchu
+                        switch (Direction)
+                        {
+                            // ruch w górę
+                            case Direction.Up:
 
-                            time += gametime.ElapsedGameTime.Milliseconds;
+                                time += gametime.ElapsedGameTime.Milliseconds;
 
-                            // ustaw pozycję o ile nie została przekroczona maksymalna wysokość platformy
-                            if (_currentPlatformPosition <= _maxPlatformScope)
-                            {
+                                // ustaw pozycję o ile nie została przekroczona maksymalna wysokość platformy
+                                if (_currentPlatformPosition <= _maxPlatformScope)
+                                {
+                                    _currentPlatformPosition += (int)PlatformSpeed;
+                                    Position = new Point(Position.X, Position.Y - (int)PlatformSpeed);
+                                }
+
+                                // maksymalna wysokość została przekroczona - platforma zawraca
+                                else
+                                if (time > 4000)
+                                {
+                                    Direction = Direction.Down;
+                                    time = 0;
+                                }
+
+                                break;
+
+                            // ruch w dół
+                            case Direction.Down:
+
+                                time += gametime.ElapsedGameTime.Milliseconds;
+
+
+
+                                // ustaw pozycję platformy o ile nie znajduje się na dole
+                                if (_currentPlatformPosition >= 0)
+                                {
+                                    _currentPlatformPosition -= (int)PlatformSpeed;
+                                    Position = new Point(Position.X, Position.Y + (int)PlatformSpeed);
+                                }
+
+                                // platforma na dole - teraz się w górę
+                                else
+                                if (time > 3500)
+                                {
+                                    Direction = Direction.Up;
+                                    time = 0;
+                                }
+
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        // sprawdź kierunek ruchu
+                        switch (Direction)
+                        {
+                            // ruch w górę
+                            case Direction.Up:
+
                                 _currentPlatformPosition += (int)PlatformSpeed;
-                                Position = new Point(Position.X, Position.Y - (int)PlatformSpeed);
-                            }
 
-                            // maksymalna wysokość została przekroczona - platforma zawraca
-                            else
-                            if (time > 4000)
-                            {
-                                Direction = Direction.Down;
-                                time = 0;
-                            }
+                                // ustaw pozycję o ile nie została przekroczona maksymalna wysokość platformy
+                                if (_currentPlatformPosition <= _maxPlatformScope)
+                                    Position = new Point(Position.X, Position.Y - (int)PlatformSpeed);
 
-                            break;
+                                // maksymalna wysokość została przekroczona - platforma zawraca
+                                else
+                                    Direction = Direction.Down;
 
-                        // ruch w dół
-                        case Direction.Down:
+                                break;
 
-                            time += gametime.ElapsedGameTime.Milliseconds;
+                            // ruch w dół
+                            case Direction.Down:
 
-
-
-                            // ustaw pozycję platformy o ile nie znajduje się na dole
-                            if (_currentPlatformPosition >= 0)
-                            {
                                 _currentPlatformPosition -= (int)PlatformSpeed;
-                                Position = new Point(Position.X, Position.Y + (int)PlatformSpeed);
-                            }
 
-                            // platforma na dole - teraz się w górę
-                            else
-                            if (time > 4000)
-                            {
-                                Direction = Direction.Up;
-                                time = 0;
-                            }
+                                // ustaw pozycję platformy o ile nie znajduje się na dole
+                                if (_currentPlatformPosition >= 0)
+                                    Position = new Point(Position.X, Position.Y + (int)PlatformSpeed);
 
-                            break;
+                                // platforma na dole - teraz się w górę
+                                else
+                                    Direction = Direction.Up;
+
+                                break;
+                        }
                     }
+
+
+                    // aktualizacja sprite'a
+                    PlatformRectangle = new Rectangle((int)Position.X, (int)Position.Y, PlatformRectangle.Width, PlatformRectangle.Height);
                 }
-                else
+                if (platformType == PlatformType.MONEY)
                 {
-                    // sprawdź kierunek ruchu
-                    switch (Direction)
+                    if (jump)
                     {
-                        // ruch w górę
-                        case Direction.Up:
 
-                            _currentPlatformPosition += (int)PlatformSpeed;
+                        speed.Y += 0.15f;
+                        speed.X += angleFall;
+                        if (angleFall > 0.01) angleFall -= 0.2f;
+                        Position += speed.ToPoint();
 
-                            // ustaw pozycję o ile nie została przekroczona maksymalna wysokość platformy
-                            if (_currentPlatformPosition <= _maxPlatformScope)
-                                Position = new Point(Position.X, Position.Y - (int)PlatformSpeed);
-
-                            // maksymalna wysokość została przekroczona - platforma zawraca
-                            else
-                                Direction = Direction.Down;
-
-                            break;
-
-                        // ruch w dół
-                        case Direction.Down:
-
-                            _currentPlatformPosition -= (int)PlatformSpeed;
-
-                            // ustaw pozycję platformy o ile nie znajduje się na dole
-                            if (_currentPlatformPosition >= 0)
-                                Position = new Point(Position.X, Position.Y + (int)PlatformSpeed);
-
-                            // platforma na dole - teraz się w górę
-                            else
-                                Direction = Direction.Up;
-
-                            break;
                     }
+                    if (initJump)
+                    {
+                        Position.Y -= 30;
+                        Position.X += 60;
+                        initJump = false;
+                        jump = true;
+                    }
+
+                    PlatformRectangle = new Rectangle(Position, Size);
                 }
-
-
-                // aktualizacja sprite'a
-                PlatformRectangle = new Rectangle((int)Position.X, (int)Position.Y, PlatformRectangle.Width, PlatformRectangle.Height);
-            }
-            if (platformType == PlatformType.MONEY)
-            {
-                if (jump)
+                if (gametime != null && Animation != null && platformType != PlatformType.CAR)
                 {
-
-                    speed.Y += 0.15f;
-                    speed.X += angleFall;
-                    if (angleFall > 0.01) angleFall -= 0.2f;
-                    Position += speed.ToPoint();
-
+                    this.Animation.Update(gametime, PlatformRectangle);
                 }
-                if (initJump)
-                {
-                    Position.Y -= 30;
-                    Position.X += 60;
-                    initJump = false;
-                    jump = true;
-                }
-
-                PlatformRectangle = new Rectangle(Position, Size);
-            }
-            if (gametime != null && Animation != null && platformType != PlatformType.CAR)
-            {
-                this.Animation.Update(gametime, PlatformRectangle);
             }
 
         }
@@ -253,6 +255,43 @@ namespace TestGame
         public bool CollisionPlatform(Rectangle r1)
         {
             return PlatformRectangle.Intersects(r1);
+        }
+        
+        public void CollisionCar(Rectangle r1, PlatformType type)
+        {
+            if (PlatformRectangle.Intersects(r1))
+            {      
+                 tmpPosition = PlatformRectangle.Location.ToVector2();
+                if (activeDirection == true)
+                {
+                    blockDirectionRIGHT = true;
+                    blockDirectionLEFT = false;
+                }
+                if(activeDirection == false)
+                {
+                    blockDirectionLEFT = true;
+                    blockDirectionRIGHT = false;
+                }
+            }
+            if (activeDirection) 
+              if (PlatformRectangle.X > tmpPosition.X + 3)
+                {
+                    blockDirectionLEFT = false;
+                }
+            if (!activeDirection) 
+               if (PlatformRectangle.X < tmpPosition.X )
+                {
+                    blockDirectionRIGHT = false;
+                }
+
+            if (type == PlatformType.SPIKEFIRST && blockDirectionRIGHT)
+            {
+                if(!PlatformRectangle.Intersects(r1))
+                {
+                    blockDirectionRIGHT = false;
+                }
+            }
+
         }
         override public void Draw(SpriteBatch spriteBatch)
         {

@@ -10,7 +10,7 @@ namespace TestGame
     {
         //public Vector2 position; // aktualna pozycja textury
         protected Texture2D Image; //tekstrua 
-        protected Animation Animation; //animacja
+        public Animation Animation; //animacja
         protected float speedValue; //szybkość poruszania się 
         protected float gravitation; //wysokość wybicia przy skoku
         protected List<Rectangle> dimensionsPenguin;

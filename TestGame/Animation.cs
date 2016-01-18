@@ -99,10 +99,11 @@ namespace TestGame
 
         }
 
-        public void UpdatePosition(int x, int y)
+        public void UpdatePosition(int x, int y, GameTime gametime)
         {
             _position.X += x;
             _position.Y += y;
+            Update(gametime);
         }
         public void Update(GameTime gametime)
         {

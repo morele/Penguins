@@ -141,10 +141,10 @@ namespace TestGame.Scene
 
 
 
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-400, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-400, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKEFIRST));
             platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-440, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
             platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-480, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
-            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-520, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
+            platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-520, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKELAST));
 
 
 
@@ -362,7 +362,8 @@ namespace TestGame.Scene
                     var car = platforms.FirstOrDefault(element => element.platformType == PlatformType.CAR);
                     if (car != null)
                     {
-                        indexOfCar = platforms.IndexOf(car);
+                        indexOfCar = platforms.IndexOf(car);  
+
                         platforms[indexOfCar] = new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja2"), 6, 50,
                                                         new Vector2(-2300, 700 - content.Load<Texture2D>("Scena2/autko/Autko1").Height)), false, 0, 0, PlatformType.CAR);
                         platforms[indexOfCar].ActiveCar = true;
@@ -389,10 +390,43 @@ namespace TestGame.Scene
                         if (penguin.penguinType == PenguinType.SZEREGOWY) penguin.ActiveDraw = false;
                         if (penguin.penguinType == PenguinType.SKIPPER) penguin.ActiveDraw = false;
                     }
+                    _blockD2 = true;//blokada przelaczenia pingwinow, mozliwy tylko skipper kierowca i rico 
+                    _blockD4 = true;
 
-                    platforms[indexOfCar].UpdateCar(gametime);
-                    camera.Update(new Rectangle(-2100, 600, 100, 100)) ;
-                    //camera.Update(platforms[indexOfCar].Animation.PositionStaticItems);
+
+                    foreach (Platform platform in platforms)
+                    {
+                        if (platform.platformType == PlatformType.SPIKEFIRST || 
+                            platform.platformType == PlatformType.SPIKE || 
+                            platform.platformType == PlatformType.SPIKELAST || 
+                            platform.platformType == PlatformType.MAGICPIPE)
+                        {
+                            platforms[indexOfCar].CollisionCar(platform.PlatformRectangle, platform.platformType);
+                        }
+
+                        if (platform.platformType == PlatformType.SPIKEFIRST ||
+                           platform.platformType == PlatformType.SPIKE ||
+                           platform.platformType == PlatformType.SPIKELAST)
+                        {
+                            if (platforms[indexOfCar].CollisionPlatform(new Rectangle(platform.PlatformRectangle.X + 4,platform.PlatformRectangle.Y,platform.PlatformRectangle.Width - 8,platform.PlatformRectangle.Height)))
+                            {
+                                //.............................................................................................
+                                // DODAC AKCJE JAK AUTO JEST NA KOLCACH!
+
+
+
+                               //..............................................................................................
+                            }
+                        }
+                    }
+
+                    
+                        foreach (Platform platform in platforms)
+                        if (platform.platformType == PlatformType.SPIKE)
+                            platform.UpdatePosition(gameTime);
+
+                    platforms[indexOfCar].UpdateCar(gameTime);
+                    camera.Update(platforms[indexOfCar].Animation.PositionStaticItems);
                 }
                 else
                 {
@@ -559,6 +593,9 @@ namespace TestGame.Scene
                                     if (penguin.active) platform.SpeedUp();
                                 }
                             }
+
+                            // aktualizacja pozycji jeśli platforma ma sie poruszać
+                            platform.UpdatePosition(gameTime);
 
                             // sprawdzenie czy poziom został ukończony
                             // jeśli wszystkie pingwiny mają współrzędne większe niż takie 
