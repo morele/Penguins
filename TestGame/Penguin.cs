@@ -71,7 +71,7 @@ namespace TestGame
         public int platformSpeed = 0;
         public PenguinType penguinType;
         public List<Platform> platforms = new List<Platform>();
-
+        public bool ActiveDraw = true;
 
         private Rectangle actualCollisionRect;
 
@@ -338,6 +338,12 @@ namespace TestGame
 
         }
 
+        public void UpdatePositionStatic(Vector2 newPosition)
+        {
+            rectangle.X += (int)newPosition.X;
+            rectangle.Y += (int)newPosition.Y;
+        }
+
         private void BlockSystem()
         {
             if (!block) //jezeli nie jest zablokowane
@@ -502,29 +508,33 @@ namespace TestGame
         /// <param name="spriteBatch"></param>
         public void DrawAnimation(SpriteBatch spriteBatch)
         {
-            //   rectangle.Width /= scale;
-            if (penguinType == PenguinType.RICO)
+            if(ActiveDraw)
             {
-                if (_slide)
+                //   rectangle.Width /= scale;
+                if (penguinType == PenguinType.RICO)
                 {
-                    _animationHorizontal.Draw(spriteBatch, _left);
+                    if (_slide)
+                    {
+                        _animationHorizontal.Draw(spriteBatch, _left);
+                    }
+                    else
+                    {
+                        _animationVertival.Draw(spriteBatch, _left, true);
+                    }
                 }
                 else
                 {
-                    _animationVertival.Draw(spriteBatch, _left, true);
+                    if (_slide)
+                    {
+                        _animationHorizontal.Draw(spriteBatch, _left);
+                    }
+                    else
+                    {
+                        _animationVertival.Draw(spriteBatch, _left);
+                    }
                 }
             }
-            else
-            {
-            if (_slide)
-            {
-                _animationHorizontal.Draw(spriteBatch, _left);
-            }
-            else
-            {
-                _animationVertival.Draw(spriteBatch, _left);
-            }
-            }
+
 
         }
 

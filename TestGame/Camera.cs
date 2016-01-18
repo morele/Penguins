@@ -27,5 +27,14 @@ namespace TestGame
             if (active) centre = new Vector2(0, 0);
             transform = Matrix.CreateScale(new Vector3(1, 1, 0)) * Matrix.CreateTranslation(new Vector3(-centre.X, -centre.Y, 0));
         }
+        public void Update(Rectangle newRectangle)
+        {
+            if (Yaxis) centre = new Vector2(newRectangle.X + (newRectangle.Width / 2) - 600, newRectangle.Y + (newRectangle.Height / 2 - 450));
+            else
+                centre = new Vector2(newRectangle.X + (newRectangle.Width / 2) - 600, 0);
+
+            if (active) centre = new Vector2(0, 0);
+            transform = Matrix.CreateScale(new Vector3(1, 1, 0)) * Matrix.CreateTranslation(new Vector3(-centre.X, -centre.Y, 0));
+        }
     }
 }

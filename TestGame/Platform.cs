@@ -100,11 +100,21 @@ namespace TestGame
 
         public void UpdateCar(GameTime gametime)
         {
-            if (platformType != PlatformType.CAR)
+            if (platformType == PlatformType.CAR)
             {
-                throw new Exception("This is not a Car!");
+
+               if(Keyboard.GetState().IsKeyDown(Keys.Right))
+                {
+                    Position.X += 2;
+                }
+               if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                {
+                    Position.X -= 2;
+                }
+
+                Animation.UpdatePosition(Position.X, Position.Y);
             }
-            Animation.UpdatePosition(2, 0);
+            
         }
         override public void UpdatePosition(GameTime gametime)
         {

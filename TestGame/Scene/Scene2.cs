@@ -216,6 +216,9 @@ namespace TestGame.Scene
             }
         }
 
+        bool ActiveCar = false;
+        int indexOfCar;
+        bool fisrtStartCarTEMPORARY = true;
         public override void UpdatePosition(GameTime gameTime)
         {
             if (_firstStart)
@@ -327,228 +330,260 @@ namespace TestGame.Scene
                     }
                     else if (_isKowalskiTime && _canDoItKowalski)
                     {
-                        _isCollisionWithJulian = false;
+             /*           _isCollisionWithJulian = false;
                         _julek.Animation.Texture = _content.Load<Texture2D>("Postacie/Julek/JulianSpritePozegnanie");
 
                         var car = platforms.FirstOrDefault(element => element.platformType == PlatformType.CAR);
                         if (car != null)
                         {
-                            int index = platforms.IndexOf(car);
-                            platforms[index] = new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja2"), 6, 50,
-                new Vector2(-2300, 700 - content.Load<Texture2D>("Scena2/autko/Autko1").Height)));
-                            platforms[index].ActiveCar = true;
+                            indexOfCar = platforms.IndexOf(car);
+                            platforms[indexOfCar] = new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja2"), 6, 50,
+                                                            new Vector2(-2300, 700 - content.Load<Texture2D>("Scena2/autko/Autko1").Height)));
+                            platforms[indexOfCar].ActiveCar = true;
 
                         }
-                        foreach (var penguin in penguins)
-                        {
-                            if (penguin.penguinType != PenguinType.RICO)
-                            {
-                                penguin.IsActive = false;
-                            }
-                        }
+                        //skipperem prowadzimy - aktywacja gracza
+                        player = ActiveAndDeactivationPlayer(true, false, false, false);
+                        _blockD1 = true;
+                        ActiveCar = true;*/
+
                     }
 
                 }
+
+              
+
+                //TYMCZASOWY KOD!
+                if(fisrtStartCarTEMPORARY)
+                {
+                    _isCollisionWithJulian = false;
+                    _julek.Animation.Texture = _content.Load<Texture2D>("Postacie/Julek/JulianSpritePozegnanie");
+
+                    var car = platforms.FirstOrDefault(element => element.platformType == PlatformType.CAR);
+                    if (car != null)
+                    {
+                        indexOfCar = platforms.IndexOf(car);
+                        platforms[indexOfCar] = new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja2"), 6, 50,
+                                                        new Vector2(-2300, 700 - content.Load<Texture2D>("Scena2/autko/Autko1").Height)), false, 0, 0, PlatformType.CAR);
+                        platforms[indexOfCar].ActiveCar = true;
+
+                    }
+                    //skipperem prowadzimy - aktywacja gracza
+                    player = ActiveAndDeactivationPlayer(true, false, false, false);
+                    _blockD1 = true;
+                    ActiveCar = true;
+
+                    fisrtStartCarTEMPORARY = false;
+                }
+                
 
                 // odświeżenie paska gracza
                 playerPanel.Update(player);
 
-                int i;
-                foreach (Platform platform in platforms)
+                //jesli aktywne poruszanie sie samochodem + jezdzic mozemy tylko jak aktywny skipper(kierowca)
+                if (ActiveCar && player.penguinType == PenguinType.SKIPPER)
                 {
-                    if (platform.platformType == PlatformType.SPIKE)
+                    foreach (Penguin penguin in penguins)
                     {
-
+                        if (penguin.penguinType == PenguinType.KOWALSKI) penguin.ActiveDraw = false;
+                        if (penguin.penguinType == PenguinType.SZEREGOWY) penguin.ActiveDraw = false;
+                        if (penguin.penguinType == PenguinType.SKIPPER) penguin.ActiveDraw = false;
                     }
-                    if (platform.active)
+
+                    platforms[indexOfCar].UpdateCar(gametime);
+                    camera.Update(new Rectangle(-2100, 600, 100, 100)) ;
+                    //camera.Update(platforms[indexOfCar].Animation.PositionStaticItems);
+                }
+                else
+                {
+                    int i;
+                    foreach (Platform platform in platforms)
                     {
-                        // opadanie ryby jest dostępne tylko wtedy gdy Rico ją wypluje
-                        if (_fishItem.IsActive)
+                        if (platform.active)
                         {
-                            _fishItem.FallDown();
-
-                            if (_fishItem.IsCollisionDetect(platform))
-                                _fishItem.CanFallDown = false;
-                        }
-
-                        foreach (Penguin penguin in penguins)
-                        {
-                            // sprawdzenie czy pingwin nie stoi na rurze
-                            if (platform.platformType == PlatformType.MAGICPIPE &&
-                                penguin.penguinType == PenguinType.RICO &&
-                                !_miniGame.EndOfGame) // jeśli już gra została zakończona to sorry ;P
+                            // opadanie ryby jest dostępne tylko wtedy gdy Rico ją wypluje
+                            if (_fishItem.IsActive)
                             {
-                                if (penguin.Collision(platform.PlatformRectangle))
+                                _fishItem.FallDown();
+
+                                if (_fishItem.IsCollisionDetect(platform))
+                                    _fishItem.CanFallDown = false;
+                            }
+
+                            foreach (Penguin penguin in penguins)
+                            {
+                                // sprawdzenie czy pingwin nie stoi na rurze
+                                if (platform.platformType == PlatformType.MAGICPIPE &&
+                                    penguin.penguinType == PenguinType.RICO &&
+                                    !_miniGame.EndOfGame) // jeśli już gra została zakończona to sorry ;P
                                 {
-                                    // załaduj i pokaż strzałke nad rurą
-                                    _chooseItemMenu.Update(platform, new List<Texture2D>() { content.Load<Texture2D>(@"Scena2\arrow_down") }, topMargin: 100);
-                                    _chooseItemMenu.IsVisible = true;
-
-                                    // teraz możliwe jest włączenie  minigry
-                                    _canPlayMiniGame = true;
-                                }
-                            }
-                            // jeśli jest poza nią to przestań wyświetlać strzałkę MŁ
-                            else if (platform.platformType != PlatformType.MAGICPIPE &&
-                                     penguin.penguinType == PenguinType.RICO &&
-                                     penguin.Collision(platform.PlatformRectangle))
-                            {
-                                _chooseItemMenu.IsVisible = false;
-                                _canPlayMiniGame = false;
-                            }
-
-                            // sprawdzenie czy pingwin (RICO) jest w obrębie skrzynki MŁ
-                            else if (penguin.penguinType == PenguinType.RICO && _fishBox.IsInActionSector(penguin))
-                            {
-                                // wyświetlenie menu wyboru ekwipunku
-                                if (penguin.Equipment.Items.Count > 0)
-                                {
-                                    _chooseItemMenu.IsVisible = true;
-                                    List<Texture2D> textures = penguin.Equipment.Items.Select(equipmentItem => equipmentItem.Item.Texture).ToList();
-                                    _chooseItemMenu.Update(penguin, textures, 40);
-                                    penguin.SelectedItem = penguin.Equipment.Items[_chooseItemMenu.SelectedIndex];
-                                }
-                            }
-                            else if (penguin.penguinType == PenguinType.RICO &&
-                                     !_fishBox.IsInActionSector(penguin) &&
-                                     _miniGame.EndOfGame && _canPlayMiniGame)
-                            {
-                                _chooseItemMenu.IsVisible = false;
-                            }
-
-                            // sprawdzenie czy Rico wypluł rybę
-                            if (_fishItem.IsCollisionDetect(_fishBox))
-                            {
-                                var pawl = platforms.FirstOrDefault(p => p.platformType == PlatformType.PAWL);
-                                platforms[platforms.IndexOf(pawl)].active = false;
-                                _fishItem.IsActive = false;
-                            }
-
-
-                            // sprawdzenie kolizji między Skipperem a Julianem
-                            if (_julek.IsCollisionDetect(penguin) && _isCollisionWithJulian)
-                            {
-                                penguin.Position.X -= 2;
-                            }
-
-                            // sprawdzenie czy Skipper może rozpocząć grę z Julianem
-                            if (penguin.penguinType == PenguinType.SKIPPER &&
-                                _julek.IsInActionSector(penguin) &&
-                                !_minigameMemory.EndOfGame)
-                            {
-                                // odtworzenie dźwięku
-                                if (SoundManager.SoundOn)
-                                    if (!_isSceneSoundPlay[1])
+                                    if (penguin.Collision(platform.PlatformRectangle))
                                     {
-                                        _isSceneSoundPlay[1] = true;
-                                        _sceneSounds[1].Play();
-                                    }
+                                        // załaduj i pokaż strzałke nad rurą
+                                        _chooseItemMenu.Update(platform, new List<Texture2D>() { content.Load<Texture2D>(@"Scena2\arrow_down") }, topMargin: 100);
+                                        _chooseItemMenu.IsVisible = true;
 
-                                _chooseItemMenu.Update(penguin, new List<Texture2D>()
+                                        // teraz możliwe jest włączenie  minigry
+                                        _canPlayMiniGame = true;
+                                    }
+                                }
+                                // jeśli jest poza nią to przestań wyświetlać strzałkę MŁ
+                                else if (platform.platformType != PlatformType.MAGICPIPE &&
+                                         penguin.penguinType == PenguinType.RICO &&
+                                         penguin.Collision(platform.PlatformRectangle))
+                                {
+                                    _chooseItemMenu.IsVisible = false;
+                                    _canPlayMiniGame = false;
+                                }
+
+                                // sprawdzenie czy pingwin (RICO) jest w obrębie skrzynki MŁ
+                                else if (penguin.penguinType == PenguinType.RICO && _fishBox.IsInActionSector(penguin))
+                                {
+                                    // wyświetlenie menu wyboru ekwipunku
+                                    if (penguin.Equipment.Items.Count > 0)
+                                    {
+                                        _chooseItemMenu.IsVisible = true;
+                                        List<Texture2D> textures = penguin.Equipment.Items.Select(equipmentItem => equipmentItem.Item.Texture).ToList();
+                                        _chooseItemMenu.Update(penguin, textures, 40);
+                                        penguin.SelectedItem = penguin.Equipment.Items[_chooseItemMenu.SelectedIndex];
+                                    }
+                                }
+                                else if (penguin.penguinType == PenguinType.RICO &&
+                                         !_fishBox.IsInActionSector(penguin) &&
+                                         _miniGame.EndOfGame && _canPlayMiniGame)
+                                {
+                                    _chooseItemMenu.IsVisible = false;
+                                }
+
+                                // sprawdzenie czy Rico wypluł rybę
+                                if (_fishItem.IsCollisionDetect(_fishBox))
+                                {
+                                    var pawl = platforms.FirstOrDefault(p => p.platformType == PlatformType.PAWL);
+                                    platforms[platforms.IndexOf(pawl)].active = false;
+                                    _fishItem.IsActive = false;
+                                }
+
+
+                                // sprawdzenie kolizji między Skipperem a Julianem
+                                if (_julek.IsCollisionDetect(penguin) && _isCollisionWithJulian)
+                                {
+                                    penguin.Position.X -= 2;
+                                }
+
+                                // sprawdzenie czy Skipper może rozpocząć grę z Julianem
+                                if (penguin.penguinType == PenguinType.SKIPPER &&
+                                    _julek.IsInActionSector(penguin) &&
+                                    !_minigameMemory.EndOfGame)
+                                {
+                                    // odtworzenie dźwięku
+                                    if (SoundManager.SoundOn)
+                                        if (!_isSceneSoundPlay[1])
+                                        {
+                                            _isSceneSoundPlay[1] = true;
+                                            _sceneSounds[1].Play();
+                                        }
+
+                                    _chooseItemMenu.Update(penguin, new List<Texture2D>()
                                 {
                                     content.Load<Texture2D>(@"Scena2\talkIcon")
                                 }, topMargin: 100);
 
-                                _chooseItemMenu.IsVisible = true;
+                                    _chooseItemMenu.IsVisible = true;
 
-                                // teraz możliwe jest włączenie  minigry
-                                _canPlayMiniGameMemory = true;
-                            }
-                            else if (penguin.penguinType == PenguinType.SKIPPER &&
-                                     !_julek.IsInActionSector(penguin))
-                            {
-                                _isSceneSoundPlay[1] = false;
-                            }
+                                    // teraz możliwe jest włączenie  minigry
+                                    _canPlayMiniGameMemory = true;
+                                }
+                                else if (penguin.penguinType == PenguinType.SKIPPER &&
+                                         !_julek.IsInActionSector(penguin))
+                                {
+                                    _isSceneSoundPlay[1] = false;
+                                }
 
-                            //kolizja z innymi pingwinami
-                            for (i = 0; i < penguins.Count; i++)
-                            {
-                                if (penguins[i].penguinType != penguin.penguinType)
-                                    if (penguin.Collision(penguins[i].rectangle, penguins[i].penguinType))
-                                        penguin.JumpStop(0);
-                            }
+                                //kolizja z innymi pingwinami
+                                for (i = 0; i < penguins.Count; i++)
+                                {
+                                    if (penguins[i].penguinType != penguin.penguinType)
+                                        if (penguin.Collision(penguins[i].rectangle, penguins[i].penguinType))
+                                            penguin.JumpStop(0);
+                                }
 
-                            #region AKCJE KOWALSKIEGO
+                                #region AKCJE KOWALSKIEGO
 
-                            if (penguin.penguinType == PenguinType.KOWALSKI &&
-                                _julek.IsInActionSector(penguin) && _isKowalskiTime)
-                            {
-                                if (SoundManager.SoundOn)
-                                    if (!_isSceneSoundPlay[2])
+                                if (penguin.penguinType == PenguinType.KOWALSKI &&
+                                    _julek.IsInActionSector(penguin) && _isKowalskiTime)
+                                {
+                                    if (SoundManager.SoundOn)
+                                        if (!_isSceneSoundPlay[2])
+                                        {
+                                            _isSceneSoundPlay[2] = true;
+                                            _sceneSounds[2].Play();
+                                        }
+
+                                    _chooseItemMenu.Update(penguin, new List<Texture2D>()
+                                { content.Load<Texture2D>(@"Scena2\battery") }, topMargin: 100);
+                                    _chooseItemMenu.IsVisible = true;
+                                    _canDoItKowalski = true;
+                                }
+                                else if (penguin.penguinType == PenguinType.KOWALSKI &&
+                                         !_julek.IsInActionSector(penguin) && _isKowalskiTime)
+                                {
+                                    _chooseItemMenu.IsVisible = false;
+                                    _isSceneSoundPlay[2] = false;
+                                    _canDoItKowalski = false;
+                                }
+
+                                #endregion
+
+                                //Jak kolizja ze sprezyna to wysoki jump
+                                if (platform.platformType == PlatformType.SPRING)
+                                    if (penguin.CollisionRectangle(platform.PlatformRectangle))
                                     {
-                                        _isSceneSoundPlay[2] = true;
-                                        _sceneSounds[2].Play();
+                                        penguin.JumpSpring();
                                     }
 
-                                _chooseItemMenu.Update(penguin, new List<Texture2D>()
-                                { content.Load<Texture2D>(@"Scena2\battery") }, topMargin: 100);
-                                _chooseItemMenu.IsVisible = true;
-                                _canDoItKowalski = true;
-                            }
-                            else if (penguin.penguinType == PenguinType.KOWALSKI &&
-                                     !_julek.IsInActionSector(penguin) && _isKowalskiTime)
-                            {
-                                _chooseItemMenu.IsVisible = false;
-                                _isSceneSoundPlay[2] = false;
-                                _canDoItKowalski = false;
-                            }
-
-                            #endregion
-
-                            //Jak kolizja ze sprezyna to wysoki jump
-                            if (platform.platformType == PlatformType.SPRING)
-                                if (penguin.CollisionRectangle(platform.PlatformRectangle))
+                                if (penguin.Collision(platform.PlatformRectangle, PenguinType.NN, platform.platformType))// sprawdzenie czy na platformie są pingwiny
                                 {
-                                    penguin.JumpSpring();
+                                    penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
+
+                                    if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
+                                    {
+                                        penguin.PutMeOn(platform.PlatformRectangle);
+
+                                        if (penguin.active) platform.Slowdown();
+                                        penguin.platformSpeed = (int)platform.PlatformSpeed;
+                                    }
                                 }
-
-                            if (penguin.Collision(platform.PlatformRectangle, PenguinType.NN, platform.platformType))// sprawdzenie czy na platformie są pingwiny
-                            {
-                                penguin.JumpStop((int)platform.PlatformSpeed); //zatrzymuje spadek pingwina jak wykryje kolizje z platforma 
-
-                                if (platform.IsMotion) // jak platforma sie porusza to pingwin razem z nią musi
+                                else
                                 {
-                                    penguin.PutMeOn(platform.PlatformRectangle);
 
-                                    if (penguin.active) platform.Slowdown();
-                                    penguin.platformSpeed = (int)platform.PlatformSpeed;
+                                    if (penguin.active) platform.SpeedUp();
                                 }
                             }
-                            else
-                            {
 
-                                if (penguin.active) platform.SpeedUp();
-                            }
-                        }
+                            // sprawdzenie czy poziom został ukończony
+                            // jeśli wszystkie pingwiny mają współrzędne większe niż takie 
+                            // jak były współrzędne zapadki to poziom został ukończony
+                            if (penguins.Count(p => p.Position.X > 1580) == penguins.Count)
+                                IsCompleted = true;
 
-                        // sprawdzenie czy poziom został ukończony
-                        // jeśli wszystkie pingwiny mają współrzędne większe niż takie 
-                        // jak były współrzędne zapadki to poziom został ukończony
-                        if (penguins.Count(p => p.Position.X > 1580) == penguins.Count)
-                            IsCompleted = true;
-
-                        // aktualizacja pozycji jeśli platforma ma sie poruszać
-                        if (platform.platformType != PlatformType.CAR)
-                        {
-                            platform.UpdatePosition(gameTime);
-                        }
-                        else
-                        {
-                            platform.UpdatePosition(gameTime);
                         }
 
                     }
 
+                    foreach (Penguin penguin in penguins)
+                        penguin.UpdatePosition(gameTime);
+
+                    camera.Update(player);
                 }
+
 
 
               
 
-                foreach (Penguin penguin in penguins)
-                    penguin.UpdatePosition(gameTime);
+                
 
 
-                camera.Update(player);
+                
             }
 
 
