@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Microsoft.Xna.Framework.Audio;
 using TestGame.Menu;
 using TestGame.Scene;
@@ -45,6 +46,7 @@ namespace TestGame
 
         // flaga informuje 
         private bool _isSceneLoading = true;
+        private bool _isGameOverScreen = false;
         private Vector2 _levelTitlePosition;
         private Vector2 _levelNumberPosition;
 
@@ -70,6 +72,10 @@ namespace TestGame
         private Scene3 scene3;
         private Texture2D _scene3TitleTexture;
         private Texture2D _scene3LevelNumberTexture;
+
+        // SCREEN GAMEOVER
+        private Texture2D _gameOverScreen;
+
 
         // zmienne dla obsługi dźwięku
         private bool _blockSoundOn;
@@ -97,7 +103,7 @@ namespace TestGame
             graphics.ApplyChanges();
 
             // ustawienie początkowego poziomu na scene 1 MŁ
-            _currentScene = CurrentScene.Scene2;
+            _currentScene = CurrentScene.Scene3;
         }
 
         protected override void Initialize()
@@ -121,6 +127,7 @@ namespace TestGame
                     throw new ArgumentOutOfRangeException();
             }
 
+            _gameOverScreen = Content.Load<Texture2D>("MenuPauzy/gameOverText");
 
             // inicjalizacja panelu gracza - podstawowy gracz - skipper           
             _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"), new Vector2(0, 0), new Vector2(GraphicsDevice.Viewport.Width, 150), Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Skipper"));
@@ -263,7 +270,10 @@ namespace TestGame
                     throw new ArgumentOutOfRangeException();
             }
 
+
+
         }
+
 
         private void setStartPosition(int numberScene)
         {
@@ -358,7 +368,14 @@ namespace TestGame
                 {
                     if (scene1.IsGameOver)
                     {
+                        _isGameOverScreen = true;
+                        _canShowGameMenu = true;
+                        _isGamePause = false;
+                        _gameMenu.SelectedOptionMenu = SelectedOptionMenu.None;
+                        _pauseMenu.SelectedOptionPauseMenu = SelectedOptionPauseMenu.None;
+                        setStartPosition((int)_currentScene);
                         _isSceneLoading = true;
+                        scene1.IsGameOver = false;
                     }
                 }
 
@@ -366,6 +383,7 @@ namespace TestGame
                 {
                     if (scene2.IsGameOver)
                     {
+                        _isGameOverScreen = true;
                         _canShowGameMenu = true;
                         _isGamePause = false;
                         _gameMenu.SelectedOptionMenu = SelectedOptionMenu.None;
@@ -375,6 +393,21 @@ namespace TestGame
                         scene2.IsGameOver = false;
                     }
                 }
+                else if (_currentScene == CurrentScene.Scene3)
+                {
+                    if (scene3.IsGameOver)
+                    {
+                        _isGameOverScreen = true;
+                        _canShowGameMenu = true;
+                        _isGamePause = false;
+                        _gameMenu.SelectedOptionMenu = SelectedOptionMenu.None;
+                        _pauseMenu.SelectedOptionPauseMenu = SelectedOptionPauseMenu.None;
+                        setStartPosition((int)_currentScene);
+                        _isSceneLoading = true;
+                        scene3.IsGameOver = false;
+                    }
+                }
+
 
                 #endregion
 
@@ -510,123 +543,147 @@ namespace TestGame
 
         protected override void Draw(GameTime gameTime)
         {
-            gametime = gameTime;
-
-            if (_canShowGameMenu)
+            // może jest też koniec gry
+            if (_isGameOverScreen)
             {
-                if (_canShowAuthorsScreen)
-                {
-                    GraphicsDevice.Clear(Color.CornflowerBlue);
-                    spriteBatch.Begin();
-                    spriteBatch.Draw(_authorsScreen, Vector2.Zero, Color.White);
-                    spriteBatch.End();
-                }
-                else if (_canShowControlScreen)
-                {
-                    GraphicsDevice.Clear(Color.CornflowerBlue);
-                    spriteBatch.Begin();
-                    spriteBatch.Draw(_contorolScreen, Vector2.Zero, Color.White);
-                    spriteBatch.End();
-                }
-                else
-                {
-                    GraphicsDevice.Clear(Color.CornflowerBlue);
-                    spriteBatch.Begin();
-                    _gameMenu.Draw(spriteBatch);
-                    spriteBatch.End();
-                }
+                GraphicsDevice.Clear(Color.GreenYellow);
+                spriteBatch.Begin();
+                spriteBatch.Draw(_gameOverScreen, _levelNumberPosition, Color.White);
+                spriteBatch.End();
 
-
+                if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                {
+                    _gameMenu.SelectedOptionMenu = SelectedOptionMenu.None;
+                    _canShowGameMenu = true;
+                    _isGameOverScreen = false;
+                }
             }
             else
             {
-                switch (_currentScene)
-                {
-                    case CurrentScene.Scene1:
-                        GraphicsDevice.Clear(Color.Indigo);
-                        break;
-                    case CurrentScene.Scene2:
-                        GraphicsDevice.Clear(Color.LimeGreen);
-                        break;
-                    case CurrentScene.Scene3:
-                        GraphicsDevice.Clear(Color.MediumVioletRed);
-                        break;
-                    default:
-                        GraphicsDevice.Clear(Color.CornflowerBlue);
-                        break;
-                }
-                // wyświetlenie screenu początkowego z nazwą oraz tytułem poziomu
-                if (_isSceneLoading)
-                {
-                    spriteBatch.Begin();
 
-                    switch (_currentScene)
+
+                gametime = gameTime;
+
+                if (_canShowGameMenu)
+                {
+                    if (_canShowAuthorsScreen)
                     {
-                        case CurrentScene.Scene1:
-                            spriteBatch.Draw(_scene1TitleTexture, _levelTitlePosition, Color.White);
-                            spriteBatch.Draw(_scene1LevelNumberTexture, _levelNumberPosition, Color.White);
-                            break;
-                        case CurrentScene.Scene2:
-                            spriteBatch.Draw(_scene2TitleTexture, _levelTitlePosition, Color.White);
-                            spriteBatch.Draw(_scene2LevelNumberTexture, _levelNumberPosition, Color.White);
-                            break;
-                        case CurrentScene.Scene3:
-                            spriteBatch.Draw(_scene3TitleTexture, _levelTitlePosition, Color.White);
-                            spriteBatch.Draw(_scene3LevelNumberTexture, _levelNumberPosition, Color.White);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+                        spriteBatch.Begin();
+                        spriteBatch.Draw(_authorsScreen, Vector2.Zero, Color.White);
+                        spriteBatch.End();
                     }
-                    spriteBatch.End();
+                    else if (_canShowControlScreen)
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+                        spriteBatch.Begin();
+                        spriteBatch.Draw(_contorolScreen, Vector2.Zero, Color.White);
+                        spriteBatch.End();
+                    }
+                    else
+                    {
+                        GraphicsDevice.Clear(Color.CornflowerBlue);
+                        spriteBatch.Begin();
+                        _gameMenu.Draw(spriteBatch);
+                        spriteBatch.End();
+                    }
+
+
                 }
                 else
                 {
-                    if (!_isGamePause)
+                    switch (_currentScene)
                     {
-                        // narysowanie panelu użytkownika
+                        case CurrentScene.Scene1:
+                            GraphicsDevice.Clear(Color.Indigo);
+                            break;
+                        case CurrentScene.Scene2:
+                            GraphicsDevice.Clear(Color.LimeGreen);
+                            break;
+                        case CurrentScene.Scene3:
+                            GraphicsDevice.Clear(Color.MediumVioletRed);
+                            break;
+                        default:
+                            GraphicsDevice.Clear(Color.CornflowerBlue);
+                            break;
+                    }
+                    // wyświetlenie screenu początkowego z nazwą oraz tytułem poziomu
+                    if (_isSceneLoading)
+                    {
                         spriteBatch.Begin();
-                        spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
-                        _playerPanel.Draw(spriteBatch);
-                        spriteBatch.End();
-
-                        // narysowanie aktualnej sceny
-                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
 
                         switch (_currentScene)
                         {
                             case CurrentScene.Scene1:
-                                scene1.Draw(spriteBatch);
+                                spriteBatch.Draw(_scene1TitleTexture, _levelTitlePosition, Color.White);
+                                spriteBatch.Draw(_scene1LevelNumberTexture, _levelNumberPosition, Color.White);
                                 break;
                             case CurrentScene.Scene2:
-                                scene2.Draw(spriteBatch);
+                                spriteBatch.Draw(_scene2TitleTexture, _levelTitlePosition, Color.White);
+                                spriteBatch.Draw(_scene2LevelNumberTexture, _levelNumberPosition, Color.White);
                                 break;
                             case CurrentScene.Scene3:
-                                scene3.Draw(spriteBatch);
+                                spriteBatch.Draw(_scene3TitleTexture, _levelTitlePosition, Color.White);
+                                spriteBatch.Draw(_scene3LevelNumberTexture, _levelNumberPosition, Color.White);
                                 break;
                             default:
                                 throw new ArgumentOutOfRangeException();
                         }
-
                         spriteBatch.End();
                     }
-                    else // MENU PAUZY
-                    {
-                        _pauseMenu.Draw(spriteBatch);
-                    }
-
-                    #region IKONKA DŹWIĘKU
-
-                    // rysowana jest na końcu po to aby była zawsze na wierzchu
-                    spriteBatch.Begin();
-
-                    if (SoundManager.SoundOn)
-                        spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
                     else
-                        spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                    {
+                        if (!_isGamePause)
+                        {
+                            // narysowanie panelu użytkownika
+                            spriteBatch.Begin();
+                            spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)),
+                                Color.White);
+                            _playerPanel.Draw(spriteBatch);
+                            spriteBatch.End();
 
-                    spriteBatch.End();
+                            // narysowanie aktualnej sceny
+                            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null,
+                                camera.transform);
 
-                    #endregion
+                            switch (_currentScene)
+                            {
+                                case CurrentScene.Scene1:
+                                    scene1.Draw(spriteBatch);
+                                    break;
+                                case CurrentScene.Scene2:
+                                    scene2.Draw(spriteBatch);
+                                    break;
+                                case CurrentScene.Scene3:
+                                    scene3.Draw(spriteBatch);
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+
+                            spriteBatch.End();
+                        }
+                        else // MENU PAUZY
+                        {
+                            _pauseMenu.Draw(spriteBatch);
+                        }
+
+                        #region IKONKA DŹWIĘKU
+
+                        // rysowana jest na końcu po to aby była zawsze na wierzchu
+                        spriteBatch.Begin();
+
+                        if (SoundManager.SoundOn)
+                            spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f,
+                                Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                        else
+                            spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White,
+                                0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+
+                        spriteBatch.End();
+
+                        #endregion
+                    }
                 }
             }
             base.Draw(gameTime);

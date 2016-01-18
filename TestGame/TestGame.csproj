@@ -160,6 +160,26 @@
     <Content Include="Content\menu_background_new.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Minigry\AreoPlane\0.png" />
+    <Content Include="Content\Minigry\AreoPlane\1.png" />
+    <Content Include="Content\Minigry\AreoPlane\10.png" />
+    <Content Include="Content\Minigry\AreoPlane\11.png" />
+    <Content Include="Content\Minigry\AreoPlane\12.png" />
+    <Content Include="Content\Minigry\AreoPlane\13.png" />
+    <Content Include="Content\Minigry\AreoPlane\2.png" />
+    <Content Include="Content\Minigry\AreoPlane\3.png" />
+    <Content Include="Content\Minigry\AreoPlane\4.png" />
+    <Content Include="Content\Minigry\AreoPlane\5.png" />
+    <Content Include="Content\Minigry\AreoPlane\6 - Kopia.png" />
+    <Content Include="Content\Minigry\AreoPlane\6.png" />
+    <Content Include="Content\Minigry\AreoPlane\7.png" />
+    <Content Include="Content\Minigry\AreoPlane\71.png" />
+    <Content Include="Content\Minigry\AreoPlane\8.png" />
+    <Content Include="Content\Minigry\AreoPlane\9.png" />
+    <Content Include="Content\Minigry\AreoPlane\SamolotTlo.png" />
+    <Content Include="Content\Minigry\AreoPlane\Samolot_End.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Minigry\AutomatGame\Button.png" />
     <Content Include="Content\Minigry\AutomatGame\Panel.png" />
     <Content Include="Content\Minigry\AutomatGame\PinPanel.png" />
