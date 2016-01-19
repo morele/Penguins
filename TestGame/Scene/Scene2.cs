@@ -135,7 +135,7 @@ namespace TestGame.Scene
             platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja"), 6, 50,
                new Vector2(-2300, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height)), false, 0f, 0f, PlatformType.CAR));
 
-            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(-1500, YpositionFloor), false, 0, 0, PlatformType.CAR));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(-1500, YpositionFloor), false, 0, 0, PlatformType.WATER));
 
 
 
@@ -409,7 +409,7 @@ namespace TestGame.Scene
                                 platforms[indexOfCar].Animation =
                                     new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja"), 6, 50,
                                         platforms[indexOfCar].Position.ToVector2());
-                                platforms[indexOfCar].ActiveCar = false;
+
 
                                 foreach (Penguin penguin in penguins)
                                 {
@@ -433,7 +433,7 @@ namespace TestGame.Scene
                                     if (penguin.penguinType == PenguinType.RICO)
                                     {
                                         penguin.ActiveDraw = true;
-                                      //  penguin.UpdateStartPosition(new Vector2(1280, 500));
+                                        //  penguin.UpdateStartPosition(new Vector2(1280, 500));
                                     }
 
                                 }
@@ -443,14 +443,17 @@ namespace TestGame.Scene
 
 
                     foreach (Platform platform in platforms)
+                    {
                         if (platform.platformType == PlatformType.SPIKEFIRST ||
-                            platform.platformType == PlatformType.SPIKE ||
-                            platform.platformType == PlatformType.SPIKELAST ||
-                            platform.platformType == PlatformType.WATER)
+                           platform.platformType == PlatformType.SPIKE ||
+                           platform.platformType == PlatformType.SPIKELAST ||
+                           platform.platformType == PlatformType.WATER)
                             platform.UpdatePosition(gameTime);
+                    }
 
                     _chooseItemMenu.IsVisible = false;
 
+                 
                     platforms[indexOfCar].UpdateCar(gameTime);
                     camera.Update(platforms[indexOfCar].Animation.PositionStaticItems);
 
@@ -623,7 +626,7 @@ namespace TestGame.Scene
                             }
 
                             // aktualizacja pozycji jeśli platforma ma sie poruszać
-                           // if(platform.platformType != PlatformType.CAR)
+                            // if(platform.platformType != PlatformType.CAR)
                             platform.UpdatePosition(gameTime);
 
                             // sprawdzenie czy poziom został ukończony
@@ -642,6 +645,14 @@ namespace TestGame.Scene
                     camera.Update(player);
                 }
             }
+            foreach (Platform platform in platforms)
+            {
+                if (platform.platformType == PlatformType.CAR && !ActiveCar)
+                {
+                    platform.Animation.UpdateInStay();
+                }
+            }
+
         }
 
         private void Penguin_PenguinDeathByFallingHandler(object sender, System.EventArgs e)
