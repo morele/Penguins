@@ -449,6 +449,7 @@ namespace TestGame.Scene
                             platform.platformType == PlatformType.WATER)
                             platform.UpdatePosition(gameTime);
 
+                    _chooseItemMenu.IsVisible = false;
 
                     platforms[indexOfCar].UpdateCar(gameTime);
                     camera.Update(platforms[indexOfCar].Animation.PositionStaticItems);
@@ -557,6 +558,7 @@ namespace TestGame.Scene
                                          !_julek.IsInActionSector(penguin))
                                 {
                                     _isSceneSoundPlay[1] = false;
+                                    _canPlayMiniGameMemory = false;
                                 }
 
                                 //kolizja z innymi pingwinami
