@@ -167,6 +167,7 @@ namespace Testgame.MIniGames.Swiming
                         _listOfBarell.Clear();
                         _listOfBadFish.Clear();
                         _listOfFish.Clear();
+                        _pinguin.NumberOfLife--;
                         _pinguin.SetStartPosition();
                         break;
                     }
