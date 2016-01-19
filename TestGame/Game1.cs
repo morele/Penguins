@@ -104,7 +104,7 @@ namespace TestGame
             graphics.ApplyChanges();
 
             // ustawienie początkowego poziomu na scene 1 MŁ
-            _currentScene = CurrentScene.Scene2;
+            _currentScene = CurrentScene.Scene3;
         }
 
         protected override void Initialize()
@@ -283,6 +283,7 @@ namespace TestGame
                 case 1:
                     foreach (Penguin penguin in penguins)
                     {
+                        penguin.Equipment.Items.Clear();
                         if (penguin.penguinType == PenguinType.SKIPPER) penguin.UpdateStartPosition(new Vector2(-1080, 400));
                         if (penguin.penguinType == PenguinType.KOWALSKI) penguin.UpdateStartPosition(new Vector2(-1030, 400));
                         if (penguin.penguinType == PenguinType.RICO) penguin.UpdateStartPosition(new Vector2(-980, 400));
@@ -293,6 +294,7 @@ namespace TestGame
                 case 2:
                     foreach (Penguin penguin in penguins)
                     {
+                        penguin.Equipment.Items.Clear();
                         if (penguin.penguinType == PenguinType.SKIPPER) penguin.UpdateStartPosition(new Vector2(-3080, 400));
                         if (penguin.penguinType == PenguinType.KOWALSKI) penguin.UpdateStartPosition(new Vector2(-3030, 400));
                         if (penguin.penguinType == PenguinType.RICO) penguin.UpdateStartPosition(new Vector2(-2980, 400));
@@ -303,6 +305,7 @@ namespace TestGame
                 case 3:
                     foreach (Penguin penguin in penguins)
                     {
+                        penguin.Equipment.Items.Clear();
                         if (penguin.penguinType == PenguinType.SKIPPER) penguin.UpdateStartPosition(new Vector2(10, 400));
                         if (penguin.penguinType == PenguinType.KOWALSKI) penguin.UpdateStartPosition(new Vector2(60, 400));
                         if (penguin.penguinType == PenguinType.RICO) penguin.UpdateStartPosition(new Vector2(110, 400));
@@ -384,6 +387,7 @@ namespace TestGame
                         _pauseMenu.SelectedOptionPauseMenu = SelectedOptionPauseMenu.None;
                         setStartPosition((int)_currentScene);
                         _isSceneLoading = true;
+                        scene3.ResetScene();
                         scene1.IsGameOver = false;
                     }
                 }
@@ -405,6 +409,7 @@ namespace TestGame
                         _pauseMenu.SelectedOptionPauseMenu = SelectedOptionPauseMenu.None;
                         setStartPosition((int)_currentScene);
                         _isSceneLoading = true;
+                        scene3.ResetScene();
                         scene2.IsGameOver = false;
                     }
                 }
@@ -424,6 +429,7 @@ namespace TestGame
                         _gameMenu.SelectedOptionMenu = SelectedOptionMenu.None;
                         _pauseMenu.SelectedOptionPauseMenu = SelectedOptionPauseMenu.None;
                         setStartPosition((int)_currentScene);
+                        scene3.ResetScene();
                         _isSceneLoading = true;
                         scene3.IsGameOver = false;
                     }
@@ -542,17 +548,45 @@ namespace TestGame
                             break;
                         case SelectedOptionPauseMenu.TryAgain:
                             setStartPosition((int)_currentScene);
+                            switch (_currentScene)
+                            {
+                                case CurrentScene.Scene1:
+                                    scene1.ResetScene();
+                                    break;
+                                case CurrentScene.Scene2:
+                                    scene2.ResetScene();
+                                    break;
+                                case CurrentScene.Scene3:
+                                    scene3.ResetScene();
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
                             _isSceneLoading = true;
                             _isGamePause = false;
                             _pauseMenu.SelectedOptionPauseMenu = SelectedOptionPauseMenu.None;
                             break;
                         case SelectedOptionPauseMenu.BackToMenu:
-                            _currentScene = CurrentScene.Scene1;
-                            setStartPosition(1);
+                            setStartPosition((int)_currentScene);
                             _isSceneLoading = true;
                             _isGamePause = false;
                             _canShowGameMenu = true;
                             _pauseMenu.SelectedOptionPauseMenu = SelectedOptionPauseMenu.None;
+                            _gameMenu.SelectedOptionMenu = SelectedOptionMenu.None;
+                            switch (_currentScene)
+                            {
+                                case CurrentScene.Scene1:
+                                    scene1.ResetScene();
+                                    break;
+                                case CurrentScene.Scene2:
+                                    scene2.ResetScene();
+                                    break;
+                                case CurrentScene.Scene3:
+                                    scene3.ResetScene();
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
                             break;
                         default:
                             break;
@@ -567,6 +601,8 @@ namespace TestGame
             // może jest też koniec gry
             if (_isGameOverScreen)
             {
+
+
                 GraphicsDevice.Clear(Color.GreenYellow);
                 spriteBatch.Begin();
                 spriteBatch.Draw(_gameOverScreen, _levelNumberPosition, Color.White);
@@ -582,12 +618,9 @@ namespace TestGame
 
                 if (Keyboard.GetState().IsKeyUp(Keys.Space))
                     _blockEnterKey = false;
-
             }
             else
             {
-
-
                 gametime = gameTime;
 
                 if (_canShowGameMenu)
@@ -613,8 +646,6 @@ namespace TestGame
                         _gameMenu.Draw(spriteBatch);
                         spriteBatch.End();
                     }
-
-
                 }
                 else
                 {
@@ -663,14 +694,12 @@ namespace TestGame
                         {
                             // narysowanie panelu użytkownika
                             spriteBatch.Begin();
-                            spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)),
-                                Color.White);
+                            spriteBatch.Draw(_background, new Rectangle(new Point(0, 0), new Point(1200, 900)), Color.White);
                             _playerPanel.Draw(spriteBatch);
                             spriteBatch.End();
 
                             // narysowanie aktualnej sceny
-                            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null,
-                                camera.transform);
+                            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
 
                             switch (_currentScene)
                             {
@@ -700,11 +729,9 @@ namespace TestGame
                         spriteBatch.Begin();
 
                         if (SoundManager.SoundOn)
-                            spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f,
-                                Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                            spriteBatch.Draw(_soundOnTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
                         else
-                            spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White,
-                                0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
+                            spriteBatch.Draw(_soundOffTexture, _soundIconPosition, _soundIconRectangle, Color.White, 0.0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0);
 
                         spriteBatch.End();
 

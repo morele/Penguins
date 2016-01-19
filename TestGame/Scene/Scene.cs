@@ -98,6 +98,7 @@ namespace TestGame.Scene
         }
         protected void FirstStart(GameTime gametime)
         {
+            // stworzenie obiektu monety
             while (firstStart)
             {
                 foreach (Penguin penguin in penguins)

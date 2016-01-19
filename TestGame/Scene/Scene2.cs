@@ -186,6 +186,11 @@ namespace TestGame.Scene
                 penguin.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler;
             }
 
+            // wyczyszczenie ekwipunku
+            foreach (var penguin in penguins)
+            {
+                penguin.Equipment.Items.Clear();
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)

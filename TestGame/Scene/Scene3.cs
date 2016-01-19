@@ -82,6 +82,12 @@ namespace TestGame.Scene
                 penguin.DeathLine = 900;
                 penguin.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler; ;
             }
+
+            // wyczyszczenie ekwipunku
+            foreach (var penguin in penguins)
+            {
+                penguin.Equipment.Items.Clear();
+            }
         }
 
         private void Penguin_PenguinDeathByFallingHandler(object sender, System.EventArgs e)
@@ -309,7 +315,38 @@ namespace TestGame.Scene
 
         public override void ResetScene()
         {
-            // todo: reset ustawień
+            _canPlayMiniGamePuzzle = false;
+            _firstStart = true;
+            _miniGamePuzzle.EndOfGame = false;
+            firstStart = true;
+            partsPlane.Clear();
+            _chooseItemMenu.IsVisible = false;
+            foreach (var penguin in penguins)
+            {
+                penguin.Equipment.Items.Clear();
+            }
+
+            platforms.Clear();
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/0"), new Vector2(1254, 333), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/1"), new Vector2(1477, 392), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/2"), new Vector2(1287, 784), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/3"), new Vector2(431, 424), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/4"), new Vector2(2244, 732), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/5"), new Vector2(1700, 482), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/6"), new Vector2(313, 637), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/7"), new Vector2(1723, 658), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/8"), new Vector2(2548, 365), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/9"), new Vector2(877, 641), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/10"), new Vector2(877, 714), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/2/11"), new Vector2(2755, 494), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/12"), new Vector2(1335, 681), false, 0, 0, PlatformType.PARTSPLANE));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/1/13"), new Vector2(2742, 385), false, 0, 0, PlatformType.PARTSPLANE));
+
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/Palmy"), new Vector2(0, 128), false, 0, 0, PlatformType.PALM));
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/Krzaki"), new Vector2(0, 590), false, 0, 0, PlatformType.BUSH));
+
+            platforms.Add(new Platform(content.Load<Texture2D>("Scena3/PustaPlatforma"), new Vector2(0, 864), false, 0, 0, PlatformType.FLOOR));
+
         }
     }
 

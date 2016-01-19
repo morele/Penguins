@@ -79,6 +79,12 @@ namespace TestGame.Scene
                 penguin.DeathLine = 900;
                 penguin.PenguinDeathByFallingHandler += Penguin_PenguinDeathByFallingHandler;
             }
+
+            // wyczyszczenie ekwipunku
+            foreach (var penguin in penguins)
+            {
+                penguin.Equipment.Items.Clear();
+            }
         }
 
         private void Penguin_PenguinDeathByFallingHandler(object sender, System.EventArgs e)
@@ -129,7 +135,10 @@ namespace TestGame.Scene
             }
 
             // metoda ustawia wszystkich graczy na pozycji początkowej
-            if (firstStart) FirstStart(gameTime);
+            if (firstStart)
+            {
+                FirstStart(gameTime);
+            }
 
             if (!activeMiniGame)
             {
@@ -201,7 +210,7 @@ namespace TestGame.Scene
                                 {
                                     _chooseItemMenu.IsVisible = true;
                                     List<Texture2D> textures = penguin.Equipment.Items.Select(equipmentItem => equipmentItem.Item.Texture).ToList();
-                                    _chooseItemMenu.Update(penguin, textures);
+                                    _chooseItemMenu.Update(penguin, textures, topMargin: 100);
                                     penguin.SelectedItem = penguin.Equipment.Items[_chooseItemMenu.SelectedIndex];
                                 }
                             }
@@ -283,6 +292,10 @@ namespace TestGame.Scene
 
         public override void ResetScene()
         {
+            // stworzenie obiektu monety
+            _coin = new Bonus(content.Load<Texture2D>("Scena1/Moneta"), new Point(50, 300), new Point(50));
+            _coin.IsActive = true;
+            firstStart = true;
             activeMiniGame = false;
             IsCompleted = false;
             activeMiniGame = false;

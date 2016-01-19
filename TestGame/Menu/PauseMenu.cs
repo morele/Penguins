@@ -27,6 +27,7 @@ namespace TestGame.Menu
         private bool _blockUpKey;
         
         private int _selectedMenuItem = 0;
+        private bool _blockEnterKey;
 
         public bool ShowMenu { get; set; }
 
@@ -87,8 +88,9 @@ namespace TestGame.Menu
                 }
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter) && !_blockEnterKey)
             {
+                _blockEnterKey = true;
                 switch (_selectedMenuItem)
                 {
                     case 0:
@@ -102,6 +104,9 @@ namespace TestGame.Menu
                         break;
                 }
             }
+
+            if (Keyboard.GetState().IsKeyUp(Keys.Enter))
+                _blockEnterKey = false;
 
             if (Keyboard.GetState().IsKeyUp(Keys.Up))
                 _blockUpKey = false;

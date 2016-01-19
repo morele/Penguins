@@ -24,7 +24,7 @@ namespace TestGame.MIniGames.Areoplane
         public bool EndOfGame
         {
             get;
-            private set;
+            set;
         }
         public Element SamolotEnd { get; private set; }
 
