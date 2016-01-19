@@ -125,20 +125,16 @@ namespace TestGame.Scene
                 platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/woda/WodaAnimacja"), 3, 120,
                         new Vector2(-3100 + mur.Width * i, YpositionFloor + platfroma2.Height + 30)),false,0,0,PlatformType.WATER));
             }
-            // platforms.Add(new Platform(Woda));
+;
             platforms.Add(new Platform(mur, new Vector2(-1100 + mur.Width + woda.Width, YpositionFloor + platfroma2.Height - 2)));
             platforms.Add(new Platform(rura, new Vector2(-2700, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
 
             //platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony"), 8, 50,
             //    new Vector2(-2500, YpositionFloor - content.Load<Texture2D>("Postacie/Animacje/RicoAnimacja_poprawiony").Height))));
 
-
-
-
             platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja"), 6, 50,
                new Vector2(-2300, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height)), false, 0f, 0f, PlatformType.CAR));
 
-            //   platforms.Add(new Platform(content.Load<Texture2D>("Scena2/autko/Autko1"), new Vector2(-600, YpositionFloor - content.Load<Texture2D>("Scena2/autko/Autko1").Height), false, 0, 0, PlatformType.CAR));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena2/Kaluza"), new Vector2(-1500, YpositionFloor), false, 0, 0, PlatformType.CAR));
 
 
@@ -147,9 +143,6 @@ namespace TestGame.Scene
             platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-440, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
             platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-480, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKE));
             platforms.Add(new Platform(new Animation(kolec, 3, 50, new Vector2(-520, YpositionFloor + 4)), true, 1, kolec.Height, PlatformType.SPIKELAST));
-
-
-
 
             platforms.Add(new Platform(rura, new Vector2(800, YpositionFloor - rura.Height), false, 0, 0, PlatformType.MAGICPIPE));
             platforms.Add(new Platform(content.Load<Texture2D>("Scena2/wciecie"), new Vector2(981, YpositionFloor)));
@@ -349,46 +342,34 @@ namespace TestGame.Scene
 
                     }
 
-                }
-
-              
-
-              /*  //TYMCZASOWY KOD!
-                if(fisrtStartCarTEMPORARY)
-                {
-                    _isCollisionWithJulian = false;
-                    _julek.Animation.Texture = _content.Load<Texture2D>("Postacie/Julek/JulianSpritePozegnanie");
-
-                    var car = platforms.FirstOrDefault(element => element.platformType == PlatformType.CAR);
-                    if (car != null)
-                    {
-                        indexOfCar = platforms.IndexOf(car);  
-
-                        platforms[indexOfCar] = new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja2"), 6, 50,
-                                                        new Vector2(-2300, 700 - content.Load<Texture2D>("Scena2/autko/Autko1").Height)), false, 0, 0, PlatformType.CAR);
-                        platforms[indexOfCar].ActiveCar = true;
-
-                    }
-                    //skipperem prowadzimy - aktywacja gracza
-                    player = ActiveAndDeactivationPlayer(true, false, false, false);
-                    _blockD1 = true;
-                    ActiveCar = true;
-
-                    fisrtStartCarTEMPORARY = false;
-                }*/
-                
+                }                
 
                 // odświeżenie paska gracza
                 playerPanel.Update(player);
 
-                //jesli aktywne poruszanie sie samochodem + jezdzic mozemy tylko jak aktywny skipper(kierowca)
-                if (ActiveCar /*&& player.penguinType == PenguinType.SKIPPER*/)
+                //jesli aktywne poruszanie sie samochodem
+                if (ActiveCar && player.penguinType == PenguinType.SKIPPER)
                 {
                     foreach (Penguin penguin in penguins)
                     {
-                        if (penguin.penguinType == PenguinType.KOWALSKI) penguin.ActiveDraw = false;
-                        if (penguin.penguinType == PenguinType.SZEREGOWY) penguin.ActiveDraw = false;
-                        if (penguin.penguinType == PenguinType.SKIPPER) penguin.ActiveDraw = false;
+                        if (penguin.penguinType == PenguinType.KOWALSKI)
+                        {
+                            penguin.ActiveDraw = false;
+                            penguin.UpdateStartPosition(platforms[indexOfCar].Animation.PositionStaticItems.Location.ToVector2());
+                        }
+
+                        if (penguin.penguinType == PenguinType.SZEREGOWY)
+                        {
+                            penguin.ActiveDraw = false;
+                            penguin.UpdateStartPosition(platforms[indexOfCar].Animation.PositionStaticItems.Location.ToVector2());
+                        }
+
+                        if (penguin.penguinType == PenguinType.SKIPPER)
+                        {
+                            penguin.ActiveDraw = false;
+                            penguin.UpdateStartPosition(platforms[indexOfCar].Animation.PositionStaticItems.Location.ToVector2());
+                        }
+                        
                     }
                     _blockD2 = true;//blokada przelaczenia pingwinow, mozliwy tylko skipper kierowca i rico 
                     _blockD4 = true;
@@ -396,6 +377,7 @@ namespace TestGame.Scene
 
                     foreach (Platform platform in platforms)
                     {
+                        //sprawdza czy kolizja pomiedzy rurami i kolcami, jak tak to blokuje kierunki 
                         if (platform.platformType == PlatformType.SPIKEFIRST || 
                             platform.platformType == PlatformType.SPIKE || 
                             platform.platformType == PlatformType.SPIKELAST || 
@@ -404,36 +386,69 @@ namespace TestGame.Scene
                             platforms[indexOfCar].CollisionCar(platform.PlatformRectangle, platform.platformType);
                         }
 
+                        //sprawdza czy samochod jest nad wysunietymi kolcami
                         if (platform.platformType == PlatformType.SPIKEFIRST ||
                            platform.platformType == PlatformType.SPIKE ||
                            platform.platformType == PlatformType.SPIKELAST)
                         {
                             if (platforms[indexOfCar].CollisionPlatform(new Rectangle(platform.PlatformRectangle.X + 4,platform.PlatformRectangle.Y,platform.PlatformRectangle.Width - 8,platform.PlatformRectangle.Height)))
                             {
-                                //.............................................................................................
-                                // DODAC AKCJE JAK AUTO JEST NA KOLCACH!
+                                IsGameOver = true;
+                            }
+                        }
 
+                        //jak auto dobije do rury wtedy maja wszyscy wysiasc
+                        if(platform.platformType == PlatformType.MAGICPIPE && platform.PlatformRectangle.X > 750)
+                        {
+                            if(platforms[indexOfCar].CollisionPlatform(platform.PlatformRectangle))
+                            {
+                                ActiveCar = false;
+                                platforms[indexOfCar].ActiveCar = false;
+                                _blockD2 = false;
+                                _blockD4 = false;
 
+                                foreach (Penguin penguin in penguins)
+                                {
+                                    if (penguin.penguinType == PenguinType.KOWALSKI)
+                                    {
+                                        penguin.ActiveDraw = true;
+                                        penguin.UpdateStartPosition(new Vector2(1220,500));
+                                    }
 
-                               //..............................................................................................
+                                    if (penguin.penguinType == PenguinType.SZEREGOWY)
+                                    {
+                                        penguin.ActiveDraw = true;
+                                        penguin.UpdateStartPosition(new Vector2(1340, 500));
+                                    }
+
+                                    if (penguin.penguinType == PenguinType.SKIPPER)
+                                    {
+                                        penguin.ActiveDraw = true;
+                                        penguin.UpdateStartPosition(new Vector2(1060, 500));
+                                    }
+                                    if (penguin.penguinType == PenguinType.RICO)
+                                    {
+                                        penguin.ActiveDraw = true;
+                                        penguin.UpdateStartPosition(new Vector2(1280, 500));
+                                    }
+
+                                }
                             }
                         }
                     }
-
+                   
                     
-                        foreach (Platform platform in platforms)
-                        if (platform.platformType == PlatformType.SPIKEFIRST ||
-                           platform.platformType == PlatformType.SPIKE ||
-                           platform.platformType == PlatformType.SPIKELAST ||
-                           platform.platformType == PlatformType.WATER)
-                            platform.UpdatePosition(gameTime);
+                    foreach (Platform platform in platforms)
+                    if (platform.platformType == PlatformType.SPIKEFIRST ||
+                        platform.platformType == PlatformType.SPIKE ||
+                        platform.platformType == PlatformType.SPIKELAST ||
+                        platform.platformType == PlatformType.WATER)
+                        platform.UpdatePosition(gameTime);
+
 
                     platforms[indexOfCar].UpdateCar(gameTime);
                     camera.Update(platforms[indexOfCar].Animation.PositionStaticItems);
 
-                   /* // opadanie ryby jest dostępne tylko wtedy gdy Rico ją wypluje
-                    foreach (Platform platform in platforms)
-                        if (platform.platformType == PlatformType.WATER)*/
                 }
                 else
                 {
@@ -618,20 +633,8 @@ namespace TestGame.Scene
                         penguin.UpdatePosition(gameTime);
 
                     camera.Update(player);
-                }
-
-
-
-              
-
-                
-
-
-                
+                }                
             }
-
-
-
         }
 
         private void Penguin_PenguinDeathByFallingHandler(object sender, System.EventArgs e)
