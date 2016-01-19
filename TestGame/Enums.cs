@@ -62,6 +62,7 @@ namespace TestGame
         PARTSPLANE = 12,
             SPIKEFIRST = 13,
             SPIKELAST = 14,
+            WATER = 15,
 
     }
 }

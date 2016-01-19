@@ -38,7 +38,7 @@ namespace TestGame.Scene
         private bool _isCollisionWithJulian = true;
 
         // czy to czas na Kowalskiego
-        private bool _isKowalskiTime;
+        private bool _isKowalskiTime = true;
         private bool _canDoItKowalski;
         // minigra - "Memory"
         public Memory _minigameMemory;
@@ -60,7 +60,9 @@ namespace TestGame.Scene
         private ContentManager _content;
 
         private GameTime gametime;
-
+        private bool ActiveCar = false;
+        private int indexOfCar;
+       // bool fisrtStartCarTEMPORARY = true;
         public Scene2(ContentManager content, Camera camera, GameTime gametime, GraphicsDevice device) : base(content, camera, gametime)
         {
             _chooseItemMenu = new ChooseItemMenu();
@@ -121,7 +123,7 @@ namespace TestGame.Scene
             for (int i = 1; i <= 30; i++)
             {
                 platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/woda/WodaAnimacja"), 3, 120,
-                        new Vector2(-3100 + mur.Width * i, YpositionFloor + platfroma2.Height + 30))));
+                        new Vector2(-3100 + mur.Width * i, YpositionFloor + platfroma2.Height + 30)),false,0,0,PlatformType.WATER));
             }
             // platforms.Add(new Platform(Woda));
             platforms.Add(new Platform(mur, new Vector2(-1100 + mur.Width + woda.Width, YpositionFloor + platfroma2.Height - 2)));
@@ -216,9 +218,7 @@ namespace TestGame.Scene
             }
         }
 
-        bool ActiveCar = false;
-        int indexOfCar;
-        bool fisrtStartCarTEMPORARY = true;
+        
         public override void UpdatePosition(GameTime gameTime)
         {
             if (_firstStart)
@@ -330,7 +330,7 @@ namespace TestGame.Scene
                     }
                     else if (_isKowalskiTime && _canDoItKowalski)
                     {
-             /*           _isCollisionWithJulian = false;
+                        _isCollisionWithJulian = false;
                         _julek.Animation.Texture = _content.Load<Texture2D>("Postacie/Julek/JulianSpritePozegnanie");
 
                         var car = platforms.FirstOrDefault(element => element.platformType == PlatformType.CAR);
@@ -338,14 +338,14 @@ namespace TestGame.Scene
                         {
                             indexOfCar = platforms.IndexOf(car);
                             platforms[indexOfCar] = new Platform(new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja2"), 6, 50,
-                                                            new Vector2(-2300, 700 - content.Load<Texture2D>("Scena2/autko/Autko1").Height)));
+                                                            new Vector2(-2300, 700 - content.Load<Texture2D>("Scena2/autko/Autko1").Height)), false, 0, 0, PlatformType.CAR);
                             platforms[indexOfCar].ActiveCar = true;
 
                         }
                         //skipperem prowadzimy - aktywacja gracza
                         player = ActiveAndDeactivationPlayer(true, false, false, false);
                         _blockD1 = true;
-                        ActiveCar = true;*/
+                        ActiveCar = true;
 
                     }
 
@@ -353,7 +353,7 @@ namespace TestGame.Scene
 
               
 
-                //TYMCZASOWY KOD!
+              /*  //TYMCZASOWY KOD!
                 if(fisrtStartCarTEMPORARY)
                 {
                     _isCollisionWithJulian = false;
@@ -375,14 +375,14 @@ namespace TestGame.Scene
                     ActiveCar = true;
 
                     fisrtStartCarTEMPORARY = false;
-                }
+                }*/
                 
 
                 // odświeżenie paska gracza
                 playerPanel.Update(player);
 
                 //jesli aktywne poruszanie sie samochodem + jezdzic mozemy tylko jak aktywny skipper(kierowca)
-                if (ActiveCar && player.penguinType == PenguinType.SKIPPER)
+                if (ActiveCar /*&& player.penguinType == PenguinType.SKIPPER*/)
                 {
                     foreach (Penguin penguin in penguins)
                     {
@@ -422,11 +422,18 @@ namespace TestGame.Scene
 
                     
                         foreach (Platform platform in platforms)
-                        if (platform.platformType == PlatformType.SPIKE)
+                        if (platform.platformType == PlatformType.SPIKEFIRST ||
+                           platform.platformType == PlatformType.SPIKE ||
+                           platform.platformType == PlatformType.SPIKELAST ||
+                           platform.platformType == PlatformType.WATER)
                             platform.UpdatePosition(gameTime);
 
                     platforms[indexOfCar].UpdateCar(gameTime);
                     camera.Update(platforms[indexOfCar].Animation.PositionStaticItems);
+
+                   /* // opadanie ryby jest dostępne tylko wtedy gdy Rico ją wypluje
+                    foreach (Platform platform in platforms)
+                        if (platform.platformType == PlatformType.WATER)*/
                 }
                 else
                 {

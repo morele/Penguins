@@ -124,7 +124,7 @@ namespace TestGame
         }
         override public void UpdatePosition(GameTime gametime)
         {
-            if (platformType != PlatformType.CAR)
+            if (!ActiveCar)
             {
 
                 // jeśli platforma się porusza
@@ -244,7 +244,7 @@ namespace TestGame
 
                     PlatformRectangle = new Rectangle(Position, Size);
                 }
-                if (gametime != null && Animation != null && platformType != PlatformType.CAR)
+                if (gametime != null && Animation != null)
                 {
                     this.Animation.Update(gametime, PlatformRectangle);
                 }
