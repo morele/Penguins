@@ -43,17 +43,14 @@ namespace TestGame
         private Texture2D imageHorizontal;
         private Texture2D imageVertical;
         private Rectangle _positionOnSheet;
-        private int _positionOnSheetX = 1;
 
         public List<SoundEffect> Voices { get; set; }
 
         public List<Rectangle> currentdimensionsPenguin = new List<Rectangle>();
         public List<Rectangle> currentdimensionsPenguinShoe = new List<Rectangle>();
-       // private Vector2 positionHorizontal;
-       // private Vector2 positionVertical;
+
         private Vector2 tmpPosition = new Vector2();
         private Platform blockPlatform = new Platform();
-        // private bool shoe = false;
         public bool jump = true;
         public bool firstStart = true;
         public bool active = true;

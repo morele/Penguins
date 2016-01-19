@@ -38,7 +38,7 @@ namespace TestGame.Scene
         private bool _isCollisionWithJulian = true;
 
         // czy to czas na Kowalskiego
-        private bool _isKowalskiTime = true;
+        private bool _isKowalskiTime;
         private bool _canDoItKowalski;
         // minigra - "Memory"
         public Memory _minigameMemory;
