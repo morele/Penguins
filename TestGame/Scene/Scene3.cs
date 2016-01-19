@@ -15,7 +15,7 @@ namespace TestGame.Scene
 {
     public class Scene3 : Scene
     {
-        private const int MAX_ELEMENTS = 1;
+        private const int MAX_ELEMENTS = 14;
         // muzyka w tle
         private Song _themeSong;
 

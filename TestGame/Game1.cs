@@ -105,7 +105,7 @@ namespace TestGame
             graphics.ApplyChanges();
 
             // ustawienie początkowego poziomu na scene 1 MŁ
-            _currentScene = CurrentScene.Scene3;
+            _currentScene = CurrentScene.Scene1;
         }
 
         protected override void Initialize()
