@@ -69,9 +69,15 @@ namespace TestGame.Scene
             _chooseItemMenu.IsVisible = false;
 
             _miniGame = new Swiming(new SpriteBatch(device), content, device);
+            _miniGame.MiniGameGameOver += _miniGame_MiniGameGameOver;
             _minigameMemory = new Memory(new SpriteBatch(device), content, device);
 
             _content = content;
+        }
+
+        private void _miniGame_MiniGameGameOver(object sender, System.EventArgs e)
+        {
+            IsGameOver = true;
         }
 
         public override void LoadContent(List<Penguin> penguins, PlayerPanel playerPanel, Penguin player)
@@ -453,7 +459,7 @@ namespace TestGame.Scene
 
                     _chooseItemMenu.IsVisible = false;
 
-                 
+
                     platforms[indexOfCar].UpdateCar(gameTime);
                     camera.Update(platforms[indexOfCar].Animation.PositionStaticItems);
 

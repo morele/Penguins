@@ -28,6 +28,16 @@ namespace Testgame.MIniGames.Swiming
 
         private SpriteFont _font;
 
+        public event EventHandler<EventArgs> MiniGameGameOver;
+
+        protected void OnGameOver()
+        {
+            var tempHandler = MiniGameGameOver;
+            if (tempHandler != null)
+            {
+                tempHandler(this, EventArgs.Empty);
+            }
+        }
         public int EatenFish
         {
             get; private set;
@@ -182,6 +192,7 @@ namespace Testgame.MIniGames.Swiming
                 _pinguin.SetStartPosition();
                 _pinguin.Run = false;
                 this.EatenFish = 0;
+                OnGameOver();
             }
             if (EatenFish >= _fishToCollect)
             {
