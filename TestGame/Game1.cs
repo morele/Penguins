@@ -76,6 +76,7 @@ namespace TestGame
         // SCREEN GAMEOVER
         private Texture2D _gameOverScreen;
 
+        private Texture2D _finalGameOver;
 
         // zmienne dla obsługi dźwięku
         private bool _blockSoundOn;
@@ -129,6 +130,8 @@ namespace TestGame
             }
 
             _gameOverScreen = Content.Load<Texture2D>("MenuPauzy/gameOverText");
+
+            _finalGameOver = Content.Load<Texture2D>("NapisKoncowy");
 
             // inicjalizacja panelu gracza - podstawowy gracz - skipper           
             _playerPanel = new PlayerPanel(Content.Load<Texture2D>("panel_background"), new Vector2(0, 0), new Vector2(GraphicsDevice.Viewport.Width, 150), Content.Load<SpriteFont>("JingJing"), Content.Load<Texture2D>("WyborPostaci/Skipper"));
@@ -601,13 +604,20 @@ namespace TestGame
             // może jest też koniec gry
             if (_isGameOverScreen)
             {
-
-
-                GraphicsDevice.Clear(Color.GreenYellow);
-                spriteBatch.Begin();
-                spriteBatch.Draw(_gameOverScreen, _levelNumberPosition, Color.White);
-                spriteBatch.End();
-
+                if (_currentScene == CurrentScene.Scene3)
+                {
+                    GraphicsDevice.Clear(Color.Indigo);
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(_finalGameOver, _levelNumberPosition - new Vector2(150, 0), Color.White);
+                    spriteBatch.End();
+                }
+                else
+                {
+                    GraphicsDevice.Clear(Color.GreenYellow);
+                    spriteBatch.Begin();
+                    spriteBatch.Draw(_gameOverScreen, _levelNumberPosition, Color.White);
+                    spriteBatch.End();
+                }
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && !_blockEnterKey)
                 {
                     _blockEnterKey = true;
