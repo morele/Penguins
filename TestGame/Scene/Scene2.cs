@@ -62,7 +62,7 @@ namespace TestGame.Scene
         private GameTime gametime;
         private bool ActiveCar = false;
         private int indexOfCar;
-       // bool fisrtStartCarTEMPORARY = true;
+        // bool fisrtStartCarTEMPORARY = true;
         public Scene2(ContentManager content, Camera camera, GameTime gametime, GraphicsDevice device) : base(content, camera, gametime)
         {
             _chooseItemMenu = new ChooseItemMenu();
@@ -123,7 +123,7 @@ namespace TestGame.Scene
             for (int i = 1; i <= 30; i++)
             {
                 platforms.Add(new Platform(new Animation(content.Load<Texture2D>("Scena2/woda/WodaAnimacja"), 3, 120,
-                        new Vector2(-3100 + mur.Width * i, YpositionFloor + platfroma2.Height + 30)),false,0,0,PlatformType.WATER));
+                        new Vector2(-3100 + mur.Width * i, YpositionFloor + platfroma2.Height + 30)), false, 0, 0, PlatformType.WATER));
             }
 ;
             platforms.Add(new Platform(mur, new Vector2(-1100 + mur.Width + woda.Width, YpositionFloor + platfroma2.Height - 2)));
@@ -211,7 +211,7 @@ namespace TestGame.Scene
             }
         }
 
-        
+
         public override void UpdatePosition(GameTime gameTime)
         {
             if (_firstStart)
@@ -308,7 +308,7 @@ namespace TestGame.Scene
                 if (Keyboard.GetState().IsKeyUp(Keys.D4)) _blockD4 = false;
 
 
-               
+
 
 
 
@@ -342,7 +342,7 @@ namespace TestGame.Scene
 
                     }
 
-                }                
+                }
 
                 // odświeżenie paska gracza
                 playerPanel.Update(player);
@@ -369,7 +369,7 @@ namespace TestGame.Scene
                             penguin.ActiveDraw = false;
                             penguin.UpdateStartPosition(platforms[indexOfCar].Animation.PositionStaticItems.Location.ToVector2());
                         }
-                        
+
                     }
                     _blockD2 = true;//blokada przelaczenia pingwinow, mozliwy tylko skipper kierowca i rico 
                     _blockD4 = true;
@@ -378,9 +378,9 @@ namespace TestGame.Scene
                     foreach (Platform platform in platforms)
                     {
                         //sprawdza czy kolizja pomiedzy rurami i kolcami, jak tak to blokuje kierunki 
-                        if (platform.platformType == PlatformType.SPIKEFIRST || 
-                            platform.platformType == PlatformType.SPIKE || 
-                            platform.platformType == PlatformType.SPIKELAST || 
+                        if (platform.platformType == PlatformType.SPIKEFIRST ||
+                            platform.platformType == PlatformType.SPIKE ||
+                            platform.platformType == PlatformType.SPIKELAST ||
                             platform.platformType == PlatformType.MAGICPIPE)
                         {
                             platforms[indexOfCar].CollisionCar(platform.PlatformRectangle, platform.platformType);
@@ -391,28 +391,32 @@ namespace TestGame.Scene
                            platform.platformType == PlatformType.SPIKE ||
                            platform.platformType == PlatformType.SPIKELAST)
                         {
-                            if (platforms[indexOfCar].CollisionPlatform(new Rectangle(platform.PlatformRectangle.X + 4,platform.PlatformRectangle.Y,platform.PlatformRectangle.Width - 8,platform.PlatformRectangle.Height)))
+                            if (platforms[indexOfCar].CollisionPlatform(new Rectangle(platform.PlatformRectangle.X + 4, platform.PlatformRectangle.Y, platform.PlatformRectangle.Width - 8, platform.PlatformRectangle.Height)))
                             {
                                 IsGameOver = true;
                             }
                         }
 
                         //jak auto dobije do rury wtedy maja wszyscy wysiasc
-                        if(platform.platformType == PlatformType.MAGICPIPE && platform.PlatformRectangle.X > 750)
+                        if (platform.platformType == PlatformType.MAGICPIPE && platform.PlatformRectangle.X > 750)
                         {
-                            if(platforms[indexOfCar].CollisionPlatform(platform.PlatformRectangle))
+                            if (platforms[indexOfCar].CollisionPlatform(platform.PlatformRectangle))
                             {
                                 ActiveCar = false;
                                 platforms[indexOfCar].ActiveCar = false;
                                 _blockD2 = false;
                                 _blockD4 = false;
+                                platforms[indexOfCar].Animation =
+                                    new Animation(content.Load<Texture2D>("Scena2/autko/AutkoAnimacja"), 6, 50,
+                                        platforms[indexOfCar].Position.ToVector2());
+                                platforms[indexOfCar].ActiveCar = false;
 
                                 foreach (Penguin penguin in penguins)
                                 {
                                     if (penguin.penguinType == PenguinType.KOWALSKI)
                                     {
                                         penguin.ActiveDraw = true;
-                                        penguin.UpdateStartPosition(new Vector2(1220,500));
+                                        penguin.UpdateStartPosition(new Vector2(1220, 500));
                                     }
 
                                     if (penguin.penguinType == PenguinType.SZEREGOWY)
@@ -436,14 +440,14 @@ namespace TestGame.Scene
                             }
                         }
                     }
-                   
-                    
+
+
                     foreach (Platform platform in platforms)
-                    if (platform.platformType == PlatformType.SPIKEFIRST ||
-                        platform.platformType == PlatformType.SPIKE ||
-                        platform.platformType == PlatformType.SPIKELAST ||
-                        platform.platformType == PlatformType.WATER)
-                        platform.UpdatePosition(gameTime);
+                        if (platform.platformType == PlatformType.SPIKEFIRST ||
+                            platform.platformType == PlatformType.SPIKE ||
+                            platform.platformType == PlatformType.SPIKELAST ||
+                            platform.platformType == PlatformType.WATER)
+                            platform.UpdatePosition(gameTime);
 
 
                     platforms[indexOfCar].UpdateCar(gameTime);
@@ -634,7 +638,7 @@ namespace TestGame.Scene
                         penguin.UpdatePosition(gameTime);
 
                     camera.Update(player);
-                }                
+                }
             }
         }
 
