@@ -237,7 +237,7 @@ namespace TestGame.Scene
 
                 // Rico wychodzi w następnej rurze, więc go tam ustawiam
                 rico.Position = platforms.LastOrDefault(p => p.platformType == PlatformType.MAGICPIPE).Position;
-                rico.Position.Y -= rico.rectangle.Height;
+                rico.Position.Y -= rico.rectangle.Height - 20;
                 _canPlayMiniGame = false;
                 _playMiniGame = false;
                 camera.active = false;
