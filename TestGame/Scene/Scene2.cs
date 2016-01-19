@@ -429,7 +429,7 @@ namespace TestGame.Scene
                                     if (penguin.penguinType == PenguinType.RICO)
                                     {
                                         penguin.ActiveDraw = true;
-                                        penguin.UpdateStartPosition(new Vector2(1280, 500));
+                                      //  penguin.UpdateStartPosition(new Vector2(1280, 500));
                                     }
 
                                 }
@@ -617,6 +617,7 @@ namespace TestGame.Scene
                             }
 
                             // aktualizacja pozycji jeśli platforma ma sie poruszać
+                           // if(platform.platformType != PlatformType.CAR)
                             platform.UpdatePosition(gameTime);
 
                             // sprawdzenie czy poziom został ukończony
