@@ -344,7 +344,7 @@ namespace TestGame
             rectangle.Y += (int)newPosition.Y;
         }
 
-        private void BlockSystem()
+        private void BlockPenguin()
         {
             if (!block) //jezeli nie jest zablokowane
             {
@@ -362,14 +362,10 @@ namespace TestGame
                 {
                     blockDircetionLEFT = true;
                     blockDirectionRIGHT = false;
-                  /*  if (_slide) correctPositionX = (int)speedValue * 2; else
-                                correctPositionX = (int)speedValue;*/
                 }
             }
         }
 
-
-        Vector2 posTemp;
         /// <summary>
         /// Wykrywa kolizje pingwina z parametrem
         /// </summary>
@@ -378,11 +374,6 @@ namespace TestGame
         ///          False - gdy pingwin nie znajduje się na platformie</returns>
         public bool Collision(Rectangle r1, PenguinType penguinType = PenguinType.NN, PlatformType platformType = PlatformType.NN)
         {
-            if(currentdimensionsPenguin[3].Intersects(r1) && platformType == PlatformType.CAR)
-            {
-                int x = 0;
-            }
-
             if (actualCollisionRect != null) //jak pingwin lata to musi mu sie odlokowac mozliwosc poruszania sie na lewo i prawo
                 if (!currentdimensionsPenguin[0].Intersects(actualCollisionRect) &&
                     !currentdimensionsPenguin[1].Intersects(actualCollisionRect) &&
@@ -394,13 +385,13 @@ namespace TestGame
             if ((currentdimensionsPenguin[3].Intersects(r1))) //jak kolizja po prawej stronie
             {
                 actualCollisionRect = r1;
-                BlockSystem();
+                BlockPenguin();
             }
 
             if (currentdimensionsPenguin[2].Intersects(r1)) //jak kolizja po lewej stronie
             {
                 actualCollisionRect = r1;
-                BlockSystem();
+                BlockPenguin();
             }
 
             if (currentdimensionsPenguin[0].Intersects(r1)) //jak dotknie głowa
@@ -435,7 +426,7 @@ namespace TestGame
                     }
                 }
                 else
-                    if (rectangle.X < tmpPosition.X - speedValue*2)
+                    if (rectangle.X < tmpPosition.X - speedValue)
                     {
                         correctPositionX = 0;
                         block = false;
@@ -444,21 +435,17 @@ namespace TestGame
             if (!block) //jak nie zablokowane to odblokuj oba kierunki
                 blockDircetionLEFT = blockDirectionRIGHT = false;
 
-
-            if (platformType == PlatformType.FLOOR) //jak podloga to powoduje zeby pingwin nie mogl sie zaczepic od boku
+            if (platformType == PlatformType.FLOOR) //jak podloga to  pingwin nie moze sie zaczepic od boku
             { 
                  r1.Height = (int)speed.Y + 1;
                 if (currentdimensionsPenguin[1].Intersects(r1)) //jak dotknie nogami
                 {
-                    //correctPositionY = (r1.Y - (rectangle.Y + rectangle.Height)) * -1;
                     blockDircetionDOWN = false;
                     return true;
                 }
             }
             else if (currentdimensionsPenguin[1].Intersects(r1)) //jak dotknie nogami
             {
-                r1.Height = (int)speed.Y + 1;
-                // correctPositionY = (r1.Y - (rectangle.Y + rectangle.Height)) * -1;
                 blockDircetionDOWN = false;
                 return true;
             }
@@ -563,7 +550,7 @@ namespace TestGame
         public void FallDown()
         {
             float a = Mass / Const.GRAVITY;
-            if (speed.Y < currentdimensionsPenguin[1].Height * 0.7) speed.Y += 0.7f; //ograniczenie zeby pingwin stawał na platformie a nie w jej połowie
+            if (speed.Y < currentdimensionsPenguin[1].Height * 0.9f) speed.Y += a; //ograniczenie zeby pingwin stawał na platformie a nie w jej połowie
         }
 
         public void Jump()
@@ -572,14 +559,12 @@ namespace TestGame
             jump = true;
             Position.Y -= (int)Math.Pow(Const.GRAVITY * 3, 2) / Mass;
         }
-        int licz = 0;
+  
         public void JumpSpring()
         {
-
             speed.Y = -Const.SPRING_JUMP;
             jump = true;
             Position.Y -= ((int)Math.Pow(Const.GRAVITY * 3, 2) / Mass) + Const.SPRING_JUMP;
-
 
         }
 
